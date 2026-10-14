@@ -214,6 +214,7 @@ for (const city of cities) {
 </div>
 ${topGenres.length ? `<div class="filterbar"><div class="wrap"><div id="filter" class="chips" role="toolbar" aria-label="Filter by genre"><button class="chip" type="button" data-g="" aria-pressed="true">All <span class="c">${n}</span></button>${topGenres.map(([g, k]) => `<button class="chip" type="button" data-g="${g}" aria-pressed="false">${esc(GENRES[g])} <span class="c">${k}</span></button>`).join("")}</div></div></div>` : `<div style="height:28px"></div>`}
 <div class="wrap">
+<h2 class="sr-only">All clubs in ${esc(city.name)}</h2>
 <ul class="clubs">${city.clubs.map((c) => clubCard(c)).join("\n")}</ul>
 <div id="filter-empty" class="empty" hidden>${lunair("lunair-peek", 130, 215, 260, 421, "", "peek")}<p>No clubs in that genre here yet. <a href="${url("/start/")}">Start the first one</a> and we'll send readers your way.</p></div>
 ${nearClubs.length ? `<hr class="rule"><h2>More clubs <em>nearby</em></h2><p class="lede">A short drive from ${esc(city.name)}.</p><ul class="clubs">${nearClubs.map(({ c }) => clubCard(c, { showCity: true })).join("\n")}</ul>` : ""}
@@ -240,6 +241,7 @@ ${hostCallout(city.name)}`;
 <a class="chip" href="${url(p)}">See all ${n} clubs in ${esc(city.name)} →</a>
 </header>
 <div style="height:28px"></div>
+<h2 class="sr-only">${esc(GENRES[g])} book clubs</h2>
 <ul class="clubs">${list.map((c) => clubCard(c)).join("\n")}</ul>
 ${others.length ? `<hr class="rule"><h2>Other clubs in ${esc(city.name)}</h2><ul class="clubs">${others.map((c) => clubCard(c)).join("\n")}</ul>` : ""}
 </div>${hostCallout(city.name)}`;
