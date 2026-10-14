@@ -73,6 +73,17 @@ export const LIBRARIES = [
   'norwalk', 'burlington', 'fletcherfree', 'portland', 'portlandlibrary', 'nhpl', 'manchester',
   'buffalo', 'buffalolib', 'rochesterpl', 'monroe', 'syracuse', 'onlib', 'albany', 'westchester', 'wls', 'yonkers',
   'nassau', 'suffolk', 'smithtown', 'huntington', 'hempstead', 'nyack', 'whiteplains', 'scarsdale',
+  // --- from BiblioCommons' public partner list (www.bibliocommons.com/libraries-we-work-with), US entries; ids guessed, bad guesses 404
+  'arapahoelibraries', 'bhpl', 'beverlyhills', 'boca', 'bocalibrary', 'bocaratonlibrary', 'myboca', 'carmelclay', 'ccpl-in', 'cals',
+  'crrl', 'librarypoint', 'chandlerlibrary', 'chapelhill', 'chapelhillpubliclibrary', 'chpl', 'ccplohio', 'clarkcounty',
+  'columbuslibrary', 'dbrl', 'dcplibrary', 'delawarelibrary', 'delaware', 'dentonlibrary', 'deschuteslibrary', 'dcl',
+  'durhamcountylibrary', 'ecpl', 'elpl', 'einetwork', 'egvpl', 'epl', 'glendalelac', 'eglendalelac', 'greenwichlibrary',
+  'hayward', 'haywardlibrary', 'herrickdl', 'herrick', 'ifls', 'more', 'kenosha', 'mykpl', 'lakecountyca', 'lakecounty',
+  'llcoop', 'laurel', 'laurellibrary', 'livermore', 'margate', 'margatelibrary', 'marinet', 'midark', 'midarklibrary',
+  'madl', 'olathe', 'olathelibrary', 'orangecountync', 'pac2', 'paloalto', 'plsinfo', 'pls', 'pleasanton', 'plymouth',
+  'plymouthlibrary', 'princetonlibrary', 'plymc', 'richmondlibrary', 'sclibrary', 'skokielibrary', 'sno_isle', 'stark',
+  'starklibrary', 'sjcpl', 'sttammany', 'sttammanylibrary', 'sunnyvale', 'spl', 'seattlepubliclibrary', 'tscpl', 'wcpl',
+  'westerville', 'westervillelibrary', 'ylpl', 'yuma', 'yumalibrary',
   'lawrence', 'rclreads', 'eppl', 'eden', 'ramseycounty', 'sclibrary', 'hennepin', 'nashvillelibrary', 'mobilepubliclibrary',
   'honolulu', 'hawaii', 'anchorage', 'alaska', 'vpl', 'tpl', 'opl', 'calgary', 'epl',
 ];
@@ -196,7 +207,7 @@ function parseRss(xml) {
             id: tag(loc[1], 'bc:id'),
             name: tag(loc[1], 'bc:name'),
             city: tag(loc[1], 'bc:city'),
-            state: tag(loc[1], 'bc:state'),
+            state: toStateCode(tag(loc[1], 'bc:state')),
             country: tag(loc[1], 'bc:country'),
           }
         : null,
@@ -207,7 +218,7 @@ function parseRss(xml) {
 
 // ---------------------------------------------------------------- classification
 const CLUB_RE =
-  /\bbook\s*(club|discussion|group|chat|talk|circle|lovers|bunch|nook|banter|buzz|break|brunch|social|salon|society)s?\b|\bbook-?worms?\b|\bbookies\b|\breading (group|club|circle|society)s?\b|\breaders'?\s*(club|circle|group|corner|society|guild|caf[eé]|choice|roundtable|forum)\b|\b(literary|lit|literature) (club|circle|society|salon|discussion|group|lounge)\b|\bsilent book|\bclub de (lectura|libros?|lectores)\b|\bc[ií]rculo de lectura\b|\bbooks? (and|&|n'?) (brews?|beers?|wine|coffee|cocktails|bites|bevs)\b|\b(brews?|beers?|wine|coffee|cocktails|pints?|tea) (and|&|n'?) (books?|lit)\b|\bbooks on tap\b|\bpage ?turners\b|\bnovel (idea|ideas|discussions?|thoughts|conversations?|readers)\b|\bgreat books\b|\bshort stor(y|ies) (club|discussion|group)\b|\b(mystery|mysteries|sci-?fi|fantasy|romance|horror|poetry|graphic novel|manga|classics?|nonfiction|non-fiction|history|memoir|thriller) (club|readers|book club|lovers|circle|group|discussion)s?\b|\bread(ing)? (and|&) (discuss|chat)\b|\bbook (and|&) (brew|bev)/i;
+  /\bbookclubs?\b|\bbook\s*(club|discussion|group|chat|talk|circle|lovers|bunch|nook|banter|buzz|break|brunch|social|salon|society)s?\b|\bbook-?worms?\b|\bbookies\b|\breading (group|club|circle|society)s?\b|\breaders'?\s*(club|circle|group|corner|society|guild|caf[eé]|choice|roundtable|forum)\b|\b(literary|lit|literature) (club|circle|society|salon|discussion|group|lounge)\b|\bsilent book|\bclub de (lectura|libros?|lectores)\b|\bc[ií]rculo de lectura\b|\bbooks? (and|&|n'?) (brews?|beers?|wine|coffee|cocktails|bites|bevs)\b|\b(brews?|beers?|wine|coffee|cocktails|pints?|tea) (and|&|n'?) (books?|lit)\b|\bbooks on tap\b|\bpage ?turners\b|\bnovel (idea|ideas|discussions?|thoughts|conversations?|readers)\b|\bgreat books\b|\bshort stor(y|ies) (club|discussion|group)\b|\b(mystery|mysteries|sci-?fi|fantasy|romance|horror|poetry|graphic novel|manga|classics?|nonfiction|non-fiction|history|memoir|thriller) (club|readers|book club|lovers|circle|group|discussion)s?\b|\bread(ing)? (and|&) (discuss|chat)\b|\bbook (and|&) (brew|bev)/i;
 const NOT_CLUB_RE =
   /\bauthor (talk|visit|event|reading|conversation|signing|spotlight|series)|\bmeet the author|\bbook (sale|swap|signing|launch|drive|bundle|bike|fair|making|binding|repair|art|folding|exchange|tasting|giveaway|cart|bingo|walk|madness)|\bbookmobile|\bbook ?mark|\bbook club (kits?|in a bag|bags?|sets?|to go)|\bkits?\b|\bstory ?time|\bread[- ]?aloud|\breading buddies|\bread to a (dog|pet)|\bpaws to read|\btutor|\bwriters?'? (group|workshop|circle|club)|\bwriting\b|\bcraft|\bmovie|\bfilm\b|\blecture|\bworkshop|\bclass\b|\bcelebration|\bkick-?off|\bgiveaway|\bdonat|\btrivia|\bbingo|\bescape room|\bnaptime|\bcookbook club\b(?!.*book club)|\bpuzzle|\bchess|\bknit|\bcrochet|\bjigsaw|\bconversation (club|circle|group|practice|cafe)|\besl conversation|\benglish conversation|\blanguage (exchange|practice)|\bgenealogy|\bcomputer|\btech help|\bmeditation|\byoga/i;
 const YOUTH_TITLE_RE =
@@ -360,6 +371,10 @@ function vibeFor(group, format, cadence) {
   return v;
 }
 
+const STATE_CODES = {"alabama": "AL", "alaska": "AK", "arizona": "AZ", "arkansas": "AR", "california": "CA", "colorado": "CO", "connecticut": "CT", "delaware": "DE", "district of columbia": "DC", "florida": "FL", "georgia": "GA", "hawaii": "HI", "idaho": "ID", "illinois": "IL", "indiana": "IN", "iowa": "IA", "kansas": "KS", "kentucky": "KY", "louisiana": "LA", "maine": "ME", "maryland": "MD", "massachusetts": "MA", "michigan": "MI", "minnesota": "MN", "mississippi": "MS", "missouri": "MO", "montana": "MT", "nebraska": "NE", "nevada": "NV", "new hampshire": "NH", "new jersey": "NJ", "new mexico": "NM", "new york": "NY", "north carolina": "NC", "north dakota": "ND", "ohio": "OH", "oklahoma": "OK", "oregon": "OR", "pennsylvania": "PA", "rhode island": "RI", "south carolina": "SC", "south dakota": "SD", "tennessee": "TN", "texas": "TX", "utah": "UT", "vermont": "VT", "virginia": "VA", "washington": "WA", "west virginia": "WV", "wisconsin": "WI", "wyoming": "WY"};
+const US_CODES = new Set(Object.values(STATE_CODES));
+const toStateCode = (s) => { if (!s) return null; const t = s.trim().replace(/\.$/, ''); if (/^[A-Za-z]{2}$/.test(t)) return US_CODES.has(t.toUpperCase()) ? t.toUpperCase() : null; return STATE_CODES[t.toLowerCase()] || null; };
+
 // ---------------------------------------------------------------- main
 async function main() {
   await mkdir(CACHE_DIR, { recursive: true });
@@ -423,7 +438,7 @@ async function main() {
     }
     const homeKey = [...cityCount.entries()].sort((a, b) => b[1] - a[1])[0]?.[0];
     const [homeCity, homeState, homeCountry] = homeKey ? homeKey.split('|') : [null, null, null];
-    const isUS = (c) => !c || c === 'US' || c === 'USA';
+    const isUS = (c) => !c || /^(US|USA|United States( of America)?)$/i.test(c);
     if (homeKey && !isUS(homeCountry)) {
       log.libraries[id] = { status: 'skipped', reason: `not US (${homeCountry})`, library: libraryName };
       console.log(`- ${id}: skipped, not US (${libraryName})`);
@@ -464,8 +479,8 @@ async function main() {
       const cadence = cadenceFromDates(live.map((o) => o.start)) || cadenceFromText(descs);
       const format = formatFor({ occ: live });
       const city = loc?.city || homeCity;
-      const state = (loc?.state || homeState || '').toUpperCase();
-      if (!/^[A-Z]{2}$/.test(state)) continue;
+      const state = loc?.state || homeState || '';
+      if (!US_CODES.has(state)) continue;
       records.push({
         name,
         city,

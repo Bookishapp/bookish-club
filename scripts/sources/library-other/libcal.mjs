@@ -25,7 +25,7 @@ export async function scrape(lib) {
   // so fall back to one request per day across the horizon.
   const queries = cats.length
     ? cats.map((c) => ({ date: '0000-00-00', cats: c }))
-    : Array.from({ length: HORIZON_DAYS }, (_, i) => ({ date: new Date(Date.parse(TODAY) + i * 864e5).toISOString().slice(0, 10), cats: '' }));
+    : Array.from({ length: lib.dailyDays ?? HORIZON_DAYS }, (_, i) => ({ date: new Date(Date.parse(TODAY) + i * 864e5).toISOString().slice(0, 10), cats: '' }));
   lib._libcalMode = cats.length ? `categories ${cats.join(',')}` : 'daily';
   for (const q of queries) await pageThrough(lib, q, horizon, occs);
   const seen = new Set();

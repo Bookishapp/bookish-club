@@ -57,7 +57,7 @@ export const LIBRARIES = [
   { name: 'Norfolk Public Library', host: 'norfolk.libcal.com', platform: 'libcal', city: 'Norfolk', state: 'VA' },
   { name: 'Richmond Public Library', host: 'rvalibrary.libcal.com', platform: 'libcal', city: 'Richmond', state: 'VA' },
   { name: 'St. Petersburg Public Library', host: 'splibraries.libcal.com', platform: 'libcal', city: 'St. Petersburg', state: 'FL' },
-  { name: 'Buffalo & Erie County Public Library', host: 'buffalolib.libcal.com', platform: 'libcal', city: 'Buffalo', state: 'NY', branchIsCity: 'pl' },
+  { name: 'Buffalo & Erie County Public Library', host: 'buffalolib.libcal.com', platform: 'libcal', city: 'Buffalo', state: 'NY', branchIsCity: 'pl', cityFix: { 'Lake Shore': 'Angola' } },
   { name: 'Westchester Library System', host: 'westchesterlibraries.libcal.com', platform: 'libcal', city: 'Elmsford', state: 'NY', branchIsCity: 'pl' },
   { name: 'Newark Public Library', host: 'npl.libcal.com', platform: 'libcal', city: 'Newark', state: 'NJ' },
   { name: 'Chesterfield County Public Library', host: 'chesterfield.libcal.com', platform: 'libcal', city: 'Chesterfield', state: 'VA' },
@@ -70,6 +70,13 @@ export const LIBRARIES = [
   { name: 'Chattanooga Public Library', host: 'chattlibrary.org', platform: 'tribe', city: 'Chattanooga', state: 'TN', venueStrip: /\s+Chattanooga$/ },
   { name: 'Carnegie Library of Pittsburgh', host: 'carnegielibrary.org', platform: 'tribe', city: 'Pittsburgh', state: 'PA' },
   { name: 'Montgomery County-Norristown Public Library', host: 'www.montcolibraries.org', platform: 'tribe', city: 'Norristown', state: 'PA' },
-  { name: 'Wake County Public Libraries', host: 'www.wcpl.net', platform: 'tribe', city: 'Raleigh', state: 'NC' },
+  { name: 'Washington County Public Library (VA)', host: 'www.wcpl.net', platform: 'tribe', city: 'Abingdon', state: 'VA' },
   { name: 'Los Angeles Public Library', host: 'www.lapl.org', platform: 'custom', site: 'lapl', city: 'Los Angeles', state: 'CA' },
+  // --- batch 4 ---
+  { name: 'Santa Cruz Public Libraries', host: 'santacruzpl.libnet.info', platform: 'communico', city: 'Santa Cruz', state: 'CA' },
+  { name: 'Solano County Library', host: 'solanolibrary.libnet.info', platform: 'communico', city: 'Fairfield', state: 'CA' },
+  { name: 'Washoe County Library System', host: 'events.washoecountylibrary.us', platform: 'libcal', city: 'Reno', state: 'NV', dailyDays: 30 },
+  { name: 'Yolo County Library', host: 'events.yolocountylibrary.org', platform: 'libcal', city: 'Woodland', state: 'CA', dailyDays: 30 },
+  { name: 'Sioux City Public Library', host: 'siouxcitylibrary.libcal.com', platform: 'libcal', city: 'Sioux City', state: 'IA', dailyDays: 30 },
+  { name: 'Lafayette Public Library', host: 'lafayettela.libcal.com', platform: 'libcal', city: 'Lafayette', state: 'LA', dailyDays: 30 },
 ];
