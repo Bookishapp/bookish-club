@@ -85,6 +85,10 @@ supabase functions deploy bookish-confirm --project-ref wqnrortftkffmbeugjky --n
 
 Read submissions with SQL as the service role, for example `select kind, email, payload, status, created_at from bookish_submissions order by created_at desc;`.
 
+## Theme
+
+All colours, fonts and textures are CSS variables in `src/theme.css`. `src/styles.css` contains layout only and reads those variables. To re-skin the site, swap or edit `theme.css` (plus any font files in `public/fonts/`) and rebuild.
+
 ## Fonts
 
 Newsreader (Production Type, SIL Open Font License 1.1), self-hosted latin subset.

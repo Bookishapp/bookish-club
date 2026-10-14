@@ -79,7 +79,7 @@ const sitemap = [];
 const page = (p, prio = 0.6) => sitemap.push({ loc: abs(p), prio });
 
 // ---------- layout ----------
-const CSS = fs.readFileSync(path.join(ROOT, "src/styles.css"), "utf8").replaceAll("__BASE__", BASE).replace(/\n\s*/g, "\n");
+const CSS = (fs.readFileSync(path.join(ROOT, "src/theme.css"), "utf8") + fs.readFileSync(path.join(ROOT, "src/styles.css"), "utf8")).replaceAll("__BASE__", BASE).replace(/\n\s*/g, "\n");
 
 function layout({ title, desc, path: p, body, jsonld = [], noindex = false }) {
   const canonical = abs(p);

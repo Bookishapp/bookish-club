@@ -1,5 +1,21 @@
 [
  {
+  "name": "Books & Brews Book Club",
+  "city": "Rogers",
+  "state": "AR",
+  "neighborhood": null,
+  "venue": "RPL Events",
+  "genres": [],
+  "vibe": "Meets at a local brewery or pub",
+  "cadence": "Monthly, 1st Monday",
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Rogers Public Library",
+  "platform": "libcal",
+  "source_url": "https://rogerspubliclibrary.libcal.com/event/16202055",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Romance Book Club",
   "city": "Springdale",
   "state": "AR",
@@ -5642,6 +5658,38 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Murder by the Book Club",
+  "city": "Newton",
+  "state": "MA",
+  "neighborhood": null,
+  "venue": "Newton Free Library",
+  "genres": [],
+  "vibe": "Registration required",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Newton Free Library",
+  "platform": "libcal",
+  "source_url": "https://newtonfreelibrary.libcal.com/event/16789487",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Murder by the Book Club on Zoom",
+  "city": "Newton",
+  "state": "MA",
+  "neighborhood": null,
+  "venue": "Newton Free Library",
+  "genres": [],
+  "vibe": "Registration required",
+  "cadence": null,
+  "format": "online",
+  "source": "library-more",
+  "library": "Newton Free Library",
+  "platform": "libcal",
+  "source_url": "https://newtonfreelibrary.libcal.com/event/16789546",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Book Chat",
   "city": "Wellesley",
   "state": "MA",
@@ -7845,6 +7893,38 @@
   "library": "Cherry Hill Public Library",
   "platform": "libcal",
   "source_url": "https://chplnj.libcal.com/event/17302241",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Allwood Book Club",
+  "city": "Clifton",
+  "state": "NJ",
+  "neighborhood": null,
+  "venue": "Allwood Branch Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": "Monthly, 1st Tuesday",
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Clifton Public Library",
+  "platform": "libcal",
+  "source_url": "https://cliftonpl.libcal.com/event/15030581",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "BOOK CLUB at MAIN Library",
+  "city": "Clifton",
+  "state": "NJ",
+  "neighborhood": null,
+  "venue": "Clifton Memorial Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": "Monthly, 3rd Tuesday",
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Clifton Public Library",
+  "platform": "libcal",
+  "source_url": "https://cliftonpl.libcal.com/event/15031335",
   "last_seen": "2026-10-13"
  },
  {
@@ -14775,6 +14855,24 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "LEPL Book Club (Club de Lectura)",
+  "city": "Little Elm",
+  "state": "TX",
+  "neighborhood": null,
+  "venue": "All Library Programs",
+  "genres": [
+   "spanish-language"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Little Elm Public Library",
+  "platform": "libcal",
+  "source_url": "https://littleelm.libcal.com/event/15623878",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Diverse Readers Book Club",
   "city": "Longview",
   "state": "TX",
@@ -15888,6 +15986,38 @@
   "library": "Waco-McLennan County Library",
   "platform": "libcal",
   "source_url": "https://calendar.wacolibrary.org/event/16023168",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Book Club",
+  "city": "Weatherford",
+  "state": "TX",
+  "neighborhood": null,
+  "venue": "Weatherford Public Library Program Calendar",
+  "genres": [],
+  "vibe": "Newcomers welcome",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Weatherford Public Library",
+  "platform": "libcal",
+  "source_url": "https://weatherfordtx.libcal.com/event/17655788",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Scrapbook Social",
+  "city": "Weatherford",
+  "state": "TX",
+  "neighborhood": null,
+  "venue": "Weatherford Public Library Program Calendar",
+  "genres": [],
+  "vibe": null,
+  "cadence": "Monthly, 3rd Saturday",
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Weatherford Public Library",
+  "platform": "libcal",
+  "source_url": "https://weatherfordtx.libcal.com/event/16808579",
   "last_seen": "2026-10-13"
  },
  {
