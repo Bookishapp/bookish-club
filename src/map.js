@@ -10,7 +10,7 @@
   const STYLE = "https://tiles.openfreemap.org/styles/positron";
   const css = getComputedStyle(document.documentElement);
   const C = (v, d) => (css.getPropertyValue(v).trim() || d);
-  const PIN = C("--map-pin", "#2d4a3a"), CLUSTER = C("--map-cluster", "#7b2d26");
+  const PIN = C("--map-pin", "#2d4a3a"), CLUSTER = C("--map-cluster", "#7b2d26"), ON = C("--map-on", "#8a6420");
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
   const load = (tag, attrs) => new Promise((res, rej) => { const n = document.createElement(tag); Object.assign(n, attrs); n.onload = res; n.onerror = rej; document.head.appendChild(n); });
 
@@ -31,6 +31,8 @@
 
     map.on("load", () => {
       el.classList.remove("loading");
+      const attr = el.querySelector(".maplibregl-ctrl-attrib");
+      if (attr) attr.classList.remove("maplibregl-compact-show");
       map.addSource("cities", { type: "geojson", data, cluster: true, clusterRadius: 44, clusterMaxZoom: 7,
         clusterProperties: { total: ["+", ["get", "n"]] } });
       map.addLayer({ id: "clusters", type: "circle", source: "cities", filter: ["has", "point_count"], paint: {
@@ -39,10 +41,12 @@
       map.addLayer({ id: "cluster-count", type: "symbol", source: "cities", filter: ["has", "point_count"],
         layout: { "text-field": ["to-string", ["get", "total"]], "text-size": 12, "text-font": ["Noto Sans Bold"] }, paint: { "text-color": "#fff" } });
       map.addLayer({ id: "city", type: "circle", source: "cities", filter: ["!", ["has", "point_count"]], paint: {
-        "circle-color": ["case", ["==", ["get", "u"], focus || ""], CLUSTER, PIN], "circle-stroke-color": "#fff", "circle-stroke-width": 2,
+        "circle-color": ["case", ["==", ["get", "u"], focus || ""], CLUSTER, PIN], "circle-stroke-color": ["case", [">", ["get", "v"], 0], ON, "#fff"], "circle-stroke-width": ["case", [">", ["get", "v"], 0], 3, 2],
         "circle-radius": ["interpolate", ["linear"], ["get", "n"], 1, 7, 10, 11, 50, 16] } });
       map.addLayer({ id: "city-label", type: "symbol", source: "cities", filter: ["!", ["has", "point_count"]],
-        layout: { "text-field": ["concat", ["get", "c"], " · ", ["to-string", ["get", "n"]]], "text-size": 12, "text-font": ["Noto Sans Bold"],
+        // "Folsom, CA · 4 clubs · 1 on Bookish"
+        layout: { "text-field": ["concat", ["get", "c"], " · ", ["to-string", ["get", "n"]], ["case", ["==", ["get", "n"], 1], " club", " clubs"],
+          ["case", [">", ["get", "v"], 0], ["concat", " · ", ["to-string", ["get", "v"]], " on Bookish"], ""]], "text-size": 12, "text-font": ["Noto Sans Bold"],
           "text-offset": [0, 1.4], "text-anchor": "top", "text-optional": true },
         paint: { "text-color": "#2b241e", "text-halo-color": "#fff", "text-halo-width": 1.5 } });
 
@@ -51,13 +55,42 @@
         const z = await map.getSource("cities").getClusterExpansionZoom(f.properties.cluster_id);
         map.easeTo({ center: f.geometry.coordinates, zoom: z + 0.3 });
       });
+      // City sheet (opens under the map): the same "On Bookish" / "Listed
+      // from public calendars" toggle as the city page, defaulting to
+      // verified when any exist. City-level only: club names, no venues.
+      const sheet = document.createElement("section");
+      sheet.className = "map-sheet"; sheet.hidden = true; sheet.setAttribute("aria-live", "polite");
+      el.insertAdjacentElement("afterend", sheet);
+      let cur = null;
+      const draw = () => {
+        const { p, mode } = cur;
+        const n = +p.n, v = +p.v || 0, u = n - v;
+        const on = String(p.topv || "").split("\u001f").filter(Boolean);
+        const off = String(p.top || "").split("\u001f").filter(Boolean);
+        const city = `${BASE}/book-clubs/${p.u}/`;
+        sheet.innerHTML = `<div class="ms-head"><h3 class="pop-name">${esc(p.c)} <span>· ${n} club${n === 1 ? "" : "s"}${v ? ` · ${v} on Bookish` : ""}</span></h3><button type="button" class="ms-x" aria-label="Close">×</button></div>
+<div class="seg seg-sm" role="group" aria-label="Which clubs to show">
+<button type="button" class="seg-b" data-mode="on" aria-pressed="${mode === "on"}">On Bookish <span class="c">${v}</span></button>
+<button type="button" class="seg-b" data-mode="listed" aria-pressed="${mode === "listed"}">Listed from public calendars <span class="c">${u}</span></button></div>
+${mode === "on"
+  ? (v ? `<ul class="pop-list on">${on.map((x) => `<li>${esc(x)} <span class="badge on sm">On Bookish</span></li>`).join("")}</ul><p class="pop-actions"><a class="btn" href="${city}#on-bookish">See ${v > on.length ? `all ${v}` : v === 1 ? "it" : "them"} &amp; request to join</a></p>`
+       : `<p class="pop-note">No host has claimed a club in ${esc(p.c)} yet, so there's nobody on Bookish to ask. <a href="${BASE}/start/">Start one</a></p>`)
+  : `<p class="pop-note">${v ? "" : `<b>No host has claimed a club here yet.</b> `}Listed from public library and bookstore calendars. Not on Bookish, so you can't request to join.</p><ul class="pop-list off">${off.map((x) => `<li>${esc(x)} <span class="badge off sm">Not on Bookish yet</span></li>`).join("")}</ul><p class="pop-actions"><a class="btn ghost" href="${city}#listed">See where ${u === 1 ? "it meets" : "they meet"}</a></p>`}`;
+      };
+      sheet.addEventListener("click", (ev) => {
+        if (ev.target.closest(".ms-x")) { sheet.hidden = true; return; }
+        const b = ev.target.closest(".seg-b");
+        if (!b) return;
+        cur.mode = b.dataset.mode; draw();
+        const nb = sheet.querySelector(`.seg-b[data-mode="${cur.mode}"]`); if (nb) nb.focus();
+      });
       map.on("click", "city", (e) => {
         const p = e.features[0].properties;
-        const names = String(p.top || "").split("\u001f").filter(Boolean);
-        new maplibregl.Popup({ offset: 12, maxWidth: "300px", className: "club-pop" }).setLngLat(e.features[0].geometry.coordinates)
-          .setHTML(`<p class="pop-name">${esc(p.c)} · ${p.n} club${p.n == 1 ? "" : "s"}</p>
-<ul class="pop-list">${names.map((n) => `<li>${esc(n)}</li>`).join("")}</ul>
-<p class="pop-actions"><a href="${BASE}/book-clubs/${p.u}/">See ${p.n > names.length ? `all ${p.n}` : "them"} &amp; ask to join →</a></p>`).addTo(map);
+        cur = { p, mode: +p.v > 0 ? "on" : "listed" };
+        draw(); sheet.hidden = false;
+        map.easeTo({ center: e.features[0].geometry.coordinates });
+        const r = sheet.getBoundingClientRect();
+        if (r.bottom > innerHeight) sheet.scrollIntoView({ behavior: "smooth", block: "nearest" });
       });
       for (const l of ["clusters", "city"]) {
         map.on("mouseenter", l, () => (map.getCanvas().style.cursor = "pointer"));

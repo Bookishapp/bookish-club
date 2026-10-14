@@ -3,6 +3,10 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Hourly rebuild so newly verified clubs (confirmed claims / starts) move
+  # to "On Bookish" without a code change.
+  schedule:
+    - cron: "17 * * * *"
 permissions:
   contents: read
   pages: write

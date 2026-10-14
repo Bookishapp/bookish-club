@@ -19,8 +19,8 @@ validated to never be a branch label. No staff names, emails or phone numbers ar
 Terms: robots.txt was checked automatically for every host before any request (results below). Per-host terms-of-use
 pages were NOT individually reviewed in this run (time-boxed); every route used is a public, logged-out listing or feed that
 the library's own public calendar page loads (or a syndication feed: Trumba JSON, CivicPlus RSS, Localist API). Follow-up:
-review each library's site terms before publishing. BiblioCommons-hosted event calendars were left entirely to the
-library-bibliocommons collector (its Terms restrict harvesting to RSS). LibraryMarket/LibraryCalendar hosts serve a
+review each library's site terms before publishing. BiblioCommons-hosted event calendars were not collected
+(BiblioCommons terms allow personal, non-commercial use only; that source is excluded for good, see its note below). LibraryMarket/LibraryCalendar hosts serve a
 robots.txt that blocks all crawlers except a named list of search engines ("User-agent: * / Disallow: /"), so they were
 skipped. Hosts answering 403 to this User-Agent (e.g. *.events.mylibrary.digital tenants) were treated as refusals.
 
@@ -255,7 +255,7 @@ skipped. Hosts answering 403 to this User-Agent (e.g. *.events.mylibrary.digital
 | Richland Library | www.richlandlibrary.com | HTTP 403 to this User-Agent (treated as refusal) |
 | Toledo Lucas County website | www.toledolibrary.org | HTTP 403 to this User-Agent (treated as refusal) (events collected from toledo.libnet.info instead) |
 | Memphis (Evanced calendar) | memphislibrary.evanced.info | no response; book-club directory page on memphislibrary.org used instead |
-| Mecklenburg / Johnson County KS / Arapahoe / Jefferson County CO / Pima / Omaha / Palm Beach / Santa Clara County / Contra Costa / Alameda County / San Mateo County / Sno-Isle / Ramsey / Kent District / Hennepin / Frisco / Chandler / Denton / Cincinnati / Dayton / Stark / Westerville / Fulton / Harris County / San Diego County / Kitsap / Timberland / Fort Vancouver / Tacoma / Yuma / Lawrence KS / Kenton County | *.bibliocommons.com | events on BiblioCommons (left to library-bibliocommons collector, RSS-only per BiblioCommons Terms) |
+| Mecklenburg / Johnson County KS / Arapahoe / Jefferson County CO / Pima / Omaha / Palm Beach / Santa Clara County / Contra Costa / Alameda County / San Mateo County / Sno-Isle / Ramsey / Kent District / Hennepin / Frisco / Chandler / Denton / Cincinnati / Dayton / Stark / Westerville / Fulton / Harris County / San Diego County / Kitsap / Timberland / Fort Vancouver / Tacoma / Yuma / Lawrence KS / Kenton County | *.bibliocommons.com | events on BiblioCommons (not collected: BiblioCommons terms allow personal, non-commercial use only; source excluded for good) |
 | Mid-Continent Public Library | www.mymcpl.org | custom site; public search returned no results without scripting — not collected |
 | Cobb County Public Library | www.cobbcounty.gov | county-wide Drupal calendar; no library-only listing found in time — not collected |
 | Greenville County Library System / Madison PL / Ann Arbor DL / Capital Area DL / Kansas City KS / El Paso / Detroit / Collier / Kern County | various | custom calendars; not attempted in the time box |

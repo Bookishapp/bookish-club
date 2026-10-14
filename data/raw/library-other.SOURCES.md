@@ -119,7 +119,7 @@ Total: **1226 clubs** from **67 library systems**, 342 distinct cities.
 | San Diego Public Library (city) | sandiego.events.mylibrary.digital | HTTP 403 to our UA (bot protection). Skipped. |
 | Maricopa County Library District | events.mcldaz.org | Already covered by the library-more source. Skipped here to avoid duplicates. |
 | Kansas City Public Library (MO) | kclibrary.org | Robots allow it, but it needs a bespoke Drupal parser. Not built. |
-| BiblioCommons Events libraries | Chicago, Boston, SFPL, Oakland, San Jose, Austin, Harris County, Atlanta-Fulton, Charlotte, Hennepin, KCLS, San Diego County, St. Louis City, Cincinnati, Multnomah, etc. | Covered by the BiblioCommons source. Excluded here. |
+| BiblioCommons Events libraries | Chicago, Boston, SFPL, Oakland, San Jose, Austin, Harris County, Atlanta-Fulton, Charlotte, Hennepin, KCLS, San Diego County, St. Louis City, Cincinnati, Multnomah, etc. | Not collected: events live on BiblioCommons, whose terms bar republishing (source excluded for good). |
 
 ## Method
 

@@ -16,15 +16,31 @@
     const h = Math.sin(x / 2) ** 2 + Math.cos(a * r) * Math.cos(c * r) * Math.sin(y / 2) ** 2;
     return 2 * R * Math.asin(Math.sqrt(h));
   };
-  const cityUrl = (c, genre) => `${BASE}/book-clubs/${c.u}/${genre && c.gp && c.gp.includes(genre) ? genre + "/" : genre ? "#" + genre : ""}`;
+  const cityUrl = (c, genre, mode) => `${BASE}/book-clubs/${c.u}/${genre && c.gp && c.gp.includes(genre) ? genre + "/" : ""}${mode ? `#${mode === "on" ? "on-bookish" : "listed"}` : genre && !(c.gp && c.gp.includes(genre)) ? "#" + genre : ""}`;
 
+  const countText = (n, v) => `${n} club${n === 1 ? "" : "s"}${v ? ` · ${v} on Bookish` : ""}`;
   function renderResults(box, title, list, genre) {
     if (!list.length) {
       box.innerHTML = `<div class="empty"><img class="lunair peek" src="${BASE}/img/lunair-peek-260.webp" width="215" height="140" alt=""><p>We don't have book clubs listed there yet. <a href="${BASE}/start/">Start one</a> and we'll put it on the map.</p></div>`;
       return;
     }
-    box.innerHTML = `<p class="eyebrow">${esc(title)}</p><div class="grid cols-3">${list.map((c) =>
-      `<a class="city-tile" href="${cityUrl(c, genre)}"><b>${esc(c.n)}, ${c.s}</b><span>${genre ? (c.g[genre] || 0) : c.c} club${(genre ? c.g[genre] : c.c) === 1 ? "" : "s"}${c.d != null ? ` · ${Math.round(c.d)} mi` : ""}</span></a>`).join("")}</div>`;
+    const rows = list.map((c) => ({ c, n: genre ? (c.g[genre] || 0) : c.c, v: genre ? ((c.vg || {})[genre] || 0) : (c.v || 0) }));
+    const V = rows.reduce((s, r) => s + r.v, 0), U = rows.reduce((s, r) => s + r.n - r.v, 0);
+    let mode = V ? "on" : "listed";
+    const draw = () => {
+      const shown = rows.filter((r) => (mode === "on" ? r.v : r.n - r.v) > 0);
+      box.innerHTML = `<p class="eyebrow">${esc(title)}</p>
+<div class="seg-wrap" data-mode="${mode}"><div class="seg" role="group" aria-label="Which clubs to show">
+<button type="button" class="seg-b" data-mode="on" aria-pressed="${mode === "on"}"><span class="seg-l">On Bookish</span> <span class="c">${V}</span></button>
+<button type="button" class="seg-b" data-mode="listed" aria-pressed="${mode === "listed"}"><span class="seg-l">Listed from public calendars</span> <span class="c">${U}</span></button></div>
+<p class="seg-note">${mode === "on"
+  ? (V ? "Hosts run these clubs on Bookish. Request to join and the host says yes or no." : `No host has claimed a club in these cities yet. <a href="${BASE}/start/">Start one</a> or <a href="${BASE}/claim/">claim yours</a>.`)
+  : `${V ? "" : "<b>No host has claimed a club in these cities yet.</b> "}These come from public library and bookstore calendars. They're not on Bookish, so you can't request to join.`}</p></div>
+${shown.length ? `<div class="grid cols-3">${shown.map(({ c, n, v }) =>
+  `<a class="city-tile" href="${cityUrl(c, genre, mode)}"><b>${esc(c.n)}, ${c.s}</b><span>${mode === "on" ? `${v} on Bookish` : `${n - v} listed from public calendars`}${c.d != null ? ` · ${Math.round(c.d)} mi` : ""}</span></a>`).join("")}</div>` : ""}`;
+      $(".seg", box).addEventListener("click", (e) => { const b = e.target.closest(".seg-b"); if (b) { mode = b.dataset.mode; draw(); $(`.seg-b[data-mode="${mode}"]`, box).focus(); } });
+    };
+    draw();
   }
 
   async function nearZip(zip, genre) {
@@ -55,7 +71,7 @@
       if (v.length < 2 || /^\d/.test(v)) { sug.hidden = true; return; }
       const list = matchCities(await loadCities(), v, g.value).slice(0, 6);
       active = -1;
-      sug.innerHTML = list.map((c) => `<li><a href="${cityUrl(c, g.value)}"><span>${esc(c.n)}, ${c.s}</span><span class="n">${g.value ? c.g[g.value] : c.c} clubs</span></a></li>`).join("");
+      sug.innerHTML = list.map((c) => `<li><a href="${cityUrl(c, g.value)}"><span>${esc(c.n)}, ${c.s}</span><span class="n">${g.value ? countText(c.g[g.value] || 0, (c.vg || {})[g.value] || 0) : countText(c.c, c.v || 0)}</span></a></li>`).join("");
       sug.hidden = !list.length;
     });
     q.addEventListener("keydown", (e) => {
@@ -91,25 +107,70 @@
     if (pre) { q.value = pre; form.requestSubmit(); }
   }
 
-  // ---------- genre filter on city pages ----------
+  // ---------- "On Bookish" / "Listed from public calendars" toggle ----------
+  // Verified clubs (a host claimed it and is on Bookish) vs unclaimed clubs
+  // (listed from public calendars). Works with the genre chips: a card shows
+  // only when it matches both the mode and the genre.
+  const seg = $(".seg-wrap");
   const fb = $("#filter");
-  if (fb) {
-    const cards = $$(".clubs .club");
-    const empty = $("#filter-empty");
-    const apply = (genre) => {
-      $$(".chip", fb).forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.g === genre)));
+  const state = { mode: seg ? seg.dataset.mode : null, genre: "" };
+  const mainList = $("#club-list");
+  const applyAll = () => {
+    if (seg) {
+      seg.dataset.mode = state.mode;
+      $$(".seg-b", seg).forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.mode === state.mode)));
+      $$(".seg-note", seg).forEach((n) => (n.hidden = n.dataset.note !== state.mode));
+    }
+    const want = state.mode === "on" ? "1" : "0";
+    const fits = (c, g) => (!seg || c.dataset.v === want) && (!g || (c.dataset.g || "").split(" ").includes(g));
+    let mainShown = 0, modeTotal = 0;
+    $$(".clubs").forEach((ul) => {
+      const isMain = ul === mainList;
       let shown = 0;
-      cards.forEach((c) => { const ok = !genre || (c.dataset.g || "").split(" ").includes(genre); c.hidden = !ok; shown += ok; });
-      if (empty) empty.hidden = shown > 0;
-    };
-    fb.addEventListener("click", (e) => {
-      const b = e.target.closest(".chip[data-g]");
-      if (!b) return;
-      apply(b.dataset.g);
-      history.replaceState(null, "", b.dataset.g ? `#${b.dataset.g}` : location.pathname);
+      $$(".club", ul).forEach((c) => {
+        const ok = fits(c, isMain ? state.genre : "");
+        c.hidden = !ok; shown += ok;
+        if (isMain && fits(c, "")) modeTotal++;
+      });
+      if (isMain) mainShown = shown;
+      const sec = ul.closest(".seg-sec");
+      if (sec) sec.hidden = !shown;
     });
+    if (fb && mainList) {
+      $$(".chip", fb).forEach((b) => {
+        b.setAttribute("aria-pressed", String(b.dataset.g === state.genre));
+        const n = $$(".club", mainList).filter((c) => fits(c, b.dataset.g)).length;
+        const cEl = $(".c", b); if (cEl) cEl.textContent = n;
+        if (b.dataset.g && !n && b.dataset.g !== state.genre) b.dataset.emptyMode = ""; else delete b.dataset.emptyMode;
+      });
+    }
+    $$(".seg-empty").forEach((e) => (e.hidden = !(e.dataset.empty === state.mode && modeTotal === 0)));
+    const fe = $("#filter-empty");
+    if (fe) fe.hidden = !(modeTotal > 0 && mainShown === 0);
+    // Genre hub city tiles follow the mode too.
+    $$("[data-seg-tiles] .city-tile").forEach((t) => {
+      const n = +t.dataset.n, v = +t.dataset.v, k = state.mode === "on" ? v : n - v;
+      t.hidden = !k;
+      t.href = `${t.dataset.href}#${state.mode === "on" ? "on-bookish" : "listed"}`;
+    });
+  };
+  if (seg) seg.addEventListener("click", (e) => {
+    const b = e.target.closest(".seg-b");
+    if (!b) return;
+    state.mode = b.dataset.mode; applyAll();
+    history.replaceState(null, "", `#${state.mode === "on" ? "on-bookish" : "listed"}`);
+  });
+  if (fb) fb.addEventListener("click", (e) => {
+    const b = e.target.closest(".chip[data-g]");
+    if (!b) return;
+    state.genre = b.dataset.g; applyAll();
+    history.replaceState(null, "", b.dataset.g ? `#${b.dataset.g}` : location.pathname);
+  });
+  {
     const h = location.hash.slice(1);
-    if (h && $(`.chip[data-g="${CSS.escape(h)}"]`, fb)) apply(h);
+    if (seg && (h === "on-bookish" || h === "listed")) state.mode = h === "listed" ? "listed" : "on";
+    else if (fb && h && $(`.chip[data-g="${CSS.escape(h)}"]`, fb)) state.genre = h;
+    if (seg || fb) applyAll();
   }
 
   // ---------- forms ----------
@@ -160,9 +221,7 @@
           msg.textContent = f.dataset.kind === "join"
             ? ({ joined: "You're in! The host will see you on the list. Check your email for the details.",
                  already_requested: "You've already asked to join this club. We'll email you when the host replies." }[j.status]
-               || (j.host_on_bookish
-                 ? "Request sent. The host will get your note and can say yes or no. We'll email you either way."
-                 : "Request saved. This club's host hasn't joined Bookish yet, so we're holding your note and will pass it on when they do. Meanwhile the listing's source page has the next meeting details."))
+               || "Request sent. The host will get your note and can say yes or no. We'll email you either way.")
             : j.confirm_sent
             ? "Thank you. Check your inbox for a short note from us and tap the link to confirm."
             : "Thank you, it's in. We read every note and will be in touch by email.";
@@ -172,7 +231,8 @@
         const why = { email: "That email address doesn't look right.", rate_limited: "You've sent a few of these already. Please try again later.",
           links_not_allowed: "Please leave links out of the message.", consent: "Please tick the box so we can email you.",
           club_details: "Please add your club's name and city.", invite_invalid: "That invite code doesn't match this club. Check it with your host, or send a request without it.",
-          club: "We couldn't tell which club this is. Go back and tap Ask to join on the club's listing." }[j.error];
+          club: "We couldn't tell which club this is. Go back and tap Request to join on the club's listing.",
+          not_on_bookish: "This club isn't on Bookish yet, so its host can't get requests here. Check its listing for the time and place." }[j.error];
         throw new Error(why || "Something went wrong on our side. Please try again in a minute.");
       } catch (err) {
         msg.className = "form-msg err";

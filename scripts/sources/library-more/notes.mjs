@@ -71,8 +71,8 @@ validated to never be a branch label. No staff names, emails or phone numbers ar
 Terms: robots.txt was checked automatically for every host before any request (results below). Per-host terms-of-use
 pages were NOT individually reviewed in this run (time-boxed); every route used is a public, logged-out listing or feed that
 the library's own public calendar page loads (or a syndication feed: Trumba JSON, CivicPlus RSS, Localist API). Follow-up:
-review each library's site terms before publishing. BiblioCommons-hosted event calendars were left entirely to the
-library-bibliocommons collector (its Terms restrict harvesting to RSS). LibraryMarket/LibraryCalendar hosts serve a
+review each library's site terms before publishing. BiblioCommons-hosted event calendars were not collected
+(BiblioCommons terms allow personal, non-commercial use only; that source is excluded for good, see its note below). LibraryMarket/LibraryCalendar hosts serve a
 robots.txt that blocks all crawlers except a named list of search engines ("User-agent: * / Disallow: /"), so they were
 skipped. Hosts answering 403 to this User-Agent (e.g. *.events.mylibrary.digital tenants) were treated as refusals.
 

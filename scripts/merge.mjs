@@ -44,13 +44,17 @@ const near = (a, b) => {
 };
 
 const VENUEISH = /\b(meets? (at|in)|at the|library|branch|room|caf[eé]|coffee|bar|brewery|brewing|taproom|pub|winery|restaurant|store|shop|park|center|centre|street|st\.|ave|avenue|road|blvd|suite|floor|address)\b/i;
-const SOURCE_LABEL = { "library-bibliocommons": "library", "library-other": "library", bookstores: "bookstore" };
+const SOURCE_LABEL = { "library-other": "library", bookstores: "bookstore" };
 
-// Sources collected but NOT published until their terms question is settled.
-// library-bibliocommons: platform ToS limits content to personal,
-// non-commercial use and bars republishing (see SOURCES.md). Set
-// BOOKISH_PUBLISH_HELD=1 only after written permission.
-const HELD = new Set(process.env.BOOKISH_PUBLISH_HELD ? [] : ["library-bibliocommons"]);
+// Sources we will never publish. library-bibliocommons (978 clubs) was
+// collected once and then DROPPED for good (2026-10-14): BiblioCommons'
+// terms allow personal, non-commercial use only and bar republishing. The
+// raw data and the collector were deleted. There is no override. Any record
+// whose source URL is on bibliocommons.com is dropped too, whatever source
+// file it arrives in. See SOURCES.md.
+const EXCLUDED = new Set(["library-bibliocommons"]);
+const EXCLUDED_HOST = /(^|\.)bibliocommons\.com$/i;
+const hostOf = (u) => { try { return new URL(u).hostname; } catch { return ""; } };
 const all = [];
 const unmatched = new Map();
 const junk = [];
@@ -59,8 +63,9 @@ for (const f of fs.readdirSync(RAW).filter((f) => f.endsWith(".json")).sort()) {
   let rows;
   try { rows = JSON.parse(fs.readFileSync(path.join(RAW, f), "utf8")); } catch (e) { console.warn(`skip ${f}: ${e.message}`); continue; }
   if (!Array.isArray(rows)) continue;
-  if (HELD.has(f.replace(/\.json$/, ""))) { console.log(`held (not published): ${f} (${rows.length} rows)`); continue; }
+  if (EXCLUDED.has(f.replace(/\.json$/, ""))) { console.log(`excluded (never published): ${f}`); continue; }
   for (const r of rows) {
+    if (EXCLUDED.has(r.source) || EXCLUDED_HOST.test(hostOf(r.source_url))) continue;
     const name = clean(r.name);
     const st = clean(r.state)?.toUpperCase();
     let city = clean(r.city);
@@ -92,8 +97,25 @@ for (const f of fs.readdirSync(RAW).filter((f) => f.endsWith(".json")).sort()) {
       if (m && /book|read|club|group|discussion|circle|society/i.test(m[1])) pubName = m[1]; }
     pubName = pubName.replace(/^(?:library|branch)\s+/i, "").replace(/\s*\((?:at|@)[^)]*\)/i, "").trim();
     if (pubName.length < 4) pubName = "Book Club";
+    const idName = pubName; // ids stay stable when the display-name scrub below changes
+    // Second scrub (v1.1): branch / room / centre names that survived above.
+    // "Regency Park Book Club" (venue "Regency Park Branch") -> "Book Club",
+    // "Book Club at the Norr Community Center" -> "Book Club".
+    const CLUBWORD = /book|read|club|group|discussion|circle|society|chat|talk/i;
+    const reEsc = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const core = venue?.replace(/\s+(?:branch(?:\s+library)?|(?:regional\s+|public\s+|community\s+|memorial\s+)?library|(?:community|senior|cultural)\s+center|center)$/i, "").trim();
+    if (core && core.length > 3 && core.toLowerCase() !== city.toLowerCase()) {
+      const lead = pubName.replace(new RegExp(`^(?:the\\s+)?${reEsc(core)}(?:\\s+(?:branch|library))?\\s*[-–—:|]?\\s+`, "i"), "");
+      if (lead !== pubName && CLUBWORD.test(lead)) pubName = lead;
+      const tail = pubName.replace(new RegExp(`\\s*\\(?\\s*(?:at|@|in|[-–—:|])?\\s*(?:the\\s+)?${reEsc(core)}\\b.*$`, "i"), "").replace(/\s*[-–—:|(@]\s*$/, "").trim();
+      if (tail !== pubName && tail.length >= 8 && CLUBWORD.test(tail)) pubName = tail;
+    }
+    { const t = pubName.replace(/\s+(?:at|in|@)\s+(?:the\s+)?[^,]*?\b(?:center|centre|room|hall|park|branch|library|caf[eé]|coffee\s?house|brewery|taproom|pub|winery|restaurant|bookstore|bookshop)\b.*$/i, "").trim();
+      if (t !== pubName && t.length >= 8 && CLUBWORD.test(t)) pubName = t; }
+    { const t = pubName.replace(/\s+at\s+the\s+[A-Z][^,]*$/, "").replace(/\b[Tt]he\s+[A-Z][\w'’]+\s+Room\s+/, "").trim();
+      if (t !== pubName && t.length >= 8 && CLUBWORD.test(t)) pubName = t; }
     all.push({
-      key,
+      key, idName,
       name: pubName.slice(0, 140),
       city, state: st,
       // Privacy rule: no venue, neighborhood or address on any public surface.
@@ -120,8 +142,8 @@ for (const c of all) {
   const prev = byKey.get(c.key);
   if (!prev || c.last_seen > prev.last_seen || (c.last_seen === prev.last_seen && score(c) > score(prev))) byKey.set(c.key, c);
 }
-const clubs = [...byKey.values()].map(({ key, ...c }) => ({
-  id: `${slug(c.name).slice(0, 40)}-${crypto.createHash("sha1").update(key).digest("hex").slice(0, 6)}`,
+const clubs = [...byKey.values()].map(({ key, idName, ...c }) => ({
+  id: `${slug(idName).slice(0, 40)}-${crypto.createHash("sha1").update(key).digest("hex").slice(0, 6)}`,
   ...c,
 })).sort((a, b) => a.state.localeCompare(b.state) || a.city.localeCompare(b.city) || a.name.localeCompare(b.name));
 
