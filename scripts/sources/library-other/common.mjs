@@ -1,6 +1,6 @@
 // Shared normalisation: filter book-club occurrences, collapse to clubs, derive cadence/genres/vibe.
 
-export const TODAY = new Date().toISOString().slice(0, 10);
+export const TODAY = process.env.RUN_DATE ?? new Date().toLocaleDateString('en-CA'); // local calendar date
 export const HORIZON_DAYS = 90;
 
 export function decodeEntities(s) {

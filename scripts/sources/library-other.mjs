@@ -26,7 +26,9 @@ const concurrency = Number(args.includes('--concurrency') ? args[args.indexOf('-
 const existing = existsSync(OUT) ? JSON.parse(await readFile(OUT, 'utf8')) : [];
 const status = existsSync(STATUS) ? JSON.parse(await readFile(STATUS, 'utf8')) : {};
 const byLib = new Map();
-for (const r of existing) { if (!byLib.has(r.library)) byLib.set(r.library, []); byLib.get(r.library).push(r); }
+const known = new Set(LIBRARIES.map((l) => l.name));
+for (const k of Object.keys(status)) if (!known.has(k)) delete status[k];
+for (const r of existing) { if (!known.has(r.library)) continue; if (!byLib.has(r.library)) byLib.set(r.library, []); byLib.get(r.library).push(r); }
 
 let writing = Promise.resolve();
 async function flush() {
@@ -47,17 +49,20 @@ const todo = LIBRARIES.filter((l) => (!only || l.name.toLowerCase().includes(onl
 console.log(`${todo.length} libraries to scrape`);
 
 // JSON-LD localities that are unincorporated/obsolete names -> municipality
-const CITY_FIX = { 'East Millcreek': 'Millcreek' };
+const CITY_FIX = { 'East Millcreek': 'Millcreek', 'Parma-Powers': 'Parma' };
 // per-library fix-ups declared in the registry: renames, branch->city maps, branch-named-after-city systems
 function postProcess(lib, c) {
   let name = c.name;
   for (const [re, rep] of lib.renames ?? []) name = name.replace(re, rep).replace(/\s+/g, ' ').trim();
+  if (/^["“].*["”]$/.test(name)) name = c.venue && !/offsite|virtual|online/i.test(c.venue) ? `${c.venue.replace(/\s+branch$/i, '')} Book Club` : 'Book Club';
   let city = c.city ?? lib.city;
   const v = c.venue ?? '';
   if (lib.cityMap && lib.cityMap[v]) city = lib.cityMap[v];
   else if (lib.branchIsCity === 'branch' && /^(.+?)\s+(branch|library)$/i.test(v) && c.city === lib.city) city = v.replace(/\s+(branch|library)$/i, '').trim();
   else if (lib.branchIsCity === 'pl' && /\b(public|free|memorial|township|community)\s+library\b/i.test(v) && !/branch/i.test(v) && c.city === lib.city) city = v.replace(/^the\s+/i, '').replace(/\s+(public|free|memorial|township|community)\s+library.*$/i, '').replace(/\s+(borough|township|village|city)$/i, '').trim();
   else if (lib.branchIsCity === true && v && !/online|virtual/i.test(v) && c.city === lib.city) city = v.split(/\s+[-–]\s+/)[0].replace(/\s+(public library|regional library|community library|branch library|branch|library)$/i, '').trim();
+  city = String(city ?? '').replace(/^(town|city|village|borough)\s+of\s+/i, '').replace(/\s+(town|village)$/i, '').trim();
+  if (!/[a-z]{2}/i.test(city)) city = lib.city;
   city = (lib.cityFix ?? {})[city] ?? CITY_FIX[city] ?? city;
   return { ...c, name, library: lib.name, platform: lib.platform, state: stateCode(c.state) ?? lib.state, city };
 }
