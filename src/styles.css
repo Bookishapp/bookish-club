@@ -165,3 +165,25 @@ section{padding:48px 0}
 .states a{text-decoration:none;color:var(--ink-2)}
 .prose{max-width:680px}
 .prose p,.prose li{color:var(--ink-2)}
+
+/* Lunair, the club host (die-cut sticker; shadow in CSS) */
+.lunair{height:auto;max-width:100%;filter:drop-shadow(0 8px 12px rgba(35,28,22,.20)) drop-shadow(0 1px 1px rgba(35,28,22,.18))}
+.hero-grid{position:relative}
+.hero-host{position:absolute;right:14px;top:-14px;width:96px;margin:0;transform:rotate(4deg)}
+.hero-host figcaption{display:none}
+.hero-copy .eyebrow,.hero-copy h1{padding-right:92px}
+@media (min-width:900px){
+ .hero-grid{display:grid;grid-template-columns:1fr 260px;gap:40px;align-items:end}
+ .hero-host{position:static;width:auto;transform:rotate(2deg);text-align:center}
+ .hero-host img{width:225px}
+ .hero-host figcaption{display:block;font:italic 500 19px/1.2 var(--serif);color:var(--ink-2);margin-top:10px;transform:rotate(-3deg)}
+ .hero-copy .eyebrow,.hero-copy h1{padding-right:0}
+}
+.empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding:26px 16px;border:1px dashed var(--rule);border-radius:14px;background:var(--card);color:var(--ink-2)}
+.empty[hidden]{display:none}
+.empty p{margin:0;max-width:30em}
+.empty .peek{width:150px}
+.with-art{position:relative}
+.head-art{float:right;width:84px;margin:-6px 0 6px 12px;transform:rotate(3deg)}
+@media (min-width:760px){.head-art{width:140px;margin-right:20px}}
+.shrug{display:block;width:150px;margin:0 0 18px;transform:rotate(-3deg)}

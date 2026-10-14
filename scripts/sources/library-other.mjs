@@ -13,8 +13,10 @@ import * as libcal from './library-other/libcal.mjs';
 import * as librarycalendar from './library-other/librarycalendar.mjs';
 import * as custom from './library-other/custom.mjs';
 import * as tribe from './library-other/tribe.mjs';
+import * as trumba from './library-other/trumba.mjs';
+import * as localist from './library-other/localist.mjs';
 
-const ADAPTERS = { communico, libcal, librarycalendar, custom, tribe };
+const ADAPTERS = { communico, libcal, librarycalendar, custom, tribe, trumba, localist };
 const OUT = path.join(ROOT, 'data/raw/library-other.json');
 const STATUS = path.join(ROOT, '.cache/library-other/_status.json');
 
@@ -50,6 +52,16 @@ console.log(`${todo.length} libraries to scrape`);
 
 // JSON-LD localities that are unincorporated/obsolete names -> municipality
 const CITY_FIX = { 'East Millcreek': 'Millcreek', 'Parma-Powers': 'Parma' };
+// "Hackensack's Johnson Free Public Library" -> Hackensack; "Hasbrouck Heights, Free Public Library of" -> Hasbrouck Heights;
+// "Ramsey Free Public Library" -> Ramsey; "Haworth Municipal Library" -> Haworth
+function townFromLibraryName(v) {
+  let t = v.replace(/^the\s+/i, '').replace(/^(town|city|village|borough)\s+of\s+/i, '');
+  if (/['’]s\s/.test(t)) t = t.split(/['’]s\s/)[0];
+  t = t.replace(/,.*$/, '');
+  t = t.replace(/\s+(free\s+)?(public\s+|municipal\s+|memorial\s+|township\s+|community\s+|free\s+)*library\b.*$/i, '');
+  t = t.replace(/\s+(free|public|municipal|memorial|town|township|village|borough)$/i, '').trim();
+  return t && /[a-z]{3}/i.test(t) ? t : null;
+}
 // per-library fix-ups declared in the registry: renames, branch->city maps, branch-named-after-city systems
 function postProcess(lib, c) {
   let name = c.name;
@@ -59,7 +71,7 @@ function postProcess(lib, c) {
   const v = c.venue ?? '';
   if (lib.cityMap && lib.cityMap[v]) city = lib.cityMap[v];
   else if (lib.branchIsCity === 'branch' && /^(.+?)\s+(branch|library)$/i.test(v) && c.city === lib.city) city = v.replace(/\s+(branch|library)$/i, '').trim();
-  else if (lib.branchIsCity === 'pl' && /\b(public|free|memorial|township|community)\s+library\b/i.test(v) && !/branch/i.test(v) && c.city === lib.city) city = v.replace(/^the\s+/i, '').replace(/\s+(public|free|memorial|township|community)\s+library.*$/i, '').replace(/\s+(borough|township|village|city)$/i, '').trim();
+  else if (lib.branchIsCity === 'pl' && c.city === lib.city && /\blibrary\b/i.test(v) && !/\bbranch\b|central library|programs/i.test(v)) city = townFromLibraryName(v) ?? city;
   else if (lib.branchIsCity === true && v && !/online|virtual/i.test(v) && c.city === lib.city) city = v.split(/\s+[-–]\s+/)[0].replace(/\s+(public library|regional library|community library|branch library|branch|library)$/i, '').trim();
   city = String(city ?? '').replace(/^(town|city|village|borough)\s+of\s+/i, '').replace(/\s+(town|village)$/i, '').trim();
   if (!/[a-z]{2}/i.test(city)) city = lib.city;
@@ -72,7 +84,7 @@ async function runOne(lib) {
   const adapter = ADAPTERS[lib.platform];
   try {
     if (!(await robotsAllowed(`https://${lib.host}${lib.probePath ?? '/'}`))) throw new RobotsDisallowed(`robots.txt disallows ${lib.host}${lib.probePath ?? '/'}`);
-    const clubs = (await adapter.scrape(lib)).map((c) => postProcess(lib, c));
+    const clubs = (await adapter.scrape(lib)).filter((c) => !(lib.exclude && lib.exclude.test(c.name))).map((c) => postProcess(lib, c));
     byLib.set(lib.name, clubs);
     status[lib.name] = { host: lib.host, platform: lib.platform, count: clubs.length, robots: robotsLog.get(lib.host)?.status ?? 'cached', crawlDelayMs: hostDelay.get(lib.host) ?? null, at: new Date().toISOString(), ok: true };
     console.log(`${lib.name}: ${clubs.length} clubs (${((Date.now() - t0) / 1000).toFixed(0)}s)`);

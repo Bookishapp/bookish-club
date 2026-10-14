@@ -25,9 +25,11 @@ const TERMS = {
 };
 const PLATFORM_TERMS = {
   communico: 'Communico (vendor) privacy policy https://communico.co/privacy-policy: no automated-access clause. The endpoint is the same public JSON (/eeventcaldata) the logged-out events page loads.',
+  trumba: 'Trumba public JSON calendar feed (https://www.trumba.com/calendars/<webName>.json), the documented embed feed. robots.txt allows it.',
+  localist: 'Localist public API /api/2/events. robots.txt allows /api; /search is disallowed, so we filter by event-type id rather than using search. Crawl-delay 1s honoured.',
   libcal: 'Springshare LibCal: privacy page https://www.springshare.com/privacy has no automated-access clause. robots.txt sets Crawl-delay: 10, which we honour. The endpoint is the same public JSON (/ajax/calendar/list) the calendar page loads.',
   tribe: 'WordPress "The Events Calendar": public REST API /wp-json/tribe/events/v1/events (logged-out, the documented public feed).',
-  custom: 'Public HTML listing pages (logged-out).',
+  custom: 'Public HTML listing pages (logged-out). LAPL: /events/search filtered to the Book Clubs category + Adults/Seniors audiences. Queens: /calendar search filtered to program type "Book Discussion Group" and split by branch facet. The load-more endpoint /search/call is robots-disallowed and is not used, so each query reads only its first 12-result page.',
 };
 
 const SKIPPED = [
@@ -50,7 +52,10 @@ const SKIPPED = [
   ['Anne Arundel County PL, Kansas City KS PL, Metropolitan Library System (OKC), Fort Bend County Libraries, Knox County PL, Ventura County Library, Seminole County FL', 'various', 'robots.txt disallows the site root for *. Skipped.'],
   ['Toledo Lucas County PL, Richland Library, Howard County (hclibrary.org), Prince William, Irving, Brevard, Hampton, Onslow, Nassau, Johnson County (jclibrary.org)', 'various', 'HTTP 403 to our UA. Skipped.'],
   ['Detroit Public Library', 'detroitpubliclibrary.org', 'Events are published on Eventbrite, which is out of scope here. Skipped.'],
-  ['Brooklyn Public Library, Queens Public Library, Maricopa County Library District, Enoch Pratt (Localist), Phoenix, San Diego (city), Seattle (Trumba), Kansas City PL', 'various', 'Robots allow it, but each needs a bespoke parser (Queens loads results via a Solr "load more"; Pratt Localist robots.txt blocks most list paths). Not built in this pass. Candidates for the next run.'],
+  ['Brooklyn Public Library', 'discover.bklynlibrary.org', 'The event search API (/api/search/v2.php) returns {"error":"access denied"} to non-browser clients. This is treated as an access gate and not circumvented. www.bklynlibrary.org/events returns 500. Skipped.'],
+  ['San Diego Public Library (city)', 'sandiego.events.mylibrary.digital', 'HTTP 403 to our UA (bot protection). Skipped.'],
+  ['Maricopa County Library District', 'events.mcldaz.org', 'Already covered by the library-more source. Skipped here to avoid duplicates.'],
+  ['Kansas City Public Library (MO)', 'kclibrary.org', 'Robots allow it, but it needs a bespoke Drupal parser. Not built.'],
   ['BiblioCommons Events libraries', 'Chicago, Boston, SFPL, Oakland, San Jose, Austin, Harris County, Atlanta-Fulton, Charlotte, Hennepin, KCLS, San Diego County, St. Louis City, Cincinnati, Multnomah, etc.', 'Covered by the BiblioCommons source. Excluded here.'],
 ];
 

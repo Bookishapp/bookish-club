@@ -41,11 +41,30 @@ const ALIASES = {
   "CA|woodland hills": [34.1683, -118.6059, "Woodland Hills"], "CA|northridge": [34.2283, -118.5368, "Northridge"],
   "CA|venice": [33.9850, -118.4695, "Venice"], "CA|silver lake": [34.0869, -118.2702, "Silver Lake"],
   "CA|echo park": [34.0782, -118.2606, "Echo Park"], "TX|the woodlands": [30.1658, -95.4613, "The Woodlands"],
+  "VA|henrico": [37.5407, -77.4360, "Henrico"], "NY|astoria": [40.7644, -73.9235, "Astoria"],
+  "PA|havertown": [39.9809, -75.3085, "Havertown"], "VA|chesterfield": [37.3771, -77.5050, "Chesterfield"],
+  "PA|wallingford": [39.8907, -75.3627, "Wallingford"], "PA|chester springs": [40.0937, -75.6205, "Chester Springs"],
+  "PA|glen mills": [39.9154, -75.4955, "Glen Mills"], "PA|essington": [39.8618, -75.2952, "Essington"],
+  "NJ|south orange": [40.7490, -74.2613, "South Orange"], "VA|james city county": [37.2707, -76.7075, "Williamsburg"],
+  "MD|belcamp": [39.4760, -76.2380, "Belcamp"], "HI|o‘ahu": [21.3069, -157.8583, "Honolulu"],
+  "CA|tahoe city": [39.1677, -120.1452, "Tahoe City"], "VA|bent mountain": [37.1532, -80.1173, "Bent Mountain"],
+  "FL|clearwater beach": [27.9775, -82.8271, "Clearwater"], "HI|kapa'au": [20.2333, -155.8000, "Kapaau"],
   "UT|salt lake": [40.7608, -111.8910, "Salt Lake City"], "TN|nashville": [36.1627, -86.7816, "Nashville"], "KY|lexington": [38.0406, -84.5037, "Lexington"],
   "GA|athens": [33.9519, -83.3576, "Athens"], "GA|augusta": [33.4735, -82.0105, "Augusta"],
   "GA|columbus": [32.4610, -84.9877, "Columbus"], "HI|honolulu": [21.3069, -157.8583, "Honolulu"],
   "KS|kansas city": [39.1141, -94.6275, "Kansas City"], "IN|indianapolis": [39.7684, -86.1581, "Indianapolis"],
 };
+// County subdivisions fill the gaps for New England / NJ / PA / MI / NY towns
+// and townships that aren't Census "places" (e.g. Montclair, NJ).
+for (const r of get("2024_Gaz_cousubs_national")) {
+  const [st, , , name, , , aland, , , , lat, lng] = r;
+  if (/^County subdivisions not defined|^Census County|unorganized/i.test(name)) continue;
+  const clean = name.replace(/ (township|town|city|village|borough|charter township|plantation|CCD|district|precinct|gore|grant|purchase|location)$/i, "").trim();
+  const key = `${st}|${clean.toLowerCase()}`;
+  if (!places[key]) places[key] = [+(+lat).toFixed(4), +(+lng).toFixed(4), clean, Number(aland)];
+  const full = `${st}|${name.toLowerCase()}`;
+  if (!places[full]) places[full] = [+(+lat).toFixed(4), +(+lng).toFixed(4), name, Number(aland)];
+}
 for (const [k, v] of Object.entries(ALIASES)) places[k] = [...v, 0];
 for (const k of Object.keys(places)) places[k] = places[k].slice(0, 3);
 fs.mkdirSync(path.join(ROOT, "data/ref"), { recursive: true });

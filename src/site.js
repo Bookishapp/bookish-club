@@ -20,7 +20,7 @@
 
   function renderResults(box, title, list, genre) {
     if (!list.length) {
-      box.innerHTML = `<div class="note">We don't have clubs listed there yet. <a href="${BASE}/start/">Start one</a> and we'll put it on the map.</div>`;
+      box.innerHTML = `<div class="empty"><img class="lunair peek" src="${BASE}/img/lunair-peek-260.webp" width="215" height="140" alt=""><p>We don't have book clubs listed there yet. <a href="${BASE}/start/">Start one</a> and we'll put it on the map.</p></div>`;
       return;
     }
     box.innerHTML = `<p class="eyebrow">${esc(title)}</p><div class="grid cols-3">${list.map((c) =>
@@ -76,7 +76,7 @@
       const gl = genre ? g.options[g.selectedIndex].text.toLowerCase() + " " : "";
       if (/^\d{5}$/.test(v)) {
         const list = await nearZip(v, genre);
-        if (list === null) box.innerHTML = `<div class="note">We couldn't find ZIP ${esc(v)}. Try a city name instead.</div>`;
+        if (list === null) box.innerHTML = `<div class="empty"><img class="lunair peek" src="${BASE}/img/lunair-peek-260.webp" width="215" height="140" alt=""><p>We couldn't find ZIP ${esc(v)}. Try a city name instead.</p></div>`;
         else renderResults(box, `${gl}book clubs near ${v}`, list, genre);
       } else if (v) {
         const list = matchCities(await loadCities(), v, genre);

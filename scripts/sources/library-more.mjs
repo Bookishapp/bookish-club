@@ -65,7 +65,10 @@ function flush() {
     out.sort((a, b) => a.state.localeCompare(b.state) || a.library.localeCompare(b.library) || (a.venue ?? '').localeCompare(b.venue ?? '') || a.name.localeCompare(b.name));
     await mkdir(path.dirname(OUT), { recursive: true });
     await writeFile(OUT, JSON.stringify(out, null, 1) + '\n');
-    await writeFile(STATUS, JSON.stringify(status, null, 1));
+    let diskStatus = {};
+    try { diskStatus = JSON.parse(await readFile(STATUS, 'utf8')); } catch { /* */ }
+    for (const n of mine) if (status[n]) diskStatus[n] = status[n];
+    await writeFile(STATUS, JSON.stringify(diskStatus, null, 1));
   });
   return writing;
 }
@@ -76,19 +79,24 @@ const NOT_PERSON = /^(with|hosted by|led by|w\/)\s+(the|friends?|us|author|autho
 function postProcess(lib, c) {
   let name = c.name;
   for (const [re, rep] of lib.renames ?? []) name = name.replace(re, rep);
+  name = name.replace(/\s*\((?:[^)]*\b(?:online|zoom|in-person|library|branch)\b[^)]*)\)\s*$/i, ''); // "(Central Library - In-Person and Online via Zoom)"
+  { const tb = name.match(/^(.{4,}?)\s*[:\-–—]\s*.+\s+by\s+\p{Lu}[\p{L}.'’ -]+$/u); if (tb) name = tb[1]; } // "<club>: <title> by <author>"
+  { const fp = name.match(/\s+(with|hosted by|led by)\s+\p{Lu}[\p{Ll}'’]+\s+\p{Lu}[\p{Ll}'’]+.*$/u); if (fp && !NOT_PERSON.test(fp[0].trim())) name = name.slice(0, fp.index); } // full personal names
   const pm = name.match(PERSON_RE);
   if (pm && !NOT_PERSON.test(pm[0].trim())) name = name.slice(0, pm.index);
   name = name.replace(/\s+/g, ' ').replace(/\s*[-–—:|,]\s*$/, '').trim();
-  const v = (c.venue ?? '').trim();
+  const v = (c.venue ?? '').replace(/,\s*\d+\s.*$/, '').replace(/\s+(events|calendar)$/i, '').trim();
   let city = c.city ?? null;
+  let mapped = false;
   if (lib.cityMap) {
-    const hit = lib.cityMap[v] ?? Object.entries(lib.cityMap).find(([k]) => v.toLowerCase().includes(k.toLowerCase()))?.[1];
-    if (hit) city = hit;
+    const hit = lib.cityMap[v] ?? Object.entries(lib.cityMap).sort((a, b) => b[0].length - a[0].length).find(([k]) => v.toLowerCase().includes(k.toLowerCase()))?.[1];
+    if (hit) { city = hit; mapped = true; }
   }
-  if (lib.branchIsCity && (!city || city === lib.city) && v && !/online|virtual/i.test(v) && !lib.cityMap?.[v]) {
+  if (lib.branchIsCity && !mapped && (!city || city === lib.city) && v && !/online|virtual/i.test(v)) {
     const guess = v.split(/\s+[-–]\s+/)[0].replace(/^the\s+/i, '').replace(/\s+(public library|free library|regional library|community library|branch library|memorial library|district library|branch|library|regional)$/i, '').trim();
     if (guess && !/\d/.test(guess)) city = guess;
   }
+  if (lib.untrustedCity && !mapped) city = null; // resolved locality is the system HQ for every venue: keep only mapped branches
   city = (lib.cityFix ?? {})[city] ?? city;
   const online = /online|virtual|zoom/i.test(v) || c.format === 'online';
   if (!city && (online || lib.singleCity)) city = lib.city; // online clubs / one-city systems: the system's city
@@ -104,12 +112,15 @@ function postProcess(lib, c) {
 
 const STANDING_RE = /\b(book\s*(club|group|discussion\s+group|circle|chat|talk|lovers|bunch|nook|worms?)|bookclub|readers'?\b|reading\s+(group|circle|club)|lit(erary)?\s+(club|circle|society|group)|club\s+de\s+lectura|book\s+discussion)\b/i;
 const ONE_OFF_RE = /\s[-–|]\s|\b(one\s+book|big\s+read|reads:|author|launch|kickoff|kick-off|celebration|party|panel|festival|special|all\s+\w+\s+reads)\b|\b(19|20)\d\d\b/i;
+const BAD_CITY_RE = /library|branch|system|archive|center|centre|department|programs|events|offsite|bookmobile|[:@&()\d]/i;
 function keep(lib, r) {
   // recurring clubs only: cadence derivable from occurrences/description, or a standing club name
   // (many libraries post only the next meeting, so a named club with one listed date is kept with cadence null)
   if (!r.cadence && !(STANDING_RE.test(r.name) && !ONE_OFF_RE.test(r.name))) return false;
   if (!r.city || !r.state || r.state.length !== 2) return false;
   if (/^(online|virtual)/i.test(r.city)) return false;
+  // city must be a municipality, never a branch/venue label
+  if (BAD_CITY_RE.test(r.city) || /^(main|downtown|central|headquarters|hq|offsite|mobile service|outreach)$/i.test(r.city.trim())) return false;
   if (/\b(kids?|children|teens?|tweens?|family|families|junior|jr\.?|middle school|grades?\s*\d|ages?\s*\d)\b/i.test(r.name) && !/adult/i.test(r.name)) return false;
   return true;
 }

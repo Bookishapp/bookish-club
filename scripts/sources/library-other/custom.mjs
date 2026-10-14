@@ -32,7 +32,49 @@ async function lapl(lib) {
   return collapse(occs, lib);
 }
 
-const SITES = { lapl };
+// Queens Public Library: server-rendered /calendar search (load-more endpoint /search/call is robots-disallowed,
+// so we split by branch facet to keep each query under the 12-result first page).
+function qplParse(t) {
+  const out = [];
+  for (const m of t.matchAll(/arrJsonData_cal\['([^']+)'\] = '(.*?)';/g)) {
+    try { out.push(JSON.parse(m[2].replace(/&quot;/g, '"').replace(/&#039;/g, "'").replace(/&amp;/g, '&'))); } catch { /* skip */ }
+  }
+  const facets = JSON.parse((t.match(/facetsInfoCal = '(.*?)';\n/)?.[1] ?? '{}').replace(/\\\//g, '/') || '{}');
+  return { items: out, total: Number(t.match(/facetsTotal = '(\d+)'/)?.[1] ?? 0), facets };
+}
+async function qpl(lib) {
+  const base = `https://${lib.host}/calendar?searchField=*&category=calendar&searchFilter=`;
+  const typeF = ' sm_prgmtype:Book Discussion Group';
+  const first = qplParse(await getText(base + encodeURIComponent(typeF)));
+  const branches = Object.keys(first.facets.sm_pSsnBranch ?? {});
+  const items = new Map(first.items.map((d) => [d.jobID, d]));
+  if (first.total > first.items.length) {
+    for (const b of branches) {
+      const r = qplParse(await getText(base + encodeURIComponent(`${typeF} sm_pSsnBranch:${b}`)));
+      for (const d of r.items) items.set(d.jobID, d);
+      if (r.total > r.items.length) {
+        for (const age of ['Adults', 'Seniors']) {
+          const r2 = qplParse(await getText(base + encodeURIComponent(`${typeF} sm_pSsnBranch:${b} sm_prgmage:${age}`)));
+          for (const d of r2.items) items.set(d.jobID, d);
+        }
+      }
+    }
+  }
+  lib._coverage = `${items.size} of ${first.total} book-discussion programs retrieved`;
+  const occs = [];
+  for (const d of items.values()) {
+    const online = /virtual/i.test(`${d.delivery_format} ${d.branch_name}`);
+    const branch = online ? 'Virtual' : d.branch_name;
+    for (const ts of d.set_of_timestamp ?? [d.date_show_timestamp]) {
+      const iso = new Date(ts * 1000).toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+      occs.push({ title: d.title, branch, neighborhood: online ? null : d.branch_name, start: iso, desc: d.descr ?? '', tags: [d.prgm_type],
+        ages: String(d.prgm_age ?? '').split(','), url: `https://${lib.host}${d.callUrl}`, online, inperson: !online, city: 'Queens', state: 'NY' });
+    }
+  }
+  return collapse(occs, lib);
+}
+
+const SITES = { lapl, qpl };
 export async function scrape(lib) {
   const fn = SITES[lib.site];
   if (!fn) throw new Error(`no custom adapter for ${lib.site}`);
