@@ -81,6 +81,8 @@ export function cleanName(title, branch) {
   n = n.replace(/\s*[-–—:|]\s*(january|february|march|april|may|june|july|august|september|october|november|december)(\s+\d{1,2})?(,?\s*\d{4})?\s*(selection|book|pick|meeting|edition)?\s*$/i, '');
   n = n.replace(/\s*[-–—]\s*["“].*$/, ''); // " - "This Month's Title""
   n = n.replace(/\s*:\s*["“][^"”]+["”].*$/, '');
+  // "Mystery Book Club: Step Into a Lively Discussion" / "Book Club: <this month's title>" -> keep the club part
+  { const ci = n.indexOf(':'); if (ci > 3) { const left = n.slice(0, ci), right = n.slice(ci + 1).trim(); if (CLUB_RE.test(left) && !CLUB_RE.test(right) && left.split(' ').length >= 2) n = left; } }
   if (branch) {
     const b0 = branch.replace(/\s+(branch|library|regional|community|public)\b.*$/i, '').trim();
     if (b0.length > 2) {

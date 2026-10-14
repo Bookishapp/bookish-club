@@ -136,6 +136,65 @@ export async function checkTerms(home) {
   return { home, termsPages: found, verdict: found.some((f) => f.forbids) ? 'FORBIDS' : found.length ? 'no clause found' : 'no terms page linked' };
 }
 
+
+// ---- Bookmanager storefronts (React app; content served by the store's public, logged-out
+// content endpoint api.bookmanager.com/customer/*, which robots.txt explicitly allows) ----
+const BM_API = 'https://api.bookmanager.com/customer/';
+async function politePost(endpoint, fields, { cacheKey } = {}) {
+  const url = BM_API + endpoint;
+  const key = cacheKey ?? JSON.stringify(fields);
+  const file = join(CACHE, 'api.bookmanager.com', createHash('sha1').update(endpoint + ' ' + key).digest('hex').slice(0, 16) + '.json');
+  try { const s = await stat(file); if (Date.now() - s.mtimeMs < TTL_MS) return JSON.parse(await readFile(file, 'utf8')); } catch {}
+  const rb = await robotsAllows(url);
+  if (!rb.allowed) throw new Error(`robots disallows ${url}`);
+  await throttle('api.bookmanager.com');
+  const fd = new FormData();
+  for (const [k, v] of Object.entries(fields)) fd.append(k, String(v));
+  const res = await fetch(url, { method: 'POST', body: fd, headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(30000) });
+  const json = await res.json();
+  if (!json?.error) { await mkdir(dirname(file), { recursive: true }); await writeFile(file, JSON.stringify(json)); }
+  return json;
+}
+const KID_RE = /\b(kid|kids|teen|teens|tween|tweens|youth|child|children|children's|middle[- ]grade|picture book|story ?time|storytime|grades?|ages? \d|family|families|junior|jr\.?|homeschool|young readers|pre-?k)\b/i;
+const CLUBISH_RE = /\b(book ?clubs?|book ?groups?|reading ?groups?|readers'? (club|group)|lit(erary)? (club|salon|circle)|club|salon|circle|society|readers)\b/i;
+export async function bookmanagerStore(home) {
+  const r = await politeFetch(home);
+  const san = r.html.match(/var san="(\d+)"/)?.[1];
+  if (!san) return null;
+  const settings = await politePost('store/getSettings', { webstore_name: san }, { cacheKey: 'settings ' + san });
+  const info = settings.store_info;
+  let sid = null;
+  const session = async () => sid ??= (await politePost('session/get', { store_id: info.id }, { cacheKey: 'session ' + info.id + ' ' + TODAY })).session_id;
+  const navItems = [];
+  const walk = (items, parent) => { for (const it of items ?? []) { navItems.push({ ...it, parent }); walk(it.submenu, it); } };
+  walk(settings.site_navigation); walk(settings.extra_navigation); walk(settings.url_shortcuts);
+  const base = (settings.site_url || new URL(r.finalUrl ?? home).origin).replace(/\/$/, '');
+  const clubNav = navItems.filter((n) => n.id && n.built_in_type === 'custom' && n.type !== 'unlinked' && n.path &&
+    (/club|group|reading|readers|salon/i.test(n.label + ' ' + n.path) || /club|group/i.test(n.parent?.label ?? '')));
+  const pages = [];
+  for (const n of clubNav.slice(0, 25)) {
+    const page = await politePost('site_content/getPage', { store_id: info.id, session_id: await session(), page_id: n.id }, { cacheKey: 'page ' + info.id + ' ' + n.id });
+    const blocks = [];
+    const visit = (x) => {
+      if (Array.isArray(x)) return x.forEach(visit);
+      if (!x || typeof x !== 'object') return;
+      const d = x.data ?? x;
+      if (typeof d.heading === 'string' || typeof d.paragraph === 'string' || typeof d.content === 'string' || typeof d.html === 'string' || typeof d.description === 'string')
+        blocks.push({ heading: htmlToText(d.heading ?? d.header ?? '').trim(), text: htmlToText(d.paragraph ?? d.content ?? d.html ?? d.description ?? '').replace(/\s+/g, ' ').trim() });
+      for (const v of Object.values(x)) if (v && typeof v === 'object' && v !== d) visit(v);
+      if (d !== x) for (const v of Object.values(d)) if (v && typeof v === 'object') visit(v);
+    };
+    visit(page);
+    pages.push({ nav: n, url: base + n.path, blocks: blocks.filter((b) => b.heading || b.text) });
+  }
+  let events = [];
+  try {
+    const ev = await politePost('event/getList', { store_id: info.id, session_id: await session() }, { cacheKey: 'events ' + info.id + ' ' + TODAY });
+    events = (ev.rows ?? []).map((e) => ({ name: htmlToText(e.info?.name ?? e.name ?? ''), from: e.from, raw: e }));
+  } catch {}
+  return { san, info: { id: info.id, name: info.name, city: info.city, state: info.province }, base, pages, events };
+}
+
 const norm = (s) => s.toLowerCase().replace(/&amp;/g, '&').replace(/[’‘]/g, "'").replace(/[^a-z0-9&']+/g, ' ').trim();
 
 function toRecord(store, page, club) {
@@ -202,6 +261,14 @@ if (cmd === 'fetch') {
     const t = m[2].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
     if ((re.test(m[1]) || re.test(t)) && !seenL.has(m[1])) { seenL.add(m[1]); console.log(`${m[1]}  | ${t.slice(0, 60)}`); }
   }
+} else if (cmd === 'bm') {
+  const d = await bookmanagerStore(arg);
+  if (!d) { console.log('not a Bookmanager storefront'); process.exit(1); }
+  console.log(JSON.stringify(d.info), d.base);
+  for (const p of d.pages) { console.log(`\n## PAGE ${p.nav.label} -> ${p.url}`); for (const b of p.blocks) console.log(`  [${b.heading}] ${b.text.slice(0, 400)}`); }
+  const clubEv = d.events.filter((e) => /club|group|salon|circle|readers/i.test(e.name));
+  console.log(`\n## EVENTS ${d.events.length} total, ${clubEv.length} club-ish`);
+  for (const e of clubEv) console.log(`  ${new Date(e.from * 1000).toISOString().slice(0, 10)} ${e.name}`);
 } else if (cmd === 'terms') {
   // terms <homepage> -> finds terms-of-use style links and reports any anti-automation clause
   console.log(JSON.stringify(await checkTerms(arg)));

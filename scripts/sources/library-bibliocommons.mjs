@@ -73,6 +73,7 @@ export const LIBRARIES = [
   'norwalk', 'burlington', 'fletcherfree', 'portland', 'portlandlibrary', 'nhpl', 'manchester',
   'buffalo', 'buffalolib', 'rochesterpl', 'monroe', 'syracuse', 'onlib', 'albany', 'westchester', 'wls', 'yonkers',
   'nassau', 'suffolk', 'smithtown', 'huntington', 'hempstead', 'nyack', 'whiteplains', 'scarsdale',
+  'lawrence', 'rclreads', 'eppl', 'eden', 'ramseycounty', 'sclibrary', 'hennepin', 'nashvillelibrary', 'mobilepubliclibrary',
   'honolulu', 'hawaii', 'anchorage', 'alaska', 'vpl', 'tpl', 'opl', 'calgary', 'epl',
 ];
 
@@ -93,8 +94,9 @@ const args = process.argv.slice(2);
 const REFRESH = args.includes('--refresh');
 const ONLY = (args.find((a) => a.startsWith('--only=')) || '').slice(7).split(',').filter(Boolean);
 
-const TODAY = new Date().toISOString().slice(0, 10);
-const END = new Date(Date.now() + WINDOW_DAYS * 864e5).toISOString().slice(0, 10);
+const localDate = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const TODAY = localDate(new Date());
+const END = localDate(new Date(Date.now() + WINDOW_DAYS * 864e5));
 
 // ---------------------------------------------------------------- polite fetch + cache
 const lastHit = new Map();
@@ -114,7 +116,7 @@ async function politeFetch(url) {
     networkRequests++;
     let status = 0, body = '';
     try {
-      const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT, Accept: 'application/rss+xml, text/xml, */*' } });
+      const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT, Accept: 'application/rss+xml, text/xml, */*' }, signal: AbortSignal.timeout(45000) });
       status = res.status;
       body = await res.text();
     } catch (e) {
@@ -378,6 +380,7 @@ async function main() {
     const byLink = new Map();
     let channelTitle = '', firstStatus = null, firstError = null, pages = 0;
     for (const q of QUERIES) {
+      const seenThisQuery = new Set();
       for (let page = 1; page <= MAX_PAGES_PER_QUERY; page++) {
         const url = `${GATEWAY}${rssPath}?q=${encodeURIComponent(q)}&startDate=${TODAY}&endDate=${END}&page=${page}`;
         const res = await politeFetch(url);
@@ -392,7 +395,11 @@ async function main() {
         const parsed = parseRss(res.body);
         channelTitle ||= parsed.channelTitle;
         let fresh = 0;
-        for (const it of parsed.items) if (it.link && !byLink.has(it.link)) { byLink.set(it.link, it); fresh++; }
+        for (const it of parsed.items) {
+          if (!it.link) continue;
+          if (!seenThisQuery.has(it.link)) { seenThisQuery.add(it.link); fresh++; }
+          if (!byLink.has(it.link)) byLink.set(it.link, it);
+        }
         if (parsed.items.length < 25 || fresh === 0) break;
       }
       if (firstStatus !== 200) break;
