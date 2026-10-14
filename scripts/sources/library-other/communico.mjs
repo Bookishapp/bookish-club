@@ -1,6 +1,6 @@
 // Communico "Attend" adapter: public JSON feed the events page itself loads (/eeventcaldata).
 import { getJSON, getText } from './http.mjs';
-import { TODAY, HORIZON_DAYS, collapse } from './common.mjs';
+import { TODAY, HORIZON_DAYS, collapse, stateCode } from './common.mjs';
 
 const SEARCHES = ['book', 'read', 'lectura', 'novel'];
 const locCache = new Map(); // host|location_id -> {city, state}
@@ -12,7 +12,7 @@ async function cityForEvent(host, ev) {
   try {
     const html = await getText(`https://${host}/event/${ev.id}`);
     const m = html.match(/"addressLocality"\s*:\s*"([^"]*)"\s*,\s*"addressRegion"\s*:\s*"([^"]*)"/);
-    if (m && m[1]) res = { city: m[1].replace(/\\\//g, '/').trim(), state: m[2].trim().toUpperCase().slice(0, 2) };
+    if (m && m[1]) res = { city: m[1].replace(/\\\//g, '/').trim(), state: stateCode(m[2]) };
   } catch { /* ignore */ }
   locCache.set(k, res);
   return res;
@@ -49,7 +49,7 @@ export async function scrape(lib) {
     const o = firstByUrl.get(c.source_url);
     if (!c.city && o && !o.online && lib.resolveCity !== false) {
       const r = await cityForEvent(host, o._ev);
-      if (r) { c.city = r.city; if (r.state && /^[A-Z]{2}$/.test(r.state)) c.state = r.state; }
+      if (r) { c.city = r.city; if (r.state) c.state = r.state; }
     }
     if (!c.city) c.city = lib.cityMap?.[c.venue] ?? lib.city;
   }

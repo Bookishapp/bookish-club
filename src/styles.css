@@ -1,8 +1,8 @@
 @font-face{font-family:"Newsreader";src:url("__BASE__/fonts/newsreader.woff2") format("woff2");font-weight:400 700;font-style:normal;font-display:swap}
 @font-face{font-family:"Newsreader";src:url("__BASE__/fonts/newsreader-italic.woff2") format("woff2");font-weight:400 600;font-style:italic;font-display:swap}
 :root{
-  --paper:#f6f0e4;--paper-2:#efe6d4;--card:#fbf7ef;--ink:#231c16;--ink-2:#5b4f45;--ink-3:#85776a;
-  --rule:#dccfb8;--green:#2d4a3a;--green-2:#3f6450;--oxblood:#7b2d26;--brass:#a77a2c;
+  --paper:#f6f0e4;--paper-2:#efe6d4;--card:#fbf7ef;--ink:#231c16;--ink-2:#5b4f45;--ink-3:#6e6157;
+  --rule:#dccfb8;--green:#2d4a3a;--green-2:#3f6450;--oxblood:#7b2d26;--brass:#8a6420;
   --serif:"Newsreader",Georgia,"Times New Roman",serif;
   --sans:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --r:10px;--wrap:1080px
@@ -74,7 +74,7 @@ hr.rule{border:0;border-top:1px solid var(--rule);margin:48px 0}
 .chip{display:inline-flex;align-items:center;gap:6px;font:500 13px/1 var(--sans);padding:8px 12px;border-radius:999px;border:1px solid var(--rule);background:var(--card);color:var(--ink-2);text-decoration:none;cursor:pointer}
 .chip:hover{border-color:var(--green);color:var(--green)}
 .chip[aria-pressed="true"],.chip.on{background:var(--green);border-color:var(--green);color:var(--paper)}
-.chip .c{opacity:.65}
+.chip .c{opacity:.8}
 .tag{display:inline-block;font:500 12px/1 var(--sans);padding:5px 8px;border-radius:5px;background:var(--paper-2);color:var(--ink-2)}
 .tag.g{background:#e3eadf;color:var(--green)}
 
@@ -159,7 +159,7 @@ section{padding:48px 0}
 @media (min-width:760px){.foot-site .cols{grid-template-columns:1.4fr 1fr 1fr}}
 .foot-site a{color:var(--ink-2);text-decoration:none}.foot-site a:hover{color:var(--oxblood)}
 .foot-site ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
-.foot-site h4{font:600 11px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2);margin:0 0 12px}
+.foot-site .h{font:600 11px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2);margin:0 0 12px}
 .states{columns:2;column-gap:20px;font:400 15px/1.9 var(--sans)}
 @media (min-width:760px){.states{columns:4}}
 .states a{text-decoration:none;color:var(--ink-2)}

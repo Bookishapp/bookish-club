@@ -26,9 +26,9 @@ const CLUB_RE = new RegExp([
   String.raw`bookworms`, String.raw`between\s+the\s+(covers|lines)`, String.raw`well[- ]read`,
 ].join('|'), 'i');
 const TAG_CLUB_RE = /book\s*(club|discussion|group)s?|reading\s+group|literature|club de lectura/i;
-const NOT_CLUB_RE = /\b(author\s+(talk|visit|event|reading|signing)|book\s*(sale|signing|launch|drive|swap|bundle|bag|fair|bike|mobile|cart|making|binding|arts?)|meet\s+the\s+author|in\s+conversation|storytime|story\s*time|bookmark|book\s+folding|tutor|read(ing)?\s+to\s+(a\s+)?(dog|pet)|paws\s+to\s+read|reading\s+buddies|readers\s+theat|summer\s+reading|winter\s+reading|reading\s+challenge|1000\s+books|1,000\s+books|read[- ]?a[- ]?thon|book\s+club\s+kits?|book\s+club\s+in\s+a\s+bag|bag\s+club|poetry\s+reading|open\s+mic|writers?\s+(group|workshop|circle)|writing\s+(group|circle|workshop)|critique|esl|english\s+conversation|conversation\s+(club|group|circle)|chess|scrabble|knit|craft|crochet|lego|film|movie|cinema|board\s+game|trivia|resume|tax|blood\s+drive|book\s+bingo|bingo|recommendations?\s+(from|by)|ask\s+a\s+librarian|staff\s+picks|readers'?\s+advisory|book\s+review\s+club)\b/i;
+const NOT_CLUB_RE = /\b(author\s+(talk|visit|event|reading|signing)|book\s*(sale|signing|launch|drive|swap|bundle|bag|fair|bike|mobile|cart|making|binding|arts?)|meet\s+the\s+author|in\s+conversation|storytime|story\s*time|bookmark|book\s+folding|tutor|read(ing)?\s+to\s+(a\s+)?(dog|pet)|paws\s+to\s+read|reading\s+buddies|readers\s+theat|summer\s+reading|winter\s+reading|reading\s+challenge|1000\s+books|1,000\s+books|read[- ]?a[- ]?thon|book\s+club\s+kits?|book\s+club\s+in\s+a\s+bag|bag\s+club|poetry\s+reading|open\s+mic|writers?\s+(group|workshop|circle)|writing\s+(group|circle|workshop)|critique|esl|english\s+conversation|conversation\s+(club|group|circle)|chess|scrabble|knit|craft|crochet|lego|film|movie|cinema|board\s+game|trivia|resume|tax|blood\s+drive|book\s+bingo|bingo|recommendations?\s+(from|by)|ask\s+a\s+librarian|staff\s+picks|readers'?\s+advisory|book\s+review\s+club|lecture|lectures|class|course|seminar)\b/i;
 const KID_RE = /\b(teens?|tweens?|kids?|children|child|family|families|youth|junior|juniors|jr\.?|grades?\s*\d|\d(st|nd|rd|th)?\s*[-–]\s*\d+(th)?\s+grade|middle\s+(grade|school)|high\s+school|elementary|homeschool(ers)?|parent|mother[- ]daughter|father[- ]son|ages?\s*\d|preschool|toddler|baby|babies|little|stories?\s+for|teen-?ager|student|youngsters|pre-?k|k-\d|picture\s+book|chapter\s+book|early\s+reader|beginning\s+reader|young\s+readers?|emerging\s+readers?|reluctant\s+readers?|tbc|cybils|newbery|bookworms?\s+jr)\b/i;
-const ADULT_AGE_RE = /adult|senior|older|18\+|21\+|all\s*ages|general|everyone|55\+|50\+|grown/i;
+const ADULT_AGE_RE = /\b(1[89]|[2-9]\d)\s*(\+|and\s+(up|over|older)|&\s*(up|over|older)|\s*years?\s+and)|adult|senior|older|18\+|21\+|all\s*ages|general|everyone|55\+|50\+|grown/i;
 const YOUTH_AGE_RE = /teen|tween|kid|child|family|families|youth|baby|babies|toddler|preschool|school[- ]age|grade|infant|young\s+adult|elementary|middle|high\s+school|juvenile|youngster|students?|0-|birth/i;
 
 export function titleIsClub(t) { return CLUB_RE.test(t ?? '') || (/discussion\s+group/i.test(t ?? '') && /\bbooks?\b|novel|read/i.test(t ?? '')); }
@@ -53,7 +53,12 @@ export function isAdult({ title, ages = [], desc = '' }) {
   if (/\b(ya|young\s+adult)\b/i.test(t) && /\bteens?\b/i.test(ages.join(' ') + ' ' + t) && !/adult(s)?\s+(who|reading)|for\s+adults/i.test(t + desc)) {
     if (!ages.some((a) => /^adults?$/i.test(a.trim()))) return false;
   }
-  const a = ages.map((x) => String(x).trim()).filter(Boolean);
+  const a = ages.map((x) => String(x).trim()).filter(Boolean).map((x) => {
+    // numeric ranges: "Ages 16-18" -> youth; "Ages 18-99" -> adult
+    const m = x.match(/(\d{1,2})\s*[-–to]+\s*(\d{1,3})/);
+    if (m && !/adult|teen|kid|child/i.test(x)) return Number(m[1]) >= 18 ? 'Adults' : Number(m[2]) <= 18 ? 'Youth' : 'Adults';
+    return x;
+  });
   if (a.length) {
     const adult = a.some((x) => ADULT_AGE_RE.test(x));
     if (!adult) return false;
@@ -77,10 +82,14 @@ const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 
 export function cleanName(title, branch) {
   let n = decodeEntities(title).replace(/\s+/g, ' ').trim();
   n = n.replace(/\s*[-–—:|]\s*(postponed|cancel+ed|rescheduled|new\s+date|full|waitlist).*$/i, '').replace(/^(cancel+ed|postponed)\s*[-:]\s*/i, '');
+  n = n.replace(/^(online|virtual|in[- ]person|hybrid|zoom)\s+(event|program)?\s*[:-]\s*/i, '');
+  { const mm = n.match(/^(.*?)\s+(discussing|discusses|reads|is reading|presents|featuring)\s+.+$/i); if (mm && CLUB_RE.test(mm[1])) n = mm[1]; }
   n = n.replace(/\s*\((virtual|online|in[- ]person|hybrid|zoom|adults?|for adults|ages? 18\+|18\+|21\+)\)\s*/gi, ' ');
   n = n.replace(/\s*[-–—:|]\s*(january|february|march|april|may|june|july|august|september|october|november|december)(\s+\d{1,2})?(,?\s*\d{4})?\s*(selection|book|pick|meeting|edition)?\s*$/i, '');
   n = n.replace(/\s*[-–—]\s*["“].*$/, ''); // " - "This Month's Title""
   n = n.replace(/\s*:\s*["“][^"”]+["”].*$/, '');
+  // "<Club>- The Warm Hands of Ghosts by Katherine Arden" -> "<Club>"
+  { const mm = n.match(/^(.*?)\s*[-–—:]\s*(.+?)\s+by\s+[A-Z][\w.'’ -]+$/); if (mm && CLUB_RE.test(mm[1]) && mm[1].length > 5) n = mm[1]; }
   // "Mystery Book Club: Step Into a Lively Discussion" / "Book Club: <this month's title>" -> keep the club part
   { const ci = n.indexOf(':'); if (ci > 3) { const left = n.slice(0, ci), right = n.slice(ci + 1).trim(); if (CLUB_RE.test(left) && !CLUB_RE.test(right) && left.split(' ').length >= 2) n = left; } }
   if (branch) {
@@ -102,6 +111,10 @@ export function cleanName(title, branch) {
 }
 
 export function nameKey(s) {
+  const k = nameKey0(s).replace(/\s+book\s+(club|group|discussion)$/, '').trim();
+  return k || nameKey0(s);
+}
+function nameKey0(s) {
   return s.toLowerCase().replace(/&/g, 'and').replace(/['’]/g, '').replace(/[^a-z0-9]+/g, ' ').replace(/\b(the|a|an)\b/g, '').replace(/\s+/g, ' ').trim();
 }
 
@@ -194,7 +207,7 @@ export function genresFor(name, desc, tags = []) {
   for (const [g, re] of GENRE_RULES) {
     if (re.test(head)) { out.push(g); continue; }
     // description: only when it describes the club itself, e.g. "a book club for mystery lovers"
-    const m = d.match(new RegExp(`(club|group|discussion)[^.]{0,40}(${re.source})|(${re.source})[^.]{0,25}(book\\s*club|lovers|fans|readers|book\\s*discussion|group)`, 'i'));
+    const m = d.match(new RegExp(`(${re.source})[^.,;]{0,15}\\b(book\\s*club|lovers|fans|readers|book\\s*discussion|book\\s*group|reading\\s+group)`, 'i'));
     if (m && !['nonfiction', 'horror', 'memoir'].includes(g)) out.push(g);
   }
   if (out.includes('mystery-thriller') && /clues/i.test(name) && !/myster|crime|thrill|sleuth|whodun/i.test(head + d)) out.splice(out.indexOf('mystery-thriller'), 1);
@@ -277,4 +290,14 @@ export function collapse(occs, { library, platform, state }) {
     });
   }
   return out;
+}
+
+// ---- US state normalisation (full name or code -> 2-letter code; null if unknown) ----
+const STATES = { alabama: 'AL', alaska: 'AK', arizona: 'AZ', arkansas: 'AR', california: 'CA', colorado: 'CO', connecticut: 'CT', delaware: 'DE', 'district of columbia': 'DC', florida: 'FL', georgia: 'GA', hawaii: 'HI', idaho: 'ID', illinois: 'IL', indiana: 'IN', iowa: 'IA', kansas: 'KS', kentucky: 'KY', louisiana: 'LA', maine: 'ME', maryland: 'MD', massachusetts: 'MA', michigan: 'MI', minnesota: 'MN', mississippi: 'MS', missouri: 'MO', montana: 'MT', nebraska: 'NE', nevada: 'NV', 'new hampshire': 'NH', 'new jersey': 'NJ', 'new mexico': 'NM', 'new york': 'NY', 'north carolina': 'NC', 'north dakota': 'ND', ohio: 'OH', oklahoma: 'OK', oregon: 'OR', pennsylvania: 'PA', 'rhode island': 'RI', 'south carolina': 'SC', 'south dakota': 'SD', tennessee: 'TN', texas: 'TX', utah: 'UT', vermont: 'VT', virginia: 'VA', washington: 'WA', 'west virginia': 'WV', wisconsin: 'WI', wyoming: 'WY' };
+const CODES = new Set(Object.values(STATES));
+export function stateCode(s) {
+  const t = String(s ?? '').trim().replace(/\.$/, '');
+  if (!t) return null;
+  if (/^[A-Za-z]{2}$/.test(t) && CODES.has(t.toUpperCase())) return t.toUpperCase();
+  return STATES[t.toLowerCase().replace(/\./g, '')] ?? null;
 }

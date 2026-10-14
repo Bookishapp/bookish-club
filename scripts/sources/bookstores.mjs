@@ -27,7 +27,7 @@ const OUT = join(ROOT, 'data', 'raw', `${SOURCE_ID}.json`);
 const UA = 'BookishClubDirectory/0.1 (public book club listings)';
 const GAP_MS = 2000;
 const TTL_MS = 7 * 24 * 3600e3;
-const TODAY = process.env.LAST_SEEN ?? new Date().toISOString().slice(0, 10);
+const TODAY = process.env.LAST_SEEN ?? new Date().toLocaleDateString('en-CA'); // local YYYY-MM-DD
 
 export const GENRES = new Set(['romance', 'fantasy', 'sci-fi', 'mystery-thriller', 'horror', 'literary', 'classics',
   'historical-fiction', 'nonfiction', 'memoir', 'ya', 'lgbtq', 'poetry', 'graphic-novels', 'silent-reading', 'spanish-language']);
@@ -159,7 +159,7 @@ const KID_RE = /\b(kid|kids|teen|teens|tween|tweens|youth|child|children|childre
 const CLUBISH_RE = /\b(book ?clubs?|book ?groups?|reading ?groups?|readers'? (club|group)|lit(erary)? (club|salon|circle)|club|salon|circle|society|readers)\b/i;
 export async function bookmanagerStore(home) {
   const r = await politeFetch(home);
-  const san = r.html.match(/var san="(\d+)"/)?.[1];
+  const san = r.html.match(/var san="([^"]+)"/)?.[1];
   if (!san) return null;
   const settings = await politePost('store/getSettings', { webstore_name: san }, { cacheKey: 'settings ' + san });
   const info = settings.store_info;
@@ -204,7 +204,7 @@ function toRecord(store, page, club) {
     city: club.city ?? store.city,
     state: club.state ?? store.state,
     neighborhood: club.neighborhood ?? store.neighborhood ?? null,
-    venue: club.venue ?? store.venue,
+    venue: club.venue === undefined ? store.venue : club.venue,
     genres,
     vibe: club.vibe ? club.vibe.slice(0, 80) : null,
     cadence: club.cadence ?? null,
@@ -219,13 +219,30 @@ async function build() {
   const { STORES } = await import('./bookstores.stores.mjs');
   const out = [];
   const seen = new Set();
+  const CUTOFF = Date.parse(TODAY) / 1000 - 365 * 86400; // club events must be within the last 12 months or upcoming
   for (const store of STORES) {
     if (store.skip) continue;
+    let bm = null;
+    if (store.platform === 'bookmanager') {
+      try { bm = await bookmanagerStore(store.home); } catch (e) { console.error(`[${SOURCE_ID}] ${store.venue} bookmanager error ${e.message}`); continue; }
+      if (!bm) { console.error(`[${SOURCE_ID}] ${store.venue} no longer a Bookmanager storefront`); continue; }
+    }
     for (const page of store.pages ?? []) {
-      let res;
-      try { res = await politeFetch(page.url); } catch (e) { console.error(`[${SOURCE_ID}] ${page.url} fetch error ${e.message}`); continue; }
-      if (res.status !== 200) { console.error(`[${SOURCE_ID}] ${page.url} status ${res.status}${res.blocked ? ' robots ' + res.blocked : ''}`); continue; }
-      const text = norm(htmlToText(res.html));
+      let text;
+      if (bm) {
+        if (page.source === 'events') text = bm.events.filter((e) => e.from >= CUTOFF).map((e) => e.name).join('\n');
+        else {
+          const pg = bm.pages.find((p) => p.url.replace(/\/$/, '') === page.url.replace(/\/$/, ''));
+          if (!pg) { console.error(`[${SOURCE_ID}] ${page.url} not in site navigation any more`); continue; }
+          text = [pg.nav.label, ...pg.blocks.map((b) => b.heading + '\n' + b.text)].join('\n');
+        }
+      } else {
+        let res;
+        try { res = await politeFetch(page.url); } catch (e) { console.error(`[${SOURCE_ID}] ${page.url} fetch error ${e.message}`); continue; }
+        if (res.status !== 200) { console.error(`[${SOURCE_ID}] ${page.url} status ${res.status}${res.blocked ? ' robots ' + res.blocked : ''}`); continue; }
+        text = htmlToText(res.html);
+      }
+      text = norm(text);
       let kept = 0;
       for (const club of page.clubs) {
         const probe = norm(club.match ?? club.name);
@@ -235,7 +252,7 @@ async function build() {
         if (seen.has(key)) continue;
         seen.add(key); out.push(rec); kept++;
       }
-      console.error(`[${SOURCE_ID}] ${store.venue} (${store.city}, ${store.state}): ${kept} clubs from ${page.url}${res.cached ? ' [cache]' : ''}`);
+      console.error(`[${SOURCE_ID}] ${store.venue} (${store.city}, ${store.state}): ${kept}/${page.clubs.length} clubs from ${page.url}`);
       await mkdir(dirname(OUT), { recursive: true });
       await writeFile(OUT, JSON.stringify(out, null, 2) + '\n'); // incremental
     }
@@ -269,6 +286,20 @@ if (cmd === 'fetch') {
   const clubEv = d.events.filter((e) => /club|group|salon|circle|readers/i.test(e.name));
   console.log(`\n## EVENTS ${d.events.length} total, ${clubEv.length} club-ish`);
   for (const e of clubEv) console.log(`  ${new Date(e.from * 1000).toISOString().slice(0, 10)} ${e.name}`);
+} else if (cmd === 'bmall') {
+  // bmall <file-of-homepages> -> dumps every Bookmanager store sequentially (one process => shared throttle)
+  const list = (await readFile(arg, 'utf8')).split(/\s+/).filter(Boolean);
+  for (const home of list) {
+    try {
+      const d = await bookmanagerStore(home);
+      if (!d) { console.log(`\n######## ${home} not Bookmanager`); continue; }
+      console.log(`\n######## ${home} ${JSON.stringify(d.info)} ${d.base}`);
+      for (const p of d.pages) { console.log(`## PAGE ${p.nav.label} -> ${p.url}`); for (const b of p.blocks) console.log(`  [${b.heading}] ${b.text.slice(0, 350)}`); }
+      const clubEv = d.events.filter((e) => /club|group|salon|circle|readers/i.test(e.name));
+      console.log(`## EVENTS ${d.events.length} total, ${clubEv.length} club-ish`);
+      for (const e of clubEv) console.log(`  ${new Date(e.from * 1000).toISOString().slice(0, 10)} ${e.name}`);
+    } catch (e) { console.log(`\n######## ${home} ERROR ${e.message}`); }
+  }
 } else if (cmd === 'terms') {
   // terms <homepage> -> finds terms-of-use style links and reports any anti-automation clause
   console.log(JSON.stringify(await checkTerms(arg)));

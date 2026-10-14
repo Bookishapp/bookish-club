@@ -103,7 +103,7 @@ const lastHit = new Map();
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 let networkRequests = 0;
 
-async function politeFetch(url) {
+async function politeFetch(url, maxRetries = 4) {
   const key = createHash('sha1').update(url).digest('hex');
   const file = path.join(CACHE_DIR, key + '.json');
   if (!REFRESH && existsSync(file)) return JSON.parse(await readFile(file, 'utf8'));
@@ -122,7 +122,7 @@ async function politeFetch(url) {
     } catch (e) {
       status = 0; body = String(e);
     }
-    if ((status === 429 || status >= 500 || status === 0) && attempt < 4) {
+    if ((status === 429 || status >= 500 || status === 0) && attempt < maxRetries) {
       attempt++;
       const backoff = 5000 * 2 ** attempt;
       console.warn(`  ${status} on ${url} — backing off ${backoff / 1000}s`);
@@ -130,7 +130,7 @@ async function politeFetch(url) {
       continue;
     }
     const rec = { url, status, fetched_at: new Date().toISOString(), body };
-    await writeFile(file, JSON.stringify(rec));
+    if (status > 0 && status < 500 && status !== 429) await writeFile(file, JSON.stringify(rec)); // never cache transient errors
     return rec;
   }
 }
@@ -229,10 +229,11 @@ function isClub(item) {
   if (YOUTH_TITLE_RE.test(t)) return false;
   if (NOT_CLUB_RE.test(t) && !/\bbook club\b|\bbook discussion\b/i.test(t.replace(NOT_CLUB_RE, ''))) return false;
   if (/\bauthor\b/i.test(t) && !/book club|book discussion/i.test(t)) return false;
+  if (/\b(celebration|kick-?off|party|fair|festival|explorers?|open house|info(rmation)? session|orientation|meet-?up for (librarians|leaders)|for book club leaders|book club leaders?)\b/i.test(t)) return false;
   if (CLUB_RE.test(t)) return true;
   // Library tagged it as a book club / book discussion event type, and the title is not obviously something else.
   const typed = item.categories.some((c) => /^(book (clubs?|discussions?|groups?)|book clubs? (and|&) discussions?|reading groups?|book discussion groups?|clubs? de lectura)$/i.test(c.trim()));
-  return typed;
+  return typed && /\b(club|discussion|discuss|circle|readers?|reads|reading|book|books|novels?|lit|literary|literature|stories|story club|talk about it)\b/i.test(t) && !/\bstory ?(hour|time)\b/i.test(t);
 }
 
 const SPLIT_RE = /\s*(?::|\s[-–—|]\s|\s~\s)\s*/;
@@ -240,6 +241,8 @@ function clubName(title) {
   let t = title.replace(/\s+/g, ' ').trim();
   t = t.replace(/^\s*(cancel+ed|postponed|rescheduled|new date|new|updated?)\s*[:!-]\s*/i, '');
   t = t.replace(/\s*[([](virtual|online|in[- ]person|hybrid|zoom|via zoom|cancel+ed|postponed|rescheduled|registration required|drop[- ]in|offsite|off-site|adults?( only)?|18\+|ages 18\+)[)\]]\s*/gi, ' ').trim();
+  t = t.replace(/^(january|february|march|april|may|june|july|august|september|october|november|december|fall|autumn|winter|spring|summer)(\s+\d{4})?\s*(['’]s\s+)?[:\-–]?\s+(?=\S)/i, '');
+  t = t.replace(/\s*[-–:]\s*(january|february|march|april|may|june|july|august|september|october|november|december)(\s+\d{1,2})?(,?\s+\d{4})?\s*$/i, '');
   const parts = t.split(SPLIT_RE).filter(Boolean);
   let name = t;
   if (parts.length > 1) {
@@ -261,7 +264,7 @@ const GENRES = [
   ['romance', /\bromance|\bromantasy|\blove stor(y|ies)\b|\brom-?coms?\b/i],
   ['fantasy', /\bfantasy\b|\bromantasy|\bsci-?fi\s*(\/|&|and)\s*fantasy/i],
   ['sci-fi', /\bsci-?fi\b|\bscience fiction|\bspeculative fiction|\bsf\s*(&|and|\/)\s*f\b/i],
-  ['mystery-thriller', /\bmyster(y|ies)\b|\bthrillers?\b|\bcrime fiction|\bwhodunn?its?\b|\bsuspense\b|\bnoir\b|\bcozy myster/i],
+  ['mystery-thriller', /\bmyster(y|ies)\b|\bthrillers?\b|\bcrime fiction|(?<!true )\bcrime (book|club|readers|fiction)|\bwhodunn?its?\b|\bsuspense\b|\bnoir\b|\bcozy myster/i],
   ['horror', /\bhorror\b/i],
   ['literary', /\bliterary fiction\b|\blit fic\b/i],
   ['classics', /\bclassics?\b(?! rock| film| movie)|\bgreat books\b/i],
@@ -282,7 +285,8 @@ function genresFor(name, desc, cats) {
   // From the description, only when the genre is stated as the club's focus.
   for (const [g, re] of GENRES) {
     const src = re.source;
-    const focus = new RegExp(`(?:${src})[\\w\\s,&'-]{0,25}?\\b(book club|book group|book discussion|club|readers|reading group|lovers|fans)\\b|\\b(club|group|discussion)s? (devoted to|focused on|featuring|for fans of|that reads|reading|exploring|about)\\b[\\w\\s,&'-]{0,25}?(?:${src})`, 'i');
+    if (g === 'nonfiction' || g === 'ya' || g === 'classics' || g === 'poetry') continue; // too often mentioned in passing
+    const focus = new RegExp(`(?:${src})[\\w\\s/&'-]{0,12}?\\b(book club|book group|book discussion|reading group)\\b|\\b(club|group|discussion)s? (devoted to|focused on|for fans of|that reads|dedicated to)\\s+(?:all things\\s+)?(?:${src})`, 'i');
     if (focus.test(desc)) out.add(g);
   }
   if (cats.some((c) => /^(spanish|espa[nñ]ol)$/i.test(c))) out.add('spanish-language');
@@ -383,11 +387,11 @@ async function main() {
       const seenThisQuery = new Set();
       for (let page = 1; page <= MAX_PAGES_PER_QUERY; page++) {
         const url = `${GATEWAY}${rssPath}?q=${encodeURIComponent(q)}&startDate=${TODAY}&endDate=${END}&page=${page}`;
-        const res = await politeFetch(url);
+        const res = await politeFetch(url, firstStatus === null ? 1 : 4);
         if (firstStatus === null) firstStatus = res.status;
         if (res.status !== 200) {
           if (page === 1 && q === QUERIES[0]) {
-            try { firstError = JSON.parse(res.body).error?.message; } catch { firstError = res.body.slice(0, 120); }
+            try { firstError = JSON.parse(res.body).error?.message; } catch { firstError = res.status >= 500 ? `HTTP ${res.status} from RSS feed (gateway timeout; events feature likely not enabled)` : res.body.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 120); }
           }
           break;
         }
