@@ -27,7 +27,7 @@ const OUT = join(ROOT, 'data', 'raw', `${SOURCE_ID}.json`);
 const UA = 'BookishClubDirectory/0.1 (public book club listings)';
 const GAP_MS = 2000;
 const TTL_MS = 7 * 24 * 3600e3;
-const TODAY = process.env.LAST_SEEN ?? new Date().toISOString().slice(0, 10);
+const TODAY = process.env.LAST_SEEN ?? new Date().toLocaleDateString('en-CA'); // local YYYY-MM-DD
 
 export const GENRES = new Set(['romance', 'fantasy', 'sci-fi', 'mystery-thriller', 'horror', 'literary', 'classics',
   'historical-fiction', 'nonfiction', 'memoir', 'ya', 'lgbtq', 'poetry', 'graphic-novels', 'silent-reading', 'spanish-language']);
@@ -136,6 +136,65 @@ export async function checkTerms(home) {
   return { home, termsPages: found, verdict: found.some((f) => f.forbids) ? 'FORBIDS' : found.length ? 'no clause found' : 'no terms page linked' };
 }
 
+
+// ---- Bookmanager storefronts (React app; content served by the store's public, logged-out
+// content endpoint api.bookmanager.com/customer/*, which robots.txt explicitly allows) ----
+const BM_API = 'https://api.bookmanager.com/customer/';
+async function politePost(endpoint, fields, { cacheKey } = {}) {
+  const url = BM_API + endpoint;
+  const key = cacheKey ?? JSON.stringify(fields);
+  const file = join(CACHE, 'api.bookmanager.com', createHash('sha1').update(endpoint + ' ' + key).digest('hex').slice(0, 16) + '.json');
+  try { const s = await stat(file); if (Date.now() - s.mtimeMs < TTL_MS) return JSON.parse(await readFile(file, 'utf8')); } catch {}
+  const rb = await robotsAllows(url);
+  if (!rb.allowed) throw new Error(`robots disallows ${url}`);
+  await throttle('api.bookmanager.com');
+  const fd = new FormData();
+  for (const [k, v] of Object.entries(fields)) fd.append(k, String(v));
+  const res = await fetch(url, { method: 'POST', body: fd, headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(30000) });
+  const json = await res.json();
+  if (!json?.error) { await mkdir(dirname(file), { recursive: true }); await writeFile(file, JSON.stringify(json)); }
+  return json;
+}
+const KID_RE = /\b(kid|kids|teen|teens|tween|tweens|youth|child|children|children's|middle[- ]grade|picture book|story ?time|storytime|grades?|ages? \d|family|families|junior|jr\.?|homeschool|young readers|pre-?k)\b/i;
+const CLUBISH_RE = /\b(book ?clubs?|book ?groups?|reading ?groups?|readers'? (club|group)|lit(erary)? (club|salon|circle)|club|salon|circle|society|readers)\b/i;
+export async function bookmanagerStore(home) {
+  const r = await politeFetch(home);
+  const san = r.html.match(/var san="([^"]+)"/)?.[1];
+  if (!san) return null;
+  const settings = await politePost('store/getSettings', { webstore_name: san }, { cacheKey: 'settings ' + san });
+  const info = settings.store_info;
+  let sid = null;
+  const session = async () => sid ??= (await politePost('session/get', { store_id: info.id }, { cacheKey: 'session ' + info.id + ' ' + TODAY })).session_id;
+  const navItems = [];
+  const walk = (items, parent) => { for (const it of items ?? []) { navItems.push({ ...it, parent }); walk(it.submenu, it); } };
+  walk(settings.site_navigation); walk(settings.extra_navigation); walk(settings.url_shortcuts);
+  const base = (settings.site_url || new URL(r.finalUrl ?? home).origin).replace(/\/$/, '');
+  const clubNav = navItems.filter((n) => n.id && n.built_in_type === 'custom' && n.type !== 'unlinked' && n.path &&
+    (/club|group|reading|readers|salon/i.test(n.label + ' ' + n.path) || /club|group/i.test(n.parent?.label ?? '')));
+  const pages = [];
+  for (const n of clubNav.slice(0, 25)) {
+    const page = await politePost('site_content/getPage', { store_id: info.id, session_id: await session(), page_id: n.id }, { cacheKey: 'page ' + info.id + ' ' + n.id });
+    const blocks = [];
+    const visit = (x) => {
+      if (Array.isArray(x)) return x.forEach(visit);
+      if (!x || typeof x !== 'object') return;
+      const d = x.data ?? x;
+      if (typeof d.heading === 'string' || typeof d.paragraph === 'string' || typeof d.content === 'string' || typeof d.html === 'string' || typeof d.description === 'string')
+        blocks.push({ heading: htmlToText(d.heading ?? d.header ?? '').trim(), text: htmlToText(d.paragraph ?? d.content ?? d.html ?? d.description ?? '').replace(/\s+/g, ' ').trim() });
+      for (const v of Object.values(x)) if (v && typeof v === 'object' && v !== d) visit(v);
+      if (d !== x) for (const v of Object.values(d)) if (v && typeof v === 'object') visit(v);
+    };
+    visit(page);
+    pages.push({ nav: n, url: base + n.path, blocks: blocks.filter((b) => b.heading || b.text) });
+  }
+  let events = [];
+  try {
+    const ev = await politePost('event/getList', { store_id: info.id, session_id: await session() }, { cacheKey: 'events ' + info.id + ' ' + TODAY });
+    events = (ev.rows ?? []).map((e) => ({ name: htmlToText(e.info?.name ?? e.name ?? ''), from: e.from, raw: e }));
+  } catch {}
+  return { san, info: { id: info.id, name: info.name, city: info.city, state: info.province }, base, pages, events };
+}
+
 const norm = (s) => s.toLowerCase().replace(/&amp;/g, '&').replace(/[’‘]/g, "'").replace(/[^a-z0-9&']+/g, ' ').trim();
 
 function toRecord(store, page, club) {
@@ -145,7 +204,7 @@ function toRecord(store, page, club) {
     city: club.city ?? store.city,
     state: club.state ?? store.state,
     neighborhood: club.neighborhood ?? store.neighborhood ?? null,
-    venue: club.venue ?? store.venue,
+    venue: club.venue === undefined ? store.venue : club.venue,
     genres,
     vibe: club.vibe ? club.vibe.slice(0, 80) : null,
     cadence: club.cadence ?? null,
@@ -160,13 +219,30 @@ async function build() {
   const { STORES } = await import('./bookstores.stores.mjs');
   const out = [];
   const seen = new Set();
+  const CUTOFF = Date.parse(TODAY) / 1000 - 365 * 86400; // club events must be within the last 12 months or upcoming
   for (const store of STORES) {
     if (store.skip) continue;
+    let bm = null;
+    if (store.platform === 'bookmanager') {
+      try { bm = await bookmanagerStore(store.home); } catch (e) { console.error(`[${SOURCE_ID}] ${store.venue} bookmanager error ${e.message}`); continue; }
+      if (!bm) { console.error(`[${SOURCE_ID}] ${store.venue} no longer a Bookmanager storefront`); continue; }
+    }
     for (const page of store.pages ?? []) {
-      let res;
-      try { res = await politeFetch(page.url); } catch (e) { console.error(`[${SOURCE_ID}] ${page.url} fetch error ${e.message}`); continue; }
-      if (res.status !== 200) { console.error(`[${SOURCE_ID}] ${page.url} status ${res.status}${res.blocked ? ' robots ' + res.blocked : ''}`); continue; }
-      const text = norm(htmlToText(res.html));
+      let text;
+      if (bm) {
+        if (page.source === 'events') text = bm.events.filter((e) => e.from >= CUTOFF).map((e) => e.name).join('\n');
+        else {
+          const pg = bm.pages.find((p) => p.url.replace(/\/$/, '') === page.url.replace(/\/$/, ''));
+          if (!pg) { console.error(`[${SOURCE_ID}] ${page.url} not in site navigation any more`); continue; }
+          text = [pg.nav.label, ...pg.blocks.map((b) => b.heading + '\n' + b.text)].join('\n');
+        }
+      } else {
+        let res;
+        try { res = await politeFetch(page.url); } catch (e) { console.error(`[${SOURCE_ID}] ${page.url} fetch error ${e.message}`); continue; }
+        if (res.status !== 200) { console.error(`[${SOURCE_ID}] ${page.url} status ${res.status}${res.blocked ? ' robots ' + res.blocked : ''}`); continue; }
+        text = htmlToText(res.html);
+      }
+      text = norm(text);
       let kept = 0;
       for (const club of page.clubs) {
         const probe = norm(club.match ?? club.name);
@@ -176,7 +252,7 @@ async function build() {
         if (seen.has(key)) continue;
         seen.add(key); out.push(rec); kept++;
       }
-      console.error(`[${SOURCE_ID}] ${store.venue} (${store.city}, ${store.state}): ${kept} clubs from ${page.url}${res.cached ? ' [cache]' : ''}`);
+      console.error(`[${SOURCE_ID}] ${store.venue} (${store.city}, ${store.state}): ${kept}/${page.clubs.length} clubs from ${page.url}`);
       await mkdir(dirname(OUT), { recursive: true });
       await writeFile(OUT, JSON.stringify(out, null, 2) + '\n'); // incremental
     }
@@ -201,6 +277,28 @@ if (cmd === 'fetch') {
   for (const m of r.html.matchAll(/<a\b[^>]*href="([^"#]+)"[^>]*>([\s\S]*?)<\/a>/gi)) {
     const t = m[2].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
     if ((re.test(m[1]) || re.test(t)) && !seenL.has(m[1])) { seenL.add(m[1]); console.log(`${m[1]}  | ${t.slice(0, 60)}`); }
+  }
+} else if (cmd === 'bm') {
+  const d = await bookmanagerStore(arg);
+  if (!d) { console.log('not a Bookmanager storefront'); process.exit(1); }
+  console.log(JSON.stringify(d.info), d.base);
+  for (const p of d.pages) { console.log(`\n## PAGE ${p.nav.label} -> ${p.url}`); for (const b of p.blocks) console.log(`  [${b.heading}] ${b.text.slice(0, 400)}`); }
+  const clubEv = d.events.filter((e) => /club|group|salon|circle|readers/i.test(e.name));
+  console.log(`\n## EVENTS ${d.events.length} total, ${clubEv.length} club-ish`);
+  for (const e of clubEv) console.log(`  ${new Date(e.from * 1000).toISOString().slice(0, 10)} ${e.name}`);
+} else if (cmd === 'bmall') {
+  // bmall <file-of-homepages> -> dumps every Bookmanager store sequentially (one process => shared throttle)
+  const list = (await readFile(arg, 'utf8')).split(/\s+/).filter(Boolean);
+  for (const home of list) {
+    try {
+      const d = await bookmanagerStore(home);
+      if (!d) { console.log(`\n######## ${home} not Bookmanager`); continue; }
+      console.log(`\n######## ${home} ${JSON.stringify(d.info)} ${d.base}`);
+      for (const p of d.pages) { console.log(`## PAGE ${p.nav.label} -> ${p.url}`); for (const b of p.blocks) console.log(`  [${b.heading}] ${b.text.slice(0, 350)}`); }
+      const clubEv = d.events.filter((e) => /club|group|salon|circle|readers/i.test(e.name));
+      console.log(`## EVENTS ${d.events.length} total, ${clubEv.length} club-ish`);
+      for (const e of clubEv) console.log(`  ${new Date(e.from * 1000).toISOString().slice(0, 10)} ${e.name}`);
+    } catch (e) { console.log(`\n######## ${home} ERROR ${e.message}`); }
   }
 } else if (cmd === 'terms') {
   // terms <homepage> -> finds terms-of-use style links and reports any anti-automation clause

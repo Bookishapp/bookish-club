@@ -38,6 +38,11 @@ function geocode(city, st) {
   return null;
 }
 
+const near = (a, b) => {
+  const R = 3958.8, r = Math.PI / 180, x = (b[0] - a[0]) * r, y = (b[1] - a[1]) * r;
+  return 2 * R * Math.asin(Math.sqrt(Math.sin(x / 2) ** 2 + Math.cos(a[0] * r) * Math.cos(b[0] * r) * Math.sin(y / 2) ** 2));
+};
+
 const SOURCE_LABEL = { "library-bibliocommons": "library", "library-other": "library", bookstores: "bookstore" };
 
 const all = [];
@@ -55,7 +60,14 @@ for (const f of fs.readdirSync(RAW).filter((f) => f.endsWith(".json")).sort()) {
     const text = `${name} ${r.vibe ?? ""}`;
     if (NOT_ADULT.test(text) || NOT_CLUB.test(name)) continue;
     if (/[\w.+-]+@[\w-]+\.[\w.]+/.test(text) || /\(?\d{3}\)?[ .-]\d{3}[ .-]\d{4}/.test(text)) continue; // never store contact info
-    const geo = geocode(city, st);
+    let geo = geocode(city, st);
+    // County systems often report HQ city for every branch; a branch named
+    // after a nearby municipality ("Bedford Branch") is a better location.
+    const bm = clean(r.venue)?.match(/^(.+?) (?:Branch|Branch Library|Library|Regional Library|Public Library)$/i);
+    if (bm && !/^(main|central|downtown|virtual|online)/i.test(bm[1])) {
+      const alt = geocode(bm[1], st);
+      if (alt && alt[2] !== city && (!geo || near(geo, alt) <= 30)) { geo = alt; city = alt[2]; }
+    }
     if (geo) city = geo[2]; else unmatched.set(`${city}, ${st}`, (unmatched.get(`${city}, ${st}`) ?? 0) + 1);
     const genres = new Set((r.genres ?? []).filter((g) => g in GENRES));
     for (const [re, g] of KEYWORDS) if (re.test(name)) genres.add(g);
@@ -71,7 +83,7 @@ for (const f of fs.readdirSync(RAW).filter((f) => f.endsWith(".json")).sort()) {
       vibe: clean(r.vibe)?.slice(0, 100) ?? null,
       cadence: clean(r.cadence)?.slice(0, 60) ?? null,
       format: ["in-person", "online", "hybrid"].includes(r.format) ? r.format : null,
-      host_type: SOURCE_LABEL[r.source] ?? "community",
+      host_type: SOURCE_LABEL[r.source] ?? (String(r.source).startsWith("library") ? "library" : "community"),
       source: r.source,
       source_name: clean(r.library) ?? clean(r.source_name) ?? venue ?? null,
       source_url: r.source_url,

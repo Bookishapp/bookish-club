@@ -14,6 +14,8 @@ const OUT = path.join(ROOT, "dist");
 const TODAY = new Date().toISOString().slice(0, 10);
 
 const GENRES = Object.fromEntries(GENRES_LIST);
+const KEEP_CASE = new Set(["spanish-language", "lgbtq"]);
+const lc = (g) => KEEP_CASE.has(g) ? GENRES[g] : GENRES[g].toLowerCase();
 const clubs = JSON.parse(fs.readFileSync(path.join(ROOT, "data/clubs.json"), "utf8"));
 
 // ---------- helpers ----------
@@ -105,7 +107,7 @@ ${jsonld.map((j) => `<script type="application/ld+json">${JSON.stringify(j).repl
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="mast"><div class="wrap">
-<a class="wordmark" href="${url("/")}" aria-label="Bookish Club home"><span class="wm-b">Bookish</span><span class="wm-c">Club</span></a>
+<a class="wordmark" href="${url("/")}"><span class="wm-b">Bookish</span><span class="wm-c">Club</span></a>
 <nav class="nav" aria-label="Main"><a class="hide-sm" href="${url("/book-clubs/")}">Browse</a><a class="hide-sm" href="${url("/hosts/")}">For hosts</a><a class="btn-sm" href="${url("/start/")}">Start a club</a></nav>
 </div></header>
 <main id="main">
@@ -114,8 +116,8 @@ ${body}
 <footer class="foot-site"><div class="wrap cols">
 <div><a class="wordmark" href="${url("/")}"><span class="wm-b">Bookish</span><span class="wm-c">Club</span></a>
 <p>A directory of real book clubs that meet near you, gathered from the public pages of libraries and bookstores. Every listing links to its source. Details change, so check there before you go.</p></div>
-<div><h4>Find</h4><ul><li><a href="${url("/book-clubs/")}">All cities</a></li>${["romance", "mystery-thriller", "fantasy", "nonfiction"].filter((g) => genreTotals[g] >= 5).map((g) => `<li><a href="${url(`/genres/${g}/`)}">${GENRES[g]} clubs</a></li>`).join("")}</ul></div>
-<div><h4>Hosts</h4><ul><li><a href="${url("/start/")}">Start a club</a></li><li><a href="${url("/claim/")}">Claim your club</a></li><li><a href="${url("/hosts/")}">Host tools</a></li><li><a href="${url("/about/")}">About &amp; sources</a></li><li><a href="${url("/privacy/")}">Privacy</a> · <a href="${url("/terms/")}">Terms</a></li></ul></div>
+<div><p class="h">Find</p><ul><li><a href="${url("/book-clubs/")}">All cities</a></li>${["romance", "mystery-thriller", "fantasy", "nonfiction"].filter((g) => genreTotals[g] >= 5).map((g) => `<li><a href="${url(`/genres/${g}/`)}">${GENRES[g]} clubs</a></li>`).join("")}</ul></div>
+<div><p class="h">Hosts</p><ul><li><a href="${url("/start/")}">Start a club</a></li><li><a href="${url("/claim/")}">Claim your club</a></li><li><a href="${url("/hosts/")}">Host tools</a></li><li><a href="${url("/about/")}">About &amp; sources</a></li><li><a href="${url("/privacy/")}">Privacy</a> · <a href="${url("/terms/")}">Terms</a></li></ul></div>
 </div></footer>
 <script src="${url("/site.js")}" defer></script>
 </body>
@@ -196,25 +198,25 @@ for (const city of cities) {
   const near = nearbyCities(city);
   const topGenres = Object.entries(city.genres).sort((a, b) => b[1] - a[1]);
   const nearClubs = n < 8 ? near.flatMap(({ o, d }) => o.clubs.slice(0, 3).map((c) => ({ c, d }))).slice(0, 8 - Math.min(n, 4)) : [];
-  const genreText = topGenres.length ? ` Genres include ${topGenres.slice(0, 4).map(([g, k]) => `${GENRES[g].toLowerCase()} (${k})`).join(", ")}.` : "";
+  const genreText = topGenres.length ? ` Genres include ${topGenres.slice(0, 4).map(([g, k]) => `${lc(g)} (${k})`).join(", ")}.` : "";
   const cr = [["Book clubs", "/book-clubs/"], [STATE_NAMES[city.st] ?? city.st, `/book-clubs/${stateSlug(city.st)}/`], [city.name, null]];
   const body = `<div class="wrap">${crumbs(cr)}
 <header class="page-head"><p class="eyebrow">${plural(n, "club")} · updated ${monthYear}</p>
-<h1>Book clubs in <em>${esc(city.name)}</em>, ${city.st}</h1>
+<h1>Book clubs in <em>${esc(city.name)}</em>,&nbsp;${city.st}</h1>
 <p class="lede">${summarize(city.clubs)}${genreText} Pick one, check the details at the source, and just show up. Most welcome newcomers.</p>
-${city.genrePages.length ? `<ul class="chips">${city.genrePages.map((g) => `<li><a class="chip" href="${url(`${p}${g}/`)}">${esc(GENRES[g])} in ${esc(city.name)}</a></li>`).join("")}</ul>` : ""}
 </header></div>
 ${topGenres.length ? `<div class="filterbar"><div class="wrap"><div id="filter" class="chips" role="toolbar" aria-label="Filter by genre"><button class="chip" type="button" data-g="" aria-pressed="true">All <span class="c">${n}</span></button>${topGenres.map(([g, k]) => `<button class="chip" type="button" data-g="${g}" aria-pressed="false">${esc(GENRES[g])} <span class="c">${k}</span></button>`).join("")}</div></div></div>` : `<div style="height:28px"></div>`}
 <div class="wrap">
 <ul class="clubs">${city.clubs.map((c) => clubCard(c)).join("\n")}</ul>
 <p id="filter-empty" class="note" hidden>No clubs in that genre here yet. <a href="${url("/start/")}">Start the first one</a>.</p>
 ${nearClubs.length ? `<hr class="rule"><h2>More clubs <em>nearby</em></h2><p class="lede">A short drive from ${esc(city.name)}.</p><ul class="clubs">${nearClubs.map(({ c }) => clubCard(c, { showCity: true })).join("\n")}</ul>` : ""}
+${city.genrePages.length ? `<hr class="rule"><h2>By genre in ${esc(city.name)}</h2><ul class="chips">${city.genrePages.map((g) => `<li><a class="chip" href="${url(`${p}${g}/`)}">${esc(GENRES[g])} book clubs in ${esc(city.name)}</a></li>`).join("")}</ul>` : ""}
 ${near.length ? `<hr class="rule"><h2>Nearby cities</h2><div class="grid cols-3">${near.slice(0, 9).map(({ o, d }) => `<a class="city-tile" href="${url(`/book-clubs/${o.u}/`)}"><b>${esc(o.name)}, ${o.st}</b><span>${plural(o.clubs.length, "club")} · ${Math.round(d)} mi</span></a>`).join("")}</div>` : ""}
 </div>
 ${hostCallout(city.name)}`;
   write(`book-clubs/${city.u}/index.html`, layout({
     title: `Book Clubs in ${label}: ${plural(n, "club")} to join (${monthYear}) | Bookish Club`,
-    desc: `Find ${plural(n, "book club")} in ${label}${topGenres.length ? `, including ${topGenres.slice(0, 3).map(([g]) => GENRES[g].toLowerCase()).join(", ")} clubs` : ""}. Library and bookstore clubs with meeting times and where to join.`,
+    desc: `Find ${plural(n, "book club")} in ${label}${topGenres.length ? `, including ${topGenres.slice(0, 3).map(([g]) => lc(g)).join(", ")} clubs` : ""}. Library and bookstore clubs with meeting times and where to join.`,
     path: p, body, jsonld: [crumbsLd(cr), clubsLd(city.clubs, `Book clubs in ${label}`)],
   }));
   page(p, n >= 10 ? 0.8 : 0.6);
@@ -227,7 +229,7 @@ ${hostCallout(city.name)}`;
     const gbody = `<div class="wrap">${crumbs(gcr)}
 <header class="page-head"><p class="eyebrow">${plural(list.length, "club")} · updated ${monthYear}</p>
 <h1>${esc(GENRES[g])} book clubs in <em>${esc(city.name)}</em></h1>
-<p class="lede">${plural(list.length, `${GENRES[g].toLowerCase()} book club`)} meet in ${esc(label)}. ${summarize(list)}</p>
+<p class="lede">${plural(list.length, `${lc(g)} book club`)} meet in ${esc(label)}. ${summarize(list)}</p>
 <a class="chip" href="${url(p)}">See all ${n} clubs in ${esc(city.name)} →</a>
 </header>
 <div style="height:28px"></div>
@@ -236,7 +238,7 @@ ${others.length ? `<hr class="rule"><h2>Other clubs in ${esc(city.name)}</h2><ul
 </div>${hostCallout(city.name)}`;
     write(`book-clubs/${city.u}/${g}/index.html`, layout({
       title: `${GENRES[g]} Book Clubs in ${label} (${monthYear}) | Bookish Club`,
-      desc: `${plural(list.length, `${GENRES[g].toLowerCase()} book club`)} in ${label}, with meeting times, venues and how to join.`,
+      desc: `${plural(list.length, `${lc(g)} book club`)} in ${label}, with meeting times, venues and how to join.`,
       path: gp, body: gbody, jsonld: [crumbsLd(gcr), clubsLd(list, `${GENRES[g]} book clubs in ${label}`)],
     }));
     page(gp, 0.7);
@@ -282,10 +284,10 @@ for (const [g, label] of GENRES_LIST) {
   const cr = [["Book clubs", "/book-clubs/"], [label, null]];
   const body = `<div class="wrap">${crumbs(cr)}
 <header class="page-head"><p class="eyebrow">${plural(total, "club")} in ${plural(gc.length, "city", "cities")}</p>
-<h1>${esc(label)} <em>book clubs</em> near you</h1><p class="lede">Find a ${esc(label.toLowerCase())} book club that meets in your city.</p>${searchBox(g)}</header>
-<section><h2>Cities with ${esc(label.toLowerCase())} clubs</h2><div class="grid cols-3">${gc.slice(0, 60).map((c) => `<a class="city-tile" href="${url(`/book-clubs/${c.u}/${c.genrePages.includes(g) ? g + "/" : "#" + g}`)}"><b>${esc(c.name)}, ${c.st}</b><span>${plural(c.genres[g], "club")}</span></a>`).join("")}</div></section>
+<h1>${esc(label)} <em>book clubs</em> near you</h1><p class="lede">Find a ${esc(lc(g))} book club that meets in your city.</p>${searchBox(g)}</header>
+<section><h2>Cities with ${esc(lc(g))} clubs</h2><div class="grid cols-3">${gc.slice(0, 60).map((c) => `<a class="city-tile" href="${url(`/book-clubs/${c.u}/${c.genrePages.includes(g) ? g + "/" : "#" + g}`)}"><b>${esc(c.name)}, ${c.st}</b><span>${plural(c.genres[g], "club")}</span></a>`).join("")}</div></section>
 <section style="padding-top:0"><h2>A few to start with</h2><ul class="clubs">${sample.map((c) => clubCard(c, { showCity: true })).join("\n")}</ul></section></div>${hostCallout()}`;
-  write(`genres/${g}/index.html`, layout({ title: `${label} Book Clubs Near You (${monthYear}) | Bookish Club`, desc: `${plural(total, `${label.toLowerCase()} book club`)} across ${plural(gc.length, "US city", "US cities")}. Find one that meets near you.`, path: p, body, jsonld: [crumbsLd(cr), clubsLd(sample, `${label} book clubs`)] }));
+  write(`genres/${g}/index.html`, layout({ title: `${label} Book Clubs Near You (${monthYear}) | Bookish Club`, desc: `${plural(total, `${lc(g)} book club`)} across ${plural(gc.length, "US city", "US cities")}. Find one that meets near you.`, path: p, body, jsonld: [crumbsLd(cr), clubsLd(sample, `${label} book clubs`)] }));
   page(p, 0.8);
 }
 

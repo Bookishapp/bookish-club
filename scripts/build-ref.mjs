@@ -41,7 +41,7 @@ const ALIASES = {
   "CA|woodland hills": [34.1683, -118.6059, "Woodland Hills"], "CA|northridge": [34.2283, -118.5368, "Northridge"],
   "CA|venice": [33.9850, -118.4695, "Venice"], "CA|silver lake": [34.0869, -118.2702, "Silver Lake"],
   "CA|echo park": [34.0782, -118.2606, "Echo Park"], "TX|the woodlands": [30.1658, -95.4613, "The Woodlands"],
-  "TN|nashville": [36.1627, -86.7816, "Nashville"], "KY|lexington": [38.0406, -84.5037, "Lexington"],
+  "UT|salt lake": [40.7608, -111.8910, "Salt Lake City"], "TN|nashville": [36.1627, -86.7816, "Nashville"], "KY|lexington": [38.0406, -84.5037, "Lexington"],
   "GA|athens": [33.9519, -83.3576, "Athens"], "GA|augusta": [33.4735, -82.0105, "Augusta"],
   "GA|columbus": [32.4610, -84.9877, "Columbus"], "HI|honolulu": [21.3069, -157.8583, "Honolulu"],
   "KS|kansas city": [39.1141, -94.6275, "Kansas City"], "IN|indianapolis": [39.7684, -86.1581, "Indianapolis"],
