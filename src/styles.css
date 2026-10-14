@@ -65,7 +65,7 @@ hr.rule{border:0;border-top:1px solid var(--rule);margin:48px 0}
 .chip{display:inline-flex;align-items:center;gap:6px;font:500 13px/1 var(--sans);padding:8px 12px;border-radius:999px;border:1px solid var(--rule);background:var(--card);color:var(--ink-2);text-decoration:none;cursor:pointer}
 .chip:hover{border-color:var(--green);color:var(--green)}
 .chip[aria-pressed="true"],.chip.on{background:var(--green);border-color:var(--green);color:var(--paper)}
-.chip .c{opacity:.8}
+.chip .c{opacity:1;color:var(--ink-3)}
 .tag{display:inline-block;font:500 12px/1 var(--sans);padding:5px 8px;border-radius:5px;background:var(--paper-2);color:var(--ink-2)}
 .tag.g{background:var(--tag-genre-bg);color:var(--tag-genre-ink)}
 

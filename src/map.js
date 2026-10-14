@@ -68,7 +68,7 @@
   let started = false;
   const go = () => { if (started) return; started = true; init().catch((e) => { el.classList.remove("loading"); el.classList.add("failed"); console.error(e); }); };
   if ("IntersectionObserver" in window) {
-    const io = new IntersectionObserver((es) => { if (es.some((x) => x.isIntersecting)) { io.disconnect(); go(); } }, { rootMargin: "200px" });
+    const io = new IntersectionObserver((es) => { if (es.some((x) => x.isIntersecting)) { io.disconnect(); go(); } }, { rootMargin: "0px", threshold: 0.35 });
     io.observe(el);
   } else go();
 })();
