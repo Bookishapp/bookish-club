@@ -1,8 +1,8 @@
 /* Bookish Club theme: every colour, font and texture lives here.
    Swap this file to re-skin the site; src/styles.css only uses these variables.
    Current theme: "Indie bookstore" (paper, bottle green, oxblood, brass; Newsreader). */
-@font-face{font-family:"Newsreader";src:url("__BASE__/fonts/newsreader.woff2") format("woff2");font-weight:400 700;font-style:normal;font-display:swap}
-@font-face{font-family:"Newsreader";src:url("__BASE__/fonts/newsreader-italic.woff2") format("woff2");font-weight:400 600;font-style:italic;font-display:swap}
+@font-face{font-family:"Newsreader";src:url("__BASE__/fonts/newsreader.woff2") format("woff2");font-weight:400 700;font-style:normal;font-display:optional}
+@font-face{font-family:"Newsreader";src:url("__BASE__/fonts/newsreader-italic.woff2") format("woff2");font-weight:400 600;font-style:italic;font-display:optional}
 :root{
   --paper:#f6f0e4;--paper-2:#efe6d4;--card:#fbf7ef;--ink:#231c16;--ink-2:#5b4f45;--ink-3:#6e6157;
   --rule:#dccfb8;--green:#2d4a3a;--green-2:#3f6450;--oxblood:#7b2d26;--brass:#8a6420;
