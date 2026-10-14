@@ -4,3 +4,6 @@ node_modules/
 screenshots/dev/
 .DS_Store
 supabase/.temp/
+
+# Raw source records include venue/branch names: never publish them.
+data/raw/*.json

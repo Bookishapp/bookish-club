@@ -206,7 +206,7 @@ function parseRss(xml) {
         ? {
             id: tag(loc[1], 'bc:id'),
             name: tag(loc[1], 'bc:name'),
-            city: tag(loc[1], 'bc:city'),
+            city: (tag(loc[1], 'bc:city') || '').replace(/[\s,.;]+$/, '').trim() || null,
             state: toStateCode(tag(loc[1], 'bc:state')),
             country: tag(loc[1], 'bc:country'),
           }
@@ -240,6 +240,7 @@ function isClub(item) {
   if (YOUTH_TITLE_RE.test(t)) return false;
   if (NOT_CLUB_RE.test(t) && !/\bbook club\b|\bbook discussion\b/i.test(t.replace(NOT_CLUB_RE, ''))) return false;
   if (/\bauthor\b/i.test(t) && !/book club|book discussion/i.test(t)) return false;
+  if (/^club book\b/i.test(t)) return false; // author lecture series, not a club
   if (/\b(celebration|kick-?off|party|fair|festival|explorers?|open house|info(rmation)? session|orientation|meet-?up for (librarians|leaders)|for book club leaders|book club leaders?)\b/i.test(t)) return false;
   if (CLUB_RE.test(t)) return true;
   // Library tagged it as a book club / book discussion event type, and the title is not obviously something else.
@@ -265,6 +266,7 @@ function clubName(title) {
   // drop "with Jane Doe" / "led by ..." style person credits (never store staff names)
   const credit = name.match(/^(.*?)\s+(?:with|hosted by|led by|facilitated by|presented by)\s+(?!the\b|your\b|friends\b|a\b|an\b)(.+)$/i);
   if (credit && CLUB_RE.test(credit[1])) name = credit[1];
+  name = name.replace(/\s*\([^)]*\bby\b[^)]*\)\s*$/, '').replace(/\s+(of|on)\s+.+\s+by\s+.+$/i, '');
   name = name.replace(/\s*[-–—:,|]\s*$/, '').replace(/^["“”']+|["“”']+$/g, '').trim();
   return name;
 }

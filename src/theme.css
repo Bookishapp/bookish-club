@@ -17,5 +17,6 @@
   --ok-bg:#e3eadf;--ok-ink:var(--green);--err-bg:#f3e0dc;--err-ink:var(--oxblood);
   --callout-sub:#d9e2d6;
   --shadow-rgb:35,28,22;--focus-ring:rgba(45,74,58,.15);
-  --mono:ui-monospace,Menlo,monospace
+  --mono:ui-monospace,Menlo,monospace;
+  --map-bg:#ece5d6;--map-pin:#2d4a3a;--map-cluster:#7b2d26
 }

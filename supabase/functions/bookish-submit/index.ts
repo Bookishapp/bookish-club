@@ -54,8 +54,8 @@ async function sha256(s: string) {
 }
 
 const FIELDS: Record<string, Record<string, number>> = {
-  claim: { club_name: 160, club_city: 80, role: 40, first_name: 60, message: 1000, club_url: 300 },
-  start: { club_name: 160, city: 80, state: 2, zip: 10, genre: 40, cadence: 80, format: 20, first_name: 60, about: 1000 },
+  claim: { club_name: 160, club_city: 80, role: 40, first_name: 60, message: 1000, club_url: 300, meets_at: 20, show_on_map: 5 },
+  start: { club_name: 160, city: 80, state: 2, zip: 10, genre: 40, cadence: 80, format: 20, first_name: 60, about: 1000, meets_at: 20, show_on_map: 5 },
   waitlist: { first_name: 60, city: 80, is_host: 5, features: 200, club_size: 20 },
 };
 
@@ -114,7 +114,13 @@ Deno.serve(async (req) => {
     return json({ ok: false, error: "rate_limited" }, 429, origin);
   }
 
-  const clubRef = kind === "claim" ? str(body.club_id, 80) || null : null;
+  // "List my club in <city>": the public directory/map is city-level only;
+  // no address, venue or neighborhood is ever published. Home-based clubs
+  // default to not listed (the form sends false unless the host opts in).
+  if (kind !== "waitlist") payload.list_in_city = body.show_on_map === true ? "yes" : "no";
+  delete payload.show_on_map;
+  const clubRef = kind === "claim" ? str(body.club_id, 80) || null
+    : kind === "start" ? `new-${crypto.randomUUID().slice(0, 8)}` : null;
   const { data, error } = await sb.from("bookish_submissions").insert({
     kind, email, club_ref: clubRef, payload, ip_hash: ipHash,
     user_agent: str(req.headers.get("user-agent"), 300),
@@ -138,8 +144,8 @@ Deno.serve(async (req) => {
       headers: { authorization: `Bearer ${resendKey}`, "content-type": "application/json" },
       body: JSON.stringify({
         from, to: [email],
-        subject: "Please confirm your email — Bookish Club",
-        text: `Hello${payload.first_name ? " " + payload.first_name : ""},\n\nThanks for reaching out about ${what}. Please confirm this is your email address:\n\n${confirmUrl}\n\nIf this wasn't you, ignore this note and nothing will happen.\n\nWarmly,\nBookish Club`,
+        subject: "Please confirm your email — Bookish",
+        text: `Hello${payload.first_name ? " " + payload.first_name : ""},\n\nThanks for reaching out about ${what}. Please confirm this is your email address:\n\n${confirmUrl}\n\nIf this wasn't you, ignore this note and nothing will happen.\n\nWarmly,\nBookish`,
       }),
     });
     confirmSent = res.ok;

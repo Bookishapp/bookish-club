@@ -14,12 +14,13 @@ img{max-width:100%}
 .wordmark{display:inline-flex;align-items:baseline;gap:.42em;text-decoration:none;color:var(--ink);line-height:1}
 .wordmark:hover{color:var(--ink)}
 .wm-b{font:italic 600 27px/1 var(--serif);letter-spacing:-.01em}
-.wm-c{font:700 10.5px/1 var(--sans);letter-spacing:.32em;text-transform:uppercase;border:1.5px solid currentColor;padding:4px 3px 3px 6px;border-radius:2px;position:relative;top:-3px;color:var(--green)}
+.wm-c{font:700 9.5px/1 var(--sans);letter-spacing:.2em;white-space:nowrap;text-transform:uppercase;border:1.5px solid currentColor;padding:4px 3px 3px 6px;border-radius:2px;position:relative;top:-3px;color:var(--green)}
 .nav{display:flex;gap:18px;font:500 14px/1 var(--sans)}
 .nav a{color:var(--ink-2);text-decoration:none}.nav a:hover{color:var(--oxblood)}
 .nav .btn-sm{color:var(--paper);background:var(--green);padding:9px 13px;border-radius:999px}
 .nav .btn-sm:hover{background:var(--oxblood);color:var(--paper)}
 @media (max-width:640px){.nav .hide-sm{display:none}.wm-b{font-size:24px}}
+@media (max-width:380px){.wm-c{display:none}}
 
 /* type */
 h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.015em;line-height:1.1;margin:0 0 .4em}
@@ -190,3 +191,25 @@ section{padding:48px 0}
 .res p{margin:0;color:var(--ink-2);font-size:17px}
 .res-label{display:inline-block;font:600 11px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-left:0}
 .res .tag + .res-label{margin-left:8px}
+
+/* map */
+.club-map{position:relative;height:380px;border:1px solid var(--rule);border-radius:14px;overflow:hidden;background:var(--map-bg);margin:6px 0 10px}
+.club-map.city{height:300px;margin-top:22px}
+@media (min-width:760px){.club-map{height:480px}.club-map.city{height:360px}}
+.map-hint{position:absolute;inset:0;display:grid;place-items:center;margin:0;font:500 14px/1 var(--sans);color:var(--ink-3)}
+.club-map.failed .map-hint::after{content:" (map couldn't load)"}
+.maplibregl-canvas-container ~ .map-hint,.club-map:not(.loading) .maplibregl-canvas ~ .map-hint{display:none}
+.club-pop .maplibregl-popup-content{background:var(--card);border-radius:12px;padding:12px 14px;box-shadow:0 14px 34px -14px rgba(var(--shadow-rgb),.5);font-family:var(--serif)}
+.pop-club + .pop-club{border-top:1px dashed var(--rule);margin-top:8px;padding-top:8px}
+.pop-name{font:600 16px/1.25 var(--serif);margin:0 0 3px;color:var(--ink)}
+.pop-where,.pop-k,.pop-more{font:400 13px/1.4 var(--sans);color:var(--ink-2);margin:0 0 4px}
+.pop-actions{display:flex;gap:12px;margin:6px 0 0;font:600 13px/1 var(--sans)}
+.pop-join{color:var(--oxblood)}
+.club .acts{display:flex;gap:14px;flex-wrap:wrap}
+.club .acts .join{color:var(--oxblood)}
+.mapq{border:1px solid var(--rule);border-radius:10px;padding:12px 14px;display:grid;gap:8px;margin:0}
+.mapq legend{font:600 13px/1.2 var(--sans);color:var(--ink-2);padding:0 4px}
+.mapq .toggle{border-top:1px dashed var(--rule);padding-top:10px;margin-top:2px}
+.mapq input[type=radio]{width:18px;height:18px;accent-color:var(--green)}
+.pop-list{list-style:none;margin:4px 0 0;padding:0;font:400 13px/1.45 var(--sans);color:var(--ink-2)}
+.pop-list li{padding:2px 0;border-bottom:1px dotted var(--rule)}
