@@ -47,6 +47,7 @@ const SOURCE_LABEL = { "library-bibliocommons": "library", "library-other": "lib
 
 const all = [];
 const unmatched = new Map();
+const junk = [];
 const counts = {};
 for (const f of fs.readdirSync(RAW).filter((f) => f.endsWith(".json")).sort()) {
   let rows;
@@ -57,6 +58,8 @@ for (const f of fs.readdirSync(RAW).filter((f) => f.endsWith(".json")).sort()) {
     const st = clean(r.state)?.toUpperCase();
     let city = clean(r.city);
     if (!name || !city || !st || !STATES.has(st) || !r.source_url) continue;
+    city = city.replace(/'s .*$/, "").replace(/ Free$/, "").trim();
+    if (/library|(?<!long )branch|system|archive|innovation|offsite|mobile service|department|[:@&]|^(main|downtown|central|virtual|online|south county|north county|cyrill-westside|byram shubert|headquarters.*|stryker center|domonkas|pierre moran)$/i.test(city)) { junk.push(`${city}, ${st}`); continue; }
     const text = `${name} ${r.vibe ?? ""}`;
     if (NOT_ADULT.test(text) || NOT_CLUB.test(name)) continue;
     if (/[\w.+-]+@[\w-]+\.[\w.]+/.test(text) || /\(?\d{3}\)?[ .-]\d{3}[ .-]\d{4}/.test(text)) continue; // never store contact info
@@ -110,4 +113,5 @@ fs.writeFileSync(path.join(ROOT, "data/clubs.json"), JSON.stringify(clubs, null,
 const cities = new Set(clubs.map((c) => `${c.city}|${c.state}`));
 console.log(`raw rows kept per source:`, counts);
 console.log(`clubs: ${clubs.length} (deduped from ${all.length}), cities: ${cities.size}, states: ${new Set(clubs.map((c) => c.state)).size}`);
+if (junk.length) console.log(`dropped ${junk.length} rows with a non-city in the city field:`, [...new Set(junk)].slice(0, 10).join('; '));
 if (unmatched.size) console.log(`cities not geocoded (${unmatched.size}):`, [...unmatched.entries()].sort((a, b) => b[1] - a[1]).slice(0, 25).map(([k, v]) => `${k} (${v})`).join("; "));

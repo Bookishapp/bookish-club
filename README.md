@@ -88,3 +88,9 @@ Read submissions with SQL as the service role, for example `select kind, email, 
 ## Fonts
 
 Newsreader (Production Type, SIL Open Font License 1.1), self-hosted latin subset.
+
+## Mascot art
+
+`public/img/lunair-*.webp` come from `scripts/stickers.py`. The script works on the existing cut-outs in `~/ted-screenshots/fictora-official/lunair-bible/`. It only scales them and adds a white die-cut border. It never mirrors or repaints them. The soft shadow is added in CSS.
+
+Re-run it with `python3 scripts/stickers.py`. It needs Pillow installed.

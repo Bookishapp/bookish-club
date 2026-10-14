@@ -1,6 +1,6 @@
 // Adapters for platforms not covered by library-other.
 import { cachedFetch } from './http.mjs';
-import { collapse, decodeEntities } from '../library-other/common.mjs';
+import { collapse, decodeEntities, cadenceFromText, genresFor, isAdult } from '../library-other/common.mjs';
 
 const MONTHS = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
 const AGE_RE = /adult|senior|teen|tween|youth|kid|child|family|families|baby|babies|toddler|preschool|all ages|years\)|grade|\b\d+\+/i;
@@ -136,4 +136,78 @@ async function civicplus(lib) {
   return collapse(occs, lib);
 }
 
-export const ADAPTERS = { evcal: { scrape: evcal }, lapl: { scrape: lapl }, trumba: { scrape: trumba }, civicplus: { scrape: civicplus } };
+// Localist calendars: public JSON API /api/2/events?days=90&pp=100&page=N (documented public API).
+async function localist(lib) {
+  const occs = [];
+  for (let page = 1; page <= 40; page++) {
+    const r = await cachedFetch(`https://${lib.host}/api/2/events?days=90&pp=100&page=${page}`);
+    if (r.status >= 400) throw new Error(`HTTP ${r.status} localist`);
+    const j = JSON.parse(r.text);
+    for (const { event: e } of j.events ?? []) {
+      const f = e.filters ?? {};
+      const ages = (f.event_target_audience ?? []).map((x) => x.name);
+      const tags = [...(f.event_types ?? []), ...(f.event_compass_sections ?? [])].map((x) => x.name);
+      const online = e.experience === 'virtual';
+      for (const { event_instance: ins } of e.event_instances ?? []) {
+        occs.push({ title: decodeEntities(e.title), branch: e.location_name || (online ? 'Online' : null), start: ins.start,
+          desc: e.description_text ?? '', tags, ages, url: e.localist_url, online, inperson: e.experience !== 'virtual',
+          city: e.geo?.city || null, state: e.geo?.state || null });
+      }
+    }
+    if (!j.page?.next_page) break;
+  }
+  const seen = new Set();
+  return collapse(occs.filter((o) => { const k = `${o.title}|${o.branch}|${o.start}`; return seen.has(k) ? false : seen.add(k); }), lib);
+}
+
+// Austin Public Library (Drupal): the public "Book Clubs" event category listing /events/book-clubs?page=N.
+async function austin(lib) {
+  const occs = [];
+  for (let page = 0; page < 15; page++) {
+    const r = await cachedFetch(`https://${lib.host}/events/book-clubs${page ? `?page=${page}` : ''}`);
+    if (r.status >= 400) break;
+    const arts = r.text.split('<article').slice(1);
+    if (!arts.length) break;
+    for (const a of arts) {
+      const href = a.match(/href="(\/event\/[^"]+)"/)?.[1];
+      const title = decodeEntities(a.match(/<span>([^<]+)<\/span>/)?.[1]?.trim() ?? '');
+      const dm = a.match(/event_time">\s*\w+,\s+([A-Z][a-z]+)\s+(\d{1,2})/);
+      const branch = decodeEntities(a.match(/event_location"><div>([^<]*)/)?.[1]?.trim() ?? '') || null;
+      const ages = [...a.matchAll(/taxonomy\/term\/\d+">([^<]*)/g)].map((m) => decodeEntities(m[1]));
+      if (!title || !dm || !href) continue;
+      const online = /virtual|online/i.test(branch ?? '');
+      occs.push({ title, branch, start: isoFromMonthDay(dm[1], dm[2]), desc: '', tags: ['Book Clubs'], ages, url: `https://${lib.host}${href}`, online, inperson: !online, city: null });
+    }
+    if (!new RegExp(`page=${page + 1}\\b`).test(r.text)) break;
+  }
+  return collapse(occs, lib);
+}
+
+// Memphis Public Libraries: the public "Library Book Clubs" directory page lists each branch's clubs with a
+// stated meeting schedule. Contact lines (staff names/phones/emails) are never read into the output.
+async function memphis(lib) {
+  const r = await cachedFetch(`https://${lib.host}/events/book-clubs/`);
+  if (r.status >= 400) throw new Error(`HTTP ${r.status}`);
+  const h = r.text.replace(/<script[\s\S]*?<\/script>/g, '');
+  const start = h.indexOf('Library Book Clubs</h2>') > 0 ? h.indexOf('Library Book Clubs</h2>') : h.indexOf('Library Book Clubs');
+  const body = h.slice(start, h.indexOf('All Book Club Events', start) > 0 ? h.indexOf('All Book Club Events', start) : undefined);
+  const blocks = body.split(/<h[234][^>]*>/).slice(1).map((b) => {
+    const head = decodeEntities(b.slice(0, b.search(/<\/h[234]>/)).replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim();
+    const rest = decodeEntities(b.slice(b.search(/<\/h[234]>/)).replace(/<br\s*\/?>/g, '\n').replace(/<\/p>/g, '\n').replace(/<[^>]+>/g, '')).replace(/[ \t]+/g, ' ');
+    return { head, rest };
+  });
+  const out = []; let branch = null;
+  for (const b of blocks) {
+    if (/\b(library|branch)$/i.test(b.head) && !/club/i.test(b.head)) { branch = b.head.replace(/\s+Branch Library$/i, ' Branch').trim(); continue; }
+    const mt = b.rest.match(/Meeting Time:\s*([^\n]*)/i)?.[1]?.trim() ?? '';
+    if (!branch || !b.head || !mt) continue;
+    if (!isAdult({ title: b.head, ages: [], desc: '' })) continue;
+    let cadence = cadenceFromText(mt);
+    if (!cadence && /monthly|each month|a month/i.test(mt)) cadence = 'Monthly';
+    out.push({ name: b.head, city: null, state: lib.state, venue: branch, genres: genresFor(b.head, '', []), vibe: null, cadence,
+      format: 'in-person', source_url: `https://${lib.host}/events/book-clubs/` });
+  }
+  return out;
+}
+
+export const ADAPTERS = { memphis: { scrape: memphis }, austin: { scrape: austin }, localist: { scrape: localist }, evcal: { scrape: evcal }, lapl: { scrape: lapl }, trumba: { scrape: trumba }, civicplus: { scrape: civicplus } };
