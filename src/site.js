@@ -116,7 +116,26 @@
   const params = new URLSearchParams(location.search);
   $$("form[data-kind]").forEach((f) => {
     const started = Date.now();
-    for (const [k, v] of params) { const el = f.elements[k]; if (el && !el.value && el.type !== "hidden" || el && el.type === "hidden" && k === "club_id") el.value = v.slice(0, 200); }
+    for (const [k, v] of params) {
+      const el = f.elements[k];
+      if (el && "value" in el && el.type !== "radio" && el.type !== "checkbox" && !el.value) el.value = v.slice(0, 200);
+    }
+    // "List my club in <city>": on by default for public venues, OFF by
+    // default for home-based clubs, n/a for online. Never an address.
+    const toggle = f.elements.show_on_map, note = $(".map-note", f), lc = $(".list-city", f);
+    const cityIn = f.elements.city || f.elements.club_city;
+    const syncCity = () => { if (lc) lc.textContent = (cityIn && cityIn.value.trim()) || "my city"; };
+    const syncMap = () => {
+      const where = (f.elements.meets_at || {}).value;
+      if (!toggle) return;
+      toggle.checked = where !== "home";
+      if (note) note.textContent = where === "home"
+        ? "Off by default for clubs at someone's home. If you turn it on, readers see only the club and your city, never the address."
+        : "Readers see the club and your city, never the address. Exact place and time are only shared with members you approve.";
+    };
+    $$("input[name=meets_at]", f).forEach((r) => r.addEventListener("change", syncMap));
+    if (cityIn) cityIn.addEventListener("input", syncCity);
+    syncMap(); syncCity();
     const msg = $(".form-msg", f), btn = $("button[type=submit]", f);
     f.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -125,19 +144,26 @@
       const data = { kind: f.dataset.kind, elapsed_ms: Date.now() - started };
       for (const el of f.elements) {
         if (!el.name) continue;
+        if (el.type === "radio") { if (el.checked) data[el.name] = el.value; continue; }
         if (el.type === "checkbox") {
-          if (el.name === "consent") data.consent = el.checked;
+          if (el.name === "consent" || el.name === "show_on_map") data[el.name] = el.checked;
           else if (el.checked) data[el.name] = data[el.name] ? `${data[el.name]}, ${el.value}` : el.value;
         } else data[el.name] = el.value;
       }
       btn.disabled = true; const label = btn.textContent; btn.textContent = "Sending…";
       try {
-        const r = await fetch(API, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(data) });
+        const r = await fetch(f.dataset.api || API, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(data) });
         const j = await r.json().catch(() => ({}));
         if (r.ok && j.ok) {
           f.reset();
           msg.className = "form-msg ok";
-          msg.textContent = j.confirm_sent
+          msg.textContent = f.dataset.kind === "join"
+            ? ({ joined: "You're in! The host will see you on the list. Check your email for the details.",
+                 already_requested: "You've already asked to join this club. We'll email you when the host replies." }[j.status]
+               || (j.host_on_bookish
+                 ? "Request sent. The host will get your note and can say yes or no. We'll email you either way."
+                 : "Request saved. This club's host hasn't joined Bookish yet, so we're holding your note and will pass it on when they do. Meanwhile the listing's source page has the next meeting details."))
+            : j.confirm_sent
             ? "Thank you. Check your inbox for a short note from us and tap the link to confirm."
             : "Thank you, it's in. We read every note and will be in touch by email.";
           f.querySelectorAll("input,select,textarea,button").forEach((el) => (el.disabled = true));
@@ -145,7 +171,8 @@
         }
         const why = { email: "That email address doesn't look right.", rate_limited: "You've sent a few of these already. Please try again later.",
           links_not_allowed: "Please leave links out of the message.", consent: "Please tick the box so we can email you.",
-          club_details: "Please add your club's name and city." }[j.error];
+          club_details: "Please add your club's name and city.", invite_invalid: "That invite code doesn't match this club. Check it with your host, or send a request without it.",
+          club: "We couldn't tell which club this is. Go back and tap Ask to join on the club's listing." }[j.error];
         throw new Error(why || "Something went wrong on our side. Please try again in a minute.");
       } catch (err) {
         msg.className = "form-msg err";

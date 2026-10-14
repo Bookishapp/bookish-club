@@ -1,0 +1,22 @@
+/* Bookish Club theme: every colour, font and texture lives here.
+   Swap this file to re-skin the site; src/styles.css only uses these variables.
+   Current theme: "Indie bookstore" (paper, bottle green, oxblood, brass; Newsreader). */
+@font-face{font-family:"Newsreader";src:url("__BASE__/fonts/newsreader.woff2") format("woff2");font-weight:400 700;font-style:normal;font-display:swap}
+@font-face{font-family:"Newsreader";src:url("__BASE__/fonts/newsreader-italic.woff2") format("woff2");font-weight:400 600;font-style:italic;font-display:swap}
+:root{
+  --paper:#f6f0e4;--paper-2:#efe6d4;--card:#fbf7ef;--ink:#231c16;--ink-2:#5b4f45;--ink-3:#6e6157;
+  --rule:#dccfb8;--green:#2d4a3a;--green-2:#3f6450;--oxblood:#7b2d26;--brass:#8a6420;
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --sans:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --r:10px;--wrap:1080px;
+  /* derived surfaces (override per theme) */
+  --page-bg:var(--paper);
+  --hero-bg:radial-gradient(1200px 300px at 80% -10%,rgba(167,122,44,.10),transparent 70%),var(--paper);
+  --bar-bg:rgba(246,240,228,.94);
+  --tag-genre-bg:#e3eadf;--tag-genre-ink:var(--green);
+  --ok-bg:#e3eadf;--ok-ink:var(--green);--err-bg:#f3e0dc;--err-ink:var(--oxblood);
+  --callout-sub:#d9e2d6;
+  --shadow-rgb:35,28,22;--focus-ring:rgba(45,74,58,.15);
+  --mono:ui-monospace,Menlo,monospace;
+  --map-bg:#ece5d6;--map-pin:#2d4a3a;--map-cluster:#7b2d26
+}

@@ -25,13 +25,13 @@ const KEYWORDS = [
   [/\bsilent (book|reading)\b|read in silence/i, "silent-reading"], [/\bespañol|spanish|en español|lectura\b/i, "spanish-language"],
 ];
 const NOT_ADULT = /\b(kids?|children'?s?|teens?|tweens?|juniors?|family|families|homeschool|middle[- ]grade|grades? \d|ages? \d|storytime|story time|parent[- ]child|mother[- ]daughter|father[- ]son|elementary|youth)\b/i;
-const NOT_CLUB = /\b(author talk|book signing|book sale|cancel+ed|postponed)\b/i;
+const NOT_CLUB = /\b(author talk|book signing|book sale|cancel+ed|postponed|open hours)\b/i;
 
 const clean = (s) => (typeof s === "string" ? s.replace(/\s+/g, " ").trim() : "") || null;
 const slug = (s) => s.toLowerCase().normalize("NFKD").replace(/[̀-ͯ]/g, "").replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 function geocode(city, st) {
-  const c = city.toLowerCase().replace(/\s+/g, " ").trim();
+  const c = city.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f\u02bb\u2018\u2019']/g, "").replace(/\s+/g, " ").trim();
   const tries = [c, c.replace(/^st\.? /, "saint "), c.replace(/^saint /, "st. "), c.replace(/^ft\.? /, "fort "),
     c.replace(/^mt\.? /, "mount "), c.replace(/ city$/, ""), c.split("-")[0]];
   for (const t of tries) { const hit = places[`${st}|${t}`]; if (hit) return hit; }
@@ -43,8 +43,14 @@ const near = (a, b) => {
   return 2 * R * Math.asin(Math.sqrt(Math.sin(x / 2) ** 2 + Math.cos(a[0] * r) * Math.cos(b[0] * r) * Math.sin(y / 2) ** 2));
 };
 
+const VENUEISH = /\b(meets? (at|in)|at the|library|branch|room|caf[eé]|coffee|bar|brewery|brewing|taproom|pub|winery|restaurant|store|shop|park|center|centre|street|st\.|ave|avenue|road|blvd|suite|floor|address)\b/i;
 const SOURCE_LABEL = { "library-bibliocommons": "library", "library-other": "library", bookstores: "bookstore" };
 
+// Sources collected but NOT published until their terms question is settled.
+// library-bibliocommons: platform ToS limits content to personal,
+// non-commercial use and bars republishing (see SOURCES.md). Set
+// BOOKISH_PUBLISH_HELD=1 only after written permission.
+const HELD = new Set(process.env.BOOKISH_PUBLISH_HELD ? [] : ["library-bibliocommons"]);
 const all = [];
 const unmatched = new Map();
 const junk = [];
@@ -53,12 +59,13 @@ for (const f of fs.readdirSync(RAW).filter((f) => f.endsWith(".json")).sort()) {
   let rows;
   try { rows = JSON.parse(fs.readFileSync(path.join(RAW, f), "utf8")); } catch (e) { console.warn(`skip ${f}: ${e.message}`); continue; }
   if (!Array.isArray(rows)) continue;
+  if (HELD.has(f.replace(/\.json$/, ""))) { console.log(`held (not published): ${f} (${rows.length} rows)`); continue; }
   for (const r of rows) {
     const name = clean(r.name);
     const st = clean(r.state)?.toUpperCase();
     let city = clean(r.city);
     if (!name || !city || !st || !STATES.has(st) || !r.source_url) continue;
-    city = city.replace(/'s .*$/, "").replace(/ Free$/, "").trim();
+    city = city.replace(/'s .*$/, "").replace(/ Free$/, "").replace(/[,.;:\s]+$/, "").trim();
     if (/library|(?<!long )branch|system|archive|innovation|offsite|mobile service|department|[:@&]|^(main|downtown|central|virtual|online|south county|north county|cyrill-westside|byram shubert|headquarters.*|stryker center|domonkas|pierre moran)$/i.test(city)) { junk.push(`${city}, ${st}`); continue; }
     const text = `${name} ${r.vibe ?? ""}`;
     if (NOT_ADULT.test(text) || NOT_CLUB.test(name)) continue;
@@ -76,19 +83,28 @@ for (const f of fs.readdirSync(RAW).filter((f) => f.endsWith(".json")).sort()) {
     for (const [re, g] of KEYWORDS) if (re.test(name)) genres.add(g);
     const venue = clean(r.venue);
     const key = `${slug(name)}|${slug(venue ?? "")}|${slug(city)}|${st}`;
+    // Keep the venue out of the public name too ("Mystery Club at Yarborough Branch").
+    let pubName = name;
+    if (venue && venue.length > 3) pubName = pubName.replace(new RegExp(`\\s*(?:at|@|[-–—:|])?\\s*(?:the\\s+)?${venue.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`, "i"), "");
+    pubName = pubName.replace(/\s+(?:at|@)\s+(?:the\s+)?[^,]*?\b(?:library|branch|bookstore|bookshop|books|caf[eé]|coffee|brewery|brewing|taproom|pub|bar)\b.*$/i, "")
+      .replace(/\s*[-–—:|@]\s*$/, "").trim();
+    { const m = pubName.match(/^(?:[\w.'’&-]+\s){1,4}(?:library|branch)\s+(.+)$/i);
+      if (m && /book|read|club|group|discussion|circle|society/i.test(m[1])) pubName = m[1]; }
+    pubName = pubName.replace(/^(?:library|branch)\s+/i, "").replace(/\s*\((?:at|@)[^)]*\)/i, "").trim();
+    if (pubName.length < 4) pubName = "Book Club";
     all.push({
       key,
-      name: name.slice(0, 140),
+      name: pubName.slice(0, 140),
       city, state: st,
-      neighborhood: clean(r.neighborhood),
-      venue: venue?.slice(0, 120) ?? null,
+      // Privacy rule: no venue, neighborhood or address on any public surface.
+      // Location is city-level only (lat/lng below = Census city centroid).
       genres: [...genres],
-      vibe: clean(r.vibe)?.slice(0, 100) ?? null,
+      vibe: (() => { const v = clean(r.vibe); return v && !VENUEISH.test(v) && !(venue && v.toLowerCase().includes(venue.toLowerCase())) ? v.slice(0, 100) : null; })(),
       cadence: clean(r.cadence)?.slice(0, 60) ?? null,
       format: ["in-person", "online", "hybrid"].includes(r.format) ? r.format : null,
       host_type: SOURCE_LABEL[r.source] ?? (String(r.source).startsWith("library") ? "library" : "community"),
       source: r.source,
-      source_name: clean(r.library) ?? clean(r.source_name) ?? venue ?? null,
+      source_name: String(r.source).startsWith("library") ? clean(r.library) : null, // library system only; never a venue
       source_url: r.source_url,
       last_seen: r.last_seen ?? new Date().toISOString().slice(0, 10),
       lat: geo?.[0] ?? null, lng: geo?.[1] ?? null,

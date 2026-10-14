@@ -15,11 +15,177 @@ Collection rules:
 
 | Source | Clubs |
 |---|---|
-| library-other | 1,213 |
-| library-more | 1,005 |
+| library-other | 1,226 |
+| library-more | 1,194 |
 | bookstores | 118 |
-| library-bibliocommons | 102 |
-| **Total** | **2,438** |
+| **Total** | **2,538** |
+
+---
+
+# Source: public library book clubs on the BiblioCommons events platform
+
+- Output: `data/raw/library-bibliocommons.json` (978 clubs, 292 distinct US city/state pairs, 54 library systems with data)
+- Scraper: `scripts/sources/library-bibliocommons.mjs` (Node 24, zero deps, re-runnable, cache in `.cache/library-bibliocommons/`)
+- Run date / last_seen: 2026-10-13. Event window searched: 2026-10-13 to 2027-01-13 (92 days).
+
+## Terms of use check (2026-10-13)
+
+BiblioCommons has no separate corporate terms page (www.bibliocommons.com/terms-of-use, /terms and /legal all return 404).
+Each library's BiblioCommons site carries the same BiblioCommons Terms of Use, for example
+https://chipublib.bibliocommons.com/info/terms (read 2026-10-13). Relevant clauses:
+
+> "[you may not] use any automated system to harvest or capture any BiblioCommons Content (as defined below) from the BiblioCommons Service, **except as may be specifically permitted using RSS/XML feeds**"
+
+> "BiblioCommons and Chicago Public Library grant our authorized users a limited, personal, non-transferable, revocable license to access and use the Service and Service Content for personal, non-commercial use. All other rights are reserved. Except as arranged by separate agreement, you may not copy, reproduce, republish, download, post, broadcast, transmit, make available to the public, or otherwise use the Service Content in any way except for your own personal, non-commercial use"
+
+> "[you may not] disable, overburden, impair the proper performance or functionality of the BiblioCommons Service"
+
+**Decision:**
+- Automated collection uses **only** the official public events RSS feed that BiblioCommons publishes for each events-enabled library
+  (`https://gateway.bibliocommons.com/v2/libraries/<id>/rss/events?q=...&startDate=...&endDate=...&page=N`). That is the route the
+  terms explicitly allow. The scraper does not call the JSON events API (`/v2/libraries/<id>/events`, `/events/search`), and it
+  never requests anything on `<id>.bibliocommons.com`.
+- We store only short facts: club name, municipality, state, branch name, cadence derived from dates, format, genre tags drawn
+  from the name, and a link back to the library's own event page. No event descriptions, images, staff names, emails or phone
+  numbers are stored. The `vibe` string is generated from a fixed template (format plus registration/drop-in facts) and is not
+  copied text.
+- **FLAG FOR LEAD (open risk):** the "personal, non-commercial use ... may not republish / make available to the public" clause
+  covers "Service Content". Our view is that we republish only uncopyrightable facts (a club exists at branch X, meets monthly) and
+  link back. Still, the clause is written broadly, and a commercial directory publishing these facts goes beyond "personal use".
+  Options: (a) publish as is, facts only with link-back; (b) ask the libraries (they own the event data) or BiblioCommons for
+  permission; (c) use these records only for internal seeding or verification. This needs a human decision before launch.
+- Exploration disclosure: while working out the feed format, about 35 manual requests went to the JSON gateway endpoints
+  (`/events`, `/events/search`) for chipublib, austin and a few other ids. Once the ToS was read, we switched to RSS only.
+  We also made one request each to austin.bibliocommons.com/robots.txt and chipublib.bibliocommons.com/info/terms, plus 4 requests to
+  www.bibliocommons.com (robots/terms checks and the public partner list). No JSON-API data is used in the output.
+
+## robots.txt (checked 2026-10-13)
+
+| Host | Result |
+|---|---|
+| gateway.bibliocommons.com | `/robots.txt` returns 404 (JSON "Not found"), so there are no rules and the host is allowed. All data requests go here. |
+| `<id>.bibliocommons.com` (e.g. austin.bibliocommons.com) | `User-agent: *` with `Crawl-delay: 120` and Disallow on catalog internals (`/item/...`, `/holds/...`, `/v2/availability/`, `/user/login`); `Allow: /*`. **Not used**: we never request these hosts, so the 120 s crawl delay is not exercised. |
+| www.bibliocommons.com | `User-agent: * Allow: /`. Used only to read the public "Libraries We Work With" partner list (3 pages). |
+
+The scraper fetches gateway robots.txt at start and checks every RSS path against it, so it would stop if rules ever appeared.
+
+## Method
+
+1. Candidates: about 500 BiblioCommons site ids. The 30 largest US metros came first, then suburban/county systems, then the US entries on
+   BiblioCommons' public partner list (https://www.bibliocommons.com/libraries-we-work-with, 3 pages).
+   Ids are guesses, and bad guesses return `404 SiteNotFound` from the gateway on the first request.
+2. For each id, page through the RSS feed (25 items per page) for each of these queries: "book club", "book discussion", "book group",
+   "reading group", "club de lectura". The window is today to +92 days. Events are deduped by event URL.
+3. Keep an event if the title reads as a club (regex: book club/discussion/group, readers' circle, silent book club, club de lectura,
+   books & brews, genre + club, ...), or if the library tagged it with a Book Club/Book Discussion event type and the title looks
+   club-like. Exclude author talks, book sales/swaps, kits, storytimes, writing groups, celebrations/kick-offs, and the "Club Book"
+   lecture series.
+4. Adults only. Drop the event if its audience categories are only kids/teens/tweens/family/young adult, or if the title names a
+   youth audience (kids, teen, tween, family, grades, parent-child, homeschool, ...).
+5. Collapse into one club per (library, normalized club name, branch location id or "virtual"). The name drops the per-month book
+   title ("Adult Book Discussion: Orbital" becomes "Adult Book Discussion"), month prefixes, "(Virtual)" tags and "with <person>" credits.
+6. Cadence comes from the occurrence dates (Weekly / Every other week / Monthly, Nth weekday / Monthly, last weekday / Every
+   other month). If the window shows only one occurrence, it comes from explicit wording in the description ("third Tuesday of each month",
+   "meets monthly"). Otherwise it is null.
+   730 of 978 records have a cadence.
+7. Format: virtual flag means online; branch location means in-person; both, or "hybrid"/"in person or via Zoom" wording, means hybrid.
+   Result: {'in-person': 855, 'online': 97, 'hybrid': 26}.
+8. Genres come only from the controlled vocabulary, stated in the club name, the library's category tags, or a description phrase
+   naming the genre as the club's focus (e.g. "a mystery book club"). 235 records have at least one genre.
+9. city/state come from the branch address in the feed (`bc:location`). Full state names are mapped to 2-letter codes.
+   Non-US systems (Canada: Hamilton, Toronto, Vancouver, Calgary, Edmonton, Oakville, Fraser Valley, Aurora ON) are dropped.
+   For online clubs, the city is the library system's home city.
+10. source_url is the library's own event page for the **next upcoming occurrence** in the window. last_seen is the run date.
+11. Libraries already present in `library-other.json` / `library-more.json` (matched on library name) are skipped to avoid
+    duplicates. 8 were skipped (see below).
+
+## Throttle
+
+At most 1 request per 1.6 s per host, strictly sequential, with User-Agent `BookishClubDirectory/0.1 (public book club listings)`.
+On 429/5xx/network errors the scraper backs off exponentially (10 s, 20 s, 40 s, 80 s). The first probe of an id gets no retry and a 25 s
+timeout, because ids without the events feature answer the RSS URL with a slow 504. Every successful (status < 500) response is
+cached in `.cache/library-bibliocommons/` keyed by URL hash, so re-runs make 0 requests for cached pages (`--refresh` forces
+re-fetch). Total gateway RSS requests across all runs: about 1,150.
+
+## Per-library record counts
+
+| BiblioCommons id | Library | Home | Events matched (RSS) | Clubs |
+|---|---|---|---|---|
+| chipublib | Chicago Public Library | Chicago, IL | 362 | 102 |
+| cmlibrary | Charlotte Mecklenburg Library | Charlotte, NC | 351 | 59 |
+| cincinnatilibrary | Cincinnati & Hamilton County Public Library | Cincinnati, OH | 228 | 52 |
+| kcls | King County Library System | Federal Way, WA | 347 | 52 |
+| hclib | Hennepin County Library | Minneapolis, MN | 113 | 45 |
+| hcpl | Harris County Public Library | Houston, TX | 338 | 37 |
+| sdcl | San Diego County Library | El Cajon, CA | 105 | 36 |
+| dayton | Dayton Metro Library | Dayton, OH | 132 | 32 |
+| pima | Pima County Public Library | Tucson, AZ | 82 | 27 |
+| slpl | St. Louis Public Library - City | St. Louis, MO | 94 | 27 |
+| bpl | Boston Public Library | Boston, MA | 183 | 26 |
+| smcl | San Mateo County Libraries | Foster City, CA | 75 | 26 |
+| fulcolibrary | Fulton County Library System | Atlanta, GA | 201 | 25 |
+| librarypoint | Central Rappahannock Regional Library | Fredericksburg, VA | 51 | 25 |
+| pbclibrary | Palm Beach County Library System | Delray Beach, FL | 66 | 24 |
+| sno-isle | Sno-Isle Libraries | Snohomish, WA | 94 | 24 |
+| sjpl | San José Public Library | San Jose, CA | 276 | 23 |
+| jeffcolibrary | Jefferson County Public Library | Arvada, CO | 80 | 22 |
+| kdl | Kent District Library | Grand Rapids, MI | 58 | 20 |
+| jocolibrary | Johnson County Library | Overland Park, KS | 58 | 18 |
+| bclsnj | Burlington County Library System | Riverton, NJ | 66 | 17 |
+| greenelibrary | Greene County Public Library | Beavercreek, OH | 101 | 17 |
+| krl | Kitsap Regional Library | Bremerton, WA | 58 | 17 |
+| wccls | Washington County Cooperative Library Services | Hillsboro, OR | 49 | 16 |
+| herrickdl | Herrick District Library | Holland, MI | 32 | 15 |
+| sccl | Santa Clara County Library | Milpitas, CA | 77 | 15 |
+| plymc | Public Library of Youngstown and Mahoning County | Youngstown, OH | 44 | 14 |
+| evanstonlibrary | Evanston Public Library | Evanston, IL | 46 | 13 |
+| ccclib | Contra Costa County Library | San Ramon, CA | 47 | 12 |
+| arapahoelibraries | Arapahoe Libraries | Centennial, CO | 54 | 11 |
+| marinlibrary | Marin County Free Library | San Rafael, CA | 38 | 10 |
+| tacoma | Tacoma Public Library | Tacoma, WA | 27 | 10 |
+| lawrence | Lawrence Public Library | Lawrence, KS | 81 | 8 |
+| oaklandlibrary | Oakland Public Library | Oakland, CA | 34 | 8 |
+| sppl | Saint Paul Public Library | Saint Paul, MN | 31 | 8 |
+| starklibrary | Stark Library | Canton, OH | 161 | 8 |
+| westervillelibrary | Westerville Public Library | Westerville, OH | 44 | 8 |
+| aclibrary | Alameda County Library | Dublin, CA | 54 | 7 |
+| ccplohio | Clark County Public Library | Springfield, OH | 20 | 7 |
+| grpl | Grand Rapids Public Library | Grand Rapids, MI | 15 | 6 |
+| kentonlibrary | Kenton County Public Library | Erlanger, KY | 55 | 6 |
+| smpl | Santa Monica Public Library | Santa Monica, CA | 18 | 6 |
+| friscolibrary | Frisco Public Library | Frisco, TX | 23 | 5 |
+| glenviewpl | Glenview Public Library | Glenview, IL | 38 | 5 |
+| mykpl | Kenosha Public Library | Kenosha, WI | 18 | 5 |
+| rclreads | Ramsey County Library | Shoreview, MN | 11 | 5 |
+| oceancity | Ocean City Free Public Library | Ocean City, NJ | 49 | 4 |
+| chandler | Chandler Public Library | Chandler, AZ | 30 | 3 |
+| paloalto | Palo Alto City Library | Palo Alto, CA | 17 | 3 |
+| denton | Denton Public Library | Denton, TX | 2 | 2 |
+| elpl | East Lansing Public Library | East Lansing, MI | 10 | 2 |
+| yumalibrary | Yuma County Library | Wellton, AZ | 4 | 2 |
+| cantonpl | Canton Public Library | Canton, MI | 6 | 1 |
+| laurellibrary | Laurel County Public Library | London, KY | 13 | 0 |
+
+States: CA 146, OH 138, IL 120, WA 103, NC 59, MN 58, MI 44, TX 44, CO 33, AZ 32, MO 27, KS 26, MA 26, GA 25, VA 25, FL 24, NJ 21, OR 16, KY 6, WI 5
+
+## Libraries tried and skipped
+
+The 30-metro systems below are mostly **not** on BiblioCommons events, or have the events module off: NYPL, Austin, Multnomah, Seattle, Tampa-Hillsborough (504/403, events not enabled); Brooklyn, Queens, San Diego city (410 disabled);
+SFPL (feed works but no matching events); LA city/county, Dallas, Houston city, Philadelphia, Miami-Dade, Phoenix, Detroit,
+Denver, Orlando, Baltimore, St. Louis County, Sacramento, Pittsburgh, DC (no BiblioCommons site found under any guessed id).
+Las Vegas-Clark County and San Antonio are on BiblioCommons but are already covered by sibling sources.
+
+- **not a BiblioCommons site id (404 SiteNotFound)** (378): aacpl, aadl, abqlibrary, acld, acpl, afpls, ahml, akronlibrary, alachua, alaska, albany, alexlibrary, allegheny, anchorage, anoka, anythink, appleton, arapahoe, arlingtontx, arlingtonva, athens, atlantic, bccls, bcpl, bcpl-ky, berkeley, bham, bhpl, bloomington, boca, bocaratonlibrary, boise, boston, boulderlibrary, brevard, brookline, broward, bucks, buckslib, buffalo, buffalolib, burbank, cadl, cambridge, camden, campbell, carmelclay, carnegielibrary, carr, carrollton, carver, ccls, ccpl, ccpl-in, ccpl-md, ccpl-sc, cedarrapids, champaign, chandlerlibrary, chapelhill, chapelhillpubliclibrary, charleston, chatham, chattanooga, chesterfield, clackamas, clarkcounty, clevelandpubliclibrary, clp, cobb, cobbcat, colapl, collier, columbus, columbuslibrary, contracosta, cplmd, crrl, cumberland, cuyahoga, cuyahogalibrary, cwmars, dakota, dallas, dallaslibrary, dauphin, dclibrary, dcplibrary, deerfield, dekalb, delaware, delco, dentonlibrary, denver, denverlibrary, deschutes, deschuteslibrary, desmoines, detroit, detroitpubliclibrary, dmpl, downers, duluth, durham, durhamcountylibrary, ebrpl, eden, eglendalelac, einetwork, elmhurst, elpaso, elpasolibrary, epfl, epls, eppl, escambia, eugene, everett, evpl, fairfax, fairfaxcounty, farmington, fcpl, fcplmd, fergusonlibrary, fletcherfree, flint, forsyth, fortbend, fortworth, freelibrary, fresnolibrary, fwpl, gail, galveston, garland, gcpl, gilbert, glendale, glendaleaz, glendalelac, gloucester, gplibrary, greensboro, greenvillelibrary, greenwich, guilford, gwinnettpl, hamilton, hampton, hartford, hawaii, haywardlibrary, hclibrary, hcplmd, hempstead, hennepin, henrico, hepl, herrick, hinsdale, honolulu, horry, houston, hplct, hunterdon, huntington, huntsville, ifls, iowacity, irving, jackson, jaxpubliclibrary, jcpl, jefferson, jmrl, joliet, jpl, jrlibrary, kckpl, kcpl, kenosha, kerncountylibrary, knox, kpl, lacountylibrary, lagrange, lake, lakecounty, lancaster, lansing, lapl, laurel, lbpl, lcd, leelibrary, leon, lewisville, lexpublib, lfpl, library.nashville, lincoln, liveoakpl, livermore, llcoop, loudoun, macon, madison, madl, manatee, manchester, margatelibrary, mckinney, mcl, mcldaz, mclib, mclinc, mcpl-in, mcpl-pa, mcplmd, mcplnj, mdpls, memphis, mesa, mesacounty, metrolibrary, midarklibrary, minuteman, mkepl, mobile, mobilepubliclibrary, monroe, montgomerycountymd, montgomerycountytx, morris, mvpl, myboca, mylibrary, naperville, nashville, nashvillelibrary, nassau, newhaven, neworleans, newton, nhpl, noble, nolalibrary, novi, npl, nyack, oakpark, ocean, ocln, ocln-ma, ocls, ocpl, olathelibrary, olympia, omahalibrary, onlib, oppl, osceola, palatine, pasadena, pasco, peoria, peoriapl, pgcmls, phoenix, phoenixpubliclibrary, piercecountylibrary, pinellas, placer, plano, pleasanton, pls, plsinfo, plymouth, polk, portland, poudre, ppld, prattlibrary, princeton, providence, provlib, pwcls, rampl, ramsey, ramseycounty, richardson, richland, richmond, riverside, rivlib, rochester, rochesterpl, rockford, roundrock, saclibrary, sacramento, santaclara, santacruzpl, santafe, sarasota, sbpl, scarsdale, schaumburg, scld, sclsnj, scott, scottsdale, sdcounty, sdpl, seattlepubliclibrary, seminole, shreveport, sjcl, skokie, slcl, slco, slcolibrary, slolibrary, smithtown, sno_isle, snoisle, solano, somerset, somerville, sonomalibrary, spartanburg, spokanelibrary, springfield, stamford, stanislaus, stark, stjohns, stl, stlouis, sttammany, sttammanylibrary, suffolk, sugarland, syracuse, tallahassee, tampa, tempe, toledolibrary, trl, troy, tulsalibrary, urbana, vbpl, ventura, volusia, wake, wakegov, washington, washoe, waukesha, westbloomfield, westchester, westerville, westfloridalibrary, westport, wheaton, whiteplains, wichita, williamson, winnetka, wls, worcester, wtx, yolocounty, yonkers, yorklibraries, yuma
+- **RSS feed returned HTTP 504 (gateway timeout; events feature not enabled for this site)** (19): austin, bellingham, burlington, carmel, dcl, gailborden, hcplc, indypl, mcpl, mpl, mppl, multcolib, nypl, rcpl, sapl, sclibrary, seattle, toledo, wcls
+- **no matching events in window** (18): calgary (Calgary Public Library), cals (Central Arkansas Library System), chpl (Chapel Hill Public Library), dcpl (Daviess County Public Library), fremont (Fremont Area District Library), fvrl (Fraser Valley Regional Library), kclibrary (The Kansas City Public Library), lakecountyca (Lake County Library), marinet (MARINet), midark (Mid-Ark Regional Library System), more (MORE Libraries), mymcpl (Mid-Continent Public Library), olathe (Olathe Public Library), opl (Oakville Public Library), pac2 (PAC2), salem (Salem Township Library), sfpl (San Francisco Public Library), sunnyvale (Sunnyvale Public Library)
+- **TimeoutError: The operation was aborted due to timeout** (15): beverlyhills, bocalibrary, delawarelibrary, egvpl, hayward, margate, orangecountync, plymouthlibrary, princetonlibrary, richmondlibrary, skokielibrary, spl, tscpl, wcpl, ylpl
+- **BiblioCommons site disabled (410)** (13): brooklyn, cpl, eapl, ecpl, highlandpark, lakeforest, northbrook, norwalk, portlandlibrary, queens, sandiego, slcpl, wilmette
+- **already covered by library-other.json / library-more.json** (8): cml (Columbus Metropolitan Library), dbrl (Daniel Boone Regional Library), durhamcounty (Durham County Library), greenwichlibrary (Greenwich Library), lvccld (Las Vegas-Clark County Library District), mysapl (San Antonio Public Library), sjcpl (St. Joseph County Public Library), yourlibrary (Richmond Public Library)
+- **no location data to place clubs** (5): aurora (Aurora Public Library), epl (Edmonton Public Library), hpl (Hamilton Public Library), tpl (Toronto Public Library), vpl (Vancouver Public Library)
+
+"Timeout" ids returned no response within 25 s on the first probe. They are most likely events-disabled sites (same behaviour as the 504s), but this is
+unconfirmed. A later run with a longer timeout could retry them: Beverly Hills, Boca Raton, Delaware County OH, Elk Grove Village, Hayward,
+Margate, Orange County NC, Plymouth MI, Princeton NJ, Richmond CA, Skokie, Topeka, Warren County, Yorba Linda.
 
 ---
 
@@ -541,7 +707,7 @@ raw responses cached under `.cache/library-more/`. Public logged-out endpoints o
 Scope: library systems whose hosts did not appear in `library-bibliocommons.json` / `library-other.json` (or in the
 library-other registry) at the moment each library ran; the check is repeated immediately before every library.
 
-Records: 1036 clubs, 400 cities, 127 library systems.
+Records: 1195 clubs, 431 cities, 138 library systems.
 
 Rules applied: recurring adult clubs only (kids/teen/tween/family excluded); one record per (library, club name, branch);
 cadence derived from the listed dates (or the stated schedule); clubs listed only once in the window are kept only when the
@@ -561,75 +727,75 @@ skipped. Hosts answering 403 to this User-Agent (e.g. *.events.mylibrary.digital
 
 | Library | Host | Platform / route | robots.txt (2026-10-13) | Decision | Clubs |
 |---|---|---|---|---|---|
-| Baltimore County Public Library | events.bcpl.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 5 |
-| Douglas County Libraries | go.dcl.org | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 25 |
-| Anythink Libraries | events.anythinklibraries.org | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 12 |
+| Baltimore County Public Library | events.bcpl.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 16 |
+| Douglas County Libraries | go.dcl.org | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 28 |
+| Anythink Libraries | events.anythinklibraries.org | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 13 |
 | Hartford Public Library | programs.hplct.org | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 1 |
-| Ocean County Library | theoceancountylibrary.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 25 |
-| Akron-Summit County Public Library | services.akronlibrary.org | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 18 |
-| Fairfax County Public Library | librarycalendar.fairfaxcounty.gov | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 27 |
-| Albuquerque & Bernalillo County Library | libevents.abqlibrary.org | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 22 |
+| Ocean County Library | theoceancountylibrary.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 29 |
+| Akron-Summit County Public Library | services.akronlibrary.org | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 27 |
+| Fairfax County Public Library | librarycalendar.fairfaxcounty.gov | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 42 |
+| Albuquerque & Bernalillo County Library | libevents.abqlibrary.org | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 27 |
 | Spokane County Library District | scld.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 5 |
-| Monroe County Library System (Rochester) | calendar.libraryweb.org | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 17 |
-| Monmouth County Library | monmouthcountylib.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 10 |
+| Monroe County Library System (Rochester) | calendar.libraryweb.org | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 40 |
+| Monmouth County Library | monmouthcountylib.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 16 |
 | Round Rock Public Library | roundrocktexas.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 2 |
-| Columbus Metropolitan Library | columbus.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 14 |
+| Columbus Metropolitan Library | columbus.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 22 |
 | The Seattle Public Library | spl.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 0 |
 | Kansas City Public Library | kcpl.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 2 |
-| Toledo Lucas County Public Library | toledo.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 20 |
-| Harford County Public Library | hcpl.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*; Disallow: /reserve" | collected | 20 |
+| Toledo Lucas County Public Library | toledo.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 22 |
+| Harford County Public Library | hcpl.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*; Disallow: /reserve" | collected | 22 |
 | Scottsdale Public Library | scottsdale.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 0 |
-| Daniel Boone Regional Library | dbrl.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 3 |
-| Topeka & Shawnee County Public Library | tscpl.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 1 |
+| Daniel Boone Regional Library | dbrl.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 5 |
+| Topeka & Shawnee County Public Library | tscpl.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 2 |
 | Henderson Libraries | henderson.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 7 |
-| Aurora Public Library District | aurora.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 4 |
+| Aurora Public Library District | aurora.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 5 |
 | Newport Beach Public Library | newportbeach.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 0 |
 | Westminster Public Library | westminster.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 0 |
 | Bexley Public Library | bexley.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 1 |
 | Upper Arlington Public Library | ualibrary.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 5 |
-| Plano Public Library | plano.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 2 |
+| Plano Public Library | plano.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 3 |
 | Solano County Library | solanolibrary.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | skipped: host already covered by library-other / library-bibliocommons | 0 |
-| Alexandria Library | alexlibraryva.org | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 5 |
+| Alexandria Library | alexlibraryva.org | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 9 |
 | Forsyth County Public Library | www.forsythpl.org | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 7 |
-| Henry County Library System | henrylibraries.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 6 |
-| Gail Borden Public Library District | attend.gailborden.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 3 |
-| Princeton Public Library | princetonlibrary.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 3 |
-| Chesapeake Public Library | events.chesapeakelibrary.org | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 6 |
-| Boone County Public Library | boone.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 3 |
+| Henry County Library System | henrylibraries.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 10 |
+| Gail Borden Public Library District | attend.gailborden.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 7 |
+| Princeton Public Library | princetonlibrary.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 5 |
+| Chesapeake Public Library | events.chesapeakelibrary.org | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 8 |
+| Boone County Public Library | boone.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 5 |
 | Portage District Library | portage.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 1 |
-| Maricopa County Library District | events.mcldaz.org | evcal: events.mylibrary.digital-style public search (`POST /update`, the request the public search page makes) | "User-agent: *; Disallow: /staff/" | collected | 18 |
+| Maricopa County Library District | events.mcldaz.org | evcal: events.mylibrary.digital-style public search (`POST /update`, the request the public search page makes) | "User-agent: *; Disallow: /staff/" | collected | 22 |
 | Mercer County Library System | events.mcl.org | evcal: events.mylibrary.digital-style public search (`POST /update`, the request the public search page makes) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | failed: HTTP 404 /update | 0 |
 | Camden County Library System | events.camdencountylibrary.org | evcal: events.mylibrary.digital-style public search (`POST /update`, the request the public search page makes) | "User-agent: *; Disallow: /core/; Disallow: /profiles/; Disallow: /README.md; Disallow: /composer/Metapackage/README.txt; Disallow: /composer/Plugin/ProjectMessage/README.md; Disallow: /composer/Plugin/Scaffold/README.md; ..." | failed: HTTP 404 /update | 0 |
 | Hunterdon County Library | hclibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 6 |
-| High Plains Library District | highplains.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 15 |
-| Jackson County Library Services | jcls.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 6 |
+| High Plains Library District | highplains.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 18 |
+| Jackson County Library Services | jcls.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 9 |
 | Lewisville Public Library | lewisville.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 4 |
-| Placer County Library | placer.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 8 |
+| Placer County Library | placer.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 7 |
 | Providence Public Library | provlib.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /; Disallow: /process_" | skipped: robots.txt disallows | 0 |
-| Anaheim Public Library | anaheim.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 4 |
-| Eugene Public Library | eugene.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | not run | 0 |
-| Riverside County Library System | rivlib.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 9 |
-| Huntington Beach Public Library | hbpl.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 2 |
+| Anaheim Public Library | anaheim.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 8 |
+| Eugene Public Library | eugene.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 0 |
+| Riverside County Library System | rivlib.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 17 |
+| Huntington Beach Public Library | hbpl.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 3 |
 | Cherry Hill Public Library | chplnj.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 2 |
-| Hawaii State Public Library System | www.librarieshawaii.org | tribe: WordPress "The Events Calendar" public REST API (`/wp-json/tribe/events/v1/events`) | "User-agent: *; Disallow: /wp-admin/; Disallow: /wp-content/cache/" | collected | 11 |
+| Hawaii State Public Library System | www.librarieshawaii.org | tribe: WordPress "The Events Calendar" public REST API (`/wp-json/tribe/events/v1/events`) | "User-agent: *; Disallow: /wp-admin/; Disallow: /wp-content/cache/" | collected | 15 |
 | Kern County Library | kerncountylibrary.org | tribe: WordPress "The Events Calendar" public REST API (`/wp-json/tribe/events/v1/events`) | "User-agent: *; Disallow: /wp-admin/" | collected | 0 |
 | Prince William Public Libraries | pwcgov.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*; Disallow: /" | skipped: robots.txt disallows | 0 |
-| West Islip Public Library | westisliplibrary.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 0 |
-| Edison Public Library | edisonpubliclibrary.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 2 |
-| New Brunswick Free Public Library | nbpl.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 0 |
-| Franklin Township Public Library | franklintwp.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 0 |
-| Hicksville Public Library | hicksvillelibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 2 |
+| West Islip Public Library | westisliplibrary.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 2 |
+| Edison Public Library | edisonpubliclibrary.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 3 |
+| New Brunswick Free Public Library | nbpl.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 1 |
+| Franklin Township Public Library | franklintwp.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 2 |
+| Hicksville Public Library | hicksvillelibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 3 |
 | Garden City Public Library | gardencitypl.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /; Disallow: /process_" | skipped: robots.txt disallows | 0 |
-| Freeport Memorial Library | freeportlibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | not run | 0 |
+| Freeport Memorial Library | freeportlibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 3 |
 | Woodbridge Public Library | woodbridge-nj.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 5 |
-| Pinellas Public Library Cooperative | pplc.us | tribe: WordPress "The Events Calendar" public REST API (`/wp-json/tribe/events/v1/events`) | "User-agent: *" with no disallow rules | collected | 22 |
+| Pinellas Public Library Cooperative | pplc.us | tribe: WordPress "The Events Calendar" public REST API (`/wp-json/tribe/events/v1/events`) | "User-agent: *" with no disallow rules | collected | 37 |
 | Huntsville-Madison County Public Library | events.hmcpl.org | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /core/; Disallow: /profiles/; Disallow: /README.txt; Disallow: /web.config; Disallow: /admin/; Disallow: /comment/reply/; ..." | collected | 0 |
 | Chattahoochee Valley Libraries | cvl.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 9 |
-| Clayton County Library System | claytonpl.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 4 |
+| Clayton County Library System | claytonpl.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 5 |
 | Pueblo City-County Library District | pueblolibrary.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 11 |
 | Clinton-Macomb Public Library | cmpl.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 5 |
 | Lake County Library System (FL) | mylakelibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 25 |
-| Osceola Library System | osceolalibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | not run | 5 |
+| Osceola Library System | osceolalibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 5 |
 | Athens Regional Library System | athenslibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /; Disallow: /process_" | skipped: robots.txt disallows | 0 |
 | Lafayette Public Library | lafayettela.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | n/a | skipped: host already covered by library-other / library-bibliocommons | 0 |
 | Davenport Public Library | davenportlibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 8 |
@@ -647,17 +813,17 @@ skipped. Hosts answering 403 to this User-Agent (e.g. *.events.mylibrary.digital
 | Washington-Centerville Public Library | events.wclibrary.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 0 |
 | Lorain Public Library System | lorainpubliclibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 14 |
 | Mentor Public Library | mentorpl.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 7 |
-| Willoughby-Eastlake Public Library | welibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 6 |
+| Willoughby-Eastlake Public Library | welibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 5 |
 | Geauga County Public Library | geaugalibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 8 |
 | Chester County Library System | ccls.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 15 |
-| Delaware County Libraries (PA) | delcolibraries.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | not run | 40 |
-| Dauphin County Library System | dcls.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 7 |
+| Delaware County Libraries (PA) | delcolibraries.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 38 |
+| Dauphin County Library System | dcls.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 3 |
 | New Haven Free Public Library | nhfpl.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 11 |
-| Greenwich Library | greenwichlibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 10 |
+| Greenwich Library | greenwichlibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 9 |
 | Lakewood Public Library | www.lakewoodpubliclibrary.org | tribe: WordPress "The Events Calendar" public REST API (`/wp-json/tribe/events/v1/events`) | "User-agent: *; Disallow: /wp-admin/; Crawl-delay: 10; Disallow: /?s=; Disallow: /page/*/?s=; Disallow: /search/; Disallow: /sdc_download" | collected | 0 |
 | Elkhart Public Library | www.myepl.org | tribe: WordPress "The Events Calendar" public REST API (`/wp-json/tribe/events/v1/events`) | "User-agent: *; Disallow: /wp-admin/; Disallow: /wp-login.php; Disallow: /xmlrpc.php; Disallow: /?s=; Disallow: /*?replytocom=; Disallow: /local-history?; ..." | collected | 4 |
 | St. Mary's County Library | stmalib.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 3 |
-| Calvert Library | calvertlibrary.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 8 |
+| Calvert Library | calvertlibrary.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 9 |
 | Berkeley Public Library | berkeleypubliclibrary.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 5 |
 | Williamsburg Regional Library | libcal.wrl.org | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 6 |
 | Roanoke County Public Library | roanokecountyva.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 9 |
@@ -665,8 +831,8 @@ skipped. Hosts answering 403 to this User-Agent (e.g. *.events.mylibrary.digital
 | Yakima Valley Libraries | yvl.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 4 |
 | Salem Public Library | cityofsalemlibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 1 |
 | Yolo County Library | events.yolocountylibrary.org | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | n/a | skipped: host already covered by library-other / library-bibliocommons | 0 |
-| Fullerton Public Library | fullertonlibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | not run | 0 |
-| Corona Public Library | coronacalibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | not run | 0 |
+| Fullerton Public Library | fullertonlibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 2 |
+| Corona Public Library | coronacalibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 3 |
 | Mountain View Public Library | mountainview.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 0 |
 | Los Angeles Public Library | www.lapl.org | lapl: public events search listing (`/events/search`) | "User-agent: *; Disallow: /core/; Disallow: /profiles/; Disallow: /README.md; Disallow: /composer/Metapackage/README.txt; Disallow: /composer/Plugin/ProjectMessage/README.md; Disallow: /composer/Plugin/Scaffold/README.md; ..." | skipped: host already covered by library-other / library-bibliocommons | 0 |
 | Flower Mound Public Library | fmlibrary.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 1 |
@@ -675,22 +841,22 @@ skipped. Hosts answering 403 to this User-Agent (e.g. *.events.mylibrary.digital
 | Southlake Public Library | southlake.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 0 |
 | Corpus Christi Public Libraries | cctexas.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 15 |
 | Waco-McLennan County Library | calendar.wacolibrary.org | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 1 |
-| Little Elm Public Library | littleelm.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | not run | 0 |
+| Little Elm Public Library | littleelm.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 1 |
 | Sachse Public Library | sachse.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 0 |
-| Weatherford Public Library | weatherfordtx.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | not run | 0 |
+| Weatherford Public Library | weatherfordtx.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 2 |
 | Ector County Library | ector.lib.tx.us | tribe: WordPress "The Events Calendar" public REST API (`/wp-json/tribe/events/v1/events`) | "User-agent: *; Disallow: /wp-admin/; Crawl-delay: 10" | collected | 0 |
 | Aurora Public Library (CO) | auroraco.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 7 |
 | Provo City Library | www.provolibrary.gov | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*; Disallow: /library-card-signup" | collected | 2 |
 | Calcasieu Parish Public Library | calcasieulibrary.org | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 7 |
 | Nampa Public Library | nampalibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 0 |
 | Thomas Branigan Memorial Library | lascruceslibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /; Disallow: /process_" | skipped: robots.txt disallows | 0 |
-| Flagstaff City-Coconino County Public Library | flagstaffpubliclibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 4 |
+| Flagstaff City-Coconino County Public Library | flagstaffpubliclibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 3 |
 | Englewood Public Library | englewoodpl-co.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 4 |
-| Rogers Public Library | rogerspubliclibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | not run | 0 |
+| Rogers Public Library | rogerspubliclibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 1 |
 | Springdale Public Library | calendar.springdalelibrary.org | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 2 |
 | Ada Community Library | adalib.org | tribe: WordPress "The Events Calendar" public REST API (`/wp-json/tribe/events/v1/events`) | "User-agent: *; Disallow: /wp-admin/" | collected | 0 |
-| San Antonio Public Library | www.trumba.com | trumba: Trumba public calendar JSON feed (`www.trumba.com/calendars/<name>.json`) | "User-agent: *; Disallow:" | not run | 52 |
-| Spartanburg County Public Libraries | www.trumba.com | trumba: Trumba public calendar JSON feed (`www.trumba.com/calendars/<name>.json`) | "User-agent: *; Disallow:" | not run | 10 |
+| San Antonio Public Library | www.trumba.com | trumba: Trumba public calendar JSON feed (`www.trumba.com/calendars/<name>.json`) | "User-agent: *; Disallow:" | collected | 52 |
+| Spartanburg County Public Libraries | www.trumba.com | trumba: Trumba public calendar JSON feed (`www.trumba.com/calendars/<name>.json`) | "User-agent: *; Disallow:" | collected | 10 |
 | Shreve Memorial Library | www.shreve-lib.org | civicplus: CivicPlus calendar public RSS feed (`/RSSFeed.aspx?ModID=58&CID=All-calendar.xml`) | "User-agent: *; Disallow: /activedit; Disallow: /admin; Disallow: /common/admin/; Disallow: /OJA; Disallow: /support; Disallow: /currenteventsview.asp; ..." | collected | 6 |
 | Brazoria County Library System | tx-brazoriacountylibrary.civicplus.com | civicplus: CivicPlus calendar public RSS feed (`/RSSFeed.aspx?ModID=58&CID=All-calendar.xml`) | "User-agent: *; Disallow: /" | skipped: robots.txt disallows | 0 |
 | Williamson County Public Library (TN) | www.wcpltn.org | civicplus: CivicPlus calendar public RSS feed (`/RSSFeed.aspx?ModID=58&CID=All-calendar.xml`) | "User-agent: *; Disallow: /activedit; Disallow: /admin; Disallow: /common/admin/; Disallow: /OJA; Disallow: /support; Disallow: /currenteventsview.asp; ..." | collected | 1 |
@@ -703,18 +869,18 @@ skipped. Hosts answering 403 to this User-Agent (e.g. *.events.mylibrary.digital
 | Longview Public Library | www.longviewtexas.gov | civicplus: CivicPlus calendar public RSS feed (`/RSSFeed.aspx?ModID=58&CID=All-calendar.xml`) | "User-agent: *; Disallow: /activedit; Disallow: /admin; Disallow: /common/admin/; Disallow: /OJA; Disallow: /support; Disallow: /currenteventsview.asp; ..." | collected | 1 |
 | Abilene Public Library | www.abilenetx.gov | civicplus: CivicPlus calendar public RSS feed (`/RSSFeed.aspx?ModID=58&CID=All-calendar.xml`) | "User-agent: *; Disallow: /activedit; Disallow: /admin; Disallow: /common/admin/; Disallow: /OJA; Disallow: /support; Disallow: /currenteventsview.asp; ..." | collected | 2 |
 | DeSoto Public Library | www.desototexas.gov | civicplus: CivicPlus calendar public RSS feed (`/RSSFeed.aspx?ModID=58&CID=All-calendar.xml`) | "User-agent: *; Disallow: /activedit; Disallow: /admin; Disallow: /common/admin/; Disallow: /OJA; Disallow: /support; Disallow: /currenteventsview.asp; ..." | collected | 0 |
-| Enoch Pratt Free Library | calendar.prattlibrary.org | localist: Localist public API (`/api/2/events`) | "User-agent: *; Crawl-Delay: 1; Disallow: /calendar/*?*types*; Disallow: /*/calendar/*?*types*; Disallow: /*/browse*?*types*; Disallow: /*/calendar/200*; Disallow: /*/calendar/2015*; ..." | collected | 14 |
+| Enoch Pratt Free Library | calendar.prattlibrary.org | localist: Localist public API (`/api/2/events`) | "User-agent: *; Crawl-Delay: 1; Disallow: /calendar/*?*types*; Disallow: /*/calendar/*?*types*; Disallow: /*/browse*?*types*; Disallow: /*/calendar/200*; Disallow: /*/calendar/2015*; ..." | skipped: host already covered by library-other / library-bibliocommons | 0 |
 | Rockford Public Library | services.rockfordpubliclibrary.org | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 4 |
 | Champaign Public Library | champaign.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 2 |
 | Urbana Free Library | urbanafreelibrary.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 2 |
 | Waukegan Public Library | events.waukeganpl.org | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 2 |
 | Cook Memorial Public Library District | cooklib.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 9 |
 | Sioux City Public Library | siouxcitylibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | n/a | skipped: host already covered by library-other / library-bibliocommons | 0 |
-| Great River Regional Library | events.griver.org | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | not run | 18 |
+| Great River Regional Library | events.griver.org | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 18 |
 | Anderson Public Library | andersonlibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /; Disallow: /process_" | skipped: robots.txt disallows | 0 |
 | Austin Public Library | library.austintexas.gov | austin: public "Book Clubs" category listing (`/events/book-clubs`) | "User-agent: *; Disallow: /core/; Disallow: /profiles/; Disallow: /README.md; Disallow: /composer/Metapackage/README.txt; Disallow: /composer/Plugin/ProjectMessage/README.md; Disallow: /composer/Plugin/Scaffold/README.md; ..." | collected | 30 |
 | Memphis Public Libraries | www.memphislibrary.org | memphis: public "Library Book Clubs" directory page (`/events/book-clubs/`) | "User-agent: *; Disallow: /wp-content/uploads/wpo-plugins-tables-list.json; Disallow:" | collected | 19 |
-| Newton Free Library | newtonfreelibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | not run | 0 |
+| Newton Free Library | newtonfreelibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 2 |
 | Public Library of Brookline | brooklinelibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 0 |
 | Wellesley Free Library | wellesleyfreelibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 6 |
 | Bridgeport Public Library | bportlibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 3 |
@@ -723,8 +889,8 @@ skipped. Hosts answering 403 to this User-Agent (e.g. *.events.mylibrary.digital
 | Easton Area Public Library | eastonpl.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 4 |
 | South Brunswick Public Library | sbpl.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*" | collected | 2 |
 | West Windsor Branch Library | wwpl.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 6 |
-| Summit Free Public Library | summitlibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | not run | 0 |
-| Clifton Public Library | cliftonpl.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | not run | 0 |
+| Summit Free Public Library | summitlibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 0 |
+| Clifton Public Library | cliftonpl.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 2 |
 | Wayne Public Library | waynepubliclibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 9 |
 | Altoona Area Public Library | altoonalibrary.org | tribe: WordPress "The Events Calendar" public REST API (`/wp-json/tribe/events/v1/events`) | "User-agent: *; Disallow:" | collected | 1 |
 | Brunswick County Library (NC) | mybcpl.libnet.info | communico: Communico public events JSON (`/eeventcaldata`, the feed the public events page loads) + one public event page per branch for the address | "User-agent: *; Disallow: /results*; Disallow: /sitesearch*; Disallow: /*/sitesearch*; Disallow: /onlinebookdiscussion" | collected | 4 |
@@ -738,13 +904,13 @@ skipped. Hosts answering 403 to this User-Agent (e.g. *.events.mylibrary.digital
 | Cherokee County Public Library (SC) | cherokeecountylibrary.org | tribe: WordPress "The Events Calendar" public REST API (`/wp-json/tribe/events/v1/events`) | "User-agent: *; Disallow:" | collected | 0 |
 | High Point Public Library | www.highpointnc.gov | civicplus: CivicPlus calendar public RSS feed (`/RSSFeed.aspx?ModID=58&CID=All-calendar.xml`) | "User-agent: *; Disallow: /activedit; Disallow: /admin; Disallow: /common/admin/; Disallow: /OJA; Disallow: /support; Disallow: /currenteventsview.asp; ..." | collected | 3 |
 | Rowan Public Library | www.rowancountync.gov | civicplus: CivicPlus calendar public RSS feed (`/RSSFeed.aspx?ModID=58&CID=All-calendar.xml`) | "User-agent: *; Disallow: /activedit; Disallow: /admin; Disallow: /common/admin/; Disallow: /OJA; Disallow: /support; Disallow: /currenteventsview.asp; ..." | collected | 1 |
-| San Mateo Public Library | sanmateopublic.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | not run | 4 |
-| Camarillo Public Library | camarillolibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | not run | 0 |
-| Temecula Public Library | www.temeculaca.gov | civicplus: CivicPlus calendar public RSS feed (`/RSSFeed.aspx?ModID=58&CID=All-calendar.xml`) | "User-agent: *; Disallow: /activedit; Disallow: /admin; Disallow: /common/admin/; Disallow: /OJA; Disallow: /support; Disallow: /currenteventsview.asp; ..." | not run | 0 |
-| Murrieta Public Library | www.murrietaca.gov | civicplus: CivicPlus calendar public RSS feed (`/RSSFeed.aspx?ModID=58&CID=All-calendar.xml`) | "User-agent: *; Disallow: /activedit; Disallow: /admin; Disallow: /common/admin/; Disallow: /OJA; Disallow: /support; Disallow: /currenteventsview.asp; ..." | not run | 1 |
-| Danville Public Library (VA) | www.danvilleva.gov | civicplus: CivicPlus calendar public RSS feed (`/RSSFeed.aspx?ModID=58&CID=All-calendar.xml`) | "User-agent: *; Disallow: /activedit; Disallow: /admin; Disallow: /common/admin/; Disallow: /OJA; Disallow: /support; Disallow: /currenteventsview.asp; ..." | not run | 0 |
-| Richmond Public Library (CA) | www.richmondca.gov | civicplus: CivicPlus calendar public RSS feed (`/RSSFeed.aspx?ModID=58&CID=All-calendar.xml`) | "User-agent: *; Disallow: /activedit; Disallow: /admin; Disallow: /common/admin/; Disallow: /OJA; Disallow: /support; Disallow: /currenteventsview.asp; ..." | not run | 1 |
-| Daly City Public Library | www.dalycity.org | civicplus: CivicPlus calendar public RSS feed (`/RSSFeed.aspx?ModID=58&CID=All-calendar.xml`) | "User-agent: *; Disallow: /activedit; Disallow: /admin; Disallow: /common/admin/; Disallow: /OJA; Disallow: /support; Disallow: /currenteventsview.asp; ..." | not run | 0 |
+| San Mateo Public Library | sanmateopublic.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 4 |
+| Camarillo Public Library | camarillolibrary.libcal.com | libcal: Springshare LibCal public calendar JSON (`/ajax/calendar/list`, the feed the public calendar page loads) | "User-agent: *; Crawl-delay: 10; Disallow: /process_" | collected | 4 |
+| Temecula Public Library | www.temeculaca.gov | civicplus: CivicPlus calendar public RSS feed (`/RSSFeed.aspx?ModID=58&CID=All-calendar.xml`) | "User-agent: *; Disallow: /activedit; Disallow: /admin; Disallow: /common/admin/; Disallow: /OJA; Disallow: /support; Disallow: /currenteventsview.asp; ..." | collected | 0 |
+| Murrieta Public Library | www.murrietaca.gov | civicplus: CivicPlus calendar public RSS feed (`/RSSFeed.aspx?ModID=58&CID=All-calendar.xml`) | "User-agent: *; Disallow: /activedit; Disallow: /admin; Disallow: /common/admin/; Disallow: /OJA; Disallow: /support; Disallow: /currenteventsview.asp; ..." | collected | 1 |
+| Danville Public Library (VA) | www.danvilleva.gov | civicplus: CivicPlus calendar public RSS feed (`/RSSFeed.aspx?ModID=58&CID=All-calendar.xml`) | "User-agent: *; Disallow: /activedit; Disallow: /admin; Disallow: /common/admin/; Disallow: /OJA; Disallow: /support; Disallow: /currenteventsview.asp; ..." | collected | 0 |
+| Richmond Public Library (CA) | www.richmondca.gov | civicplus: CivicPlus calendar public RSS feed (`/RSSFeed.aspx?ModID=58&CID=All-calendar.xml`) | "User-agent: *; Disallow: /activedit; Disallow: /admin; Disallow: /common/admin/; Disallow: /OJA; Disallow: /support; Disallow: /currenteventsview.asp; ..." | collected | 1 |
+| Daly City Public Library | www.dalycity.org | civicplus: CivicPlus calendar public RSS feed (`/RSSFeed.aspx?ModID=58&CID=All-calendar.xml`) | "User-agent: *; Disallow: /activedit; Disallow: /admin; Disallow: /common/admin/; Disallow: /OJA; Disallow: /support; Disallow: /currenteventsview.asp; ..." | collected | 0 |
 
 ## Skipped libraries (not attempted beyond robots.txt / homepage)
 
@@ -796,3 +962,6 @@ skipped. Hosts answering 403 to this User-Agent (e.g. *.events.mylibrary.digital
 | Maricopa-area cities with own sites (Peoria AZ, Surprise, Avondale) | various | HTTP 403 to this User-Agent (treated as refusal) |
 | Seattle Public Library (Communico tenant) | spl.libnet.info | tenant feed returned no events (not in use) |
 | Scottsdale / Newport Beach / Westminster CO (Communico tenants) | *.libnet.info | tenant feed returned no events or HTML |
+| Mercer County Library System / Camden County Library System (NJ) | events.mcl.org, events.camdencountylibrary.org | different calendar version: public search endpoint returned 404; not collected |
+| Anderson Public Library (IN) | andersonlibrary.libcal.com | robots.txt disallows |
+| Enoch Pratt Free Library, Los Angeles PL, Yolo County, Solano County, Lafayette (LA), Sioux City | various | collected meanwhile by library-other / library-bibliocommons (host appeared in their output before this run reached it) |

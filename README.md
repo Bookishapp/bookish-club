@@ -1,14 +1,28 @@
-# Bookish Club
+# Bookish: Book Club Night
+
+*Find a club, make it more fun.* (Repo name: bookish-club.)
 
 A directory of real book clubs that meet across the US, built as a static site. Every page is pre-rendered HTML: city pages, genre-in-city pages, state pages and genre hubs. The forms post to one small Supabase edge function.
 
 - **Live (temporary):** https://fictora.github.io/bookish-club/
 - **Planned domain:** bookishclub.com (not bought yet; see "Custom domain" below)
 
+## Privacy model (hard rules)
+
+- **City-level only.** No club venue, address, neighborhood or coordinate finer than the city centroid is stored in `data/clubs.json` or shown on any page, the map, or in JSON-LD. `scripts/merge.mjs` drops venue/neighborhood fields and strips venue names out of club names and vibes.
+- **Raw collector output is gitignored** (`data/raw/*.json`) because it contains branch/venue names. Keep it local (or in private storage). Note: commits before this rule landed contain raw files in git history. Rewrite history if that matters.
+- **The map** (`src/map.js`, MapLibre + free OpenFreeMap tiles, no key) plots one point per city with a club count. Tapping a city opens that city's list.
+- **Exact place and time** are for approved members only. For seeded listings, readers follow the source link.
+- **"List my club in <city>"** is the toggle on claim/start. It is on by default for public venues and off by default for clubs that meet at home.
+
+## Held source
+
+`library-bibliocommons` (978 clubs) is collected but **not published**: BiblioCommons' terms limit content to personal, non-commercial use and bar republishing. See SOURCES.md. `merge.mjs` skips it unless `BOOKISH_PUBLISH_HELD=1`. Set that only with written permission.
+
 ## Layout
 
 ```
-data/raw/<source>.json        raw records per source (written by scripts/sources/*)
+data/raw/<source>.json        raw records per source (gitignored; contain venue names)
 data/raw/<source>.SOURCES.md  robots/ToS notes per source (rolled up into SOURCES.md)
 data/clubs.json               merged, deduped, geocoded directory (what the site builds from)
 data/ref/places.json          US Census place centroids (city -> lat/lng)
@@ -65,7 +79,7 @@ The repo is public because GitHub Pages for private repos needs a paid plan.
 
 ## Forms backend
 
-- Table `public.bookish_submissions` (`supabase/sql/001_bookish_submissions.sql`). RLS is on with no policies, so only the service role can read or write it.
+- Tables `public.bookish_submissions` (`supabase/sql/001_bookish_submissions.sql`), `public.bookish_join_requests` and `public.bookish_invites` (`002_bookish_join.sql`). RLS is on with no policies, so only the service role can read or write them.
   - Apply it as raw SQL, **not** with `supabase db push`, so it stays out of the shared project's migration history.
 - `bookish-submit` (POST, public) validates input and applies spam protection:
   - a honeypot field and a minimum fill time
@@ -73,6 +87,13 @@ The repo is public because GitHub Pages for private repos needs a paid plan.
   - rate limits: 6 per IP-hash per hour, 3 per email per kind per day
   - a CORS allow-list
   - It then inserts the row.
+- `bookish-join` (POST, public) handles "Request to join".
+  - It applies a honeypot, a minimum fill time and rate limits: 5 per IP-hash per hour, 8 per email per day, and one open request per club.
+  - A valid invite code (table `bookish_invites`) joins straight away (`via='invite'`).
+  - Otherwise the request is stored as `pending`. If the club has a confirmed host (a confirmed claim or start), the host is emailed approve and decline links.
+  - Neither side sees the other's contact details until the host approves.
+- `bookish-join-respond` (GET `?token=&action=approve|decline`) records the decision, emails the reader, and redirects the host to `/join/done/`.
+- Email is a **logged stub** until `BOOKISH_EMAIL_FROM` is set (see `supabase/functions/_shared/bookish.ts`).
 - `bookish-confirm` (GET `?token=`) handles double opt-in. It sets `status='confirmed'` and redirects to `/confirmed/`.
 - Confirmation emails are sent only when `BOOKISH_EMAIL_FROM` is set, for example `Bookish Club <hello@bookishclub.com>`. They are sent through Resend using the existing `RESEND_API_KEY`. Until `bookishclub.com` is verified in Resend, rows stay `pending`.
 
@@ -81,9 +102,24 @@ Deploy the functions:
 ```sh
 supabase functions deploy bookish-submit --project-ref wqnrortftkffmbeugjky --no-verify-jwt --use-api
 supabase functions deploy bookish-confirm --project-ref wqnrortftkffmbeugjky --no-verify-jwt --use-api
+supabase functions deploy bookish-join --project-ref wqnrortftkffmbeugjky --no-verify-jwt --use-api
+supabase functions deploy bookish-join-respond --project-ref wqnrortftkffmbeugjky --no-verify-jwt --use-api
 ```
 
 Read submissions with SQL as the service role, for example `select kind, email, payload, status, created_at from bookish_submissions order by created_at desc;`.
+
+## Theme
+
+All colours, fonts and textures are CSS variables in `src/theme.css`. `src/styles.css` contains layout only and reads those variables. To re-skin the site, swap or edit `theme.css` (plus any font files in `public/fonts/`) and rebuild.
+
+## Resources hub
+
+`data/resources.json` drives `/resources/` and is published as `/data/resources.json` for the app. Each entry has these fields:
+- `affiliate_url`: used instead of `url` when set
+- `featured`
+- `label`: honest disclosure, e.g. "From the makers of Bookish Club"
+- `sponsored`
+- `status`: `slot` entries are reserved placements that never render until filled
 
 ## Fonts
 

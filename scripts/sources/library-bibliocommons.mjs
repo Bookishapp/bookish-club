@@ -114,7 +114,7 @@ const lastHit = new Map();
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 let networkRequests = 0;
 
-async function politeFetch(url, maxRetries = 4) {
+async function politeFetch(url, maxRetries = 4, timeoutMs = 45000) {
   const key = createHash('sha1').update(url).digest('hex');
   const file = path.join(CACHE_DIR, key + '.json');
   if (!REFRESH && existsSync(file)) return JSON.parse(await readFile(file, 'utf8'));
@@ -127,7 +127,7 @@ async function politeFetch(url, maxRetries = 4) {
     networkRequests++;
     let status = 0, body = '';
     try {
-      const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT, Accept: 'application/rss+xml, text/xml, */*' }, signal: AbortSignal.timeout(45000) });
+      const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT, Accept: 'application/rss+xml, text/xml, */*' }, signal: AbortSignal.timeout(timeoutMs) });
       status = res.status;
       body = await res.text();
     } catch (e) {
@@ -206,7 +206,7 @@ function parseRss(xml) {
         ? {
             id: tag(loc[1], 'bc:id'),
             name: tag(loc[1], 'bc:name'),
-            city: tag(loc[1], 'bc:city'),
+            city: (tag(loc[1], 'bc:city') || '').replace(/[\s,.;]+$/, '').trim() || null,
             state: toStateCode(tag(loc[1], 'bc:state')),
             country: tag(loc[1], 'bc:country'),
           }
@@ -240,6 +240,7 @@ function isClub(item) {
   if (YOUTH_TITLE_RE.test(t)) return false;
   if (NOT_CLUB_RE.test(t) && !/\bbook club\b|\bbook discussion\b/i.test(t.replace(NOT_CLUB_RE, ''))) return false;
   if (/\bauthor\b/i.test(t) && !/book club|book discussion/i.test(t)) return false;
+  if (/^club book\b/i.test(t)) return false; // author lecture series, not a club
   if (/\b(celebration|kick-?off|party|fair|festival|explorers?|open house|info(rmation)? session|orientation|meet-?up for (librarians|leaders)|for book club leaders|book club leaders?)\b/i.test(t)) return false;
   if (CLUB_RE.test(t)) return true;
   // Library tagged it as a book club / book discussion event type, and the title is not obviously something else.
@@ -265,6 +266,7 @@ function clubName(title) {
   // drop "with Jane Doe" / "led by ..." style person credits (never store staff names)
   const credit = name.match(/^(.*?)\s+(?:with|hosted by|led by|facilitated by|presented by)\s+(?!the\b|your\b|friends\b|a\b|an\b)(.+)$/i);
   if (credit && CLUB_RE.test(credit[1])) name = credit[1];
+  name = name.replace(/\s*\([^)]*\bby\b[^)]*\)\s*$/, '').replace(/\s+(of|on)\s+.+\s+by\s+.+$/i, '');
   name = name.replace(/\s*[-–—:,|]\s*$/, '').replace(/^["“”']+|["“”']+$/g, '').trim();
   return name;
 }
@@ -388,6 +390,13 @@ async function main() {
     libraries: {},
   };
 
+  // Libraries already covered by sibling sources (other event platforms) are skipped to avoid duplicates.
+  const covered = new Set();
+  for (const f of ['library-other.json', 'library-more.json']) {
+    const fp = path.join(ROOT, 'data', 'raw', f);
+    if (!existsSync(fp)) continue;
+    try { for (const r of JSON.parse(await readFile(fp, 'utf8'))) if (r.library) covered.add(normKey(r.library)); } catch {}
+  }
   const ids = [...new Set(ONLY.length ? ONLY : LIBRARIES)];
   const records = [];
   for (const id of ids) {
@@ -402,7 +411,7 @@ async function main() {
       const seenThisQuery = new Set();
       for (let page = 1; page <= MAX_PAGES_PER_QUERY; page++) {
         const url = `${GATEWAY}${rssPath}?q=${encodeURIComponent(q)}&startDate=${TODAY}&endDate=${END}&page=${page}`;
-        const res = await politeFetch(url, firstStatus === null ? 1 : 4);
+        const res = firstStatus === null ? await politeFetch(url, 0, 25000) : await politeFetch(url, 4);
         if (firstStatus === null) firstStatus = res.status;
         if (res.status !== 200) {
           if (page === 1 && q === QUERIES[0]) {
@@ -429,6 +438,11 @@ async function main() {
       continue;
     }
     const libraryName = channelTitle.replace(/^Events\s*\|\s*/i, '').trim() || id;
+    if (covered.has(normKey(libraryName))) {
+      log.libraries[id] = { status: 'skipped', reason: 'already covered by library-other.json / library-more.json', library: libraryName };
+      console.log(`- ${id}: skipped, already covered elsewhere (${libraryName})`);
+      continue;
+    }
     const items = [...byLink.values()];
     // Library home city/state = most common branch location.
     const cityCount = new Map();
