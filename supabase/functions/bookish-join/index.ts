@@ -1,10 +1,14 @@
 // "Request to join" a club. Public POST (deployed --no-verify-jwt).
+// ONLY for VERIFIED clubs (a host claimed or started it and confirmed by
+// email, so it is actually on Bookish). Requests for unclaimed clubs, which
+// are listed from public library / bookstore calendars, are rejected with
+// 403 not_on_bookish, invite code or not.
 // - With a valid invite code for the club: joins straight away (via='invite').
 // - Otherwise: stores a pending request; if the club has a verified host
 //   (confirmed claim/start), the host is emailed approve/decline links.
 //   The requester never sees host contact details, and vice versa until the
 //   host approves.
-import { cors, json, str, EMAIL_RE, URLISH, sha256, ipOf, sb, sendEmail, FN_URL } from "../_shared/bookish.ts";
+import { cors, json, str, EMAIL_RE, URLISH, sha256, ipOf, sb, sendEmail, FN_URL, isVerified } from "../_shared/bookish.ts";
 
 const MAX_PER_IP_PER_HOUR = 5;
 const MAX_PER_EMAIL_PER_DAY = 8;
@@ -19,6 +23,11 @@ Deno.serve(async (req) => {
   let b: Record<string, unknown>;
   try { const raw = await req.text(); if (raw.length > 6000) throw 0; b = JSON.parse(raw); }
   catch { return json({ ok: false, error: "bad_json" }, 400, origin); }
+
+  // Server-side rule: only verified clubs can be joined on Bookish.
+  const ref0 = str(b.club_id, 80);
+  if (ref0.length < 3) return json({ ok: false, error: "club" }, 400, origin);
+  if (!(await isVerified(sb, ref0))) return json({ ok: false, error: "not_on_bookish" }, 403, origin);
 
   if (str(b.website, 200) !== "" || !(Number(b.elapsed_ms) >= MIN_FILL_MS)) return json({ ok: true, status: "pending" }, 200, origin);
 
@@ -62,7 +71,7 @@ Deno.serve(async (req) => {
   if (error) { console.error("insert failed", error.message); return json({ ok: false, error: "server" }, 500, origin); }
   if (via === "invite") return json({ ok: true, status: "joined" }, 200, origin);
 
-  // Find a verified host for this club (confirmed claim or start).
+  // The verified host for this club (confirmed claim or start).
   const { data: host } = await sb.from("bookish_submissions").select("email, payload")
     .eq("club_ref", club_ref).in("kind", ["claim", "start"]).eq("status", "confirmed")
     .order("confirmed_at", { ascending: false }).limit(1).maybeSingle();
@@ -76,5 +85,5 @@ Deno.serve(async (req) => {
       `If you approve, we'll send them your reply-to email so you can share the next meeting. If you decline, they'll get a kind note and nothing else.\n\nBookish`);
     if (notified) await sb.from("bookish_join_requests").update({ host_notified: true }).eq("id", row.id);
   }
-  return json({ ok: true, status: "pending", host_on_bookish: !!host }, 200, origin);
+  return json({ ok: true, status: "pending", host_on_bookish: true, host_notified: notified }, 200, origin);
 });

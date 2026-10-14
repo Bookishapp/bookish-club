@@ -15,9 +15,19 @@ A directory of real book clubs that meet across the US, built as a static site. 
 - **Exact place and time** are for approved members only. For seeded listings, readers follow the source link.
 - **"List my club in <city>"** is the toggle on claim/start. It is on by default for public venues and off by default for clubs that meet at home.
 
-## Held source
+## Excluded source: BiblioCommons (dropped for good)
 
-`library-bibliocommons` (978 clubs) is collected but **not published**: BiblioCommons' terms limit content to personal, non-commercial use and bar republishing. See SOURCES.md. `merge.mjs` skips it unless `BOOKISH_PUBLISH_HELD=1`. Set that only with written permission.
+`library-bibliocommons` (978 clubs collected 2026-10-13) was **never published and was deleted on 2026-10-14**. BiblioCommons' terms limit content to personal, non-commercial use and bar republishing. The raw data, cache and collector are gone. `merge.mjs` rejects that source and any record whose source URL is on `bibliocommons.com`, with no override. See SOURCES.md. Older commits in git history still contain the raw file; history was not rewritten.
+
+## Verified vs unclaimed clubs
+
+Every club is one of two kinds, and every list (city pages, genre pages, search results and the map's city sheet) has a toggle at the top: **On Bookish** / **Listed from public calendars**, with counts. The toggle defaults to On Bookish when a list has any.
+
+- **Verified ("On Bookish")**: a host claimed the club (or started it) and confirmed by email, meaning a `claim` / `start` row in `bookish_submissions` with `status='confirmed'`. These are the only clubs with **Request to join**, and the only ones with a schema.org `JoinAction`.
+- **Unclaimed ("Not on Bookish yet")**: listed from public library and bookstore calendars. The card is muted and has **See where it meets** (the source page, the only route to the venue) and **Run this club? Claim it**. It has no join button. In JSON-LD it is described as a listing that points at its source.
+- `bookish-join` rejects any request for a club that isn't verified (`403 not_on_bookish`), invite code or not.
+- `bookish-verified` (public GET) returns the verified club ids. For clubs started on Bookish it also returns their city-level facts. `scripts/build.mjs` reads it at build time. The deploy workflow rebuilds every hour, so a newly confirmed claim goes live within the hour. In CI, if the fetch fails the build fails and the last good deploy stays up. For local previews, set `BOOKISH_VERIFIED_FILE=path.json` (`{"clubs":[{"id":"…","kind":"claim","listed":true}]}`).
+- A host who turns off "List my club in <city>" is not shown anywhere.
 
 ## Layout
 
@@ -39,8 +49,8 @@ No npm install is needed. Node 24+ only.
 ## Re-seed the directory
 
 ```sh
-node scripts/sources/library-bibliocommons.mjs   # each collector reads robots.txt rules + throttles itself
-node scripts/sources/library-other.mjs
+node scripts/sources/library-other.mjs            # each collector reads robots.txt rules + throttles itself
+node scripts/sources/library-more.mjs
 node scripts/sources/bookstores.mjs
 node scripts/merge.mjs                           # -> data/clubs.json, prints counts + ungeocoded cities
 node scripts/build-ref.mjs                       # only if place / ZIP reference data needs refreshing
@@ -87,10 +97,10 @@ The repo is public because GitHub Pages for private repos needs a paid plan.
   - rate limits: 6 per IP-hash per hour, 3 per email per kind per day
   - a CORS allow-list
   - It then inserts the row.
-- `bookish-join` (POST, public) handles "Request to join".
+- `bookish-join` (POST, public) handles "Request to join". It first rejects any club that isn't verified (`403 not_on_bookish`).
   - It applies a honeypot, a minimum fill time and rate limits: 5 per IP-hash per hour, 8 per email per day, and one open request per club.
   - A valid invite code (table `bookish_invites`) joins straight away (`via='invite'`).
-  - Otherwise the request is stored as `pending`. If the club has a confirmed host (a confirmed claim or start), the host is emailed approve and decline links.
+  - Otherwise the request is stored as `pending` and the verified host is emailed approve and decline links.
   - Neither side sees the other's contact details until the host approves.
 - `bookish-join-respond` (GET `?token=&action=approve|decline`) records the decision, emails the reader, and redirects the host to `/join/done/`.
 - Email is a **logged stub** until `BOOKISH_EMAIL_FROM` is set (see `supabase/functions/_shared/bookish.ts`).
@@ -104,6 +114,7 @@ supabase functions deploy bookish-submit --project-ref wqnrortftkffmbeugjky --no
 supabase functions deploy bookish-confirm --project-ref wqnrortftkffmbeugjky --no-verify-jwt --use-api
 supabase functions deploy bookish-join --project-ref wqnrortftkffmbeugjky --no-verify-jwt --use-api
 supabase functions deploy bookish-join-respond --project-ref wqnrortftkffmbeugjky --no-verify-jwt --use-api
+supabase functions deploy bookish-verified --project-ref wqnrortftkffmbeugjky --no-verify-jwt --use-api
 ```
 
 Read submissions with SQL as the service role, for example `select kind, email, payload, status, created_at from bookish_submissions order by created_at desc;`.

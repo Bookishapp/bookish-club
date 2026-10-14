@@ -19,6 +19,55 @@ const KEEP_CASE = new Set(["spanish-language", "lgbtq"]);
 const lc = (g) => KEEP_CASE.has(g) ? GENRES[g] : GENRES[g].toLowerCase();
 const clubs = JSON.parse(fs.readFileSync(path.join(ROOT, "data/clubs.json"), "utf8"));
 
+// ---------- verified vs unclaimed ----------
+// VERIFIED ("On Bookish"): a host claimed or started the club and confirmed
+// by email. Only these can be requested-to-join (the bookish-join function
+// enforces the same rule server-side). UNCLAIMED: listed from public library
+// and bookstore calendars; readers get the source link and a claim link only.
+// Source of truth: the public bookish-verified edge function, read at build
+// time (the deploy workflow also rebuilds hourly). BOOKISH_VERIFIED_FILE
+// points at a local JSON file instead (previews / tests).
+const VERIFIED_API = process.env.BOOKISH_VERIFIED_API || "https://wqnrortftkffmbeugjky.supabase.co/functions/v1/bookish-verified";
+async function loadVerified() {
+  if (process.env.BOOKISH_VERIFIED_FILE) return JSON.parse(fs.readFileSync(process.env.BOOKISH_VERIFIED_FILE, "utf8")).clubs ?? [];
+  try {
+    const r = await fetch(VERIFIED_API, { signal: AbortSignal.timeout(15000) });
+    const j = await r.json();
+    if (!r.ok || !j.ok || !Array.isArray(j.clubs)) throw new Error(`HTTP ${r.status}`);
+    return j.clubs;
+  } catch (e) {
+    // In CI a failed fetch fails the build, so the live site keeps its last
+    // good deploy instead of silently demoting verified clubs.
+    if (process.env.CI) throw new Error(`verified clubs fetch failed: ${e.message}`);
+    console.warn(`verified clubs fetch failed (${e.message}); building with none verified`);
+    return [];
+  }
+}
+const verifiedList = await loadVerified();
+const places = JSON.parse(fs.readFileSync(path.join(ROOT, "data/ref/places.json"), "utf8"));
+{
+  const byId = new Map(verifiedList.map((v) => [v.id, v]));
+  // A host who turned off "List my club in <city>" is not shown anywhere.
+  for (let i = clubs.length - 1; i >= 0; i--) {
+    const v = byId.get(clubs[i].id);
+    if (v && v.listed === false) clubs.splice(i, 1); else clubs[i].verified = !!v;
+  }
+  // Clubs started on Bookish: city-level facts only.
+  for (const v of verifiedList) {
+    if (v.kind !== "start" || !v.listed || !v.name || !v.city || !v.state) continue;
+    const key = `${v.state}|${v.city.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f']/g, "").replace(/\s+/g, " ").trim()}`;
+    const geo = places[key];
+    clubs.push({
+      id: v.id, name: v.name, city: geo?.[2] ?? v.city, state: v.state,
+      genres: v.genre && GENRES[v.genre] ? [v.genre] : [], vibe: null, cadence: v.cadence ?? null,
+      format: ["in-person", "online", "hybrid"].includes(v.format) ? v.format : null,
+      host_type: "community", source: "bookish", source_name: null, source_url: null, last_seen: TODAY,
+      lat: geo?.[0] ?? null, lng: geo?.[1] ?? null, verified: true,
+    });
+  }
+}
+const verifiedTotal = clubs.filter((c) => c.verified).length;
+
 // ---------- helpers ----------
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const slug = (s) => s.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -34,6 +83,8 @@ const miles = (a, b, c, d) => {
   return 2 * R * Math.asin(Math.sqrt(h));
 };
 const stateSlug = (st) => slug(STATE_NAMES[st] ?? st);
+
+fs.rmSync(OUT, { recursive: true, force: true }); // stale pages must never linger
 
 function write(rel, html) {
   const f = path.join(OUT, rel);
@@ -63,7 +114,10 @@ for (const city of cities) {
   city.genres = {};
   for (const c of city.clubs) for (const g of c.genres) city.genres[g] = (city.genres[g] ?? 0) + 1;
   city.genrePages = Object.entries(city.genres).filter(([, n]) => n >= 3).map(([g]) => g);
-  city.clubs.sort((a, b) => (b.genres.length + (b.cadence ? 1 : 0)) - (a.genres.length + (a.cadence ? 1 : 0)) || a.name.localeCompare(b.name));
+  city.v = city.clubs.filter((c) => c.verified).length;
+  city.vg = {};
+  for (const c of city.clubs) if (c.verified) for (const g of c.genres) city.vg[g] = (city.vg[g] ?? 0) + 1;
+  city.clubs.sort((a, b) => (b.verified - a.verified) || (b.genres.length + (b.cadence ? 1 : 0)) - (a.genres.length + (a.cadence ? 1 : 0)) || a.name.localeCompare(b.name));
 }
 cities.sort((a, b) => b.clubs.length - a.clubs.length || a.name.localeCompare(b.name));
 const byState = new Map();
@@ -145,32 +199,70 @@ const searchBox = (sel = "", placeholder = "Sacramento, or a ZIP code") => `
 </form>
 <div id="results" class="results" aria-live="polite"></div>`;
 
-function clubCard(c, { showCity = false } = {}) {
-  // City-level only: never a venue, neighborhood or address.
-  const kind = { library: "Library book club", bookstore: "Bookstore book club" }[c.host_type] ?? "Community book club";
+// Shared "On Bookish · 1" count text for tiles, map and eyebrows.
+const countLine = (n, v) => `${plural(n, "club")}${v ? ` · ${fmt(v)} on Bookish` : ""}`;
+const KIND = { library: "Library book club", bookstore: "Bookstore book club" };
+const SRC_KIND = { library: "a public library calendar", bookstore: "a bookstore's event calendar" };
+
+function clubCard(c, { hidden = false } = {}) {
+  // City-level only: never a venue, branch, neighborhood or address. For
+  // unclaimed clubs the outbound source link is the only path to the venue.
+  const kind = KIND[c.host_type] ?? "Community book club";
   const where = `${kind} · ${c.city}, ${c.state}`;
   const tags = [
     ...c.genres.map((g) => `<span class="tag g">${esc(GENRES[g])}</span>`),
     c.cadence ? `<span class="tag">${esc(c.cadence)}</span>` : "",
     c.format && c.format !== "in-person" ? `<span class="tag">${c.format === "online" ? "Online" : "In person &amp; online"}</span>` : "",
   ].join("");
-  const claim = url(`/claim/?club_id=${encodeURIComponent(c.id)}&club_name=${encodeURIComponent(c.name)}&club_city=${encodeURIComponent(`${c.city}, ${c.state}`)}`);
-  const host = c.source_name || (c.host_type === "bookstore" ? "the bookstore's site" : "the organizer's site");
-  return `<li class="club" id="${esc(c.id)}" data-g="${c.genres.join(" ")}">
-<h3>${esc(c.name)}</h3>
+  const q = `club_id=${encodeURIComponent(c.id)}&club_name=${encodeURIComponent(c.name)}&club_city=${encodeURIComponent(`${c.city}, ${c.state}`)}`;
+  const head = `<h3>${esc(c.name)}</h3>
 <p class="where">${esc(where)}</p>
 ${tags ? `<div class="meta">${tags}</div>` : ""}
-${c.vibe ? `<p class="vibe">${esc(c.vibe)}</p>` : ""}
-<div class="foot"><span>Time, place and the current book: <a href="${esc(c.source_url)}" rel="nofollow noopener" target="_blank">${esc(host)}&nbsp;↗</a> · seen ${niceDate(c.last_seen)}</span><span class="acts"><a class="join" href="${url(`/join/?club_id=${encodeURIComponent(c.id)}&club_name=${encodeURIComponent(c.name)}&club_city=${encodeURIComponent(`${c.city}, ${c.state}`)}`)}" rel="nofollow">Ask to join</a><a href="${claim}" rel="nofollow">Is this your club? Claim it</a></span></div>
+${c.vibe ? `<p class="vibe">${esc(c.vibe)}</p>` : ""}`;
+  if (c.verified) {
+    return `<li class="club on" id="${esc(c.id)}" data-g="${c.genres.join(" ")}" data-v="1"${hidden ? " hidden" : ""}>
+<span class="badge on">On Bookish</span>
+${head}
+<div class="foot"><span>The host runs this club on Bookish and says yes or no to each request. Time and place are shared once you're in.</span><span class="acts"><a class="join" href="${url(`/join/?${q}`)}" rel="nofollow">Request to join</a></span></div>
+</li>`;
+  }
+  return `<li class="club off" id="${esc(c.id)}" data-g="${c.genres.join(" ")}" data-v="0"${hidden ? " hidden" : ""}>
+<span class="badge off">Not on Bookish yet</span>
+${head}
+<div class="foot"><span>Listed from ${SRC_KIND[c.host_type] ?? "a public event calendar"}, seen ${niceDate(c.last_seen)}.</span><span class="acts"><a class="out" href="${esc(c.source_url)}" rel="nofollow noopener" target="_blank">See where it meets&nbsp;↗<span class="sr-only"> (opens the source page)</span></a><a href="${url(`/claim/?${q}`)}" rel="nofollow">Run this club? Claim it</a></span></div>
 </li>`;
 }
 
+// The segmented toggle at the top of every club list: "On Bookish" vs
+// "Listed from public calendars". Defaults to verified when any exist.
+// Server-rendered in its default state (works without JS); site.js flips it.
+const segMode = (v) => (v > 0 ? "on" : "listed");
+function segToggle({ v, u, where, scope = "clubs", none = "" }) {
+  const mode = segMode(v);
+  const noneTxt = none || `No host has claimed a club${where ? ` in ${esc(where)}` : " here"} yet.`;
+  const claimHref = url("/claim/");
+  return `<div class="seg-wrap" data-seg-scope="${scope}" data-mode="${mode}">
+<div class="seg" role="group" aria-label="Which clubs to show">
+<button type="button" class="seg-b" data-mode="on" aria-pressed="${mode === "on"}"><span class="seg-l">On Bookish</span> <span class="c" data-count="on">${fmt(v)}</span></button>
+<button type="button" class="seg-b" data-mode="listed" aria-pressed="${mode === "listed"}"><span class="seg-l">Listed from public calendars</span> <span class="c" data-count="listed">${fmt(u)}</span></button>
+</div>
+<p class="seg-note" data-note="on"${mode === "on" ? "" : " hidden"}>${v ? `Hosts run these clubs on Bookish. Request to join and the host says yes or no.` : `${noneTxt.replace(/\.$/, "")}, so there's nobody on Bookish to ask. <a href="${url("/start/")}">Start one</a> or <a href="${claimHref}">claim yours</a>.`}</p>
+<p class="seg-note" data-note="listed"${mode === "listed" ? "" : " hidden"}>${v ? "" : `<b>${noneTxt}</b> `}These come from public library and bookstore calendars. They're not on Bookish, so you can't request to join. Tap "See where it meets" for the time and place.</p>
+</div>`;
+}
+
+// schema.org: only verified clubs carry a JoinAction. Unclaimed clubs are
+// described as listings from a public calendar, pointing at that source.
 const clubsLd = (list, name) => ({
   "@context": "https://schema.org", "@type": "ItemList", name, numberOfItems: list.length,
   itemListElement: list.slice(0, 100).map((c, i) => ({
     "@type": "ListItem", position: i + 1,
     item: {
-      "@type": "Organization", name: c.name, url: c.source_url,
+      "@type": "Organization", name: c.name,
+      ...(c.verified
+        ? { url: abs(`/book-clubs/${slug(c.city)}-${c.state.toLowerCase()}/#${c.id}`), description: "On Bookish: the host approves requests to join.",
+            potentialAction: { "@type": "JoinAction", target: abs(`/join/?club_id=${encodeURIComponent(c.id)}`) } }
+        : { sameAs: c.source_url, description: `Listed from ${SRC_KIND[c.host_type] ?? "a public event calendar"}. Not on Bookish; see the source page for time and place.` }),
       ...(c.genres.length ? { knowsAbout: c.genres.map((g) => GENRES[g]) } : {}),
       address: { "@type": "PostalAddress", addressLocality: c.city, addressRegion: c.state, addressCountry: "US" },
     },
@@ -196,58 +288,78 @@ function summarize(list) {
 }
 
 // ---------- city pages ----------
+// A secondary list ("More clubs nearby", "Other clubs in X") follows the
+// page's toggle; the whole section hides when it has nothing in that mode.
+const secList = (list, mode, head) => {
+  if (!list.length) return "";
+  const shown = list.filter((c) => c.verified === (mode === "on")).length;
+  return `<section class="seg-sec"${shown ? "" : " hidden"}><hr class="rule">${head}<ul class="clubs">${list.map((c) => clubCard(c, { hidden: c.verified !== (mode === "on") })).join("\n")}</ul></section>`;
+};
+const mainList = (list, mode) => `<ul class="clubs" id="club-list">${list.map((c) => clubCard(c, { hidden: c.verified !== (mode === "on") })).join("\n")}</ul>`;
+const modeEmpty = (where) => `<div class="empty seg-empty" data-empty="on" hidden><p>No clubs${where ? ` in ${esc(where)}` : " here"} are on Bookish yet. <a href="${url("/start/")}">Start one</a>, or see the clubs listed from public calendars.</p></div>
+<div class="empty seg-empty" data-empty="listed" hidden><p>Every club${where ? ` in ${esc(where)}` : " here"} is on Bookish. Nice.</p></div>`;
+const verifiedLede = (v, n) => v
+  ? ` ${v === n ? (n === 1 ? "It's" : "All of them are") : `${fmt(v)} ${v === 1 ? "is" : "are"}`} on Bookish, so you can request to join and the host replies.${v < n ? ` The other ${fmt(n - v)} ${n - v === 1 ? "is" : "are"} listed from public calendars. Check the source page for the time and place.` : ""}`
+  : ` None of them is on Bookish yet. They're listed from public library and bookstore calendars, so check the source page for the time and place.`;
+
 for (const city of cities) {
   const label = `${city.name}, ${city.st}`;
   const p = `/book-clubs/${city.u}/`;
-  const n = city.clubs.length;
+  const n = city.clubs.length, v = city.v, mode = segMode(v);
   const near = nearbyCities(city);
   const topGenres = Object.entries(city.genres).sort((a, b) => b[1] - a[1]);
-  const nearClubs = n < 8 ? near.flatMap(({ o, d }) => o.clubs.slice(0, 3).map((c) => ({ c, d }))).slice(0, 8 - Math.min(n, 4)) : [];
+  const nearClubs = n < 8 ? near.flatMap(({ o }) => [...o.clubs.filter((c) => c.verified).slice(0, 2), ...o.clubs.filter((c) => !c.verified).slice(0, 3)]).slice(0, 8 - Math.min(n, 4)) : [];
   const genreText = topGenres.length ? ` Genres include ${topGenres.slice(0, 4).map(([g, k]) => `${lc(g)} (${k})`).join(", ")}.` : "";
   const cr = [["Book clubs", "/book-clubs/"], [STATE_NAMES[city.st] ?? city.st, `/book-clubs/${stateSlug(city.st)}/`], [city.name, null]];
+  const inMode = city.clubs.filter((c) => c.verified === (mode === "on"));
+  const chipCount = (g) => inMode.filter((c) => !g || c.genres.includes(g)).length;
   const body = `<div class="wrap">${crumbs(cr)}
-<header class="page-head"><p class="eyebrow">${plural(n, "club")} · updated ${monthYear}</p>
+<header class="page-head"><p class="eyebrow">${countLine(n, v)} · updated ${monthYear}</p>
 <h1>Book clubs in <em>${esc(city.name)}</em>,&nbsp;${city.st}</h1>
-<p class="lede">${summarize(city.clubs)}${genreText} Pick one and ask to join, or check the time and place on the listing's own page. Most welcome newcomers.</p>
+<p class="lede">${summarize(city.clubs)}${genreText}${verifiedLede(v, n)}</p>
 </header>
 <div id="club-map" class="club-map city" data-city="${city.u}" role="region" aria-label="Map of book clubs in ${esc(city.name)}"><p class="map-hint">Loading the club map…</p></div>
+${segToggle({ v, u: n - v, where: city.name })}
 </div>
-${topGenres.length ? `<div class="filterbar"><div class="wrap"><div id="filter" class="chips" role="toolbar" aria-label="Filter by genre"><button class="chip" type="button" data-g="" aria-pressed="true">All <span class="c">${n}</span></button>${topGenres.map(([g, k]) => `<button class="chip" type="button" data-g="${g}" aria-pressed="false">${esc(GENRES[g])} <span class="c">${k}</span></button>`).join("")}</div></div></div>` : `<div style="height:28px"></div>`}
+${topGenres.length ? `<div class="filterbar"><div class="wrap"><div id="filter" class="chips" role="toolbar" aria-label="Filter by genre"><button class="chip" type="button" data-g="" aria-pressed="true">All <span class="c">${chipCount("")}</span></button>${topGenres.map(([g]) => `<button class="chip" type="button" data-g="${g}" aria-pressed="false"${chipCount(g) ? "" : " data-empty-mode"}>${esc(GENRES[g])} <span class="c">${chipCount(g)}</span></button>`).join("")}</div></div></div>` : `<div style="height:20px"></div>`}
 <div class="wrap">
-<h2 class="sr-only">All clubs in ${esc(city.name)}</h2>
-<ul class="clubs">${city.clubs.map((c) => clubCard(c)).join("\n")}</ul>
+<h2 class="sr-only">Clubs in ${esc(city.name)}</h2>
+${mainList(city.clubs, mode)}
+${modeEmpty(city.name)}
 <div id="filter-empty" class="empty" hidden>${lunair("lunair-peek", 130, 215, 260, 421, "", "peek")}<p>No clubs in that genre here yet. <a href="${url("/start/")}">Start the first one</a> and we'll send readers your way.</p></div>
-${nearClubs.length ? `<hr class="rule"><h2>More clubs <em>nearby</em></h2><p class="lede">A short drive from ${esc(city.name)}.</p><ul class="clubs">${nearClubs.map(({ c }) => clubCard(c, { showCity: true })).join("\n")}</ul>` : ""}
+${secList(nearClubs, mode, `<h2>More clubs <em>nearby</em></h2><p class="lede">A short drive from ${esc(city.name)}.</p>`)}
 ${city.genrePages.length ? `<hr class="rule"><h2>By genre in ${esc(city.name)}</h2><ul class="chips">${city.genrePages.map((g) => `<li><a class="chip" href="${url(`${p}${g}/`)}">${esc(GENRES[g])} book clubs in ${esc(city.name)}</a></li>`).join("")}</ul>` : ""}
-${near.length ? `<hr class="rule"><h2>Nearby cities</h2><div class="grid cols-3">${near.slice(0, 9).map(({ o, d }) => `<a class="city-tile" href="${url(`/book-clubs/${o.u}/`)}"><b>${esc(o.name)}, ${o.st}</b><span>${plural(o.clubs.length, "club")} · ${Math.round(d)} mi</span></a>`).join("")}</div>` : ""}
+${near.length ? `<hr class="rule"><h2>Nearby cities</h2><div class="grid cols-3">${near.slice(0, 9).map(({ o, d }) => `<a class="city-tile" href="${url(`/book-clubs/${o.u}/`)}"><b>${esc(o.name)}, ${o.st}</b><span>${countLine(o.clubs.length, o.v)} · ${Math.round(d)} mi</span></a>`).join("")}</div>` : ""}
 </div>
 ${hostCallout(city.name)}`;
   write(`book-clubs/${city.u}/index.html`, layout({
-    title: `Book Clubs in ${label}: ${plural(n, "club")} to join (${monthYear}) | Bookish`,
-    desc: `Find ${plural(n, "book club")} in ${label}${topGenres.length ? `, including ${topGenres.slice(0, 3).map(([g]) => lc(g)).join(", ")} clubs` : ""}. Library and bookstore clubs with meeting times and where to join.`,
+    title: `Book Clubs in ${label}: ${plural(n, "club")}${v ? `, ${fmt(v)} on Bookish` : ""} (${monthYear}) | Bookish`,
+    desc: `Find ${plural(n, "book club")} in ${label}${topGenres.length ? `, including ${topGenres.slice(0, 3).map(([g]) => lc(g)).join(", ")} clubs` : ""}.${v ? ` ${fmt(v)} on Bookish to request to join;` : ""} library and bookstore clubs link to their own pages for time and place.`,
     path: p, body, jsonld: [crumbsLd(cr), clubsLd(city.clubs, `Book clubs in ${label}`)],
   }));
   page(p, n >= 10 ? 0.8 : 0.6);
 
   for (const g of city.genrePages) {
     const list = city.clubs.filter((c) => c.genres.includes(g));
+    const gv = list.filter((c) => c.verified).length, gmode = segMode(gv);
     const gp = `${p}${g}/`;
-    const others = city.clubs.filter((c) => !c.genres.includes(g)).slice(0, 4);
+    const others = [...city.clubs.filter((c) => !c.genres.includes(g) && c.verified).slice(0, 4), ...city.clubs.filter((c) => !c.genres.includes(g) && !c.verified).slice(0, 4)];
     const gcr = [...cr.slice(0, 2), [city.name, p], [GENRES[g], null]];
     const gbody = `<div class="wrap">${crumbs(gcr)}
-<header class="page-head"><p class="eyebrow">${plural(list.length, "club")} · updated ${monthYear}</p>
+<header class="page-head"><p class="eyebrow">${countLine(list.length, gv)} · updated ${monthYear}</p>
 <h1>${esc(GENRES[g])} book clubs in <em>${esc(city.name)}</em></h1>
-<p class="lede">${plural(list.length, `${lc(g)} book club`)} meet in ${esc(label)}. ${summarize(list)}</p>
+<p class="lede">${plural(list.length, `${lc(g)} book club`)} meet in ${esc(label)}. ${summarize(list)}${verifiedLede(gv, list.length)}</p>
 <a class="chip" href="${url(p)}">See all ${n} clubs in ${esc(city.name)} →</a>
 </header>
-<div style="height:28px"></div>
+${segToggle({ v: gv, u: list.length - gv, where: city.name })}
 <h2 class="sr-only">${esc(GENRES[g])} book clubs</h2>
-<ul class="clubs">${list.map((c) => clubCard(c)).join("\n")}</ul>
-${others.length ? `<hr class="rule"><h2>Other clubs in ${esc(city.name)}</h2><ul class="clubs">${others.map((c) => clubCard(c)).join("\n")}</ul>` : ""}
+${mainList(list, gmode)}
+${modeEmpty(city.name)}
+${secList(others, gmode, `<h2>Other clubs in ${esc(city.name)}</h2>`)}
 </div>${hostCallout(city.name)}`;
     write(`book-clubs/${city.u}/${g}/index.html`, layout({
       title: `${GENRES[g]} Book Clubs in ${label} (${monthYear}) | Bookish`,
-      desc: `${plural(list.length, `${lc(g)} book club`)} in ${label}, with how often they meet and how to join.`,
+      desc: `${plural(list.length, `${lc(g)} book club`)} in ${label}${gv ? `, ${fmt(gv)} on Bookish` : ""}, with how often they meet and where to find the details.`,
       path: gp, body: gbody, jsonld: [crumbsLd(gcr), clubsLd(list, `${GENRES[g]} book clubs in ${label}`)],
     }));
     page(gp, 0.7);
@@ -264,7 +376,7 @@ for (const st of states) {
   const body = `<div class="wrap">${crumbs(cr)}
 <header class="page-head"><p class="eyebrow">${plural(total, "club")} in ${plural(list.length, "city", "cities")}</p>
 <h1>Book clubs in <em>${esc(name)}</em></h1><p class="lede">Choose a city to see its clubs, when they meet and where.</p></header>
-<section style="padding-top:28px"><div class="grid cols-3">${list.map((c) => `<a class="city-tile" href="${url(`/book-clubs/${c.u}/`)}"><b>${esc(c.name)}</b><span>${plural(c.clubs.length, "club")}</span></a>`).join("")}</div></section></div>${hostCallout(name)}`;
+<section style="padding-top:28px"><div class="grid cols-3">${list.map((c) => `<a class="city-tile" href="${url(`/book-clubs/${c.u}/`)}"><b>${esc(c.name)}</b><span>${countLine(c.clubs.length, c.v)}</span></a>`).join("")}</div></section></div>${hostCallout(name)}`;
   write(`book-clubs/${stateSlug(st)}/index.html`, layout({
     title: `Book Clubs in ${name}: ${plural(total, "club")} in ${plural(list.length, "city", "cities")} | Bookish`,
     desc: `Browse ${plural(total, "book club")} across ${plural(list.length, "city", "cities")} in ${name}. Library and bookstore clubs with meeting details.`,
@@ -277,7 +389,7 @@ for (const st of states) {
   const body = `<div class="wrap">${crumbs(cr)}
 <header class="page-head"><p class="eyebrow">${plural(clubs.length, "club")} · ${plural(cities.length, "city", "cities")}</p>
 <h1>Book clubs <em>by state</em></h1><p class="lede">Every club we list, sorted by where it meets.</p>${searchBox()}</header>
-<section><h2>Biggest club cities</h2><div class="grid cols-3">${cities.slice(0, 30).map((c) => `<a class="city-tile" href="${url(`/book-clubs/${c.u}/`)}"><b>${esc(c.name)}, ${c.st}</b><span>${plural(c.clubs.length, "club")}</span></a>`).join("")}</div></section>
+<section><h2>Biggest club cities</h2><div class="grid cols-3">${cities.slice(0, 30).map((c) => `<a class="city-tile" href="${url(`/book-clubs/${c.u}/`)}"><b>${esc(c.name)}, ${c.st}</b><span>${countLine(c.clubs.length, c.v)}</span></a>`).join("")}</div></section>
 <section><h2>All states</h2><div class="states">${states.map((st) => `<div><a href="${url(`/book-clubs/${stateSlug(st)}/`)}">${esc(STATE_NAMES[st] ?? st)}</a> <span class="muted">${byState.get(st).reduce((s, c) => s + c.clubs.length, 0)}</span></div>`).join("")}</div></section></div>`;
   write("book-clubs/index.html", layout({ title: "Book Clubs Near You, by State and City | Bookish", desc: `Browse ${plural(clubs.length, "book club")} in ${plural(cities.length, "US city", "US cities")}, by state and city.`, path: "/book-clubs/", body, jsonld: [crumbsLd(cr)] }));
   page("/book-clubs/", 0.9);
@@ -287,35 +399,44 @@ for (const st of states) {
 for (const [g, label] of GENRES_LIST) {
   const total = genreTotals[g] ?? 0;
   if (total < 5) continue;
-  const gc = cities.filter((c) => c.genres[g]).sort((a, b) => b.genres[g] - a.genres[g]);
-  const sample = gc.slice(0, 6).flatMap((c) => c.clubs.filter((x) => x.genres.includes(g)).slice(0, 1));
+  const gc = cities.filter((c) => c.genres[g]).sort((a, b) => (b.vg[g] ?? 0) - (a.vg[g] ?? 0) || b.genres[g] - a.genres[g]);
+  const gvTotal = gc.reduce((s, c) => s + (c.vg[g] ?? 0), 0), mode = segMode(gvTotal);
+  const sampleOn = clubs.filter((c) => c.verified && c.genres.includes(g)).slice(0, 6);
+  const sampleOff = gc.slice(0, 6).flatMap((c) => c.clubs.filter((x) => !x.verified && x.genres.includes(g)).slice(0, 1));
+  const sample = [...sampleOn, ...sampleOff];
   const p = `/genres/${g}/`;
   const cr = [["Book clubs", "/book-clubs/"], [label, null]];
+  const tile = (c) => {
+    const n = c.genres[g], v = c.vg[g] ?? 0, base = `/book-clubs/${c.u}/${c.genrePages.includes(g) ? g + "/" : ""}`;
+    const hidden = mode === "on" ? !v : !(n - v);
+    return `<a class="city-tile" data-n="${n}" data-v="${v}" data-href="${url(base)}" href="${url(base)}${c.genrePages.includes(g) ? "" : "#" + g}"${hidden ? " hidden" : ""}><b>${esc(c.name)}, ${c.st}</b><span>${countLine(n, v)}</span></a>`;
+  };
   const body = `<div class="wrap">${crumbs(cr)}
-<header class="page-head"><p class="eyebrow">${plural(total, "club")} in ${plural(gc.length, "city", "cities")}</p>
+<header class="page-head"><p class="eyebrow">${countLine(total, gvTotal)} in ${plural(gc.length, "city", "cities")}</p>
 <h1>${esc(label)} <em>book clubs</em> near you</h1><p class="lede">Find a ${esc(lc(g))} book club that meets in your city.</p>${searchBox(g)}</header>
-<section><h2>Cities with ${esc(lc(g))} clubs</h2><div class="grid cols-3">${gc.slice(0, 60).map((c) => `<a class="city-tile" href="${url(`/book-clubs/${c.u}/${c.genrePages.includes(g) ? g + "/" : "#" + g}`)}"><b>${esc(c.name)}, ${c.st}</b><span>${plural(c.genres[g], "club")}</span></a>`).join("")}</div></section>
-<section style="padding-top:0"><h2>A few to start with</h2><ul class="clubs">${sample.map((c) => clubCard(c, { showCity: true })).join("\n")}</ul></section></div>${hostCallout()}`;
-  write(`genres/${g}/index.html`, layout({ title: `${label} Book Clubs Near You (${monthYear}) | Bookish`, desc: `${plural(total, `${lc(g)} book club`)} across ${plural(gc.length, "US city", "US cities")}. Find one that meets near you.`, path: p, body, jsonld: [crumbsLd(cr), clubsLd(sample, `${label} book clubs`)] }));
+${segToggle({ v: gvTotal, u: total - gvTotal, where: "", scope: "genre", none: `No host has claimed a ${esc(lc(g))} club yet.` })}
+<section style="padding-top:18px"><h2>Cities with ${esc(lc(g))} clubs</h2><div class="grid cols-3" data-seg-tiles>${gc.slice(0, 60).map(tile).join("")}</div></section>
+<section style="padding-top:0"><h2>A few to start with</h2>${mainList(sample, mode)}${modeEmpty("")}</section></div>${hostCallout()}`;
+  write(`genres/${g}/index.html`, layout({ title: `${label} Book Clubs Near You (${monthYear}) | Bookish`, desc: `${plural(total, `${lc(g)} book club`)} across ${plural(gc.length, "US city", "US cities")}${gvTotal ? `, ${fmt(gvTotal)} on Bookish` : ""}. Find one that meets near you.`, path: p, body, jsonld: [crumbsLd(cr), clubsLd(sample, `${label} book clubs`)] }));
   page(p, 0.8);
 }
 
 // ---------- home ----------
 {
-  const featured = cities.slice(0, 12).map((c) => c.clubs.find((x) => x.genres.length && x.cadence) ?? c.clubs[0]).slice(0, 6);
+  const featured = [...clubs.filter((c) => c.verified).slice(0, 3), ...cities.slice(0, 12).map((c) => c.clubs.find((x) => !x.verified && x.genres.length && x.cadence) ?? c.clubs.find((x) => !x.verified)).filter(Boolean)].slice(0, 6);
   const genreChips = GENRES_LIST.filter(([g]) => (genreTotals[g] ?? 0) >= 5);
   const body = `<section class="hero"><div class="wrap hero-grid"><div class="hero-copy">
 <p class="eyebrow">A directory of real book clubs</p>
 <h1>Find a club. <em>Make it more fun.</em></h1>
-<p class="lede">Library circles, bookstore clubs, mystery nights and romance meetups near you. Search by city or ZIP, ask to join, or start your own book club.</p>
+<p class="lede">Library circles, bookstore clubs, mystery nights and romance meetups near you. Search by city or ZIP, request to join the clubs that are on Bookish, or start your own.</p>
 ${searchBox()}
-<p class="hero-count"><b>${fmt(clubs.length)}</b> clubs in <b>${fmt(cities.length)}</b> cities, gathered from ${fmt(new Set(clubs.map((c) => c.source_name ?? c.source)).size)} library systems and bookstores.</p>
+<p class="hero-count"><b>${fmt(clubs.length)}</b> clubs in <b>${fmt(cities.length)}</b> cities${verifiedTotal ? `, <b>${fmt(verifiedTotal)}</b> on Bookish` : ""}. The rest are listed from ${fmt(new Set(clubs.filter((c) => !c.verified).map((c) => c.source_name ?? c.source)).size)} library and bookstore calendars.</p>
 </div>
 <figure class="hero-host">${HOST_IMG}<figcaption>Pull up a chair.</figcaption></figure>
 </div></section>
 <section><div class="wrap">
 <h2>The club <em>map</em></h2>
-<p class="lede">Every city with book clubs, and how many. Tap a city to see its clubs, then ask to join.</p>
+<p class="lede">Every city with book clubs, and how many are on Bookish. Tap a city to see its clubs.</p>
 <div id="club-map" class="club-map" role="region" aria-label="Map of book clubs"><p class="map-hint">Loading the club map…</p></div>
 <p class="small">The map shows cities, never addresses. Exact place and time are shared only with members a host approves.</p>
 </div></section>
@@ -325,18 +446,18 @@ ${searchBox()}
 </div></section>
 <section style="padding-top:0"><div class="wrap">
 <h2>Where readers are <em>meeting</em></h2>
-<div class="grid cols-3">${cities.slice(0, 18).map((c) => `<a class="city-tile" href="${url(`/book-clubs/${c.u}/`)}"><b>${esc(c.name)}, ${c.st}</b><span>${plural(c.clubs.length, "club")}</span></a>`).join("")}</div>
+<div class="grid cols-3">${cities.slice(0, 18).map((c) => `<a class="city-tile" href="${url(`/book-clubs/${c.u}/`)}"><b>${esc(c.name)}, ${c.st}</b><span>${countLine(c.clubs.length, c.v)}</span></a>`).join("")}</div>
 <p style="margin-top:18px"><a href="${url("/book-clubs/")}">See every city →</a></p>
 </div></section>
 <section style="padding-top:0"><div class="wrap">
 <h2>A few clubs <em>to start with</em></h2>
-<p class="lede">Picked from around the country. Every one is real, and every one links to where it was listed.</p>
-<ul class="clubs">${featured.map((c) => clubCard(c, { showCity: true })).join("\n")}</ul>
+<p class="lede">Picked from around the country. Clubs marked "On Bookish" take requests to join. The rest link to the library or bookstore page they were listed on.</p>
+<ul class="clubs">${featured.map((c) => clubCard(c)).join("\n")}</ul>
 </div></section>
 <section><div class="wrap grid cols-3">
 <div><p class="eyebrow">01</p><h3>Search your city</h3><p class="muted">Type a city or ZIP. We'll show the clubs that meet nearby and how often.</p></div>
-<div><p class="eyebrow">02</p><h3>Check the details</h3><p class="muted">Every listing links to the library or bookstore page it came from, so you see the latest date and book.</p></div>
-<div><p class="eyebrow">03</p><h3>Just show up</h3><p class="muted">Most clubs welcome newcomers. Bring the book, or don't. Nobody checks.</p></div>
+<div><p class="eyebrow">02</p><h3>On Bookish? Request to join</h3><p class="muted">Clubs marked "On Bookish" have a host here. Send a note and they'll say yes or no.</p></div>
+<div><p class="eyebrow">03</p><h3>Listed from a calendar? Just go</h3><p class="muted">Library and bookstore clubs link to their own page for the date, time and book. Most welcome newcomers.</p></div>
 </div></section>
 ${hostCallout()}
 <section style="padding-top:0"><div class="wrap"><div class="note">Run a club already? <a href="${url("/claim/")}">Claim your listing</a> to fix the details, or <a href="${url("/hosts/")}">join the waitlist</a> for simple host tools: scheduling, book voting and invite links.</div></div></section>`;
@@ -436,9 +557,10 @@ ${hp}${consent}
 page("/hosts/", 0.6);
 
 write("join/index.html", layout({
-  title: "Ask to Join a Book Club | Bookish", desc: "Send a short note to a book club host asking to join.", path: "/join/", noindex: true,
-  body: `<div class="wrap">${crumbs([["Home", "/"], ["Ask to join", null]])}
-<header class="page-head"><p class="eyebrow">Ask to join</p><h1>Join <em id="join-club">this club</em></h1>
+  title: "Request to Join a Book Club | Bookish", desc: "Send a short note to a book club host on Bookish asking to join.", path: "/join/", noindex: true,
+  body: `<div class="wrap">${crumbs([["Home", "/"], ["Request to join", null]])}
+<header class="page-head"><p class="eyebrow">Request to join</p><h1>Join <em id="join-club">this club</em></h1>
+<div id="join-off" class="note" hidden><b>This club isn't on Bookish yet.</b> It's listed from a public library or bookstore calendar, so there's no host here to ask. Check its listing for the time and place, or, if you run it, <a id="join-claim" href="${url("/claim/")}">claim it</a>.</div>
 <p class="lede">Send the host a short hello. They'll see your first name and note, not your email, and can say yes or no. Got an invite link or code from the host? Add the code and you're in straight away.</p></header>
 <section><form class="form" data-kind="join" data-api="${JOIN_API}" novalidate>
 <input type="hidden" name="club_id"><input type="hidden" name="club_name"><input type="hidden" name="club_city">
@@ -450,7 +572,9 @@ write("join/index.html", layout({
 <button class="btn" type="submit">Send request</button>
 <p class="form-msg" role="status"></p>
 </form></section></div>
-<script>(function(){var q=new URLSearchParams(location.search),n=q.get("club_name"),c=q.get("club_city");if(n){var e=document.getElementById("join-club");e.textContent=n;if(c)e.insertAdjacentText("afterend"," in "+c);document.title="Ask to join "+n+" | Bookish";}var i=q.get("invite");if(i){var f=document.querySelector("[name=invite_code]");f.value=i.toUpperCase().slice(0,12);}})();</script>`,
+<script>(function(){var q=new URLSearchParams(location.search),n=q.get("club_name"),c=q.get("club_city");if(n){var e=document.getElementById("join-club");e.textContent=n;if(c)e.insertAdjacentText("afterend"," in "+c);document.title="Request to join "+n+" | Bookish";}var i=q.get("invite");if(i){var f=document.querySelector("[name=invite_code]");f.value=i.toUpperCase().slice(0,12);}
+var id=q.get("club_id"),off=function(){document.getElementById("join-off").hidden=false;var fm=document.querySelector("form[data-kind=join]");fm.hidden=true;document.querySelector(".page-head .lede").hidden=true;document.getElementById("join-claim").href+=location.search;};
+if(!id){off();return;}fetch("${VERIFIED_API}").then(function(r){return r.json();}).then(function(j){if(j&&j.ok&&!j.clubs.some(function(c){return c.id===id;}))off();}).catch(function(){});})();</script>`,
 }));
 write("join/done/index.html", layout({
   title: "Request update | Bookish", desc: "Join request update.", path: "/join/done/", noindex: true,
@@ -564,7 +688,7 @@ ${R.categories.map(([id, name, intro]) => {
 }
 
 // ---------- data, assets, sitemap ----------
-const citiesJson = cities.map((c) => ({ n: c.name, s: c.st, u: c.u, c: c.clubs.length, g: c.genres, gp: c.genrePages, la: c.lat, lo: c.lng }));
+const citiesJson = cities.map((c) => ({ n: c.name, s: c.st, u: c.u, c: c.clubs.length, v: c.v, g: c.genres, vg: c.vg, gp: c.genrePages, la: c.lat, lo: c.lng }));
 copyDir(path.join(ROOT, "public"), OUT);
 write("data/cities.json", JSON.stringify(citiesJson));
 write("site.js", fs.readFileSync(path.join(ROOT, "src/site.js"), "utf8"));
@@ -574,16 +698,19 @@ write("map.js", fs.readFileSync(path.join(ROOT, "src/map.js"), "utf8"));
   // centroid with a club count. No venue, address or neighborhood, ever.
   const features = cities.filter((c) => c.lat != null).map((c) => ({
     type: "Feature", geometry: { type: "Point", coordinates: [c.lng, c.lat] },
-    properties: { n: c.clubs.length, c: `${c.name}, ${c.st}`, u: c.u, top: c.clubs.slice(0, 5).map((x) => x.name).join("\u001f") },
+    properties: { n: c.clubs.length, v: c.v, c: `${c.name}, ${c.st}`, u: c.u,
+      topv: c.clubs.filter((x) => x.verified).slice(0, 5).map((x) => x.name).join("\u001f"),
+      top: c.clubs.filter((x) => !x.verified).slice(0, 5).map((x) => x.name).join("\u001f") },
   }));
   write("data/clubs.geojson", JSON.stringify({ type: "FeatureCollection", features }));
   console.log(`map: ${features.length} city points`);
 }
 
 write("favicon.svg", `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#2d4a3a"/><text x="32" y="45" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-weight="700" font-size="40" fill="#f6f0e4">B</text></svg>`);
-write("robots.txt", `User-agent: *\nAllow: /\nDisallow: /claim/\nDisallow: /confirmed/\n\nSitemap: ${abs("/sitemap.xml")}\n`);
+write("robots.txt", `User-agent: *\nAllow: /\nDisallow: /claim/\nDisallow: /confirmed/\nDisallow: /join/\n\nSitemap: ${abs("/sitemap.xml")}\n`);
 write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemap.map((s) => `<url><loc>${esc(s.loc)}</loc><lastmod>${TODAY}</lastmod><priority>${s.prio.toFixed(1)}</priority></url>`).join("\n")}\n</urlset>\n`);
 write(".nojekyll", "");
 if (process.env.CUSTOM_DOMAIN) write("CNAME", process.env.CUSTOM_DOMAIN + "\n");
 
+console.log(`verified clubs: ${verifiedTotal}`);
 console.log(`built ${sitemap.length} indexable pages: ${cities.length} cities, ${cities.reduce((s, c) => s + c.genrePages.length, 0)} genre-city pages, ${states.length} states, ${clubs.length} clubs -> ${path.relative(ROOT, OUT)}/ (base "${BASE}")`);

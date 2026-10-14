@@ -1,6 +1,6 @@
 // Libraries looked at on 2026-10-13 but not collected by library-more, with the reason.
 const LC = 'LibraryMarket/LibraryCalendar host: robots.txt "User-agent: * / Disallow: /" (only named search engines allowed)';
-const BC = 'events on BiblioCommons (left to library-bibliocommons collector, RSS-only per BiblioCommons Terms)';
+const BC = 'events on BiblioCommons (not collected: BiblioCommons terms allow personal, non-commercial use only; source excluded for good)';
 const F403 = 'HTTP 403 to this User-Agent (treated as refusal)';
 export const SKIPPED = [
   ['Anne Arundel County Public Library', 'www.aacpl.net', LC],

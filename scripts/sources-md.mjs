@@ -13,6 +13,8 @@ const out = `# Sources
 
 Every listing on Bookish Club comes from a public, logged-out page. Before we used any source, we read its robots.txt and its terms of use. This file records what we checked and what we decided. Sources whose terms forbid automated collection are listed here as **not used**.
 
+**Excluded for good: BiblioCommons.** 978 club listings collected from BiblioCommons library event feeds on 2026-10-13 were never published and were deleted on 2026-10-14. BiblioCommons' terms allow personal, non-commercial use only and bar republishing, and Bookish is a public, commercial directory. Details are in the BiblioCommons note below.
+
 Collection rules:
 - We make at most one request every 1.5 to 2 seconds per host, sequentially.
 - We back off on 429 and 5xx responses.

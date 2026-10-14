@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // More public-library book clubs: large suburban county systems and metros ~31-100 that the
-// library-bibliocommons and library-other collectors do not cover.
+// library-other collector does not cover. Never collects from BiblioCommons
+// (*.bibliocommons.com): that source is excluded for good, see SOURCES.md.
 // Usage: node scripts/sources/library-more.mjs [--only <substring>] [--concurrency N]
 // Node 24, zero deps. Polite: robots.txt honoured (incl. Crawl-delay), >=1.6s/host sequential,
 // raw responses cached under .cache/library-more/. Re-runnable; output merged per library.
@@ -23,7 +24,7 @@ const ADAPTERS = { communico, libcal, tribe, ...extra.ADAPTERS };
 const LAST_SEEN = '2026-10-13';
 const OUT = path.join(ROOT, 'data/raw/library-more.json');
 const STATUS = path.join(ROOT, '.cache/library-more/_status.json');
-const OTHER_FILES = ['data/raw/library-bibliocommons.json', 'data/raw/library-other.json'].map((f) => path.join(ROOT, f));
+const OTHER_FILES = ['data/raw/library-other.json'].map((f) => path.join(ROOT, f));
 const OTHER_REGISTRY = path.join(ROOT, 'scripts/sources/library-other/registry.mjs');
 
 const args = process.argv.slice(2);
@@ -134,6 +135,7 @@ async function runOne(lib) {
   const t0 = Date.now();
   const base = { host: lib.host, platform: lib.platform, at: new Date().toISOString() };
   if (lib.skip) { status[lib.name] = { ...base, ok: false, skipped: lib.skip, count: 0 }; byLib.delete(lib.name); await flush(); return; }
+  if (/(^|\.)bibliocommons\.com$/i.test(lib.host)) { status[lib.name] = { ...base, ok: false, skipped: 'BiblioCommons: excluded for good (terms)', count: 0 }; byLib.delete(lib.name); await flush(); return; }
   const covered = await coveredHosts();
   const shared = lib.platform === 'trumba'; // shared SaaS host: match on the calendar name instead
   if ((!shared && covered.has(lib.host)) || (lib.altHosts ?? []).some((h) => covered.has(h)) || (shared && covered.has(`trumba:${lib.webName}`))) {
