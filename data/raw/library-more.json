@@ -4,7 +4,7 @@
   "city": "Rogers",
   "state": "AR",
   "neighborhood": null,
-  "venue": "RPL Events",
+  "venue": "RPL",
   "genres": [],
   "vibe": "Meets at a local brewery or pub",
   "cadence": "Monthly, 1st Monday",
@@ -20,7 +20,7 @@
   "city": "Springdale",
   "state": "AR",
   "neighborhood": null,
-  "venue": "Springdale Public Library Events",
+  "venue": "Springdale Public Library",
   "genres": [
    "romance"
   ],
@@ -38,7 +38,7 @@
   "city": "Springdale",
   "state": "AR",
   "neighborhood": null,
-  "venue": "Springdale Public Library Events",
+  "venue": "Springdale Public Library",
   "genres": [
    "mystery-thriller"
   ],
@@ -53,7 +53,7 @@
  },
  {
   "name": "Banned Book Club",
-  "city": "Downtown",
+  "city": "Flagstaff",
   "state": "AZ",
   "neighborhood": null,
   "venue": "Downtown Library",
@@ -69,7 +69,7 @@
  },
  {
   "name": "Environmental Humanities Book Club",
-  "city": "Downtown",
+  "city": "Flagstaff",
   "state": "AZ",
   "neighborhood": null,
   "venue": "Downtown Library",
@@ -85,7 +85,7 @@
  },
  {
   "name": "Senior Book Club",
-  "city": "Downtown",
+  "city": "Flagstaff",
   "state": "AZ",
   "neighborhood": null,
   "venue": "Downtown Library",
@@ -97,22 +97,6 @@
   "library": "Flagstaff City-Coconino County Public Library",
   "platform": "libcal",
   "source_url": "https://flagstaffpubliclibrary.libcal.com/event/17769468",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Senior Book Club",
-  "city": "Offsite",
-  "state": "AZ",
-  "neighborhood": null,
-  "venue": "Offsite",
-  "genres": [],
-  "vibe": "Copies available to borrow",
-  "cadence": "Monthly, 3rd Wednesday",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Flagstaff City-Coconino County Public Library",
-  "platform": "libcal",
-  "source_url": "https://flagstaffpubliclibrary.libcal.com/event/17053681",
   "last_seen": "2026-10-13"
  },
  {
@@ -147,6 +131,22 @@
   "library": "Maricopa County Library District",
   "platform": "evcal",
   "source_url": "https://events.mcldaz.org/event?id=330635",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Book Club with Zoë: Martha’s Vineyard Beach and Book Club",
+  "city": "Sun Lakes",
+  "state": "AZ",
+  "neighborhood": null,
+  "venue": "Ed Robson Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Maricopa County Library District",
+  "platform": "evcal",
+  "source_url": "https://events.mcldaz.org/event?id=331483",
   "last_seen": "2026-10-13"
  },
  {
@@ -261,6 +261,24 @@
   "library": "Maricopa County Library District",
   "platform": "evcal",
   "source_url": "https://events.mcldaz.org/event?id=333598",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Book 'Em: Mystery Book Club",
+  "city": "Queen Creek",
+  "state": "AZ",
+  "neighborhood": null,
+  "venue": "Queen Creek Library",
+  "genres": [
+   "mystery-thriller"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Maricopa County Library District",
+  "platform": "evcal",
+  "source_url": "https://events.mcldaz.org/event?id=334286",
   "last_seen": "2026-10-13"
  },
  {
@@ -401,6 +419,22 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Fiction and More Book Club",
+  "city": "Sun City",
+  "state": "AZ",
+  "neighborhood": null,
+  "venue": "Sun City Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Maricopa County Library District",
+  "platform": "evcal",
+  "source_url": "https://events.mcldaz.org/event?id=334087",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Murder and Mayhem Book Club",
   "city": "Sun City",
   "state": "AZ",
@@ -414,6 +448,40 @@
   "library": "Maricopa County Library District",
   "platform": "evcal",
   "source_url": "https://events.mcldaz.org/event?id=333803",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Mystery Book Club",
+  "city": "Sun City",
+  "state": "AZ",
+  "neighborhood": null,
+  "venue": "Sun City Library",
+  "genres": [
+   "mystery-thriller"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Maricopa County Library District",
+  "platform": "evcal",
+  "source_url": "https://events.mcldaz.org/event?id=422876",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Talks and Treats Book Club",
+  "city": "Anaheim",
+  "state": "CA",
+  "neighborhood": null,
+  "venue": "Canyon Hills Branch",
+  "genres": [],
+  "vibe": "Refreshments served",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Anaheim Public Library",
+  "platform": "libcal",
+  "source_url": "https://anaheim.libcal.com/event/17691945",
   "last_seen": "2026-10-13"
  },
  {
@@ -469,6 +537,56 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Adult Book Club",
+  "city": "Anaheim",
+  "state": "CA",
+  "neighborhood": null,
+  "venue": "Euclid Branch",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Anaheim Public Library",
+  "platform": "libcal",
+  "source_url": "https://anaheim.libcal.com/event/17709076",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Adult Book Club",
+  "city": "Anaheim",
+  "state": "CA",
+  "neighborhood": null,
+  "venue": "Haskett Branch",
+  "genres": [],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Anaheim Public Library",
+  "platform": "libcal",
+  "source_url": "https://anaheim.libcal.com/event/17691451",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Romance Book Club",
+  "city": "Anaheim",
+  "state": "CA",
+  "neighborhood": null,
+  "venue": "Ponderosa Joint-Use Branch",
+  "genres": [
+   "romance"
+  ],
+  "vibe": "Meets at a local café; copies available to borrow; refreshments served",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Anaheim Public Library",
+  "platform": "libcal",
+  "source_url": "https://anaheim.libcal.com/event/17691345",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Book Club",
   "city": "Anaheim",
   "state": "CA",
@@ -497,7 +615,7 @@
   "source": "library-more",
   "library": "Berkeley Public Library",
   "platform": "communico",
-  "source_url": "https://berkeleypubliclibrary.libnet.info/event/17492294",
+  "source_url": "https://berkeleypubliclibrary.libnet.info/event/17492293",
   "last_seen": "2026-10-13"
  },
  {
@@ -568,6 +686,74 @@
   "library": "Berkeley Public Library",
   "platform": "communico",
   "source_url": "https://berkeleypubliclibrary.libnet.info/event/17439316",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Romance Reads Book Club",
+  "city": "Camarillo",
+  "state": "CA",
+  "neighborhood": null,
+  "venue": "Camarillo Public Library Event",
+  "genres": [
+   "romance"
+  ],
+  "vibe": null,
+  "cadence": "Monthly, 3rd Sunday",
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Camarillo Public Library",
+  "platform": "libcal",
+  "source_url": "https://camarillolibrary.libcal.com/event/15746954",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Silent Book Club",
+  "city": "Camarillo",
+  "state": "CA",
+  "neighborhood": null,
+  "venue": "Camarillo Public Library Event",
+  "genres": [
+   "silent-reading"
+  ],
+  "vibe": null,
+  "cadence": "Monthly, 1st Sunday",
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Camarillo Public Library",
+  "platform": "libcal",
+  "source_url": "https://camarillolibrary.libcal.com/event/13471447",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Thursday Evening Book Club",
+  "city": "Camarillo",
+  "state": "CA",
+  "neighborhood": null,
+  "venue": "Camarillo Public Library Event",
+  "genres": [],
+  "vibe": null,
+  "cadence": "Monthly, Thursday",
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Camarillo Public Library",
+  "platform": "libcal",
+  "source_url": "https://camarillolibrary.libcal.com/event/15207349",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Tuesday Morning Book Club",
+  "city": "Camarillo",
+  "state": "CA",
+  "neighborhood": null,
+  "venue": "Camarillo Public Library Event",
+  "genres": [],
+  "vibe": null,
+  "cadence": "Monthly, 2nd Tuesday",
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Camarillo Public Library",
+  "platform": "libcal",
+  "source_url": "https://camarillolibrary.libcal.com/event/13884635",
   "last_seen": "2026-10-13"
  },
  {
@@ -657,7 +843,7 @@
   "city": "Huntington Beach",
   "state": "CA",
   "neighborhood": null,
-  "venue": "Branch Calendar",
+  "venue": "Branch",
   "genres": [],
   "vibe": null,
   "cadence": "Monthly, 3rd Thursday",
@@ -669,11 +855,27 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Lunch Book Club",
+  "city": "Huntington Beach",
+  "state": "CA",
+  "neighborhood": null,
+  "venue": "Branch",
+  "genres": [],
+  "vibe": "Refreshments served",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Huntington Beach Public Library",
+  "platform": "libcal",
+  "source_url": "https://hbpl.libcal.com/event/16535272",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Murphy Branch Book Club",
   "city": "Huntington Beach",
   "state": "CA",
   "neighborhood": null,
-  "venue": "Branch Calendar",
+  "venue": "Branch",
   "genres": [],
   "vibe": null,
   "cadence": "Monthly, 1st Wednesday",
@@ -783,22 +985,6 @@
   "last_seen": "2026-10-13"
  },
  {
-  "name": "Dutch Flat Golden Drift Museum Public Stop",
-  "city": "Mobile Service",
-  "state": "CA",
-  "neighborhood": null,
-  "venue": "Mobile Service",
-  "genres": [],
-  "vibe": null,
-  "cadence": "Every other Thursday",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Placer County Library",
-  "platform": "libcal",
-  "source_url": "https://placer.libcal.com/event/17557744",
-  "last_seen": "2026-10-13"
- },
- {
   "name": "Book Club",
   "city": "Rocklin",
   "state": "CA",
@@ -895,6 +1081,104 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Horror Society Book Club",
+  "city": "Coachella",
+  "state": "CA",
+  "neighborhood": null,
+  "venue": "Coachella",
+  "genres": [
+   "horror"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Riverside County Library System",
+  "platform": "libcal",
+  "source_url": "https://rivlib.libcal.com/event/17754707",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Hot Picks Book Club",
+  "city": "Coachella",
+  "state": "CA",
+  "neighborhood": null,
+  "venue": "Coachella",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Riverside County Library System",
+  "platform": "libcal",
+  "source_url": "https://rivlib.libcal.com/event/17754620",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Eastvale Book Club",
+  "city": "Eastvale",
+  "state": "CA",
+  "neighborhood": null,
+  "venue": "Eastvale",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Riverside County Library System",
+  "platform": "libcal",
+  "source_url": "https://rivlib.libcal.com/event/17694681",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Fireside Book Club",
+  "city": "Idyllwild",
+  "state": "CA",
+  "neighborhood": null,
+  "venue": "Idyllwild",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Riverside County Library System",
+  "platform": "libcal",
+  "source_url": "https://rivlib.libcal.com/event/17652604",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Men's Book Club",
+  "city": "Idyllwild",
+  "state": "CA",
+  "neighborhood": null,
+  "venue": "Idyllwild",
+  "genres": [],
+  "vibe": "Copies available to borrow; newcomers welcome",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Riverside County Library System",
+  "platform": "libcal",
+  "source_url": "https://rivlib.libcal.com/event/17652591",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Great British Book Club",
+  "city": "La Quinta",
+  "state": "CA",
+  "neighborhood": null,
+  "venue": "La Quinta",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Riverside County Library System",
+  "platform": "libcal",
+  "source_url": "https://rivlib.libcal.com/event/17806799",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Love Story Book Club",
   "city": "La Quinta",
   "state": "CA",
@@ -927,19 +1211,53 @@
   "last_seen": "2026-10-13"
  },
  {
-  "name": "Literacy Volunteer Orientation",
-  "city": "Literacy Department",
+  "name": "Pagemasters' Book Club",
+  "city": "La Quinta",
   "state": "CA",
   "neighborhood": null,
-  "venue": "Literacy Department",
+  "venue": "La Quinta",
   "genres": [],
   "vibe": null,
-  "cadence": "Every other month",
-  "format": "online",
+  "cadence": null,
+  "format": "in-person",
   "source": "library-more",
   "library": "Riverside County Library System",
   "platform": "libcal",
-  "source_url": "https://rivlib.libcal.com/event/15859154",
+  "source_url": "https://rivlib.libcal.com/event/17806790",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Mystery Book Club",
+  "city": "Lakeland Village",
+  "state": "CA",
+  "neighborhood": null,
+  "venue": "Lakeland Village",
+  "genres": [
+   "mystery-thriller"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Riverside County Library System",
+  "platform": "libcal",
+  "source_url": "https://rivlib.libcal.com/event/17651008",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "4th Monday Book Club",
+  "city": "Temecula",
+  "state": "CA",
+  "neighborhood": null,
+  "venue": "Temecula Grace Mellman",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Riverside County Library System",
+  "platform": "libcal",
+  "source_url": "https://rivlib.libcal.com/event/17409730",
   "last_seen": "2026-10-13"
  },
  {
@@ -1169,7 +1487,23 @@
   "source": "library-more",
   "library": "Anythink Libraries",
   "platform": "communico",
-  "source_url": "https://events.anythinklibraries.org/event/14440070",
+  "source_url": "https://events.anythinklibraries.org/event/14440069",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Busy Lives Book Club",
+  "city": "Thornton",
+  "state": "CO",
+  "neighborhood": null,
+  "venue": "Anythink Huron Street",
+  "genres": [],
+  "vibe": "Refreshments served",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Anythink Libraries",
+  "platform": "communico",
+  "source_url": "https://events.anythinklibraries.org/event/17509543",
   "last_seen": "2026-10-13"
  },
  {
@@ -1371,6 +1705,22 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Book Lovers",
+  "city": "Castle Pines",
+  "state": "CO",
+  "neighborhood": null,
+  "venue": "Castle Pines",
+  "genres": [],
+  "vibe": "Registration required; refreshments served",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Douglas County Libraries",
+  "platform": "communico",
+  "source_url": "https://go.dcl.org/event/14220476",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Daytime Book Club",
   "city": "Castle Pines",
   "state": "CO",
@@ -1432,6 +1782,22 @@
   "library": "Douglas County Libraries",
   "platform": "communico",
   "source_url": "https://go.dcl.org/event/14989602",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Book Lovers",
+  "city": "Littleton",
+  "state": "CO",
+  "neighborhood": null,
+  "venue": "Highlands Ranch",
+  "genres": [],
+  "vibe": "Registration required; refreshments served",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Douglas County Libraries",
+  "platform": "communico",
+  "source_url": "https://go.dcl.org/event/14220385",
   "last_seen": "2026-10-13"
  },
  {
@@ -1665,6 +2031,22 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Book Lovers",
+  "city": "Parker",
+  "state": "CO",
+  "neighborhood": null,
+  "venue": "Parker",
+  "genres": [],
+  "vibe": "Registration required; refreshments served",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Douglas County Libraries",
+  "platform": "communico",
+  "source_url": "https://go.dcl.org/event/14220322",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Inklings",
   "city": "Parker",
   "state": "CO",
@@ -1783,7 +2165,7 @@
   "city": "Englewood",
   "state": "CO",
   "neighborhood": null,
-  "venue": "EPL Programs and Events",
+  "venue": "EPL Programs and",
   "genres": [],
   "vibe": "Registration required",
   "cadence": "Monthly, 1st Monday",
@@ -1799,7 +2181,7 @@
   "city": "Englewood",
   "state": "CO",
   "neighborhood": null,
-  "venue": "EPL Programs and Events",
+  "venue": "EPL Programs and",
   "genres": [],
   "vibe": null,
   "cadence": "Monthly, 2nd Thursday",
@@ -1815,7 +2197,7 @@
   "city": "Englewood",
   "state": "CO",
   "neighborhood": null,
-  "venue": "EPL Programs and Events",
+  "venue": "EPL Programs and",
   "genres": [],
   "vibe": "Meets at a local café",
   "cadence": "Monthly, 3rd Monday",
@@ -1831,7 +2213,7 @@
   "city": "Englewood",
   "state": "CO",
   "neighborhood": null,
-  "venue": "EPL Programs and Events",
+  "venue": "EPL Programs and",
   "genres": [],
   "vibe": "Newcomers welcome",
   "cadence": "Monthly, 4th Wednesday",
@@ -1874,6 +2256,22 @@
   "library": "High Plains Library District",
   "platform": "libcal",
   "source_url": "https://highplains.libcal.com/event/15751988",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Book To Movie Book Club",
+  "city": "Eaton",
+  "state": "CO",
+  "neighborhood": null,
+  "venue": "Eaton Public Library",
+  "genres": [],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "High Plains Library District",
+  "platform": "libcal",
+  "source_url": "https://highplains.libcal.com/event/17715599",
   "last_seen": "2026-10-13"
  },
  {
@@ -1928,7 +2326,7 @@
  },
  {
   "name": "Farr Afternoon Book Club",
-  "city": "Farr",
+  "city": "Greeley",
   "state": "CO",
   "neighborhood": null,
   "venue": "Farr Regional Library",
@@ -1944,7 +2342,7 @@
  },
  {
   "name": "Farr Non-Fiction Book Club",
-  "city": "Farr",
+  "city": "Greeley",
   "state": "CO",
   "neighborhood": null,
   "venue": "Farr Regional Library",
@@ -1996,7 +2394,7 @@
  },
  {
   "name": "Fact and Fiction Adult Book Club",
-  "city": "HPLD Library & Archive",
+  "city": "Greeley",
   "state": "CO",
   "neighborhood": null,
   "venue": "HPLD Library & Archive",
@@ -2043,8 +2441,24 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "\"I've Been Meaning to Read That...\" Adult Book Club",
+  "city": "Greeley",
+  "state": "CO",
+  "neighborhood": null,
+  "venue": "LINC Library Innovation Center",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "High Plains Library District",
+  "platform": "libcal",
+  "source_url": "https://highplains.libcal.com/event/16619878",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "LINC's True Crime Book Club",
-  "city": "LINC Library Innovation Center",
+  "city": "Greeley",
   "state": "CO",
   "neighborhood": null,
   "venue": "LINC Library Innovation Center",
@@ -2063,7 +2477,7 @@
  },
  {
   "name": "The Skeleton Key Horror Book Club",
-  "city": "LINC Library Innovation Center",
+  "city": "Greeley",
   "state": "CO",
   "neighborhood": null,
   "venue": "LINC Library Innovation Center",
@@ -2077,6 +2491,22 @@
   "library": "High Plains Library District",
   "platform": "libcal",
   "source_url": "https://highplains.libcal.com/event/15726106",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Coffee and conversation: book discussion",
+  "city": "Mead",
+  "state": "CO",
+  "neighborhood": null,
+  "venue": "Mead Public Library",
+  "genres": [],
+  "vibe": "Refreshments served",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "High Plains Library District",
+  "platform": "libcal",
+  "source_url": "https://highplains.libcal.com/event/16672309",
   "last_seen": "2026-10-13"
  },
  {
@@ -2325,7 +2755,7 @@
  },
  {
   "name": "Byram Book Club",
-  "city": "Byram Shubert",
+  "city": "Greenwich",
   "state": "CT",
   "neighborhood": null,
   "venue": "Byram Shubert Library",
@@ -2435,22 +2865,6 @@
   "library": "Greenwich Library",
   "platform": "libcal",
   "source_url": "https://greenwichlibrary.libcal.com/event/17024098",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Friends Book Group (via Zoom)",
-  "city": "Greenwich",
-  "state": "CT",
-  "neighborhood": null,
-  "venue": "Greenwich Library",
-  "genres": [],
-  "vibe": null,
-  "cadence": null,
-  "format": "online",
-  "source": "library-more",
-  "library": "Greenwich Library",
-  "platform": "libcal",
-  "source_url": "https://greenwichlibrary.libcal.com/event/17024196",
   "last_seen": "2026-10-13"
  },
  {
@@ -3144,7 +3558,7 @@
   "last_seen": "2026-10-13"
  },
  {
-  "name": "BCPL Virtual Book Club (Zoom Program, Registration Required)",
+  "name": "BCPL Virtual Book Club",
   "city": "Panama City",
   "state": "FL",
   "neighborhood": null,
@@ -3289,7 +3703,7 @@
  },
  {
   "name": "The Reader's Circle",
-  "city": "Buenaventura Lakes",
+  "city": "Kissimmee",
   "state": "FL",
   "neighborhood": null,
   "venue": "Buenaventura Lakes Library",
@@ -3305,7 +3719,7 @@
  },
  {
   "name": "Kitchen Reader",
-  "city": "Poinciana",
+  "city": "Kissimmee",
   "state": "FL",
   "neighborhood": null,
   "venue": "Poinciana Library",
@@ -3401,7 +3815,7 @@
  },
  {
   "name": "Beach Book Club",
-  "city": "Clearwater Beach",
+  "city": "Clearwater",
   "state": "FL",
   "neighborhood": null,
   "venue": "Clearwater Public Library System: Beach Branch",
@@ -3416,8 +3830,40 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "BYO Book Club",
+  "city": "Clearwater",
+  "state": "FL",
+  "neighborhood": null,
+  "venue": "Clearwater Public Library System: Beach Branch",
+  "genres": [],
+  "vibe": "Bring your own book, read quietly together; registration required",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Pinellas Public Library Cooperative",
+  "platform": "tribe",
+  "source_url": "https://pplc.us/event/byo-book-club-5/",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Countryside Collective Book Club – Registration Required",
+  "city": "Clearwater",
+  "state": "FL",
+  "neighborhood": null,
+  "venue": "Clearwater Public Library System: Countryside Branch",
+  "genres": [],
+  "vibe": "Registration required",
+  "cadence": "Monthly, 2nd Tuesday",
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Pinellas Public Library Cooperative",
+  "platform": "tribe",
+  "source_url": "https://pplc.us/event/countryside-collective-book-club-registration-required-3/",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Banned Books Club",
-  "city": "Clearwater Public Library System: East Community Branch @SPC",
+  "city": "Clearwater",
   "state": "FL",
   "neighborhood": null,
   "venue": "Clearwater Public Library System: East Community Branch @SPC",
@@ -3433,7 +3879,7 @@
  },
  {
   "name": "Page Turners Book Club at the East Community Library",
-  "city": "Clearwater Public Library System: East Community Branch @SPC",
+  "city": "Clearwater",
   "state": "FL",
   "neighborhood": null,
   "venue": "Clearwater Public Library System: East Community Branch @SPC",
@@ -3449,7 +3895,7 @@
  },
  {
   "name": "Ebony Talk Book Club",
-  "city": "Clearwater Public Library System: North Greenwood",
+  "city": "Clearwater",
   "state": "FL",
   "neighborhood": null,
   "venue": "Clearwater Public Library System: North Greenwood Branch",
@@ -3480,6 +3926,38 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Contemporary Book Club",
+  "city": "Dunedin",
+  "state": "FL",
+  "neighborhood": null,
+  "venue": "Dunedin Public Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Pinellas Public Library Cooperative",
+  "platform": "tribe",
+  "source_url": "https://pplc.us/event/contemporary-book-club-a-marriage-at-sea-by-sophie-elmhirst/",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Monday Book Club",
+  "city": "Dunedin",
+  "state": "FL",
+  "neighborhood": null,
+  "venue": "Dunedin Public Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Pinellas Public Library Cooperative",
+  "platform": "tribe",
+  "source_url": "https://pplc.us/event/monday-book-club-you-are-here-by-david-nicholls/",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Whodunit Mystery Book Club",
   "city": "Dunedin",
   "state": "FL",
@@ -3495,6 +3973,24 @@
   "library": "Pinellas Public Library Cooperative",
   "platform": "tribe",
   "source_url": "https://pplc.us/event/whodunit-mystery-book-club-the-lost-boy-of-santa-chionia-by-juliet-grames/",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "A Slice of Romance Book Club",
+  "city": "Palm Harbor",
+  "state": "FL",
+  "neighborhood": null,
+  "venue": "East Lake Community Library",
+  "genres": [
+   "romance"
+  ],
+  "vibe": "Registration required",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Pinellas Public Library Cooperative",
+  "platform": "tribe",
+  "source_url": "https://pplc.us/event/a-slice-of-romance-book-club-the-deal-by-elle-kennedy/",
   "last_seen": "2026-10-13"
  },
  {
@@ -3526,7 +4022,7 @@
   "source": "library-more",
   "library": "Pinellas Public Library Cooperative",
   "platform": "tribe",
-  "source_url": "https://pplc.us/event/a-novel-book-club-6/",
+  "source_url": "https://pplc.us/event/a-novel-book-club-7/",
   "last_seen": "2026-10-13"
  },
  {
@@ -3543,6 +4039,22 @@
   "library": "Pinellas Public Library Cooperative",
   "platform": "tribe",
   "source_url": "https://pplc.us/event/book-lovers-club-4/",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Energy Abundance Book Club",
+  "city": "Madeira Beach",
+  "state": "FL",
+  "neighborhood": null,
+  "venue": "Gulf Beaches Public Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Pinellas Public Library Cooperative",
+  "platform": "tribe",
+  "source_url": "https://pplc.us/event/energy-abundance-book-club/",
   "last_seen": "2026-10-13"
  },
  {
@@ -3609,6 +4121,58 @@
   "library": "Pinellas Public Library Cooperative",
   "platform": "tribe",
   "source_url": "https://pplc.us/event/chapter-chat-3/",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Shelf Indulgent Romance Book Club",
+  "city": "Largo",
+  "state": "FL",
+  "neighborhood": null,
+  "venue": "Largo Public Library",
+  "genres": [
+   "romance"
+  ],
+  "vibe": "Newcomers welcome; registration required",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Pinellas Public Library Cooperative",
+  "platform": "tribe",
+  "source_url": "https://pplc.us/event/shelf-indulgent-romance-book-club-5/",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Ales & Tales Book Club",
+  "city": "Palm Harbor",
+  "state": "FL",
+  "neighborhood": null,
+  "venue": "Palm Harbor Library",
+  "genres": [],
+  "vibe": "Meets at a local brewery or pub; copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Pinellas Public Library Cooperative",
+  "platform": "tribe",
+  "source_url": "https://pplc.us/event/ales-tales-book-club-6/",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "It’s a Mystery Cozy Book Talk",
+  "city": "Palm Harbor",
+  "state": "FL",
+  "neighborhood": null,
+  "venue": "Palm Harbor Library",
+  "genres": [
+   "mystery-thriller"
+  ],
+  "vibe": null,
+  "cadence": "Monthly, 2nd Tuesday",
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Pinellas Public Library Cooperative",
+  "platform": "tribe",
+  "source_url": "https://pplc.us/event/its-a-mystery-cozy-book-talk-5/",
   "last_seen": "2026-10-13"
  },
  {
@@ -3692,8 +4256,61 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Murder by the Book Mystery Book Club",
+  "city": "St. Petersburg",
+  "state": "FL",
+  "neighborhood": null,
+  "venue": "St Petersburg Library System: North Branch",
+  "genres": [
+   "mystery-thriller"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Pinellas Public Library Cooperative",
+  "platform": "tribe",
+  "source_url": "https://pplc.us/event/murder-by-the-book-mystery-book-club-4/",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Romantasy Book Club",
+  "city": "St. Petersburg",
+  "state": "FL",
+  "neighborhood": null,
+  "venue": "St Petersburg Library System: North Branch",
+  "genres": [
+   "romance",
+   "fantasy"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Pinellas Public Library Cooperative",
+  "platform": "tribe",
+  "source_url": "https://pplc.us/event/romantasy-book-club-4/",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Thursday Morning Book Club",
+  "city": "St. Petersburg",
+  "state": "FL",
+  "neighborhood": null,
+  "venue": "St Petersburg Library System: North Branch",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Pinellas Public Library Cooperative",
+  "platform": "tribe",
+  "source_url": "https://pplc.us/event/thursday-morning-book-club-4/",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "A Novel Idea Book Club",
-  "city": "St Pete Beach",
+  "city": "St. Pete Beach",
   "state": "FL",
   "neighborhood": null,
   "venue": "St. Pete Beach Public Library",
@@ -3709,7 +4326,7 @@
  },
  {
   "name": "Read Together Book Club",
-  "city": "St Pete Beach",
+  "city": "St. Pete Beach",
   "state": "FL",
   "neighborhood": null,
   "venue": "St. Pete Beach Public Library",
@@ -3721,6 +4338,54 @@
   "library": "Pinellas Public Library Cooperative",
   "platform": "tribe",
   "source_url": "https://pplc.us/event/read-together-book-club-ella-enchanted/",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Books & Beyond Book Club",
+  "city": "Tarpon Springs",
+  "state": "FL",
+  "neighborhood": null,
+  "venue": "Tarpon Springs Public Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Pinellas Public Library Cooperative",
+  "platform": "tribe",
+  "source_url": "https://pplc.us/event/books-beyond-book-club-3/",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Expand Your Horizons Book Club",
+  "city": "Tarpon Springs",
+  "state": "FL",
+  "neighborhood": null,
+  "venue": "Tarpon Springs Public Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Pinellas Public Library Cooperative",
+  "platform": "tribe",
+  "source_url": "https://pplc.us/event/expand-your-horizons-book-club-6/",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "I Survived Book Club",
+  "city": "Tarpon Springs",
+  "state": "FL",
+  "neighborhood": null,
+  "venue": "Tarpon Springs Public Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Pinellas Public Library Cooperative",
+  "platform": "tribe",
+  "source_url": "https://pplc.us/event/i-survived-book-club/",
   "last_seen": "2026-10-13"
  },
  {
@@ -3923,6 +4588,24 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Mystery Book Club",
+  "city": "Morrow",
+  "state": "GA",
+  "neighborhood": null,
+  "venue": "Morrow Branch",
+  "genres": [
+   "mystery-thriller"
+  ],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Clayton County Library System",
+  "platform": "communico",
+  "source_url": "https://claytonpl.libnet.info/event/17484067",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Page to Screen Book Club",
   "city": "Riverdale",
   "state": "GA",
@@ -4053,7 +4736,7 @@
   "source": "library-more",
   "library": "Forsyth County Public Library",
   "platform": "communico",
-  "source_url": "https://www.forsythpl.org/event/17237710",
+  "source_url": "https://www.forsythpl.org/event/16922373",
   "last_seen": "2026-10-13"
  },
  {
@@ -4159,6 +4842,24 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Cozy Mystery Book Club",
+  "city": "Stockbridge",
+  "state": "GA",
+  "neighborhood": null,
+  "venue": "Fairview Public Library",
+  "genres": [
+   "mystery-thriller"
+  ],
+  "vibe": "Copies available to borrow; newcomers welcome; refreshments served",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Henry County Library System",
+  "platform": "communico",
+  "source_url": "https://henrylibraries.libnet.info/event/17064690",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Fantasy Book Club",
   "city": "Stockbridge",
   "state": "GA",
@@ -4174,6 +4875,25 @@
   "library": "Henry County Library System",
   "platform": "communico",
   "source_url": "https://henrylibraries.libnet.info/event/17105540",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "True Crime Book Club",
+  "city": "Stockbridge",
+  "state": "GA",
+  "neighborhood": null,
+  "venue": "Fairview Public Library",
+  "genres": [
+   "mystery-thriller",
+   "nonfiction"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Henry County Library System",
+  "platform": "communico",
+  "source_url": "https://henrylibraries.libnet.info/event/16442171",
   "last_seen": "2026-10-13"
  },
  {
@@ -4225,6 +4945,43 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Science Fiction Fantasy Book Club",
+  "city": "Locust Grove",
+  "state": "GA",
+  "neighborhood": null,
+  "venue": "Locust Grove Public Library",
+  "genres": [
+   "fantasy",
+   "sci-fi"
+  ],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Henry County Library System",
+  "platform": "communico",
+  "source_url": "https://henrylibraries.libnet.info/event/17149196",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Spy Romance Book Club",
+  "city": "Locust Grove",
+  "state": "GA",
+  "neighborhood": null,
+  "venue": "Locust Grove Public Library",
+  "genres": [
+   "romance"
+  ],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Henry County Library System",
+  "platform": "communico",
+  "source_url": "https://henrylibraries.libnet.info/event/17429388",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Book Chat",
   "city": "McDonough",
   "state": "GA",
@@ -4257,8 +5014,40 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Pop-Up Book Discussion",
+  "city": "Kailua-Kona",
+  "state": "HI",
+  "neighborhood": null,
+  "venue": "Hawai‘i – Kailua-Kona",
+  "genres": [],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Hawaii State Public Library System",
+  "platform": "tribe",
+  "source_url": "https://www.librarieshawaii.org/event/pop-up-book-discussion-annie-bot-by-sierra-greer/",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Book Club",
+  "city": "Kapaau",
+  "state": "HI",
+  "neighborhood": null,
+  "venue": "Hawai‘i – North Kohala",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Hawaii State Public Library System",
+  "platform": "tribe",
+  "source_url": "https://www.librarieshawaii.org/event/book-club-10-13-26/",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Pokemon Trading Card Game Club",
-  "city": "Kapa'au",
+  "city": "Kapaau",
   "state": "HI",
   "neighborhood": null,
   "venue": "Hawai‘i – North Kohala",
@@ -4286,6 +5075,22 @@
   "library": "Hawaii State Public Library System",
   "platform": "tribe",
   "source_url": "https://www.librarieshawaii.org/event/book-club-12-2026-03-23-2-2/",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "2nd Thursday Book Club",
+  "city": "Hanapēpē",
+  "state": "HI",
+  "neighborhood": null,
+  "venue": "Kaua‘i – Hanapēpē",
+  "genres": [],
+  "vibe": "Refreshments served",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Hawaii State Public Library System",
+  "platform": "tribe",
+  "source_url": "https://www.librarieshawaii.org/event/2nd-thursday-book-club/",
   "last_seen": "2026-10-13"
  },
  {
@@ -4324,7 +5129,7 @@
  },
  {
   "name": "Silent Book Club",
-  "city": "O‘ahu",
+  "city": "Honolulu",
   "state": "HI",
   "neighborhood": null,
   "venue": "O‘ahu – Hawai‘i State Library",
@@ -4342,7 +5147,7 @@
  },
  {
   "name": "Book Club Discussion",
-  "city": "O‘ahu",
+  "city": "Honolulu",
   "state": "HI",
   "neighborhood": null,
   "venue": "O‘ahu – ʻĀina Haina",
@@ -4370,6 +5175,24 @@
   "library": "Hawaii State Public Library System",
   "platform": "tribe",
   "source_url": "https://www.librarieshawaii.org/event/blood-work-by-donald-a-carreira-ching-2/",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Silent Book Club",
+  "city": "Kāneʻohe",
+  "state": "HI",
+  "neighborhood": null,
+  "venue": "O‘ahu – Kāneʻohe",
+  "genres": [
+   "silent-reading"
+  ],
+  "vibe": "Bring your own book, read quietly together",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Hawaii State Public Library System",
+  "platform": "tribe",
+  "source_url": "https://www.librarieshawaii.org/event/silent-book-club/",
   "last_seen": "2026-10-13"
  },
  {
@@ -4425,7 +5248,7 @@
   "city": "Davenport",
   "state": "IA",
   "neighborhood": null,
-  "venue": "Community Outreach & Off-Site Events",
+  "venue": "Community Outreach & Off-Site",
   "genres": [],
   "vibe": null,
   "cadence": "Monthly",
@@ -4559,7 +5382,7 @@
   "city": "Aurora",
   "state": "IL",
   "neighborhood": null,
-  "venue": "McCarty Mills Taproom, 140 S. River St., Unit 108, Aurora, IL 60506",
+  "venue": "McCarty Mills Taproom",
   "genres": [],
   "vibe": "Meets at a local brewery or pub; copies available to borrow",
   "cadence": "Monthly, Wednesday",
@@ -4568,6 +5391,22 @@
   "library": "Aurora Public Library District",
   "platform": "communico",
   "source_url": "https://aurora.libnet.info/event/17191701",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Breakfast Book Club",
+  "city": "Aurora",
+  "state": "IL",
+  "neighborhood": null,
+  "venue": "Santori Library",
+  "genres": [],
+  "vibe": "Copies available to borrow; registration required; refreshments served",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Aurora Public Library District",
+  "platform": "communico",
+  "source_url": "https://aurora.libnet.info/event/17192343",
   "last_seen": "2026-10-13"
  },
  {
@@ -4806,6 +5645,22 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Book Discussion",
+  "city": "Elgin",
+  "state": "IL",
+  "neighborhood": null,
+  "venue": "Main Library",
+  "genres": [],
+  "vibe": "Copies available to borrow; registration required",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Gail Borden Public Library District",
+  "platform": "communico",
+  "source_url": "https://attend.gailborden.info/event/16151164",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Contemporary Book Group",
   "city": "Elgin",
   "state": "IL",
@@ -4837,6 +5692,54 @@
   "library": "Gail Borden Public Library District",
   "platform": "communico",
   "source_url": "https://attend.gailborden.info/event/16671630",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Left On Read Book Club",
+  "city": "Elgin",
+  "state": "IL",
+  "neighborhood": null,
+  "venue": "Main Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Gail Borden Public Library District",
+  "platform": "communico",
+  "source_url": "https://attend.gailborden.info/event/16736994",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Philosophy Book Club",
+  "city": "Elgin",
+  "state": "IL",
+  "neighborhood": null,
+  "venue": "Main Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Gail Borden Public Library District",
+  "platform": "communico",
+  "source_url": "https://attend.gailborden.info/event/17121975",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Rakow Readers Book Club",
+  "city": "Elgin",
+  "state": "IL",
+  "neighborhood": null,
+  "venue": "Rakow Branch",
+  "genres": [],
+  "vibe": "Newcomers welcome",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Gail Borden Public Library District",
+  "platform": "communico",
+  "source_url": "https://attend.gailborden.info/event/16147672",
   "last_seen": "2026-10-13"
  },
  {
@@ -5057,7 +5960,7 @@
  },
  {
   "name": "Readers Roundtable",
-  "city": "Cleveland",
+  "city": "Elkhart",
   "state": "IN",
   "neighborhood": null,
   "venue": "Cleveland Branch",
@@ -5073,7 +5976,7 @@
  },
  {
   "name": "Downtown Book Club",
-  "city": "Downtown",
+  "city": "Elkhart",
   "state": "IN",
   "neighborhood": null,
   "venue": "Downtown Library",
@@ -5089,7 +5992,7 @@
  },
  {
   "name": "Dunlap Book Worms",
-  "city": "Dunlap",
+  "city": "Elkhart",
   "state": "IN",
   "neighborhood": null,
   "venue": "Dunlap Branch",
@@ -5105,7 +6008,7 @@
  },
  {
   "name": "Unscripted Book Club / Leer y Compartir",
-  "city": "Pierre Moran",
+  "city": "Elkhart",
   "state": "IN",
   "neighborhood": null,
   "venue": "Pierre Moran Branch",
@@ -5232,6 +6135,22 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Morbid Curiosity Book Club",
+  "city": "Topeka",
+  "state": "KS",
+  "neighborhood": null,
+  "venue": "Topeka and Shawnee County Public Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Topeka & Shawnee County Public Library",
+  "platform": "communico",
+  "source_url": "https://tscpl.libnet.info/event/17425310",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "TALK Book Group",
   "city": "Topeka",
   "state": "KS",
@@ -5245,6 +6164,22 @@
   "library": "Topeka & Shawnee County Public Library",
   "platform": "communico",
   "source_url": "https://tscpl.libnet.info/event/17340296",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Best of the Best Book Group",
+  "city": "Florence",
+  "state": "KY",
+  "neighborhood": null,
+  "venue": "Florence Branch",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Boone County Public Library",
+  "platform": "communico",
+  "source_url": "https://boone.libnet.info/event/14552704",
   "last_seen": "2026-10-13"
  },
  {
@@ -5279,6 +6214,22 @@
   "library": "Boone County Public Library",
   "platform": "communico",
   "source_url": "https://boone.libnet.info/event/14570544",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Chapter and Verse",
+  "city": "Union",
+  "state": "KY",
+  "neighborhood": null,
+  "venue": "Scheben Branch",
+  "genres": [],
+  "vibe": null,
+  "cadence": "Monthly, 2nd Tuesday",
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Boone County Public Library",
+  "platform": "communico",
+  "source_url": "https://boone.libnet.info/event/14928881",
   "last_seen": "2026-10-13"
  },
  {
@@ -5540,7 +6491,7 @@
   "source": "library-more",
   "library": "Calcasieu Parish Public Library",
   "platform": "communico",
-  "source_url": "https://calcasieulibrary.org/event/17202358",
+  "source_url": "https://calcasieulibrary.org/event/17201957",
   "last_seen": "2026-10-13"
  },
  {
@@ -5792,6 +6743,72 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Community Book Discussion",
+  "city": "Arbutus",
+  "state": "MD",
+  "neighborhood": null,
+  "venue": "Arbutus Branch",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Baltimore County Public Library",
+  "platform": "communico",
+  "source_url": "https://events.bcpl.info/event/17087020",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Catonsville Book Club",
+  "city": "Catonsville",
+  "state": "MD",
+  "neighborhood": null,
+  "venue": "Catonsville Branch",
+  "genres": [],
+  "vibe": null,
+  "cadence": "Monthly, 2nd Tuesday",
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Baltimore County Public Library",
+  "platform": "communico",
+  "source_url": "https://events.bcpl.info/event/17053077",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Silent Book Club",
+  "city": "Catonsville",
+  "state": "MD",
+  "neighborhood": null,
+  "venue": "Catonsville Branch",
+  "genres": [
+   "silent-reading"
+  ],
+  "vibe": "Refreshments served",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Baltimore County Public Library",
+  "platform": "communico",
+  "source_url": "https://events.bcpl.info/event/17482183",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Cockeysville Book Club",
+  "city": "Cockeysville",
+  "state": "MD",
+  "neighborhood": null,
+  "venue": "Cockeysville Branch",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Baltimore County Public Library",
+  "platform": "communico",
+  "source_url": "https://events.bcpl.info/event/17467942",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Books & Brews",
   "city": "Lansdowne",
   "state": "MD",
@@ -5842,6 +6859,22 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Thirsty Third Thursday Book Club",
+  "city": "Owings Mills",
+  "state": "MD",
+  "neighborhood": null,
+  "venue": "Owings Mills Branch",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Baltimore County Public Library",
+  "platform": "communico",
+  "source_url": "https://events.bcpl.info/event/17135743",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Parkville-Carney Book Club",
   "city": "Parkville",
   "state": "MD",
@@ -5871,6 +6904,102 @@
   "library": "Baltimore County Public Library",
   "platform": "communico",
   "source_url": "https://events.bcpl.info/event/17087018",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Sunday Book Club",
+  "city": "Pikesville",
+  "state": "MD",
+  "neighborhood": null,
+  "venue": "Pikesville Branch",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Baltimore County Public Library",
+  "platform": "communico",
+  "source_url": "https://events.bcpl.info/event/17164871",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Reisterstown Readers Book Club",
+  "city": "Reisterstown",
+  "state": "MD",
+  "neighborhood": null,
+  "venue": "Reisterstown Branch",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Baltimore County Public Library",
+  "platform": "communico",
+  "source_url": "https://events.bcpl.info/event/17275631",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Book Buzz & Towson Book Club",
+  "city": "Towson",
+  "state": "MD",
+  "neighborhood": null,
+  "venue": "Towson Branch",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Baltimore County Public Library",
+  "platform": "communico",
+  "source_url": "https://events.bcpl.info/event/17164660",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Towson Book Club",
+  "city": "Towson",
+  "state": "MD",
+  "neighborhood": null,
+  "venue": "Towson Branch",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Baltimore County Public Library",
+  "platform": "communico",
+  "source_url": "https://events.bcpl.info/event/17276184",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "White Marsh Book Club",
+  "city": "Baltimore",
+  "state": "MD",
+  "neighborhood": null,
+  "venue": "White Marsh Branch",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Baltimore County Public Library",
+  "platform": "communico",
+  "source_url": "https://events.bcpl.info/event/17401682",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Woodlawn Page Turners Book Club",
+  "city": "Woodlawn",
+  "state": "MD",
+  "neighborhood": null,
+  "venue": "Woodlawn Branch",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Baltimore County Public Library",
+  "platform": "communico",
+  "source_url": "https://events.bcpl.info/event/17086999",
   "last_seen": "2026-10-13"
  },
  {
@@ -5940,7 +7069,7 @@
   "last_seen": "2026-10-13"
  },
  {
-  "name": "Fairview Book Group (FV & Zoom)",
+  "name": "Fairview Book Group",
   "city": "Owings",
   "state": "MD",
   "neighborhood": null,
@@ -5988,6 +7117,22 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "OMOB Book Discussion (TB)",
+  "city": "North Beach",
+  "state": "MD",
+  "neighborhood": null,
+  "venue": "Twin Beaches Branch",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Calvert Library",
+  "platform": "communico",
+  "source_url": "https://calvertlibrary.libnet.info/event/15371618",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Silent Book Club (TB)",
   "city": "North Beach",
   "state": "MD",
@@ -6006,236 +7151,24 @@
   "last_seen": "2026-10-13"
  },
  {
-  "name": "Best Book Club",
-  "city": "Baltimore",
+  "name": "Aberdeen Morning Book Discussion",
+  "city": "Aberdeen",
   "state": "MD",
   "neighborhood": null,
-  "venue": "Brooklyn",
-  "genres": [],
-  "vibe": null,
-  "cadence": "Monthly, 3rd Thursday",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Enoch Pratt Free Library",
-  "platform": "localist",
-  "source_url": "https://calendar.prattlibrary.org/event/brooklyns-best-book-club-1683",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "AFAM Department Book Club",
-  "city": "Baltimore",
-  "state": "MD",
-  "neighborhood": null,
-  "venue": "Central Library",
+  "venue": "Aberdeen Library",
   "genres": [],
   "vibe": null,
   "cadence": null,
   "format": "in-person",
   "source": "library-more",
-  "library": "Enoch Pratt Free Library",
-  "platform": "localist",
-  "source_url": "https://calendar.prattlibrary.org/event/afam-department-book-club-2115",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Pratt Page-Turners Book Club",
-  "city": "Baltimore",
-  "state": "MD",
-  "neighborhood": null,
-  "venue": "Central Library",
-  "genres": [],
-  "vibe": null,
-  "cadence": "Monthly, 3rd Saturday",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Enoch Pratt Free Library",
-  "platform": "localist",
-  "source_url": "https://calendar.prattlibrary.org/event/pratt-page-turners-book-club-2150",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Rambling Readers",
-  "city": "Baltimore",
-  "state": "MD",
-  "neighborhood": null,
-  "venue": "Central Library",
-  "genres": [],
-  "vibe": null,
-  "cadence": "Monthly, 3rd Thursday",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Enoch Pratt Free Library",
-  "platform": "localist",
-  "source_url": "https://calendar.prattlibrary.org/event/rambling_readers_1644",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Storied Silvers: Book Discussion",
-  "city": "Baltimore",
-  "state": "MD",
-  "neighborhood": null,
-  "venue": "Central Library",
-  "genres": [],
-  "vibe": null,
-  "cadence": "Monthly, 3rd Wednesday",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Enoch Pratt Free Library",
-  "platform": "localist",
-  "source_url": "https://calendar.prattlibrary.org/event/storied-silvers-book-discussion-8798",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Book Discussion",
-  "city": "Baltimore",
-  "state": "MD",
-  "neighborhood": null,
-  "venue": "Cherry Hill",
-  "genres": [],
-  "vibe": null,
-  "cadence": "Monthly, Monday",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Enoch Pratt Free Library",
-  "platform": "localist",
-  "source_url": "https://calendar.prattlibrary.org/event/book-discussion-9544",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Book Discussion Group",
-  "city": "Baltimore",
-  "state": "MD",
-  "neighborhood": null,
-  "venue": "Edmondson Avenue",
-  "genres": [],
-  "vibe": null,
-  "cadence": "Monthly, 4th Saturday",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Enoch Pratt Free Library",
-  "platform": "localist",
-  "source_url": "https://calendar.prattlibrary.org/event/edmondson-avenue-book-discussion-group-4542",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Book Discussion",
-  "city": "Baltimore",
-  "state": "MD",
-  "neighborhood": null,
-  "venue": "Govans",
-  "genres": [],
-  "vibe": null,
-  "cadence": null,
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Enoch Pratt Free Library",
-  "platform": "localist",
-  "source_url": "https://calendar.prattlibrary.org/event/book-discussion-3867",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Tome Raiders: Adult Book Club",
-  "city": "Baltimore",
-  "state": "MD",
-  "neighborhood": null,
-  "venue": "Hamilton",
-  "genres": [],
-  "vibe": null,
-  "cadence": "Monthly, last Monday",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Enoch Pratt Free Library",
-  "platform": "localist",
-  "source_url": "https://calendar.prattlibrary.org/event/tome-radiers-sarafina",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Coffee and Classics Book Club",
-  "city": "Baltimore",
-  "state": "MD",
-  "neighborhood": null,
-  "venue": "Light Street",
-  "genres": [
-   "classics"
-  ],
-  "vibe": "Refreshments served",
-  "cadence": "Monthly, 2nd Tuesday",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Enoch Pratt Free Library",
-  "platform": "localist",
-  "source_url": "https://calendar.prattlibrary.org/event/coffee-and-classics-book-club-2136",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Read With Pride",
-  "city": "Baltimore",
-  "state": "MD",
-  "neighborhood": null,
-  "venue": "Light Street",
-  "genres": [
-   "lgbtq"
-  ],
-  "vibe": null,
-  "cadence": "Monthly, 1st Saturday",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Enoch Pratt Free Library",
-  "platform": "localist",
-  "source_url": "https://calendar.prattlibrary.org/event/read-with-pride-these-heathens-by-mia-mckenzie",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Book Discussion",
-  "city": "Baltimore",
-  "state": "MD",
-  "neighborhood": null,
-  "venue": "Roland Park",
-  "genres": [],
-  "vibe": null,
-  "cadence": "Monthly, 3rd Monday",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Enoch Pratt Free Library",
-  "platform": "localist",
-  "source_url": "https://calendar.prattlibrary.org/event/book-discussion-on-the-calculation-of-volume-iii-by-solvej-balle",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "BYOB (Bring Your Own Book) Club",
-  "city": "Baltimore",
-  "state": "MD",
-  "neighborhood": null,
-  "venue": "Southeast Anchor",
-  "genres": [],
-  "vibe": null,
-  "cadence": "Monthly, 1st Wednesday",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Enoch Pratt Free Library",
-  "platform": "localist",
-  "source_url": "https://calendar.prattlibrary.org/event/byob_bring_your_own_book_club",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Film & Book Discussion",
-  "city": "Baltimore",
-  "state": "MD",
-  "neighborhood": null,
-  "venue": "Waverly",
-  "genres": [],
-  "vibe": null,
-  "cadence": null,
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Enoch Pratt Free Library",
-  "platform": "localist",
-  "source_url": "https://calendar.prattlibrary.org/event/film-book-discussion-a-haunting-in-venice-2023",
+  "library": "Harford County Public Library",
+  "platform": "communico",
+  "source_url": "https://hcpl.libnet.info/event/16544745",
   "last_seen": "2026-10-13"
  },
  {
   "name": "Books on Tap",
-  "city": "Belcamp",
+  "city": "Abingdon",
   "state": "MD",
   "neighborhood": null,
   "venue": "Abingdon Grill",
@@ -6251,7 +7184,7 @@
  },
  {
   "name": "Abingdon Afternoon Book Discussion",
-  "city": "Belcamp",
+  "city": "Abingdon",
   "state": "MD",
   "neighborhood": null,
   "venue": "Abingdon Library",
@@ -6267,7 +7200,7 @@
  },
  {
   "name": "Abingdon Whispering Pages",
-  "city": "Belcamp",
+  "city": "Abingdon",
   "state": "MD",
   "neighborhood": null,
   "venue": "Abingdon Library",
@@ -6283,7 +7216,7 @@
  },
  {
   "name": "Bel Air Evening Book Discussion",
-  "city": "Belcamp",
+  "city": "Bel Air",
   "state": "MD",
   "neighborhood": null,
   "venue": "Bel Air Library",
@@ -6299,7 +7232,7 @@
  },
  {
   "name": "Bel Air Nonfiction Book Discussion",
-  "city": "Belcamp",
+  "city": "Bel Air",
   "state": "MD",
   "neighborhood": null,
   "venue": "Bel Air Library",
@@ -6316,24 +7249,8 @@
   "last_seen": "2026-10-13"
  },
  {
-  "name": "Fallston Books at the Center",
-  "city": "Belcamp",
-  "state": "MD",
-  "neighborhood": null,
-  "venue": "Chenowith Activity Center",
-  "genres": [],
-  "vibe": null,
-  "cadence": "Monthly, 3rd Thursday",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Harford County Public Library",
-  "platform": "communico",
-  "source_url": "https://hcpl.libnet.info/event/16520737",
-  "last_seen": "2026-10-13"
- },
- {
   "name": "Darlington Afternoon Book Discussion",
-  "city": "Street",
+  "city": "Darlington",
   "state": "MD",
   "neighborhood": null,
   "venue": "Darlington Library",
@@ -6348,8 +7265,24 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Darlington Whispering Pages-A Quiet Book Club",
+  "city": "Darlington",
+  "state": "MD",
+  "neighborhood": null,
+  "venue": "Darlington Library",
+  "genres": [],
+  "vibe": "Registration required",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Harford County Public Library",
+  "platform": "communico",
+  "source_url": "https://hcpl.libnet.info/event/16553158",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Edgewood Books at the Center",
-  "city": "Belcamp",
+  "city": "Edgewood",
   "state": "MD",
   "neighborhood": null,
   "venue": "Edgewood Activity Center",
@@ -6365,7 +7298,7 @@
  },
  {
   "name": "Edgewood Morning Mystery Book Discussion",
-  "city": "Belcamp",
+  "city": "Edgewood",
   "state": "MD",
   "neighborhood": null,
   "venue": "Edgewood Library",
@@ -6383,7 +7316,7 @@
  },
  {
   "name": "Books On Tap",
-  "city": "Belcamp",
+  "city": "Forest Hill",
   "state": "MD",
   "neighborhood": null,
   "venue": "Harford Vineyard and Winery",
@@ -6399,7 +7332,7 @@
  },
  {
   "name": "Havre de Grace Books at the Center",
-  "city": "Belcamp",
+  "city": "Havre de Grace",
   "state": "MD",
   "neighborhood": null,
   "venue": "Havre de Grace Activity Center",
@@ -6415,7 +7348,7 @@
  },
  {
   "name": "Havre de Grace Evening Book Discussion",
-  "city": "Belcamp",
+  "city": "Havre de Grace",
   "state": "MD",
   "neighborhood": null,
   "venue": "Havre de Grace Library",
@@ -6430,8 +7363,24 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Jarrettsville Afternoon Book Discussion",
+  "city": "Jarrettsville",
+  "state": "MD",
+  "neighborhood": null,
+  "venue": "Jarrettsville Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": "Monthly, 2nd Tuesday",
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Harford County Public Library",
+  "platform": "communico",
+  "source_url": "https://hcpl.libnet.info/event/16495516",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Joppa Afternoon Book Discussion",
-  "city": "Belcamp",
+  "city": "Joppa",
   "state": "MD",
   "neighborhood": null,
   "venue": "Joppa Library",
@@ -6447,7 +7396,7 @@
  },
  {
   "name": "Joppa Evening Book Discussion",
-  "city": "Belcamp",
+  "city": "Joppa",
   "state": "MD",
   "neighborhood": null,
   "venue": "Joppa Library",
@@ -6463,7 +7412,7 @@
  },
  {
   "name": "Bel Air Books at the Center",
-  "city": "Belcamp",
+  "city": "Bel Air",
   "state": "MD",
   "neighborhood": null,
   "venue": "McFaul Activity Center",
@@ -6479,7 +7428,7 @@
  },
  {
   "name": "Norrisville Morning Book Discussion",
-  "city": "Belcamp",
+  "city": "White Hall",
   "state": "MD",
   "neighborhood": null,
   "venue": "Norrisville Library",
@@ -6495,7 +7444,7 @@
  },
  {
   "name": "Norrisville Whispering Pages",
-  "city": "Belcamp",
+  "city": "White Hall",
   "state": "MD",
   "neighborhood": null,
   "venue": "Norrisville Library",
@@ -6511,23 +7460,7 @@
  },
  {
   "name": "Books on Tap",
-  "city": "Belcamp",
-  "state": "MD",
-  "neighborhood": null,
-  "venue": "Sean Bolan's",
-  "genres": [],
-  "vibe": "Meets at a local brewery or pub; registration required",
-  "cadence": "Monthly, 2nd Tuesday",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Harford County Public Library",
-  "platform": "communico",
-  "source_url": "https://hcpl.libnet.info/event/16524975",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Books on Tap",
-  "city": "Belcamp",
+  "city": "Whiteford",
   "state": "MD",
   "neighborhood": null,
   "venue": "Slate Farm Brewery",
@@ -6543,7 +7476,7 @@
  },
  {
   "name": "Whiteford Afternoon Book Discussion",
-  "city": "Belcamp",
+  "city": "Whiteford",
   "state": "MD",
   "neighborhood": null,
   "venue": "Whiteford Library",
@@ -6555,6 +7488,22 @@
   "library": "Harford County Public Library",
   "platform": "communico",
   "source_url": "https://hcpl.libnet.info/event/16752179",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Whiteford Morning Book Discussion",
+  "city": "Whiteford",
+  "state": "MD",
+  "neighborhood": null,
+  "venue": "Whiteford Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Harford County Public Library",
+  "platform": "communico",
+  "source_url": "https://hcpl.libnet.info/event/17433717",
   "last_seen": "2026-10-13"
  },
  {
@@ -7117,6 +8066,24 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Silent Book Club",
+  "city": "Columbia",
+  "state": "MO",
+  "neighborhood": null,
+  "venue": "Columbia Public Library",
+  "genres": [
+   "silent-reading"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Daniel Boone Regional Library",
+  "platform": "communico",
+  "source_url": "https://dbrl.libnet.info/event/17042964",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Snack & Chat Book Discussion",
   "city": "Holts Summit",
   "state": "MO",
@@ -7146,6 +8113,22 @@
   "library": "Daniel Boone Regional Library",
   "platform": "communico",
   "source_url": "https://dbrl.libnet.info/event/17481799",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Southern Boone Evening Book Club",
+  "city": "Ashland",
+  "state": "MO",
+  "neighborhood": null,
+  "venue": "Southern Boone County Public Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Daniel Boone Regional Library",
+  "platform": "communico",
+  "source_url": "https://dbrl.libnet.info/event/17016594",
   "last_seen": "2026-10-13"
  },
  {
@@ -7340,12 +8323,12 @@
    "mystery-thriller"
   ],
   "vibe": null,
-  "cadence": null,
+  "cadence": "Monthly, 2nd Tuesday",
   "format": "in-person",
   "source": "library-more",
   "library": "Springfield-Greene County Library District",
   "platform": "communico",
-  "source_url": "https://programs.thelibrary.org/event/16730411",
+  "source_url": "https://programs.thelibrary.org/event/16730368",
   "last_seen": "2026-10-13"
  },
  {
@@ -7534,7 +8517,7 @@
   "city": "Wilmington",
   "state": "NC",
   "neighborhood": null,
-  "venue": "Main Library 230 Grace Street, Suite A   Wilmington, NC 28401",
+  "venue": "Main Library",
   "genres": [
    "mystery-thriller"
   ],
@@ -7549,7 +8532,7 @@
  },
  {
   "name": "Fantasy/Romance Book Club",
-  "city": "Northchase",
+  "city": "Wilmington",
   "state": "NC",
   "neighborhood": null,
   "venue": "Northchase Library",
@@ -7568,7 +8551,7 @@
  },
  {
   "name": "Mystery Chasers",
-  "city": "Northchase",
+  "city": "Wilmington",
   "state": "NC",
   "neighborhood": null,
   "venue": "Northchase Library",
@@ -7586,7 +8569,7 @@
  },
  {
   "name": "Shelf Indulgence Book Club",
-  "city": "Northchase",
+  "city": "Wilmington",
   "state": "NC",
   "neighborhood": null,
   "venue": "Northchase Library",
@@ -7605,7 +8588,7 @@
   "city": "Wilmington",
   "state": "NC",
   "neighborhood": null,
-  "venue": "Northeast Library 1241 Military Cutoff Rd, Wilmington, NC 28405",
+  "venue": "Northeast Library",
   "genres": [
    "historical-fiction"
   ],
@@ -7623,7 +8606,7 @@
   "city": "Wilmington",
   "state": "NC",
   "neighborhood": null,
-  "venue": "Northeast Library 1241 Military Cutoff Rd, Wilmington, NC 28405",
+  "venue": "Northeast Library",
   "genres": [
    "fantasy",
    "sci-fi"
@@ -7642,7 +8625,7 @@
   "city": "Wilmington",
   "state": "NC",
   "neighborhood": null,
-  "venue": "Pine Valley 3802 College Rd, Wilmington, NC 28412",
+  "venue": "Pine Valley",
   "genres": [],
   "vibe": "Registration required",
   "cadence": "Monthly, 2nd Monday",
@@ -7658,7 +8641,7 @@
   "city": "Wilmington",
   "state": "NC",
   "neighborhood": null,
-  "venue": "Pine Valley 3802 College Rd, Wilmington, NC 28412",
+  "venue": "Pine Valley",
   "genres": [
    "nonfiction"
   ],
@@ -7676,7 +8659,7 @@
   "city": "Carolina Beach",
   "state": "NC",
   "neighborhood": null,
-  "venue": "Pleasure Island 1401 N Lake Park Blvd #72, Carolina Beach, NC 28428",
+  "venue": "Pleasure Island",
   "genres": [],
   "vibe": null,
   "cadence": "Twice monthly, 2nd & 4th Wednesday",
@@ -7692,7 +8675,7 @@
   "city": "Carolina Beach",
   "state": "NC",
   "neighborhood": null,
-  "venue": "Pleasure Island 1401 N Lake Park Blvd #72, Carolina Beach, NC 28428",
+  "venue": "Pleasure Island",
   "genres": [],
   "vibe": "Registration required",
   "cadence": "Monthly, 3rd Wednesday",
@@ -7721,7 +8704,7 @@
  },
  {
   "name": "Steps and Stories",
-  "city": "Edwards",
+  "city": "Marshville",
   "state": "NC",
   "neighborhood": null,
   "venue": "Edwards Memorial Library",
@@ -7785,7 +8768,7 @@
  },
  {
   "name": "Southwest Library Evening Book Club",
-  "city": "Southwest",
+  "city": "Waxhaw",
   "state": "NC",
   "neighborhood": null,
   "venue": "Southwest Regional Library",
@@ -7801,7 +8784,7 @@
  },
  {
   "name": "Southwest Morning Book Club",
-  "city": "Southwest",
+  "city": "Waxhaw",
   "state": "NC",
   "neighborhood": null,
   "venue": "Southwest Regional Library",
@@ -7817,7 +8800,7 @@
  },
  {
   "name": "Steps and Stories",
-  "city": "Southwest",
+  "city": "Waxhaw",
   "state": "NC",
   "neighborhood": null,
   "venue": "Southwest Regional Library",
@@ -7868,7 +8851,7 @@
   "city": "Cherry Hill",
   "state": "NJ",
   "neighborhood": null,
-  "venue": "CHPL Events",
+  "venue": "CHPL",
   "genres": [],
   "vibe": "Meets at a local brewery or pub",
   "cadence": "Monthly, 1st Thursday",
@@ -7884,7 +8867,7 @@
   "city": "Cherry Hill",
   "state": "NJ",
   "neighborhood": null,
-  "venue": "CHPL Events",
+  "venue": "CHPL",
   "genres": [],
   "vibe": "Bring your own book, read quietly together",
   "cadence": "Weekly, Friday",
@@ -7962,8 +8945,58 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "The Bookies Book Club",
+  "city": "Edison",
+  "state": "NJ",
+  "neighborhood": null,
+  "venue": "Main Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Edison Public Library",
+  "platform": "communico",
+  "source_url": "https://edisonpubliclibrary.libnet.info/event/16474438",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Second Saturday Book Club",
+  "city": "Franklin Township",
+  "state": "NJ",
+  "neighborhood": null,
+  "venue": "DeMott Lane Branch",
+  "genres": [],
+  "vibe": "Copies available to borrow; registration required",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Franklin Township Public Library",
+  "platform": "communico",
+  "source_url": "https://franklintwp.libnet.info/event/17634524",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Open Books, Open Minds: Historical Fiction Book Club",
+  "city": "Franklin Park",
+  "state": "NJ",
+  "neighborhood": null,
+  "venue": "Franklin Park Branch",
+  "genres": [
+   "historical-fiction"
+  ],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Franklin Township Public Library",
+  "platform": "communico",
+  "source_url": "https://franklintwp.libnet.info/event/17388116",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Friday Morning Book Group",
-  "city": "Headquarters",
+  "city": "Flemington",
   "state": "NJ",
   "neighborhood": null,
   "venue": "Headquarters Library",
@@ -7975,6 +9008,24 @@
   "library": "Hunterdon County Library",
   "platform": "libcal",
   "source_url": "https://hclibrary.libcal.com/event/15373067",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Silent Book Club",
+  "city": "Flemington",
+  "state": "NJ",
+  "neighborhood": null,
+  "venue": "Headquarters Library",
+  "genres": [
+   "silent-reading"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Hunterdon County Library",
+  "platform": "libcal",
+  "source_url": "https://hclibrary.libcal.com/event/17423912",
   "last_seen": "2026-10-13"
  },
  {
@@ -8010,22 +9061,6 @@
   "library": "Hunterdon County Library",
   "platform": "libcal",
   "source_url": "https://hclibrary.libcal.com/event/16644157",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Books on the Vine: Book Group @ Old York Cellars",
-  "city": "Offsite",
-  "state": "NJ",
-  "neighborhood": null,
-  "venue": "Offsite",
-  "genres": [],
-  "vibe": null,
-  "cadence": "Monthly, 1st Thursday",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Hunterdon County Library",
-  "platform": "libcal",
-  "source_url": "https://hclibrary.libcal.com/event/16166536",
   "last_seen": "2026-10-13"
  },
  {
@@ -8077,6 +9112,22 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "MCL Book Club Tuesday Touring Company",
+  "city": "Allentown",
+  "state": "NJ",
+  "neighborhood": null,
+  "venue": "Allentown Branch",
+  "genres": [],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monmouth County Library",
+  "platform": "libcal",
+  "source_url": "https://monmouthcountylib.libcal.com/event/17367649",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Stephen King Book Club",
   "city": "Atlantic Highlands",
   "state": "NJ",
@@ -8125,8 +9176,56 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Hazlet Banned Book Club",
+  "city": "Hazlet",
+  "state": "NJ",
+  "neighborhood": null,
+  "venue": "Hazlet Township Branch",
+  "genres": [],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monmouth County Library",
+  "platform": "libcal",
+  "source_url": "https://monmouthcountylib.libcal.com/event/17675522",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "MCL Book Club Tuesday Touring Company",
+  "city": "Hazlet",
+  "state": "NJ",
+  "neighborhood": null,
+  "venue": "Hazlet Township Branch",
+  "genres": [],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monmouth County Library",
+  "platform": "libcal",
+  "source_url": "https://monmouthcountylib.libcal.com/event/17367967",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "MCL Book Club Tuesday Touring Company at Hazlet Library",
+  "city": "Hazlet",
+  "state": "NJ",
+  "neighborhood": null,
+  "venue": "Hazlet Township Branch",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monmouth County Library",
+  "platform": "libcal",
+  "source_url": "https://monmouthcountylib.libcal.com/event/17412893",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "A Novel Idea Hybrid Book Discussion",
-  "city": "Headquarters, Manalapan",
+  "city": "Manalapan",
   "state": "NJ",
   "neighborhood": null,
   "venue": "Headquarters, Manalapan",
@@ -8138,6 +9237,24 @@
   "library": "Monmouth County Library",
   "platform": "libcal",
   "source_url": "https://monmouthcountylib.libcal.com/event/17470670",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Murder, They Wrote Hybrid Mystery Book Discussion",
+  "city": "Manalapan",
+  "state": "NJ",
+  "neighborhood": null,
+  "venue": "Headquarters, Manalapan",
+  "genres": [
+   "mystery-thriller"
+  ],
+  "vibe": "Copies available to borrow; registration required",
+  "cadence": null,
+  "format": "hybrid",
+  "source": "library-more",
+  "library": "Monmouth County Library",
+  "platform": "libcal",
+  "source_url": "https://monmouthcountylib.libcal.com/event/17526629",
   "last_seen": "2026-10-13"
  },
  {
@@ -8173,6 +9290,38 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Gothic Literature Book Club",
+  "city": "Marlboro",
+  "state": "NJ",
+  "neighborhood": null,
+  "venue": "Marlboro Branch",
+  "genres": [],
+  "vibe": "Registration required",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monmouth County Library",
+  "platform": "libcal",
+  "source_url": "https://monmouthcountylib.libcal.com/event/17028784",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "MCL Book Club Tuesday Touring Company",
+  "city": "Marlboro",
+  "state": "NJ",
+  "neighborhood": null,
+  "venue": "Marlboro Branch",
+  "genres": [],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monmouth County Library",
+  "platform": "libcal",
+  "source_url": "https://monmouthcountylib.libcal.com/event/17368197",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Wall Shorts",
   "city": "Wall Township",
   "state": "NJ",
@@ -8205,19 +9354,19 @@
   "last_seen": "2026-10-13"
  },
  {
-  "name": "West Long Branch Book Club",
-  "city": "West Long Branch",
+  "name": "Adult Book Club",
+  "city": "North Bergen",
   "state": "NJ",
   "neighborhood": null,
-  "venue": "West Long Branch",
+  "venue": "Sai Rao Public Library of North Bergen",
   "genres": [],
   "vibe": null,
-  "cadence": "Monthly, 3rd Thursday",
+  "cadence": null,
   "format": "in-person",
   "source": "library-more",
-  "library": "Monmouth County Library",
-  "platform": "libcal",
-  "source_url": "https://monmouthcountylib.libcal.com/event/16736498",
+  "library": "New Brunswick Free Public Library",
+  "platform": "communico",
+  "source_url": "https://nbpl.libnet.info/event/17472281",
   "last_seen": "2026-10-13"
  },
  {
@@ -8249,7 +9398,7 @@
   "source": "library-more",
   "library": "Ocean County Library",
   "platform": "communico",
-  "source_url": "https://theoceancountylibrary.libnet.info/event/15041193",
+  "source_url": "https://theoceancountylibrary.libnet.info/event/15041192",
   "last_seen": "2026-10-13"
  },
  {
@@ -8281,7 +9430,7 @@
   "source": "library-more",
   "library": "Ocean County Library",
   "platform": "communico",
-  "source_url": "https://theoceancountylibrary.libnet.info/event/15772452",
+  "source_url": "https://theoceancountylibrary.libnet.info/event/15772429",
   "last_seen": "2026-10-13"
  },
  {
@@ -8396,6 +9545,22 @@
   "library": "Ocean County Library",
   "platform": "communico",
   "source_url": "https://theoceancountylibrary.libnet.info/event/17300248",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Manchester Daytime Book Discussion",
+  "city": "Manchester",
+  "state": "NJ",
+  "neighborhood": null,
+  "venue": "Manchester Branch",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Ocean County Library",
+  "platform": "communico",
+  "source_url": "https://theoceancountylibrary.libnet.info/event/14988831",
   "last_seen": "2026-10-13"
  },
  {
@@ -8557,7 +9722,55 @@
   "source": "library-more",
   "library": "Ocean County Library",
   "platform": "communico",
-  "source_url": "https://theoceancountylibrary.libnet.info/event/15617406",
+  "source_url": "https://theoceancountylibrary.libnet.info/event/15611856",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Trevor's Banned Book Club",
+  "city": "Toms River",
+  "state": "NJ",
+  "neighborhood": null,
+  "venue": "Toms River Branch",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Ocean County Library",
+  "platform": "communico",
+  "source_url": "https://theoceancountylibrary.libnet.info/event/17486071",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Adult Book Discussion",
+  "city": "Tuckerton",
+  "state": "NJ",
+  "neighborhood": null,
+  "venue": "Tuckerton Branch",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Ocean County Library",
+  "platform": "communico",
+  "source_url": "https://theoceancountylibrary.libnet.info/event/17309957",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Tuckerton Adult Book Group",
+  "city": "Tuckerton",
+  "state": "NJ",
+  "neighborhood": null,
+  "venue": "Tuckerton Branch",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Ocean County Library",
+  "platform": "communico",
+  "source_url": "https://theoceancountylibrary.libnet.info/event/17092492",
   "last_seen": "2026-10-13"
  },
  {
@@ -8625,6 +9838,22 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Friends of Princeton Open Space Nature Book Club",
+  "city": "Princeton",
+  "state": "NJ",
+  "neighborhood": null,
+  "venue": "Mountain Lakes House",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Princeton Public Library",
+  "platform": "communico",
+  "source_url": "https://princetonlibrary.libnet.info/event/16755702",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Book Brunch",
   "city": "Princeton",
   "state": "NJ",
@@ -8638,6 +9867,22 @@
   "library": "Princeton Public Library",
   "platform": "communico",
   "source_url": "https://princetonlibrary.libnet.info/event/17567359",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Fiction Book Group",
+  "city": "Princeton",
+  "state": "NJ",
+  "neighborhood": null,
+  "venue": "Princeton Public Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Princeton Public Library",
+  "platform": "communico",
+  "source_url": "https://princetonlibrary.libnet.info/event/17164631",
   "last_seen": "2026-10-13"
  },
  {
@@ -8864,7 +10109,7 @@
   "city": "Princeton Junction",
   "state": "NJ",
   "neighborhood": null,
-  "venue": "WWPL Calendar",
+  "venue": "WWPL",
   "genres": [],
   "vibe": "Copies available to borrow",
   "cadence": null,
@@ -8880,7 +10125,7 @@
   "city": "Princeton Junction",
   "state": "NJ",
   "neighborhood": null,
-  "venue": "WWPL Calendar",
+  "venue": "WWPL",
   "genres": [
    "horror"
   ],
@@ -8898,7 +10143,7 @@
   "city": "Princeton Junction",
   "state": "NJ",
   "neighborhood": null,
-  "venue": "WWPL Calendar",
+  "venue": "WWPL",
   "genres": [],
   "vibe": "Copies available to borrow",
   "cadence": null,
@@ -8914,7 +10159,7 @@
   "city": "Princeton Junction",
   "state": "NJ",
   "neighborhood": null,
-  "venue": "WWPL Calendar",
+  "venue": "WWPL",
   "genres": [
    "romance"
   ],
@@ -8932,7 +10177,7 @@
   "city": "Princeton Junction",
   "state": "NJ",
   "neighborhood": null,
-  "venue": "WWPL Calendar",
+  "venue": "WWPL",
   "genres": [],
   "vibe": null,
   "cadence": null,
@@ -8948,7 +10193,7 @@
   "city": "Princeton Junction",
   "state": "NJ",
   "neighborhood": null,
-  "venue": "WWPL Calendar",
+  "venue": "WWPL",
   "genres": [],
   "vibe": null,
   "cadence": null,
@@ -9025,7 +10270,7 @@
  },
  {
   "name": "WPL Book Club",
-  "city": "Main",
+  "city": "Woodbridge",
   "state": "NJ",
   "neighborhood": null,
   "venue": "Main Library",
@@ -9206,6 +10451,22 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Bookworms Book Group",
+  "city": "Albuquerque",
+  "state": "NM",
+  "neighborhood": null,
+  "venue": "Juan Tabo Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Albuquerque & Bernalillo County Library",
+  "platform": "libcal",
+  "source_url": "https://libevents.abqlibrary.org/event/16157310",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Lomas Tramway Book Club",
   "city": "Albuquerque",
   "state": "NM",
@@ -9290,6 +10551,22 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Planet Earth Book Club",
+  "city": "Albuquerque",
+  "state": "NM",
+  "neighborhood": null,
+  "venue": "San Pedro Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Albuquerque & Bernalillo County Library",
+  "platform": "libcal",
+  "source_url": "https://libevents.abqlibrary.org/event/17715699",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "South Valley Book Club",
   "city": "Albuquerque",
   "state": "NM",
@@ -9303,6 +10580,22 @@
   "library": "Albuquerque & Bernalillo County Library",
   "platform": "libcal",
   "source_url": "https://libevents.abqlibrary.org/event/15216074",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "I Read What I Want Book Club",
+  "city": "Albuquerque",
+  "state": "NM",
+  "neighborhood": null,
+  "venue": "Taylor Ranch Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Albuquerque & Bernalillo County Library",
+  "platform": "libcal",
+  "source_url": "https://libevents.abqlibrary.org/event/17734409",
   "last_seen": "2026-10-13"
  },
  {
@@ -9391,6 +10684,44 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Game of Tomes: A Book Club (Date moved to November 10th)",
+  "city": "Albuquerque",
+  "state": "NM",
+  "neighborhood": null,
+  "venue": "Tony Hillerman Library",
+  "genres": [
+   "fantasy",
+   "sci-fi"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Albuquerque & Bernalillo County Library",
+  "platform": "libcal",
+  "source_url": "https://libevents.abqlibrary.org/event/17583388",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Game of Tomes: A Book Club Reschedule for November",
+  "city": "Albuquerque",
+  "state": "NM",
+  "neighborhood": null,
+  "venue": "Tony Hillerman Library",
+  "genres": [
+   "fantasy",
+   "sci-fi"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Albuquerque & Bernalillo County Library",
+  "platform": "libcal",
+  "source_url": "https://libevents.abqlibrary.org/event/17806033",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Mystery Book Club",
   "city": "Albuquerque",
   "state": "NM",
@@ -9471,7 +10802,7 @@
   "source": "library-more",
   "library": "Henderson Libraries",
   "platform": "communico",
-  "source_url": "https://henderson.libnet.info/event/14928397",
+  "source_url": "https://henderson.libnet.info/event/14928386",
   "last_seen": "2026-10-13"
  },
  {
@@ -9523,11 +10854,65 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Club de Lectura",
+  "city": "Freeport",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Freeport Memorial Library",
+  "genres": [
+   "spanish-language"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Freeport Memorial Library",
+  "platform": "libcal",
+  "source_url": "https://freeportlibrary.libcal.com/event/17274901",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "History Book Club",
+  "city": "Freeport",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Freeport Memorial Library",
+  "genres": [
+   "nonfiction"
+  ],
+  "vibe": "Copies available to borrow; registration required; refreshments served",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Freeport Memorial Library",
+  "platform": "libcal",
+  "source_url": "https://freeportlibrary.libcal.com/event/17077045",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "History Book Club [Virtual]",
+  "city": "Freeport",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Freeport Memorial Library",
+  "genres": [
+   "nonfiction"
+  ],
+  "vibe": "Copies available to borrow; registration required; refreshments served",
+  "cadence": null,
+  "format": "online",
+  "source": "library-more",
+  "library": "Freeport Memorial Library",
+  "platform": "libcal",
+  "source_url": "https://freeportlibrary.libcal.com/event/17591001",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Afternoon Book Club",
   "city": "Hicksville",
   "state": "NY",
   "neighborhood": null,
-  "venue": "Events Calendar",
+  "venue": "Events",
   "genres": [],
   "vibe": "Copies available to borrow",
   "cadence": "Monthly, 2nd Wednesday",
@@ -9539,11 +10924,27 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Spill the Tea Book Club",
+  "city": "Hicksville",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Events",
+  "genres": [],
+  "vibe": "Copies available to borrow; refreshments served",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Hicksville Public Library",
+  "platform": "libcal",
+  "source_url": "https://hicksvillelibrary.libcal.com/event/15403231",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Walk & Talk Book Club",
   "city": "Hicksville",
   "state": "NY",
   "neighborhood": null,
-  "venue": "Events Calendar",
+  "venue": "Events",
   "genres": [],
   "vibe": null,
   "cadence": "Every other Wednesday",
@@ -9552,6 +10953,43 @@
   "library": "Hicksville Public Library",
   "platform": "libcal",
   "source_url": "https://hicksvillelibrary.libcal.com/event/17647239",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Fantasy/SciFi Book Club",
+  "city": "Brighton",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Brighton Memorial Library",
+  "genres": [
+   "fantasy",
+   "sci-fi"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monroe County Library System (Rochester)",
+  "platform": "libcal",
+  "source_url": "https://calendar.libraryweb.org/event/17680518",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Mystery Book Club",
+  "city": "Brighton",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Brighton Memorial Library",
+  "genres": [
+   "mystery-thriller"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monroe County Library System (Rochester)",
+  "platform": "libcal",
+  "source_url": "https://calendar.libraryweb.org/event/17679642",
   "last_seen": "2026-10-13"
  },
  {
@@ -9571,7 +11009,7 @@
   "last_seen": "2026-10-13"
  },
  {
-  "name": "Words in Progress with Jen Case (Central Library - In-Person and Online via Zoom)",
+  "name": "Words in Progress",
   "city": "Rochester",
   "state": "NY",
   "neighborhood": null,
@@ -9584,6 +11022,22 @@
   "library": "Monroe County Library System (Rochester)",
   "platform": "libcal",
   "source_url": "https://calendar.libraryweb.org/event/17588908",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "ADULT BOOK DISCUSSION GROUP",
+  "city": "East Rochester",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "East Rochester Public Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monroe County Library System (Rochester)",
+  "platform": "libcal",
+  "source_url": "https://calendar.libraryweb.org/event/17758881",
   "last_seen": "2026-10-13"
  },
  {
@@ -9600,6 +11054,22 @@
   "library": "Monroe County Library System (Rochester)",
   "platform": "libcal",
   "source_url": "https://calendar.libraryweb.org/event/17667220",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Cabin Fever Book Club",
+  "city": "Fairport",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Fairport Public Library",
+  "genres": [],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "online",
+  "source": "library-more",
+  "library": "Monroe County Library System (Rochester)",
+  "platform": "libcal",
+  "source_url": "https://calendar.libraryweb.org/event/17667293",
   "last_seen": "2026-10-13"
  },
  {
@@ -9632,6 +11102,54 @@
   "library": "Monroe County Library System (Rochester)",
   "platform": "libcal",
   "source_url": "https://calendar.libraryweb.org/event/17667353",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Rochester Speakers Series Book Club",
+  "city": "Rochester",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Frederick Douglass Community Library",
+  "genres": [],
+  "vibe": "Newcomers welcome",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monroe County Library System (Rochester)",
+  "platform": "libcal",
+  "source_url": "https://calendar.libraryweb.org/event/17435049",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Shelf Indulgence Book Club",
+  "city": "Greece",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Greece Public Library",
+  "genres": [],
+  "vibe": "Copies available to borrow; registration required",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monroe County Library System (Rochester)",
+  "platform": "libcal",
+  "source_url": "https://calendar.libraryweb.org/event/17622738",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Adult Book Discussion",
+  "city": "Hamlin",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Hamlin Public Library",
+  "genres": [],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monroe County Library System (Rochester)",
+  "platform": "libcal",
+  "source_url": "https://calendar.libraryweb.org/event/16062946",
   "last_seen": "2026-10-13"
  },
  {
@@ -9669,6 +11187,108 @@
   "library": "Monroe County Library System (Rochester)",
   "platform": "libcal",
   "source_url": "https://calendar.libraryweb.org/event/17533752",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Classic Book Discussion Group",
+  "city": "Irondequoit",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Irondequoit Public Library",
+  "genres": [
+   "classics"
+  ],
+  "vibe": "Copies available to borrow; newcomers welcome",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monroe County Library System (Rochester)",
+  "platform": "libcal",
+  "source_url": "https://calendar.libraryweb.org/event/17654036",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "IPL Quiet Book Club",
+  "city": "Irondequoit",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Irondequoit Public Library",
+  "genres": [],
+  "vibe": "Refreshments served",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monroe County Library System (Rochester)",
+  "platform": "libcal",
+  "source_url": "https://calendar.libraryweb.org/event/17654017",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Mystery Book Discussion Group",
+  "city": "Irondequoit",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Irondequoit Public Library",
+  "genres": [
+   "mystery-thriller"
+  ],
+  "vibe": "Copies available to borrow; newcomers welcome",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monroe County Library System (Rochester)",
+  "platform": "libcal",
+  "source_url": "https://calendar.libraryweb.org/event/17654027",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Lyell Adult Book Club",
+  "city": "Rochester",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Lyell Branch",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monroe County Library System (Rochester)",
+  "platform": "libcal",
+  "source_url": "https://calendar.libraryweb.org/event/17775407",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Non-Fiction Book Discussion",
+  "city": "Spencerport",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Ogden Farmers' Library",
+  "genres": [
+   "nonfiction"
+  ],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monroe County Library System (Rochester)",
+  "platform": "libcal",
+  "source_url": "https://calendar.libraryweb.org/event/17388968",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Pop-Up Fiction Book Discussion",
+  "city": "Spencerport",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Ogden Farmers' Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monroe County Library System (Rochester)",
+  "platform": "libcal",
+  "source_url": "https://calendar.libraryweb.org/event/17286619",
   "last_seen": "2026-10-13"
  },
  {
@@ -9754,6 +11374,56 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Booked Solid Book Discussion",
+  "city": "Penfield",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Penfield Public Library",
+  "genres": [],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monroe County Library System (Rochester)",
+  "platform": "libcal",
+  "source_url": "https://calendar.libraryweb.org/event/17759645",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Booked Solid: Book Discussion Group",
+  "city": "Penfield",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Penfield Public Library",
+  "genres": [],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monroe County Library System (Rochester)",
+  "platform": "libcal",
+  "source_url": "https://calendar.libraryweb.org/event/17529269",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Facts & Perspectives Book Club",
+  "city": "Penfield",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Penfield Public Library",
+  "genres": [
+   "nonfiction"
+  ],
+  "vibe": "Copies available to borrow; refreshments served",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monroe County Library System (Rochester)",
+  "platform": "libcal",
+  "source_url": "https://calendar.libraryweb.org/event/17759482",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Penfield Book Discussion",
   "city": "Penfield",
   "state": "NY",
@@ -9767,6 +11437,56 @@
   "library": "Monroe County Library System (Rochester)",
   "platform": "libcal",
   "source_url": "https://calendar.libraryweb.org/event/17529227",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Silent Book Club: A Community of Readers",
+  "city": "Penfield",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Penfield Public Library",
+  "genres": [
+   "silent-reading"
+  ],
+  "vibe": "Refreshments served",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monroe County Library System (Rochester)",
+  "platform": "libcal",
+  "source_url": "https://calendar.libraryweb.org/event/17759913",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "The Second Saturday Book Club",
+  "city": "Rochester",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Phillis Wheatley Community Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monroe County Library System (Rochester)",
+  "platform": "libcal",
+  "source_url": "https://calendar.libraryweb.org/event/17816834",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Great Novels Book Group",
+  "city": "Pittsford",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Pittsford Community Library",
+  "genres": [],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monroe County Library System (Rochester)",
+  "platform": "libcal",
+  "source_url": "https://calendar.libraryweb.org/event/17740080",
   "last_seen": "2026-10-13"
  },
  {
@@ -9822,6 +11542,38 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Pachinko Book Discussion",
+  "city": "Pittsford",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Pittsford Community Library",
+  "genres": [],
+  "vibe": "Copies available to borrow; registration required",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monroe County Library System (Rochester)",
+  "platform": "libcal",
+  "source_url": "https://calendar.libraryweb.org/event/17544873",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Senior Circle Book Group",
+  "city": "Pittsford",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Pittsford Community Library",
+  "genres": [],
+  "vibe": "Copies available to borrow; registration required",
+  "cadence": null,
+  "format": "online",
+  "source": "library-more",
+  "library": "Monroe County Library System (Rochester)",
+  "platform": "libcal",
+  "source_url": "https://calendar.libraryweb.org/event/17740162",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "True Crime Book Club",
   "city": "Pittsford",
   "state": "NY",
@@ -9838,6 +11590,38 @@
   "library": "Monroe County Library System (Rochester)",
   "platform": "libcal",
   "source_url": "https://calendar.libraryweb.org/event/17545179",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Wise Owls Book Group",
+  "city": "Pittsford",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Pittsford Community Library",
+  "genres": [],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monroe County Library System (Rochester)",
+  "platform": "libcal",
+  "source_url": "https://calendar.libraryweb.org/event/17545115",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Rush Readers' Book Club",
+  "city": "Rush",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "Rush Public Library",
+  "genres": [],
+  "vibe": "Registration required",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Monroe County Library System (Rochester)",
+  "platform": "libcal",
+  "source_url": "https://calendar.libraryweb.org/event/17666392",
   "last_seen": "2026-10-13"
  },
  {
@@ -9973,6 +11757,38 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Holiday Book Discussion",
+  "city": "West Islip",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "West Islip Public Library",
+  "genres": [],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "West Islip Public Library",
+  "platform": "communico",
+  "source_url": "https://westisliplibrary.libnet.info/event/17334470",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "October Book Discussion",
+  "city": "West Islip",
+  "state": "NY",
+  "neighborhood": null,
+  "venue": "West Islip Public Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "West Islip Public Library",
+  "platform": "communico",
+  "source_url": "https://westisliplibrary.libnet.info/event/17202419",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Mead and Read Book Club",
   "city": "Mogadore",
   "state": "OH",
@@ -9986,6 +11802,22 @@
   "library": "Akron-Summit County Public Library",
   "platform": "communico",
   "source_url": "https://services.akronlibrary.org/event/17077417",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Book Discussion",
+  "city": "Tallmadge",
+  "state": "OH",
+  "neighborhood": null,
+  "venue": "Danbury Senior Living",
+  "genres": [],
+  "vibe": "Copies available to borrow; refreshments served",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Akron-Summit County Public Library",
+  "platform": "communico",
+  "source_url": "https://services.akronlibrary.org/event/17001396",
   "last_seen": "2026-10-13"
  },
  {
@@ -10051,7 +11883,25 @@
   "source": "library-more",
   "library": "Akron-Summit County Public Library",
   "platform": "communico",
-  "source_url": "https://services.akronlibrary.org/event/17068714",
+  "source_url": "https://services.akronlibrary.org/event/17068713",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Firestone Park's Evening Silent Book Club",
+  "city": "Akron",
+  "state": "OH",
+  "neighborhood": null,
+  "venue": "Firestone Park Branch Library",
+  "genres": [
+   "silent-reading"
+  ],
+  "vibe": "Bring your own book, read quietly together",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Akron-Summit County Public Library",
+  "platform": "communico",
+  "source_url": "https://services.akronlibrary.org/event/17068708",
   "last_seen": "2026-10-13"
  },
  {
@@ -10083,7 +11933,7 @@
   "source": "library-more",
   "library": "Akron-Summit County Public Library",
   "platform": "communico",
-  "source_url": "https://services.akronlibrary.org/event/16850472",
+  "source_url": "https://services.akronlibrary.org/event/16850575",
   "last_seen": "2026-10-13"
  },
  {
@@ -10155,6 +12005,74 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Past Times Book Discussion",
+  "city": "Mogadore",
+  "state": "OH",
+  "neighborhood": null,
+  "venue": "Mogadore Branch Library",
+  "genres": [
+   "nonfiction"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Akron-Summit County Public Library",
+  "platform": "communico",
+  "source_url": "https://services.akronlibrary.org/event/17076255",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Reader's Choice Book Discussion",
+  "city": "Mogadore",
+  "state": "OH",
+  "neighborhood": null,
+  "venue": "Mogadore Branch Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Akron-Summit County Public Library",
+  "platform": "communico",
+  "source_url": "https://services.akronlibrary.org/event/17076266",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Book Discussion",
+  "city": "Akron",
+  "state": "OH",
+  "neighborhood": null,
+  "venue": "North Hill Branch Library",
+  "genres": [],
+  "vibe": "Copies available to borrow; refreshments served",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Akron-Summit County Public Library",
+  "platform": "communico",
+  "source_url": "https://services.akronlibrary.org/event/17087390",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Mystery Book Discussion",
+  "city": "Akron",
+  "state": "OH",
+  "neighborhood": null,
+  "venue": "Northwest Akron Branch Library",
+  "genres": [
+   "mystery-thriller"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Akron-Summit County Public Library",
+  "platform": "communico",
+  "source_url": "https://services.akronlibrary.org/event/16844953",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Book Discussion",
   "city": "Norton",
   "state": "OH",
@@ -10168,6 +12086,38 @@
   "library": "Akron-Summit County Public Library",
   "platform": "communico",
   "source_url": "https://services.akronlibrary.org/event/17087305",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Book Discussion for Adults",
+  "city": "Akron",
+  "state": "OH",
+  "neighborhood": null,
+  "venue": "Odom Boulevard Branch Library",
+  "genres": [],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Akron-Summit County Public Library",
+  "platform": "communico",
+  "source_url": "https://services.akronlibrary.org/event/17087504",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "A Different Kind of Book Club",
+  "city": "New Franklin",
+  "state": "OH",
+  "neighborhood": null,
+  "venue": "Portage Lakes Branch Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Akron-Summit County Public Library",
+  "platform": "communico",
+  "source_url": "https://services.akronlibrary.org/event/17087139",
   "last_seen": "2026-10-13"
  },
  {
@@ -10218,6 +12168,22 @@
   "library": "Akron-Summit County Public Library",
   "platform": "communico",
   "source_url": "https://services.akronlibrary.org/event/17095086",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Book Discussion for Adults",
+  "city": "Akron",
+  "state": "OH",
+  "neighborhood": null,
+  "venue": "Springfield-Lakemore Branch Library",
+  "genres": [],
+  "vibe": "Copies available to borrow; refreshments served",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Akron-Summit County Public Library",
+  "platform": "communico",
+  "source_url": "https://services.akronlibrary.org/event/17091295",
   "last_seen": "2026-10-13"
  },
  {
@@ -10322,6 +12288,22 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Dublin Book Discussion Group",
+  "city": "Dublin",
+  "state": "OH",
+  "neighborhood": null,
+  "venue": "Dublin",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Columbus Metropolitan Library",
+  "platform": "communico",
+  "source_url": "https://columbus.libnet.info/event/17036378",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Adult Book Discussion",
   "city": "Gahanna",
   "state": "OH",
@@ -10405,6 +12387,40 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Mystery Book Club",
+  "city": "Hilliard",
+  "state": "OH",
+  "neighborhood": null,
+  "venue": "Hilliard",
+  "genres": [
+   "mystery-thriller"
+  ],
+  "vibe": "Members pick the books",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Columbus Metropolitan Library",
+  "platform": "communico",
+  "source_url": "https://columbus.libnet.info/event/17233107",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Book Chat",
+  "city": "Columbus",
+  "state": "OH",
+  "neighborhood": null,
+  "venue": "Hilltop",
+  "genres": [],
+  "vibe": "Registration required; refreshments served",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Columbus Metropolitan Library",
+  "platform": "communico",
+  "source_url": "https://columbus.libnet.info/event/17318989",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Introvert Book Group",
   "city": "Columbus",
   "state": "OH",
@@ -10418,6 +12434,22 @@
   "library": "Columbus Metropolitan Library",
   "platform": "communico",
   "source_url": "https://columbus.libnet.info/event/14640331",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Linden Branch Book Club",
+  "city": "Columbus",
+  "state": "OH",
+  "neighborhood": null,
+  "venue": "Linden",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Columbus Metropolitan Library",
+  "platform": "communico",
+  "source_url": "https://columbus.libnet.info/event/17436560",
   "last_seen": "2026-10-13"
  },
  {
@@ -10437,6 +12469,38 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Bedazzled Book Journals & Book Chat",
+  "city": "New Albany",
+  "state": "OH",
+  "neighborhood": null,
+  "venue": "New Albany",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Columbus Metropolitan Library",
+  "platform": "communico",
+  "source_url": "https://columbus.libnet.info/event/17144046",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Book Discussion Group",
+  "city": "Columbus",
+  "state": "OH",
+  "neighborhood": null,
+  "venue": "Northside",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Columbus Metropolitan Library",
+  "platform": "communico",
+  "source_url": "https://columbus.libnet.info/event/16929960",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Silent Book Club",
   "city": "Columbus",
   "state": "OH",
@@ -10451,7 +12515,7 @@
   "source": "library-more",
   "library": "Columbus Metropolitan Library",
   "platform": "communico",
-  "source_url": "https://columbus.libnet.info/event/15589979",
+  "source_url": "https://columbus.libnet.info/event/15589978",
   "last_seen": "2026-10-13"
  },
  {
@@ -10487,6 +12551,22 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Book Discussion",
+  "city": "Columbus",
+  "state": "OH",
+  "neighborhood": null,
+  "venue": "Whetstone",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Columbus Metropolitan Library",
+  "platform": "communico",
+  "source_url": "https://columbus.libnet.info/event/17209707",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Book Discussion Group",
   "city": "Columbus",
   "state": "OH",
@@ -10500,6 +12580,24 @@
   "library": "Columbus Metropolitan Library",
   "platform": "communico",
   "source_url": "https://columbus.libnet.info/event/14502301",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Romance Reads: Book Club",
+  "city": "Columbus",
+  "state": "OH",
+  "neighborhood": null,
+  "venue": "Whetstone",
+  "genres": [
+   "romance"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Columbus Metropolitan Library",
+  "platform": "communico",
+  "source_url": "https://columbus.libnet.info/event/16179515",
   "last_seen": "2026-10-13"
  },
  {
@@ -10728,7 +12826,7 @@
  },
  {
   "name": "The Erie Readers Book Discussion",
-  "city": "Domonkas",
+  "city": "Lorain",
   "state": "OH",
   "neighborhood": null,
   "venue": "Domonkas Branch",
@@ -10744,7 +12842,7 @@
  },
  {
   "name": "Books and Brews Book Discussion",
-  "city": "Main",
+  "city": "Lorain",
   "state": "OH",
   "neighborhood": null,
   "venue": "Main Library",
@@ -10760,7 +12858,7 @@
  },
  {
   "name": "Curious Minds Book Discussion",
-  "city": "Main",
+  "city": "Lorain",
   "state": "OH",
   "neighborhood": null,
   "venue": "Main Library",
@@ -10776,7 +12874,7 @@
  },
  {
   "name": "Ship to Shore Book Discussion",
-  "city": "Main",
+  "city": "Lorain",
   "state": "OH",
   "neighborhood": null,
   "venue": "Main Library",
@@ -10792,7 +12890,7 @@
  },
  {
   "name": "Short and Sweet Book Discussion",
-  "city": "Main",
+  "city": "Lorain",
   "state": "OH",
   "neighborhood": null,
   "venue": "Main Library",
@@ -10858,7 +12956,7 @@
  },
  {
   "name": "Cozy Book Discussion",
-  "city": "South Lorain",
+  "city": "Lorain",
   "state": "OH",
   "neighborhood": null,
   "venue": "South Lorain Branch",
@@ -11222,19 +13320,19 @@
   "last_seen": "2026-10-13"
  },
  {
-  "name": "Evening Book Club",
+  "name": "The Evening Book Club",
   "city": "Streetsboro",
   "state": "OH",
   "neighborhood": null,
   "venue": "Pierce Streetsboro Branch",
   "genres": [],
   "vibe": "Copies available to borrow",
-  "cadence": null,
+  "cadence": "Monthly, 2nd Tuesday",
   "format": "in-person",
   "source": "library-more",
   "library": "Portage County District Library",
   "platform": "communico",
-  "source_url": "https://events.portagelibrary.org/event/16989473",
+  "source_url": "https://events.portagelibrary.org/event/16989460",
   "last_seen": "2026-10-13"
  },
  {
@@ -11245,12 +13343,12 @@
   "venue": "Randolph Branch",
   "genres": [],
   "vibe": "Copies available to borrow",
-  "cadence": null,
+  "cadence": "Monthly, 2nd Tuesday",
   "format": "in-person",
   "source": "library-more",
   "library": "Portage County District Library",
   "platform": "communico",
-  "source_url": "https://events.portagelibrary.org/event/16991339",
+  "source_url": "https://events.portagelibrary.org/event/16991144",
   "last_seen": "2026-10-13"
  },
  {
@@ -11290,6 +13388,38 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Heatherdowns Book Club",
+  "city": "Toledo",
+  "state": "OH",
+  "neighborhood": null,
+  "venue": "Heatherdowns",
+  "genres": [],
+  "vibe": "Copies available to borrow; newcomers welcome; registration required",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Toledo Lucas County Public Library",
+  "platform": "communico",
+  "source_url": "https://toledo.libnet.info/event/17339234",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Art Tatum Book Club",
+  "city": "Toledo",
+  "state": "OH",
+  "neighborhood": null,
+  "venue": "Kent",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Toledo Lucas County Public Library",
+  "platform": "communico",
+  "source_url": "https://toledo.libnet.info/event/16714171",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "King Road Book Club",
   "city": "Toledo",
   "state": "OH",
@@ -11308,40 +13438,8 @@
   "last_seen": "2026-10-13"
  },
  {
-  "name": "Books on Tap",
-  "city": "Toledo",
-  "state": "OH",
-  "neighborhood": null,
-  "venue": "Library in the Community",
-  "genres": [],
-  "vibe": "Meets at a local brewery or pub",
-  "cadence": "Monthly, 3rd Wednesday",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Toledo Lucas County Public Library",
-  "platform": "communico",
-  "source_url": "https://toledo.libnet.info/event/16701790",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Coffee Shop Book Club",
-  "city": "Toledo",
-  "state": "OH",
-  "neighborhood": null,
-  "venue": "Library in the Community",
-  "genres": [],
-  "vibe": "Meets at a local café",
-  "cadence": "Monthly, 2nd Tuesday",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Toledo Lucas County Public Library",
-  "platform": "communico",
-  "source_url": "https://toledo.libnet.info/event/16684726",
-  "last_seen": "2026-10-13"
- },
- {
   "name": "Maumee Book Club",
-  "city": "Toledo",
+  "city": "Maumee",
   "state": "OH",
   "neighborhood": null,
   "venue": "Maumee",
@@ -11429,7 +13527,7 @@
  },
  {
   "name": "Oregon Book Club",
-  "city": "Toledo",
+  "city": "Oregon",
   "state": "OH",
   "neighborhood": null,
   "venue": "Oregon",
@@ -11447,7 +13545,7 @@
  },
  {
   "name": "Oregon Evening Book Club",
-  "city": "Toledo",
+  "city": "Oregon",
   "state": "OH",
   "neighborhood": null,
   "venue": "Oregon",
@@ -11534,8 +13632,26 @@
   "last_seen": "2026-10-13"
  },
  {
-  "name": "Sylvania Book Club",
+  "name": "Washington Book Club",
   "city": "Toledo",
+  "state": "OH",
+  "neighborhood": null,
+  "venue": "Sanger",
+  "genres": [
+   "classics"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Toledo Lucas County Public Library",
+  "platform": "communico",
+  "source_url": "https://toledo.libnet.info/event/17337453",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Sylvania Book Club",
+  "city": "Sylvania",
   "state": "OH",
   "neighborhood": null,
   "venue": "Sylvania",
@@ -11553,7 +13669,7 @@
  },
  {
   "name": "Waterville Book Club",
-  "city": "Toledo",
+  "city": "Waterville",
   "state": "OH",
   "neighborhood": null,
   "venue": "Waterville",
@@ -11570,8 +13686,24 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Waterville Cookbook Club",
+  "city": "Waterville",
+  "state": "OH",
+  "neighborhood": null,
+  "venue": "Waterville",
+  "genres": [],
+  "vibe": "Copies available to borrow",
+  "cadence": "Monthly, 3rd Monday",
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Toledo Lucas County Public Library",
+  "platform": "communico",
+  "source_url": "https://toledo.libnet.info/event/16749213",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Waterville Daytime Book Club",
-  "city": "Toledo",
+  "city": "Waterville",
   "state": "OH",
   "neighborhood": null,
   "venue": "Waterville",
@@ -11635,7 +13767,7 @@
   "source": "library-more",
   "library": "Upper Arlington Public Library",
   "platform": "communico",
-  "source_url": "https://ualibrary.libnet.info/event/16891375",
+  "source_url": "https://ualibrary.libnet.info/event/16891373",
   "last_seen": "2026-10-13"
  },
  {
@@ -11768,7 +13900,7 @@
   "source": "library-more",
   "library": "Westlake Porter Public Library",
   "platform": "communico",
-  "source_url": "https://westlakelibrary.org/event/16355210",
+  "source_url": "https://westlakelibrary.org/event/16355167",
   "last_seen": "2026-10-13"
  },
  {
@@ -11801,22 +13933,6 @@
   "library": "Willoughby-Eastlake Public Library",
   "platform": "libcal",
   "source_url": "https://welibrary.libcal.com/event/16499752",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Delicious Discussion",
-  "city": "Offsite",
-  "state": "OH",
-  "neighborhood": null,
-  "venue": "Offsite",
-  "genres": [],
-  "vibe": "Meets at a local café; copies available to borrow",
-  "cadence": "Monthly, 2nd Wednesday",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Willoughby-Eastlake Public Library",
-  "platform": "libcal",
-  "source_url": "https://welibrary.libcal.com/event/17046217",
   "last_seen": "2026-10-13"
  },
  {
@@ -11950,6 +14066,22 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "\"No Strings Attached\" Book Club, 18+ YRS",
+  "city": "Jacksonville",
+  "state": "OR",
+  "neighborhood": null,
+  "venue": "Jacksonville Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Jackson County Library Services",
+  "platform": "libcal",
+  "source_url": "https://jcls.libcal.com/event/16648056",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Banned Books Club, 18+ YRS",
   "city": "Medford",
   "state": "OR",
@@ -11979,6 +14111,42 @@
   "library": "Jackson County Library Services",
   "platform": "libcal",
   "source_url": "https://jcls.libcal.com/event/17010219",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Romance Readers Book Club",
+  "city": "White City",
+  "state": "OR",
+  "neighborhood": null,
+  "venue": "White City Library",
+  "genres": [
+   "romance"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Jackson County Library Services",
+  "platform": "libcal",
+  "source_url": "https://jcls.libcal.com/event/17096854",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Romance Readers Book Club 18 YRS +",
+  "city": "White City",
+  "state": "OR",
+  "neighborhood": null,
+  "venue": "White City Library",
+  "genres": [
+   "romance"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Jackson County Library Services",
+  "platform": "libcal",
+  "source_url": "https://jcls.libcal.com/event/17814841",
   "last_seen": "2026-10-13"
  },
  {
@@ -12264,7 +14432,7 @@
   "last_seen": "2026-10-13"
  },
  {
-  "name": "EV Friends Book Club (Elizabethville Area Library)",
+  "name": "EV Friends Book Club",
   "city": "Elizabethville",
   "state": "PA",
   "neighborhood": null,
@@ -12277,41 +14445,6 @@
   "library": "Dauphin County Library System",
   "platform": "libcal",
   "source_url": "https://dcls.libcal.com/event/17108211",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Otherworldly Book Club",
-  "city": "George & Hettie Love",
-  "state": "PA",
-  "neighborhood": null,
-  "venue": "George & Hettie Love Memorial Library",
-  "genres": [
-   "fantasy",
-   "sci-fi"
-  ],
-  "vibe": "Registration required",
-  "cadence": "Monthly, 1st Saturday",
-  "format": "online",
-  "source": "library-more",
-  "library": "Dauphin County Library System",
-  "platform": "libcal",
-  "source_url": "https://dcls.libcal.com/event/17140479",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Toni Morrison Circle: Jazz",
-  "city": "George & Hettie Love",
-  "state": "PA",
-  "neighborhood": null,
-  "venue": "George & Hettie Love Memorial Library",
-  "genres": [],
-  "vibe": "Registration required; refreshments served",
-  "cadence": "Quarterly",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Dauphin County Library System",
-  "platform": "libcal",
-  "source_url": "https://dcls.libcal.com/event/17140621",
   "last_seen": "2026-10-13"
  },
  {
@@ -12344,38 +14477,6 @@
   "library": "Dauphin County Library System",
   "platform": "libcal",
   "source_url": "https://dcls.libcal.com/event/17140321",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Books on Tap: Four Squares",
-  "city": "Offsite Location",
-  "state": "PA",
-  "neighborhood": null,
-  "venue": "Offsite Location",
-  "genres": [],
-  "vibe": "Meets at a local brewery or pub; registration required",
-  "cadence": "Monthly, 2nd Tuesday",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Dauphin County Library System",
-  "platform": "libcal",
-  "source_url": "https://dcls.libcal.com/event/17140144",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Books on Tap: Hogfather",
-  "city": "Offsite Location",
-  "state": "PA",
-  "neighborhood": null,
-  "venue": "Offsite Location",
-  "genres": [],
-  "vibe": "Meets at a local brewery or pub; registration required",
-  "cadence": "Monthly, 2nd Tuesday",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Dauphin County Library System",
-  "platform": "libcal",
-  "source_url": "https://dcls.libcal.com/event/17140146",
   "last_seen": "2026-10-13"
  },
  {
@@ -12499,39 +14600,7 @@
   "last_seen": "2026-10-13"
  },
  {
-  "name": "Book Date with Helen Kate: In the Midst of Winter by Isabel Allende",
-  "city": "Wallingford",
-  "state": "PA",
-  "neighborhood": null,
-  "venue": "Helen Kate Furness Free Library",
-  "genres": [],
-  "vibe": null,
-  "cadence": "Monthly",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Delaware County Libraries (PA)",
-  "platform": "libcal",
-  "source_url": "https://delcolibraries.libcal.com/event/16500964",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Book Date with Helen Kate: The Book Club for Troublesome Women by Marie Bostwick",
-  "city": "Wallingford",
-  "state": "PA",
-  "neighborhood": null,
-  "venue": "Helen Kate Furness Free Library",
-  "genres": [],
-  "vibe": null,
-  "cadence": "Monthly",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Delaware County Libraries (PA)",
-  "platform": "libcal",
-  "source_url": "https://delcolibraries.libcal.com/event/16500947",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Book Date with Helen Kate: The Turn of the Screw by Henry James",
+  "name": "Book Date",
   "city": "Wallingford",
   "state": "PA",
   "neighborhood": null,
@@ -12628,7 +14697,7 @@
  },
  {
   "name": "MUPFL Afternoon Book Club",
-  "city": "Media-Upper Providence",
+  "city": "Media",
   "state": "PA",
   "neighborhood": null,
   "venue": "Media-Upper Providence Free Library",
@@ -12644,7 +14713,7 @@
  },
  {
   "name": "MUPFL Evening Book Club",
-  "city": "Media-Upper Providence",
+  "city": "Media",
   "state": "PA",
   "neighborhood": null,
   "venue": "Media-Upper Providence Free Library",
@@ -12660,7 +14729,7 @@
  },
  {
   "name": "British Mysteries Book Club",
-  "city": "Middletown",
+  "city": "Media",
   "state": "PA",
   "neighborhood": null,
   "venue": "Middletown Free Library",
@@ -12678,7 +14747,7 @@
  },
  {
   "name": "Fiction Addiction Book Club",
-  "city": "Middletown",
+  "city": "Media",
   "state": "PA",
   "neighborhood": null,
   "venue": "Middletown Free Library",
@@ -12694,7 +14763,7 @@
  },
  {
   "name": "Reading Cafe Book Club",
-  "city": "Middletown",
+  "city": "Media",
   "state": "PA",
   "neighborhood": null,
   "venue": "Middletown Free Library",
@@ -12710,7 +14779,7 @@
  },
  {
   "name": "Silent Book Club",
-  "city": "Middletown",
+  "city": "Media",
   "state": "PA",
   "neighborhood": null,
   "venue": "Middletown Free Library",
@@ -12728,7 +14797,7 @@
  },
  {
   "name": "Le Cercle Littéraire en français",
-  "city": "Newtown",
+  "city": "Newtown Square",
   "state": "PA",
   "neighborhood": null,
   "venue": "Newtown Public Library",
@@ -12744,7 +14813,7 @@
  },
  {
   "name": "LGBTQ+ Book Club",
-  "city": "Newtown",
+  "city": "Newtown Square",
   "state": "PA",
   "neighborhood": null,
   "venue": "Newtown Public Library",
@@ -12762,7 +14831,7 @@
  },
  {
   "name": "Meet Anywhere Book Club",
-  "city": "Newtown",
+  "city": "Newtown Square",
   "state": "PA",
   "neighborhood": null,
   "venue": "Newtown Public Library",
@@ -12993,7 +15062,7 @@
  },
  {
   "name": "Hooked on Books Book Club for Adults",
-  "city": "Darby",
+  "city": "Upper Darby",
   "state": "PA",
   "neighborhood": null,
   "venue": "Upper Darby Township/Sellers Library – Primos Branch",
@@ -13009,7 +15078,7 @@
  },
  {
   "name": "Evening Book Club",
-  "city": "Darby",
+  "city": "Upper Darby",
   "state": "PA",
   "neighborhood": null,
   "venue": "Upper Darby Township/Sellers Library – Sellers Memorial Branch",
@@ -13529,7 +15598,7 @@
  },
  {
   "name": "Literally Reading Book Club",
-  "city": "Cyrill-Westside",
+  "city": "Spartanburg",
   "state": "SC",
   "neighborhood": null,
   "venue": "Cyrill-Westside Library",
@@ -13545,7 +15614,7 @@
  },
  {
   "name": "Novel Tea Book Club",
-  "city": "Cyrill-Westside",
+  "city": "Spartanburg",
   "state": "SC",
   "neighborhood": null,
   "venue": "Cyrill-Westside Library",
@@ -13561,7 +15630,7 @@
  },
  {
   "name": "Booklovers",
-  "city": "Headquarters",
+  "city": "Spartanburg",
   "state": "SC",
   "neighborhood": null,
   "venue": "Headquarters Library",
@@ -14795,7 +16864,7 @@
   "city": "Lewisville",
   "state": "TX",
   "neighborhood": null,
-  "venue": "Library Events",
+  "venue": "Library",
   "genres": [],
   "vibe": "Registration required",
   "cadence": "Monthly, 3rd Tuesday",
@@ -14811,7 +16880,7 @@
   "city": "Lewisville",
   "state": "TX",
   "neighborhood": null,
-  "venue": "Library Events",
+  "venue": "Library",
   "genres": [],
   "vibe": null,
   "cadence": "Monthly, 2nd Wednesday",
@@ -14827,7 +16896,7 @@
   "city": "Lewisville",
   "state": "TX",
   "neighborhood": null,
-  "venue": "Library Events",
+  "venue": "Library",
   "genres": [],
   "vibe": null,
   "cadence": "Every other month, 2nd Monday",
@@ -15071,11 +17140,27 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Second Tuesday Book Club",
+  "city": "Plano",
+  "state": "TX",
+  "neighborhood": null,
+  "venue": "Schimelpfenig Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": "Monthly, 2nd Tuesday",
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Plano Public Library",
+  "platform": "communico",
+  "source_url": "https://plano.libnet.info/event/16725832",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Book Group for Adults",
   "city": "Round Rock",
   "state": "TX",
   "neighborhood": null,
-  "venue": "Library Events",
+  "venue": "Library",
   "genres": [],
   "vibe": null,
   "cadence": "Monthly, 2nd Tuesday",
@@ -15091,7 +17176,7 @@
   "city": "Round Rock",
   "state": "TX",
   "neighborhood": null,
-  "venue": "Library Events",
+  "venue": "Library",
   "genres": [],
   "vibe": null,
   "cadence": "Monthly, 3rd Wednesday",
@@ -15609,7 +17694,7 @@
   "city": "San Antonio",
   "state": "TX",
   "neighborhood": null,
-  "venue": "Northeast Senior Center | 4135 Thousand Oaks Dr. 78217",
+  "venue": "Northeast Senior Center |",
   "genres": [],
   "vibe": "Copies available to borrow",
   "cadence": null,
@@ -15621,11 +17706,11 @@
   "last_seen": "2026-10-13"
  },
  {
-  "name": "Cody Friends with Fiction Book Club",
+  "name": "Cody Friends",
   "city": "San Antonio",
   "state": "TX",
   "neighborhood": null,
-  "venue": "Our Savior Lutheran Church, 11503 Vance Jackson Rd, San Antonio, TX 78230",
+  "venue": "Our Savior Lutheran Church",
   "genres": [],
   "vibe": null,
   "cadence": "Monthly, 2nd Friday",
@@ -15641,7 +17726,7 @@
   "city": "San Antonio",
   "state": "TX",
   "neighborhood": null,
-  "venue": "Our Savior Lutheran Church, 11503 Vance Jackson Rd, San Antonio, TX 78230",
+  "venue": "Our Savior Lutheran Church",
   "genres": [
    "mystery-thriller"
   ],
@@ -15659,7 +17744,7 @@
   "city": "San Antonio",
   "state": "TX",
   "neighborhood": null,
-  "venue": "Our Savior Lutheran Church, 11503 Vance Jackson Rd, San Antonio, TX 78230",
+  "venue": "Our Savior Lutheran Church",
   "genres": [],
   "vibe": null,
   "cadence": "Monthly, 2nd Saturday",
@@ -15675,7 +17760,7 @@
   "city": "San Antonio",
   "state": "TX",
   "neighborhood": null,
-  "venue": "Our Savior Lutheran Church, 11503 Vance Jackson Rd, San Antonio, TX 78230",
+  "venue": "Our Savior Lutheran Church",
   "genres": [],
   "vibe": null,
   "cadence": "Monthly, Thursday",
@@ -15993,7 +18078,7 @@
   "city": "Weatherford",
   "state": "TX",
   "neighborhood": null,
-  "venue": "Weatherford Public Library Program Calendar",
+  "venue": "Weatherford Public Library Program",
   "genres": [],
   "vibe": "Newcomers welcome",
   "cadence": null,
@@ -16009,7 +18094,7 @@
   "city": "Weatherford",
   "state": "TX",
   "neighborhood": null,
-  "venue": "Weatherford Public Library Program Calendar",
+  "venue": "Weatherford Public Library Program",
   "genres": [],
   "vibe": null,
   "cadence": "Monthly, 3rd Saturday",
@@ -16089,6 +18174,38 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Trans-Atlantic Book Club",
+  "city": "Alexandria",
+  "state": "VA",
+  "neighborhood": null,
+  "venue": "Ellen Coolidge Burke Branch Library",
+  "genres": [],
+  "vibe": "Registration required",
+  "cadence": null,
+  "format": "online",
+  "source": "library-more",
+  "library": "Alexandria Library",
+  "platform": "communico",
+  "source_url": "https://alexlibraryva.org/event/17532318",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Thursday Afternoon Book Discussion",
+  "city": "Alexandria",
+  "state": "VA",
+  "neighborhood": null,
+  "venue": "James M. Duncan Jr. Branch Library",
+  "genres": [],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Alexandria Library",
+  "platform": "communico",
+  "source_url": "https://alexlibraryva.org/event/17050722",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Horror Fans Unite!",
   "city": "Alexandria",
   "state": "VA",
@@ -16145,7 +18262,7 @@
   "city": "Alexandria",
   "state": "VA",
   "neighborhood": null,
-  "venue": "The Company Of Books 2200 Mount Vernon Ave, Alexandria, Va 22301",
+  "venue": "The Company Of Books",
   "genres": [],
   "vibe": null,
   "cadence": "Monthly, 2nd Thursday",
@@ -16172,6 +18289,72 @@
   "library": "Alexandria Library",
   "platform": "communico",
   "source_url": "https://alexlibraryva.org/event/16954867",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Ink & Intrigue: Burke's Mystery Book Club",
+  "city": "Alexandria",
+  "state": "VA",
+  "neighborhood": null,
+  "venue": "Virtual",
+  "genres": [
+   "mystery-thriller"
+  ],
+  "vibe": "Registration required",
+  "cadence": null,
+  "format": "online",
+  "source": "library-more",
+  "library": "Alexandria Library",
+  "platform": "communico",
+  "source_url": "https://alexlibraryva.org/event/17618310",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Literary Virginia Book Group",
+  "city": "Alexandria",
+  "state": "VA",
+  "neighborhood": null,
+  "venue": "Virtual",
+  "genres": [],
+  "vibe": "Registration required",
+  "cadence": null,
+  "format": "online",
+  "source": "library-more",
+  "library": "Alexandria Library",
+  "platform": "communico",
+  "source_url": "https://alexlibraryva.org/event/17076261",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "LitFlix Book Club",
+  "city": "Chesapeake",
+  "state": "VA",
+  "neighborhood": null,
+  "venue": "Greenbrier Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Chesapeake Public Library",
+  "platform": "communico",
+  "source_url": "https://events.chesapeakelibrary.org/event/17552527",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Don't Call it a Book Club",
+  "city": "Chesapeake",
+  "state": "VA",
+  "neighborhood": null,
+  "venue": "Indian River Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Chesapeake Public Library",
+  "platform": "communico",
+  "source_url": "https://events.chesapeakelibrary.org/event/16115372",
   "last_seen": "2026-10-13"
  },
  {
@@ -16237,7 +18420,7 @@
   "source": "library-more",
   "library": "Chesapeake Public Library",
   "platform": "communico",
-  "source_url": "https://events.chesapeakelibrary.org/event/16240199",
+  "source_url": "https://events.chesapeakelibrary.org/event/16240198",
   "last_seen": "2026-10-13"
  },
  {
@@ -16293,38 +18476,6 @@
   "last_seen": "2026-10-13"
  },
  {
-  "name": "Grim Readers",
-  "city": "Centreville",
-  "state": "VA",
-  "neighborhood": null,
-  "venue": "Centreville Regional Library",
-  "genres": [],
-  "vibe": null,
-  "cadence": "Monthly, 1st Monday",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Fairfax County Public Library",
-  "platform": "libcal",
-  "source_url": "https://librarycalendar.fairfaxcounty.gov/event/15418064",
-  "last_seen": "2026-10-13"
- },
- {
-  "name": "Sully Book Club",
-  "city": "Centreville",
-  "state": "VA",
-  "neighborhood": null,
-  "venue": "Centreville Regional Library",
-  "genres": [],
-  "vibe": null,
-  "cadence": "Monthly, 4th Monday",
-  "format": "in-person",
-  "source": "library-more",
-  "library": "Fairfax County Public Library",
-  "platform": "libcal",
-  "source_url": "https://librarycalendar.fairfaxcounty.gov/event/13826423",
-  "last_seen": "2026-10-13"
- },
- {
   "name": "Chantilly Book Discussion Group",
   "city": "Chantilly",
   "state": "VA",
@@ -16338,6 +18489,24 @@
   "library": "Fairfax County Public Library",
   "platform": "libcal",
   "source_url": "https://librarycalendar.fairfaxcounty.gov/event/16085953",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Mystery Book Club",
+  "city": "Chantilly",
+  "state": "VA",
+  "neighborhood": null,
+  "venue": "Chantilly Regional Library",
+  "genres": [
+   "mystery-thriller"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Fairfax County Public Library",
+  "platform": "libcal",
+  "source_url": "https://librarycalendar.fairfaxcounty.gov/event/15181892",
   "last_seen": "2026-10-13"
  },
  {
@@ -16376,6 +18545,22 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "City of Fairfax Tuesday Evening Book Group",
+  "city": "Fairfax",
+  "state": "VA",
+  "neighborhood": null,
+  "venue": "City of Fairfax Regional Library",
+  "genres": [],
+  "vibe": "Newcomers welcome",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Fairfax County Public Library",
+  "platform": "libcal",
+  "source_url": "https://librarycalendar.fairfaxcounty.gov/event/15424843",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Podcast Brunch Club",
   "city": "Fairfax",
   "state": "VA",
@@ -16389,6 +18574,24 @@
   "library": "Fairfax County Public Library",
   "platform": "libcal",
   "source_url": "https://librarycalendar.fairfaxcounty.gov/event/14664343",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Better Off Read Mystery Book Club",
+  "city": "McLean",
+  "state": "VA",
+  "neighborhood": null,
+  "venue": "Dolley Madison Library",
+  "genres": [
+   "mystery-thriller"
+  ],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Fairfax County Public Library",
+  "platform": "libcal",
+  "source_url": "https://librarycalendar.fairfaxcounty.gov/event/15525527",
   "last_seen": "2026-10-13"
  },
  {
@@ -16421,6 +18624,40 @@
   "library": "Fairfax County Public Library",
   "platform": "libcal",
   "source_url": "https://librarycalendar.fairfaxcounty.gov/event/15334796",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Morning Book Discussion Group (Please note alternate meeting location)",
+  "city": "Great Falls",
+  "state": "VA",
+  "neighborhood": null,
+  "venue": "Great Falls Library",
+  "genres": [],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Fairfax County Public Library",
+  "platform": "libcal",
+  "source_url": "https://librarycalendar.fairfaxcounty.gov/event/15334783",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Fires and Fables: Speculative Fiction Book Club at Herndon Library",
+  "city": "Herndon",
+  "state": "VA",
+  "neighborhood": null,
+  "venue": "Herndon Fortnightly Library",
+  "genres": [
+   "sci-fi"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Fairfax County Public Library",
+  "platform": "libcal",
+  "source_url": "https://librarycalendar.fairfaxcounty.gov/event/15226201",
   "last_seen": "2026-10-13"
  },
  {
@@ -16504,6 +18741,24 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Fantasy & Fantasy First Book Club",
+  "city": "Alexandria",
+  "state": "VA",
+  "neighborhood": null,
+  "venue": "Kingstowne Regional Library",
+  "genres": [
+   "fantasy"
+  ],
+  "vibe": "Copies available to borrow",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Fairfax County Public Library",
+  "platform": "libcal",
+  "source_url": "https://librarycalendar.fairfaxcounty.gov/event/16622438",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Kingstowne Books & Brews",
   "city": "Alexandria",
   "state": "VA",
@@ -16538,6 +18793,24 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Muffins and Mysteries Book Club",
+  "city": "Alexandria",
+  "state": "VA",
+  "neighborhood": null,
+  "venue": "Kingstowne Regional Library",
+  "genres": [
+   "mystery-thriller"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Fairfax County Public Library",
+  "platform": "libcal",
+  "source_url": "https://librarycalendar.fairfaxcounty.gov/event/17383704",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Lorton Library Evening Book Discussion Group",
   "city": "Lorton",
   "state": "VA",
@@ -16551,6 +18824,40 @@
   "library": "Fairfax County Public Library",
   "platform": "libcal",
   "source_url": "https://librarycalendar.fairfaxcounty.gov/event/15603322",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Friday Book Discussion Group",
+  "city": "Alexandria",
+  "state": "VA",
+  "neighborhood": null,
+  "venue": "Martha Washington Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Fairfax County Public Library",
+  "platform": "libcal",
+  "source_url": "https://librarycalendar.fairfaxcounty.gov/event/16735565",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Mystery Book Club",
+  "city": "Oakton",
+  "state": "VA",
+  "neighborhood": null,
+  "venue": "Oakton Library",
+  "genres": [
+   "mystery-thriller"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Fairfax County Public Library",
+  "platform": "libcal",
+  "source_url": "https://librarycalendar.fairfaxcounty.gov/event/17394782",
   "last_seen": "2026-10-13"
  },
  {
@@ -16570,6 +18877,24 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "VITURAL Mystery Book Club",
+  "city": "Oakton",
+  "state": "VA",
+  "neighborhood": null,
+  "venue": "Oakton Library",
+  "genres": [
+   "mystery-thriller"
+  ],
+  "vibe": "Registration required",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Fairfax County Public Library",
+  "platform": "libcal",
+  "source_url": "https://librarycalendar.fairfaxcounty.gov/event/13965613",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Mystery Book Club Meeting at Caboose Tavern",
   "city": "Vienna",
   "state": "VA",
@@ -16585,6 +18910,38 @@
   "library": "Fairfax County Public Library",
   "platform": "libcal",
   "source_url": "https://librarycalendar.fairfaxcounty.gov/event/16570292",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Cookbook Book Club",
+  "city": "Burke",
+  "state": "VA",
+  "neighborhood": null,
+  "venue": "Pohick Regional Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Fairfax County Public Library",
+  "platform": "libcal",
+  "source_url": "https://librarycalendar.fairfaxcounty.gov/event/16760556",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Pohick Evening Book Discussion Group",
+  "city": "Burke",
+  "state": "VA",
+  "neighborhood": null,
+  "venue": "Pohick Regional Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Fairfax County Public Library",
+  "platform": "libcal",
+  "source_url": "https://librarycalendar.fairfaxcounty.gov/event/15726987",
   "last_seen": "2026-10-13"
  },
  {
@@ -16620,6 +18977,40 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "In Person Wednesday Morning Book Club",
+  "city": "Reston",
+  "state": "VA",
+  "neighborhood": null,
+  "venue": "Reston Regional Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Fairfax County Public Library",
+  "platform": "libcal",
+  "source_url": "https://librarycalendar.fairfaxcounty.gov/event/17231264",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "MYSTERY NOVEL BOOK CLUB",
+  "city": "Reston",
+  "state": "VA",
+  "neighborhood": null,
+  "venue": "Reston Regional Library",
+  "genres": [
+   "mystery-thriller"
+  ],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Fairfax County Public Library",
+  "platform": "libcal",
+  "source_url": "https://librarycalendar.fairfaxcounty.gov/event/17116343",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Afternoon Book Club",
   "city": "Springfield",
   "state": "VA",
@@ -16633,6 +19024,40 @@
   "library": "Fairfax County Public Library",
   "platform": "libcal",
   "source_url": "https://librarycalendar.fairfaxcounty.gov/event/15876269",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Novel Idea Book Club",
+  "city": "Springfield",
+  "state": "VA",
+  "neighborhood": null,
+  "venue": "Richard Byrd Library",
+  "genres": [
+   "nonfiction"
+  ],
+  "vibe": "Copies available to borrow; registration required",
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Fairfax County Public Library",
+  "platform": "libcal",
+  "source_url": "https://librarycalendar.fairfaxcounty.gov/event/15702097",
+  "last_seen": "2026-10-13"
+ },
+ {
+  "name": "Novel Afternoon Book Group",
+  "city": "Alexandria",
+  "state": "VA",
+  "neighborhood": null,
+  "venue": "Sherwood Regional Library",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "in-person",
+  "source": "library-more",
+  "library": "Fairfax County Public Library",
+  "platform": "libcal",
+  "source_url": "https://librarycalendar.fairfaxcounty.gov/event/16706637",
   "last_seen": "2026-10-13"
  },
  {
@@ -16718,6 +19143,22 @@
   "last_seen": "2026-10-13"
  },
  {
+  "name": "Soul Sisters Book Discussion",
+  "city": "Fairfax",
+  "state": "VA",
+  "neighborhood": null,
+  "venue": "Virtual Event",
+  "genres": [],
+  "vibe": null,
+  "cadence": null,
+  "format": "online",
+  "source": "library-more",
+  "library": "Fairfax County Public Library",
+  "platform": "libcal",
+  "source_url": "https://librarycalendar.fairfaxcounty.gov/event/16949411",
+  "last_seen": "2026-10-13"
+ },
+ {
   "name": "Bent Mountain Book Club",
   "city": "Bent Mountain",
   "state": "VA",
@@ -16783,7 +19224,7 @@
  },
  {
   "name": "Hollins Book Club",
-  "city": "Hollins",
+  "city": "Roanoke",
   "state": "VA",
   "neighborhood": null,
   "venue": "Hollins Library",
@@ -16799,7 +19240,7 @@
  },
  {
   "name": "Fourth Thursday Book Club",
-  "city": "South County",
+  "city": "Roanoke",
   "state": "VA",
   "neighborhood": null,
   "venue": "South County Library",
@@ -16815,7 +19256,7 @@
  },
  {
   "name": "Sleuths on the Loose: A Cozy Mystery Book Club",
-  "city": "South County",
+  "city": "Roanoke",
   "state": "VA",
   "neighborhood": null,
   "venue": "South County Library",
@@ -16865,7 +19306,7 @@
  },
  {
   "name": "Fellowship in a Ring",
-  "city": "James City County",
+  "city": "Williamsburg",
   "state": "VA",
   "neighborhood": null,
   "venue": "James City County Library",
@@ -16881,7 +19322,7 @@
  },
  {
   "name": "Whodunnits",
-  "city": "James City County",
+  "city": "Williamsburg",
   "state": "VA",
   "neighborhood": null,
   "venue": "James City County Library",
@@ -16897,7 +19338,7 @@
  },
  {
   "name": "Real People, Real Stories",
-  "city": "Stryker Center",
+  "city": "Williamsburg",
   "state": "VA",
   "neighborhood": null,
   "venue": "Stryker Center",
@@ -16945,10 +19386,10 @@
  },
  {
   "name": "Natural Readers",
-  "city": "Williamsburg Regional Library Programs and Events",
+  "city": "Williamsburg",
   "state": "VA",
   "neighborhood": null,
-  "venue": "Williamsburg Regional Library Programs and Events",
+  "venue": "Williamsburg Regional Library Programs and",
   "genres": [],
   "vibe": "Copies available to borrow",
   "cadence": "Monthly, 2nd Friday",
@@ -17289,7 +19730,7 @@
  },
  {
   "name": "Book Group",
-  "city": "West Valley",
+  "city": "Yakima",
   "state": "WA",
   "neighborhood": null,
   "venue": "West Valley Library",

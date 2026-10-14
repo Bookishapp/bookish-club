@@ -1,0 +1,36 @@
+{
+  "_schema": "Each entry: id, category, title, blurb, url (plain link), affiliate_url (used instead of url when set), featured (sorts first + badge), label (honest disclosure shown on the card, e.g. 'From the makers of Bookish Club', 'Sponsored'), sponsored (true = paid placement, must carry a label), status ('live' renders; 'slot' is a reserved placement that never renders until filled), internal (true = our own page, url is a site path).",
+  "categories": [
+    ["guides", "Discussion guides", "Free questions and notes for almost any book your club picks."],
+    ["buy", "Where to get the book", "Buy local where you can, borrow where you can't."],
+    ["listen", "Audiobooks", "For the members who read on the commute."],
+    ["borrow", "Library apps", "Your library card goes further than you think."],
+    ["host", "Hosting", "Small things that make a meeting easy to run and easy to come back to."],
+    ["printables", "Printables", "Simple things to print at home."],
+    ["extras", "For your club", "Extras we think book clubs might enjoy."]
+  ],
+  "entries": [
+    { "id": "litlovers", "category": "guides", "title": "LitLovers reading guides", "blurb": "A long-running free library of discussion questions, searchable by title and author.", "url": "https://www.litlovers.com/", "affiliate_url": null, "featured": false, "label": null, "sponsored": false, "status": "live" },
+    { "id": "reading-group-choices", "category": "guides", "title": "Reading Group Choices", "blurb": "Free publisher-provided guides and book club picks, updated through the year.", "url": "https://readinggroupchoices.com/", "affiliate_url": null, "featured": false, "label": null, "sponsored": false, "status": "live" },
+    { "id": "slot-guides-1", "category": "guides", "title": "", "blurb": "", "url": "", "affiliate_url": null, "featured": false, "label": "Sponsored", "sponsored": true, "status": "slot" },
+
+    { "id": "bookshop-org", "category": "buy", "title": "Bookshop.org", "blurb": "Order online and a share of the sale goes to independent bookstores. Good for a whole club's copies.", "url": "https://bookshop.org/", "affiliate_url": null, "featured": false, "label": null, "sponsored": false, "status": "live" },
+    { "id": "indie-store-finder", "category": "buy", "title": "Find an indie bookstore", "blurb": "The American Booksellers Association's map of independent bookstores. Many give club discounts if you ask.", "url": "https://www.indiebound.org/indie-store-finder", "affiliate_url": null, "featured": false, "label": null, "sponsored": false, "status": "live" },
+    { "id": "slot-buy-1", "category": "buy", "title": "", "blurb": "", "url": "", "affiliate_url": null, "featured": false, "label": "Sponsored", "sponsored": true, "status": "slot" },
+
+    { "id": "libro-fm", "category": "listen", "title": "Libro.fm", "blurb": "Audiobooks bought through a bookstore you choose, so your listening supports a local shop.", "url": "https://libro.fm/", "affiliate_url": null, "featured": false, "label": null, "sponsored": false, "status": "live" },
+    { "id": "slot-listen-1", "category": "listen", "title": "", "blurb": "", "url": "", "affiliate_url": null, "featured": false, "label": "Sponsored", "sponsored": true, "status": "slot" },
+
+    { "id": "libby", "category": "borrow", "title": "Libby", "blurb": "Borrow ebooks and audiobooks free with a library card. Join the holds list early: popular picks have waits.", "url": "https://libbyapp.com/", "affiliate_url": null, "featured": false, "label": null, "sponsored": false, "status": "live" },
+    { "id": "hoopla", "category": "borrow", "title": "Hoopla", "blurb": "Instant library borrowing with no waitlist, if your library offers it.", "url": "https://www.hoopladigital.com/", "affiliate_url": null, "featured": false, "label": null, "sponsored": false, "status": "live" },
+
+    { "id": "hosting-tips", "category": "host", "title": "How to host a book club that lasts", "blurb": "Our short guide: picking books, setting the rhythm, keeping the talk going and welcoming new faces.", "url": "/resources/hosting-tips/", "internal": true, "affiliate_url": null, "featured": true, "label": null, "sponsored": false, "status": "live" },
+    { "id": "pairings", "category": "host", "title": "Snack and wine pairings by genre", "blurb": "Easy themed menus for mystery nights, romance picks, fantasy epics and more.", "url": "/resources/pairings/", "internal": true, "affiliate_url": null, "featured": false, "label": null, "sponsored": false, "status": "live" },
+    { "id": "slot-host-1", "category": "host", "title": "", "blurb": "", "url": "", "affiliate_url": null, "featured": false, "label": "Sponsored", "sponsored": true, "status": "slot" },
+
+    { "id": "printables", "category": "printables", "title": "Printable bookmarks and RSVP cards", "blurb": "Fill in your club's next date and book, print at home, cut along the lines.", "url": "/resources/printables/", "internal": true, "affiliate_url": null, "featured": false, "label": null, "sponsored": false, "status": "live" },
+
+    { "id": "fictora", "category": "extras", "title": "Fictora", "blurb": "Talk to the characters from your club's book. An app for after the meeting, when the conversation isn't quite finished.", "url": "https://fictora.co/?ref=bookish&utm_source=bookishclub&utm_medium=resources&utm_campaign=bookish_resources", "affiliate_url": null, "featured": false, "label": "From the makers of Bookish Club", "sponsored": false, "status": "live" },
+    { "id": "slot-extras-1", "category": "extras", "title": "", "blurb": "", "url": "", "affiliate_url": null, "featured": false, "label": "Sponsored", "sponsored": true, "status": "slot" }
+  ]
+}

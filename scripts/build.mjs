@@ -108,7 +108,7 @@ ${jsonld.map((j) => `<script type="application/ld+json">${JSON.stringify(j).repl
 <a class="skip" href="#main">Skip to content</a>
 <header class="mast"><div class="wrap">
 <a class="wordmark" href="${url("/")}"><span class="wm-b">Bookish</span><span class="wm-c">Club</span></a>
-<nav class="nav" aria-label="Main"><a class="hide-sm" href="${url("/book-clubs/")}">Browse</a><a class="hide-sm" href="${url("/hosts/")}">For hosts</a><a class="btn-sm" href="${url("/start/")}">Start a club</a></nav>
+<nav class="nav" aria-label="Main"><a class="hide-sm" href="${url("/book-clubs/")}">Browse</a><a class="hide-sm" href="${url("/hosts/")}">For hosts</a><a class="hide-sm" href="${url("/resources/")}">Resources</a><a class="btn-sm" href="${url("/start/")}">Start a club</a></nav>
 </div></header>
 <main id="main">
 ${body}
@@ -117,7 +117,7 @@ ${body}
 <div><a class="wordmark" href="${url("/")}"><span class="wm-b">Bookish</span><span class="wm-c">Club</span></a>
 <p>A directory of real book clubs that meet near you, gathered from the public pages of libraries and bookstores. Every listing links to its source. Details change, so check there before you go.</p></div>
 <div><p class="h">Find</p><ul><li><a href="${url("/book-clubs/")}">All cities</a></li>${["romance", "mystery-thriller", "fantasy", "nonfiction"].filter((g) => genreTotals[g] >= 5).map((g) => `<li><a href="${url(`/genres/${g}/`)}">${GENRES[g]} clubs</a></li>`).join("")}</ul></div>
-<div><p class="h">Hosts</p><ul><li><a href="${url("/start/")}">Start a club</a></li><li><a href="${url("/claim/")}">Claim your club</a></li><li><a href="${url("/hosts/")}">Host tools</a></li><li><a href="${url("/about/")}">About &amp; sources</a></li><li><a href="${url("/privacy/")}">Privacy</a> · <a href="${url("/terms/")}">Terms</a></li></ul></div>
+<div><p class="h">Hosts</p><ul><li><a href="${url("/start/")}">Start a club</a></li><li><a href="${url("/claim/")}">Claim your club</a></li><li><a href="${url("/hosts/")}">Host tools</a></li><li><a href="${url("/resources/")}">Resources</a></li><li><a href="${url("/about/")}">About &amp; sources</a></li><li><a href="${url("/privacy/")}">Privacy</a> · <a href="${url("/terms/")}">Terms</a></li></ul></div>
 </div></footer>
 <script src="${url("/site.js")}" defer></script>
 </body>
@@ -437,6 +437,84 @@ prose("/terms/", "Terms | Bookish Club", "Terms of use for Bookish Club.", "Term
 
 write("404.html", layout({ title: "Page not found | Bookish Club", desc: "This page has wandered off the shelf.", path: "/404.html", noindex: true,
   body: `<div class="wrap"><header class="page-head" style="padding-top:60px"><p class="eyebrow">404</p>${lunair("lunair-shrug", 260, 279, 520, 553, "Bookish Club host shrugging", "shrug", true)}<h1>This page has wandered <em>off the shelf</em>.</h1><p class="lede">Try searching for your city instead.</p>${searchBox()}</header></div>` }));
+
+// ---------- resources ----------
+{
+  const R = JSON.parse(fs.readFileSync(path.join(ROOT, "data/resources.json"), "utf8"));
+  const live = R.entries.filter((e) => e.status === "live");
+  const href = (e) => e.internal ? url(e.url) : esc(e.affiliate_url || e.url);
+  const card = (e) => `<li class="res${e.featured ? " featured" : ""}">
+${e.featured ? `<span class="tag g">Our pick</span>` : ""}${e.label ? `<span class="res-label">${esc(e.label)}</span>` : ""}
+<h3><a href="${href(e)}"${e.internal ? "" : ` rel="${e.sponsored || e.affiliate_url ? "sponsored " : ""}noopener" target="_blank"`}>${esc(e.title)}${e.internal ? "" : "&nbsp;↗"}</a></h3>
+<p>${esc(e.blurb)}</p></li>`;
+  const body = `<div class="wrap">${crumbs([["Home", "/"], ["Resources", null]])}
+<header class="page-head"><p class="eyebrow">For readers and hosts</p><h1>Good things for <em>book clubs</em>.</h1>
+<p class="lede">A short, hand-picked shelf: free discussion guides, places to get the book, and a few things we made for hosts.</p></header>
+${R.categories.map(([id, name, intro]) => {
+    const list = live.filter((e) => e.category === id).sort((a, b) => b.featured - a.featured);
+    return list.length ? `<section class="res-sec"><h2>${esc(name)}</h2><p class="muted">${esc(intro)}</p><ul class="res-list">${list.map(card).join("")}</ul></section>` : "";
+  }).join("")}
+<p class="small">Some links on this page may earn Bookish Club a small commission in future. If they do, we'll say so on the card. Picks are never paid for unless they're labelled "Sponsored".</p>
+</div>${hostCallout()}`;
+  write("resources/index.html", layout({ title: "Book Club Resources: Discussion Guides, Printables & Hosting Tips | Bookish Club", desc: "Free discussion guides, where to get the book, library apps, printable bookmarks and RSVP cards, hosting tips and snack pairings for your book club.", path: "/resources/", body }));
+  page("/resources/", 0.7);
+  write("data/resources.json", JSON.stringify({ categories: R.categories, entries: live }));
+
+  const article = (p, title, desc, h, html) => {
+    const cr = [["Home", "/"], ["Resources", "/resources/"], [h.replace(/<[^>]+>/g, ""), null]];
+    write(`${p.slice(1)}index.html`, layout({ title, desc, path: p, jsonld: [crumbsLd(cr)], body: `<div class="wrap">${crumbs(cr)}<header class="page-head"><p class="eyebrow">Resources</p><h1>${h}</h1></header><section class="prose">${html}<p><a href="${url("/resources/")}">← All resources</a></p></section></div>${hostCallout()}` }));
+    page(p, 0.6);
+  };
+  article("/resources/hosting-tips/", "How to Host a Book Club That Lasts | Bookish Club", "Practical tips for hosting a book club: picking books, setting a rhythm, running the discussion and welcoming new members.", "How to host a book club <em>that lasts</em>", `
+<p class="lede">Most book clubs don't end because people stop reading. They end because nobody's sure when the next one is. A few habits fix most of that.</p>
+<h2>Set a rhythm and keep it</h2>
+<p>"Second Tuesday, 7pm" beats a new poll every month. A fixed slot lets people plan around it, and the club survives the months when you're busy.</p>
+<h2>Pick books people can actually finish</h2>
+<p>Under 400 pages is a kind default. Alternate heavier picks with lighter ones, and check that the book is easy to borrow from the library. Choose the next two books ahead of time so people can start early.</p>
+<h2>Have three questions ready</h2>
+<p>You don't need a guide, just a way in: What surprised you? Who did you trust, and when did that change? What would you have done differently? Free guides on our <a href="${url("/resources/")}">resources page</a> help with harder books.</p>
+<h2>Let people come unfinished</h2>
+<p>Say it out loud: come even if you didn't finish. Agree on how spoilers work (most clubs talk about the whole book). People who feel welcome half-read come back fully read.</p>
+<h2>Keep the group a good size</h2>
+<p>Six to twelve regulars is the sweet spot for one conversation. If you grow past that, split into two tables or start a sister club with a different genre.</p>
+<h2>Make it easy to find you</h2>
+<p>New members keep a club alive. <a href="${url("/start/")}">List your club</a> on Bookish Club so readers nearby can find it, and keep the meeting details current.</p>`);
+  article("/resources/pairings/", "Book Club Snack and Wine Pairings by Genre | Bookish Club", "Easy themed snack and drink ideas for your next book club meeting, from mystery nights to romance picks.", "Snack and wine pairings <em>by genre</em>", `
+<p class="lede">Nothing fancy. Just a small nod to the book that gets the conversation started before anyone opens it.</p>
+<h2>Mystery &amp; thriller</h2>
+<p>A cheese board with one "suspicious" cheese nobody can identify. Pour a dry red such as Chianti, or offer black coffee for the late-night crowd.</p>
+<h2>Romance</h2>
+<p>Strawberries, dark chocolate and something pink and sparkling. Non-drinkers get a hibiscus spritzer with lime.</p>
+<h2>Fantasy</h2>
+<p>A tavern spread: crusty bread, honey, roasted nuts and a hard cheese. Cider or mead if you can find it, spiced apple juice if not.</p>
+<h2>Historical fiction</h2>
+<p>Cook something from the book's time and place, even something simple: shortbread for Scotland, madeleines for France. Tea service never hurts.</p>
+<h2>Literary fiction &amp; classics</h2>
+<p>Olives, good bread and a crisp white wine such as Sauvignon Blanc. Keep it quiet and grown-up, like the book.</p>
+<h2>Horror</h2>
+<p>Blood-orange anything, black licorice and a deep red. Turn the lights down.</p>
+<h2>Nonfiction &amp; memoir</h2>
+<p>Whatever the author would eat. If the book is set somewhere specific, order from a restaurant from that region.</p>
+<p class="small">Always have a good non-alcoholic option, and drink responsibly.</p>`);
+
+  // printables (print-optimised)
+  const bm = Array.from({ length: 4 }, () => `<div class="bm"><div class="pw"><span class="wm-b">Bookish</span><span class="wm-c">Club</span></div><p class="pl">Our next book</p><span class="ln"></span><span class="ln"></span><p class="pl">Meeting</p><span class="ln"></span><p class="pl">Where</p><span class="ln"></span><p class="pq">"Come even if you didn't finish."</p></div>`).join("");
+  const rsvp = Array.from({ length: 4 }, () => `<div class="rsvp"><div class="pw"><span class="wm-b">Bookish</span><span class="wm-c">Club</span></div><p class="pt">You're invited to book club</p><p class="pl">Book</p><span class="ln"></span><p class="pl">Date &amp; time</p><span class="ln"></span><p class="pl">Place</p><span class="ln"></span><p class="pl">RSVP to</p><span class="ln"></span></div>`).join("");
+  const pcss = `<style>
+.sheet{display:grid;gap:14px;margin:18px 0 34px}.bms{grid-template-columns:repeat(4,1fr)}.rsvps{grid-template-columns:repeat(2,1fr)}
+.bm,.rsvp{border:1.5px dashed var(--ink-3);border-radius:6px;padding:16px 14px;background:#fff;color:var(--ink)}
+.bm{min-height:440px;display:flex;flex-direction:column}.pw{display:flex;align-items:baseline;gap:.4em;margin-bottom:14px}.pw .wm-b{font-size:20px}
+.pl{font:600 10px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:14px 0 4px}.ln{display:block;border-bottom:1px solid var(--ink-3);height:24px}
+.pq{margin-top:auto;font-style:italic;font-size:14px;color:var(--ink-2)}.pt{font:italic 500 20px/1.2 var(--serif);margin:0 0 6px}
+@media (max-width:700px){.bms{grid-template-columns:repeat(2,1fr)}.rsvps{grid-template-columns:1fr}}
+@media print{.mast,.foot-site,.crumbs,.noprint,.callout{display:none!important}body{background:#fff}.page-head{border:0;padding:0}.sheet{break-inside:avoid}.bms{grid-template-columns:repeat(4,1fr)}.rsvps{grid-template-columns:repeat(2,1fr);break-before:page}}
+</style>`;
+  const pcr = [["Home", "/"], ["Resources", "/resources/"], ["Printables", null]];
+  write("resources/printables/index.html", layout({ title: "Printable Book Club Bookmarks and RSVP Cards (Free) | Bookish Club", desc: "Free printable bookmarks and RSVP cards for your book club. Print at home, fill in the book and date, and cut along the lines.", path: "/resources/printables/", jsonld: [crumbsLd(pcr)],
+    body: `${pcss}<div class="wrap">${crumbs(pcr)}<header class="page-head"><p class="eyebrow noprint">Resources</p><h1 class="noprint">Printable bookmarks &amp; <em>RSVP cards</em></h1><p class="lede noprint">Print on card stock if you have it. Bookmarks print four to a page; RSVP cards print on the second page. Cut along the dashed lines.</p><button class="btn noprint" type="button" onclick="window.print()">Print this page</button></header>
+<h2 class="noprint" style="margin-top:30px">Bookmarks</h2><div class="sheet bms">${bm}</div><h2 class="noprint">RSVP cards</h2><div class="sheet rsvps">${rsvp}</div></div>` }));
+  page("/resources/printables/", 0.6);
+}
 
 // ---------- data, assets, sitemap ----------
 const citiesJson = cities.map((c) => ({ n: c.name, s: c.st, u: c.u, c: c.clubs.length, g: c.genres, gp: c.genrePages, la: c.lat, lo: c.lng }));

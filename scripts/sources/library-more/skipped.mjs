@@ -49,4 +49,7 @@ export const SKIPPED = [
   ['Maricopa-area cities with own sites (Peoria AZ, Surprise, Avondale)', 'various', F403],
   ['Seattle Public Library (Communico tenant)', 'spl.libnet.info', 'tenant feed returned no events (not in use)'],
   ['Scottsdale / Newport Beach / Westminster CO (Communico tenants)', '*.libnet.info', 'tenant feed returned no events or HTML'],
+  ['Mercer County Library System / Camden County Library System (NJ)', 'events.mcl.org, events.camdencountylibrary.org', 'different calendar version: public search endpoint returned 404; not collected'],
+  ['Anderson Public Library (IN)', 'andersonlibrary.libcal.com', 'robots.txt disallows'],
+  ['Enoch Pratt Free Library, Los Angeles PL, Yolo County, Solano County, Lafayette (LA), Sioux City', 'various', 'collected meanwhile by library-other / library-bibliocommons (host appeared in their output before this run reached it)'],
 ];

@@ -85,7 +85,7 @@ function postProcess(lib, c) {
   const pm = name.match(PERSON_RE);
   if (pm && !NOT_PERSON.test(pm[0].trim())) name = name.slice(0, pm.index);
   name = name.replace(/\s+/g, ' ').replace(/\s*[-–—:|,]\s*$/, '').trim();
-  const v = (c.venue ?? '').replace(/,\s*\d+\s.*$/, '').replace(/\s+(events|calendar)$/i, '').trim();
+  const v = (c.venue ?? '').replace(/,\s*\d+\s.*$/, '').replace(/\s+\d{2,}\s+[A-Z][\s\S]*$/, '').replace(/\s+(events|calendar)$/i, '').trim();
   let city = c.city ?? null;
   let mapped = false;
   if (lib.cityMap) {

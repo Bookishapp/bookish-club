@@ -114,7 +114,7 @@ const lastHit = new Map();
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 let networkRequests = 0;
 
-async function politeFetch(url, maxRetries = 4) {
+async function politeFetch(url, maxRetries = 4, timeoutMs = 45000) {
   const key = createHash('sha1').update(url).digest('hex');
   const file = path.join(CACHE_DIR, key + '.json');
   if (!REFRESH && existsSync(file)) return JSON.parse(await readFile(file, 'utf8'));
@@ -127,7 +127,7 @@ async function politeFetch(url, maxRetries = 4) {
     networkRequests++;
     let status = 0, body = '';
     try {
-      const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT, Accept: 'application/rss+xml, text/xml, */*' }, signal: AbortSignal.timeout(45000) });
+      const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT, Accept: 'application/rss+xml, text/xml, */*' }, signal: AbortSignal.timeout(timeoutMs) });
       status = res.status;
       body = await res.text();
     } catch (e) {
@@ -388,6 +388,13 @@ async function main() {
     libraries: {},
   };
 
+  // Libraries already covered by sibling sources (other event platforms) are skipped to avoid duplicates.
+  const covered = new Set();
+  for (const f of ['library-other.json', 'library-more.json']) {
+    const fp = path.join(ROOT, 'data', 'raw', f);
+    if (!existsSync(fp)) continue;
+    try { for (const r of JSON.parse(await readFile(fp, 'utf8'))) if (r.library) covered.add(normKey(r.library)); } catch {}
+  }
   const ids = [...new Set(ONLY.length ? ONLY : LIBRARIES)];
   const records = [];
   for (const id of ids) {
@@ -402,7 +409,7 @@ async function main() {
       const seenThisQuery = new Set();
       for (let page = 1; page <= MAX_PAGES_PER_QUERY; page++) {
         const url = `${GATEWAY}${rssPath}?q=${encodeURIComponent(q)}&startDate=${TODAY}&endDate=${END}&page=${page}`;
-        const res = await politeFetch(url, firstStatus === null ? 1 : 4);
+        const res = firstStatus === null ? await politeFetch(url, 0, 25000) : await politeFetch(url, 4);
         if (firstStatus === null) firstStatus = res.status;
         if (res.status !== 200) {
           if (page === 1 && q === QUERIES[0]) {
@@ -429,6 +436,11 @@ async function main() {
       continue;
     }
     const libraryName = channelTitle.replace(/^Events\s*\|\s*/i, '').trim() || id;
+    if (covered.has(normKey(libraryName))) {
+      log.libraries[id] = { status: 'skipped', reason: 'already covered by library-other.json / library-more.json', library: libraryName };
+      console.log(`- ${id}: skipped, already covered elsewhere (${libraryName})`);
+      continue;
+    }
     const items = [...byLink.values()];
     // Library home city/state = most common branch location.
     const cityCount = new Map();
