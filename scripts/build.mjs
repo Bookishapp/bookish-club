@@ -167,19 +167,21 @@ ${jsonld.map((j) => `<script type="application/ld+json">${JSON.stringify(j).repl
 <a class="skip" href="#main">Skip to content</a>
 <header class="mast"><div class="wrap">
 <a class="wordmark" href="${url("/")}">${WORDMARK(true)}</a>
-<nav class="nav" aria-label="Main"><a class="hide-sm" href="${url("/book-clubs/")}">Browse</a><a class="hide-sm" href="${url("/hosts/")}">For hosts</a><a class="hide-sm" href="${url("/resources/")}">Resources</a><a class="btn-sm" href="${url("/start/")}">Start a club</a></nav>
+<nav class="nav" aria-label="Main"><a class="hide-sm" href="${url("/book-clubs/")}">Browse</a><a class="hide-sm" href="${url("/read-next/")}">Read next</a><a class="hide-sm" href="${url("/hosts/")}">For hosts</a><a class="hide-sm" href="${url("/resources/")}">Resources</a><a class="btn-sm" href="${url("/start/")}">Start a club</a></nav>
 </div></header>
 <main id="main">
 ${body}
 </main>
 <footer class="foot-site"><div class="wrap cols">
 <div><a class="wordmark" href="${url("/")}">${WORDMARK(false)}</a>
-<p>A directory of real book clubs that meet near you, gathered from the public pages of libraries and bookstores. Every listing links to its source. Details change, so check there before you go.</p></div>
-<div><p class="h">Find</p><ul><li><a href="${url("/book-clubs/")}">All cities</a></li>${["romance", "mystery-thriller", "fantasy", "nonfiction"].filter((g) => genreTotals[g] >= 5).map((g) => `<li><a href="${url(`/genres/${g}/`)}">${GENRES[g]} clubs</a></li>`).join("")}</ul></div>
+<p>A directory of real book clubs that meet near you, gathered from the public pages of libraries and bookstores. Every listing links to its source. Details change, so check there before you go.</p>
+<p class="credit">Book covers and book details from <a href="https://openlibrary.org/" rel="noopener">Open Library</a>.</p></div>
+<div><p class="h">Find</p><ul><li><a href="${url("/book-clubs/")}">All cities</a></li><li><a href="${url("/read-next/")}">What to read next</a></li>${["romance", "mystery-thriller", "fantasy", "nonfiction"].filter((g) => genreTotals[g] >= 5).map((g) => `<li><a href="${url(`/genres/${g}/`)}">${GENRES[g]} clubs</a></li>`).join("")}</ul></div>
 <div><p class="h">Hosts</p><ul><li><a href="${url("/start/")}">Start a club</a></li><li><a href="${url("/claim/")}">Claim your club</a></li><li><a href="${url("/hosts/")}">Host tools</a></li><li><a href="${url("/resources/")}">Resources</a></li><li><a href="${url("/about/")}">About &amp; sources</a></li><li><a href="${url("/privacy/")}">Privacy</a> · <a href="${url("/terms/")}">Terms</a></li></ul></div>
 </div></footer>
 <script src="${url("/site.js")}" defer></script>
 ${body.includes('id="club-map"') ? `<script src="${url("/map.js")}" defer></script>` : ""}
+${body.includes('id="rn"') ? `<script src="${url("/read-next.js")}" defer></script>` : ""}
 </body>
 </html>`;
 }
@@ -471,6 +473,7 @@ ${prop("prop-sun-240.webp", 240, 243, "l-sun", true)}</div>
 <div class="grid cols-3 home-cities">${cities.slice(0, 18).map((c) => `<a class="city-tile" href="${url(`/book-clubs/${c.u}/`)}"><b>${esc(c.name)}, ${c.st}</b><span>${countLine(c.clubs.length, c.v)}</span></a>`).join("")}</div>
 <p style="margin-top:18px"><a href="${url("/book-clubs/")}">See every city →</a></p>
 </div></section>
+<section style="padding-top:0"><div class="wrap"><a class="rn-cta" href="${url("/read-next/")}">${lunair("lunair-behind-book", 170, 161, 340, 323, "")}<span><b>Stuck on what to read next?</b><span>Three taps and Lunair hands you three books. No sign-up.</span></span>${ARROW}</a></div></section>
 <section><div class="wrap"><div class="own-wrap">${lunair("lunair-gossip", 220, 209, 440, 417, "Lunair whispering behind her hand")}
 <div class="own"><h2>No club nearby? Start your own.</h2><p>Pick a book, pick a night. List it free and readers nearby can find you.</p><a class="btn" href="${url("/start/")}">Start a club ${ARROW}</a></div></div></div></section>
 <section style="padding-top:0"><div class="wrap"><div class="note">Run a club already? <a href="${url("/claim/")}">Claim your listing</a> to fix the details, or <a href="${url("/hosts/")}">join the waitlist</a> for simple host tools: scheduling, book voting and invite links.</div></div></section>`;
@@ -621,12 +624,70 @@ prose("/privacy/", "Privacy | Bookish", "What Bookish collects and why.", "Priva
 <p><b>Directory listings.</b> We list clubs from public pages and store only club-level details (name, city, genre, meeting rhythm, source link, date seen). We never publish a venue, neighborhood or address, and our map is city-level only. No personal contact details.</p>
 <p><b>Forms.</b> When you claim a club, add a club or join the waitlist, we store what you type plus your email address. We use it only to verify your club and to email you about Bookish. We keep a one-way hash of your IP address for a short time to stop spam. We don't sell your data.</p>
 <p><b>Your choices.</b> Every email has an unsubscribe link. To delete what you sent us, reply to any of our emails or use the claim form and say so.</p>
+<p><b>Read next.</b> Your three taps, the books you save and the last city page you opened stay on your device (browser storage). We don't receive them. Book covers load from Open Library, which sees a normal image request.</p>
 <p><b>Cookies.</b> This site sets no tracking cookies.</p>`);
 prose("/terms/", "Terms | Bookish", "Terms of use for Bookish.", "Terms", `
 <p>Bookish is a free directory. Listings are gathered from public sources and may be out of date; check the linked source before attending. Clubs are run by their hosts and venues, not by Bookish. Don't submit anything that isn't yours to share, and be kind at meetings.</p>`);
 
 write("404.html", layout({ title: "Page not found | Bookish", desc: "This page has wandered off the shelf.", path: "/404.html", noindex: true,
   body: `<div class="wrap"><header class="page-head" style="padding-top:60px"><p class="eyebrow">404</p>${lunair("lunair-shrug", 260, 279, 520, 553, "Bookish host shrugging", "shrug", true)}<h1>This page has wandered <em>off the shelf</em>.</h1><p class="lede">Try searching for your city instead.</p>${searchBox()}</header></div>` }));
+
+// ---------- read next ("Stuck on what to read next?") ----------
+// Catalog: data/books.json (scripts/catalog.mjs, Open Library metadata +
+// cover ids, fetched once and committed; this build never calls Open Library).
+// Community stats: the bookish-community edge function, which only returns
+// rows that pass the privacy floor (bookish_privacy_floor() in sql/003).
+// A failed fetch builds with no community rows, so nothing un-floored can
+// ever show. BOOKISH_COMMUNITY_FILE points at a local JSON file (previews).
+const COMMUNITY_API = process.env.BOOKISH_COMMUNITY_API || "https://wqnrortftkffmbeugjky.supabase.co/functions/v1/bookish-community";
+async function loadCommunity() {
+  const empty = { city: [], state: [], national: [], next: [] };
+  if (process.env.BOOKISH_COMMUNITY_FILE) return { ...empty, ...JSON.parse(fs.readFileSync(process.env.BOOKISH_COMMUNITY_FILE, "utf8")) };
+  try {
+    const r = await fetch(COMMUNITY_API, { signal: AbortSignal.timeout(15000) });
+    const j = await r.json();
+    if (!r.ok || !j.ok) throw new Error(`HTTP ${r.status}`);
+    return { city: j.city ?? [], state: j.state ?? [], national: j.national ?? [], next: j.next ?? [] };
+  } catch (e) {
+    console.warn(`community stats fetch failed (${e.message}); building Read next without community rows`);
+    return empty;
+  }
+}
+{
+  const books = JSON.parse(fs.readFileSync(path.join(ROOT, "data/books.json"), "utf8")).books;
+  const community = await loadCommunity();
+  write("data/books.json", JSON.stringify(books.map(({ id, t, a, pages, ol, cover, moods, series, style }) => ({ id, t, a, p: pages, ol, c: cover, m: moods, ...(series ? { s: series } : {}), st: style }))));
+  write("data/community.json", JSON.stringify(community));
+  console.log(`read next: ${books.length} books, community rows city ${community.city.length} / state ${community.state.length} / national ${community.national.length} / next ${community.next.length}`);
+  const MOODS = [["fight", "Start a fight", "the club picks sides"], ["slow_burn", "A slow burn", "yearning, mostly"], ["mystery", "A mystery", "whodunit, then discuss"],
+    ["cry", "Make me cry", "bring tissues and wine"], ["short", "Short. We're busy.", "under 300 pages"], ["big_fantasy", "Big fantasy", "maps included"]];
+  const CHECK = `<i class="rn-ck" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17 19 7"/></svg></i>`;
+  const opt = ([k, t, s]) => `<button type="button" class="rn-opt" data-v="${k}" aria-pressed="false"><b>${esc(t)}</b><span>${esc(s)}</span>${CHECK}</button>`;
+  const body = `<div id="rn" class="rn" data-step="1">
+<div class="wrap rn-wrap">
+<section class="rn-taps" aria-labelledby="rn-h">
+<div class="rn-top"><a class="rn-x" href="${url("/")}" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></a><div class="rn-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div><span class="rn-sp"></span></div>
+<div class="rn-hero">${lunair("lunair-explain", 240, 231, 480, 461, "Lunair, the Bookish host, explaining", "rn-lun", true)}<p class="rn-bub" id="rn-bub">Something that'll start a fight? A slow burn? A mystery?</p></div>
+<p class="eyebrow" id="rn-eb">Read next · 1 of 3</p>
+<h1 class="rn-h" id="rn-h">What's the next one for?</h1>
+<p class="rn-sub" id="rn-sub">Three taps and Lunair stops guessing. Pick any.</p>
+<div class="rn-step" data-s="1"><div class="rn-opts" role="group" aria-label="Moods">${MOODS.map(opt).join("")}</div></div>
+<div class="rn-step" data-s="2" hidden><div class="rn-opts" role="radiogroup" aria-label="Length">${[["short", "Short", "under 300 pages"], ["mid", "Middle of the road", "300 to 450 pages"], ["long", "A doorstop", "450 pages and up"], ["any", "Any length", "it's just a number"]].map(opt).join("")}</div></div>
+<div class="rn-step" data-s="3" hidden><div class="rn-find"><label class="sr-only" for="rn-q">Search for a book you loved</label><input id="rn-q" type="search" placeholder="Search a title or author" autocomplete="off" aria-autocomplete="list" aria-controls="rn-sug"><ul id="rn-sug" class="rn-sug" role="listbox" hidden></ul><div id="rn-loved" class="rn-loved" hidden></div></div></div>
+<div class="rn-acts"><button type="button" class="rn-go" id="rn-go">Next: how long?</button>
+<p class="rn-after" id="rn-after">After that: one book you loved</p>
+<button type="button" class="rn-skip" id="rn-skip">Skip. Show me what clubs love.</button></div>
+<noscript><p class="note">This part of Bookish needs JavaScript to pick your books.</p></noscript>
+</section>
+<section class="rn-res" hidden aria-labelledby="rn-rh"></section>
+</div></div>`;
+  write("read-next/index.html", layout({
+    title: "Stuck on What to Read Next? Book Club Picks in Three Taps | Bookish",
+    desc: "Tell Lunair the mood, the length and one book you loved. Get three books to read next, picked for book clubs, plus what clubs on Bookish are reading.",
+    path: "/read-next/", body,
+  }));
+  page("/read-next/", 0.7);
+}
 
 // ---------- resources ----------
 {
@@ -711,6 +772,7 @@ const citiesJson = cities.map((c) => ({ n: c.name, s: c.st, u: c.u, c: c.clubs.l
 copyDir(path.join(ROOT, "public"), OUT);
 write("data/cities.json", JSON.stringify(citiesJson));
 write("site.js", fs.readFileSync(path.join(ROOT, "src/site.js"), "utf8"));
+write("read-next.js", fs.readFileSync(path.join(ROOT, "src/read-next.js"), "utf8"));
 write("map.js", fs.readFileSync(path.join(ROOT, "src/map.js"), "utf8"));
 {
   // Club map data: CITY LEVEL ONLY. One point per city at the Census city
