@@ -2,13 +2,14 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 
 export const ALLOWED_ORIGINS = [
-  "https://bookishclub.com",
-  "https://www.bookishclub.com",
-  "https://fictora.github.io",
+  "https://meetbookish.com",
+  "https://www.meetbookish.com",
+  "https://bookishapp.github.io",
+  "https://fictora.github.io", // legacy; drop once meetbookish.com is live
   "http://localhost:4321",
   "http://127.0.0.1:4321",
 ];
-export const SITE_URL = Deno.env.get("BOOKISH_SITE_URL") ?? "https://fictora.github.io/bookish-club";
+export const SITE_URL = Deno.env.get("BOOKISH_SITE_URL") ?? "https://meetbookish.com";
 export const FN_URL = `${Deno.env.get("SUPABASE_URL")}/functions/v1`;
 
 export const sb = createClient(
