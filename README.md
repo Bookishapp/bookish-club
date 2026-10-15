@@ -121,7 +121,15 @@ Read submissions with SQL as the service role, for example `select kind, email, 
 
 ## Theme
 
-All colours, fonts and textures are CSS variables in `src/theme.css`. `src/styles.css` contains layout only and reads those variables. To re-skin the site, swap or edit `theme.css` (plus any font files in `public/fonts/`) and rebuild.
+All colours, fonts and textures are CSS variables in `src/theme.css`. `src/styles.css` holds layout and the theme's motifs (paper cards, library card, bookmark ribbons) and reads those variables. To re-skin the site, swap or edit `theme.css` (plus any files in `public/fonts/` and `public/img/`) and rebuild.
+
+Current theme (locked 2026-10-14): palette 05 **Oxblood Reading Room** on a gouache wall, the M2 middle-ground motifs, the R2-04 "ish reply" wordmark and the Y2K Sticker type system. Text pairs are WCAG AA (lowest is 4.96:1, the input placeholder).
+
+- **Wall:** `public/img/bg-oxblood-{m,d}.webp`, recoloured from the raw gouache by `scripts/theme-assets.py` (tall crop for phones, wide crop for desktop). Below it the page is plain oxblood (`--ox-deep`).
+- **Cards:** shelf paper (`--card`) with the paper grain `tx-paper-900.webp`. Verified clubs carry a brass bookmark ribbon; unclaimed clubs are a muted paper with an outline.
+- **The Race** (hosts page): bottle-green velvet, satin bookmark-ribbon bars with notched tails, brass "You".
+- **Props:** sun, daisy and two washi tapes from the r2 pass. No rainbow tape, sparkles or butterflies.
+- **Wordmark:** `scripts/wordmark.mjs` renders R2-04 with the Oxblood colours (outer `#220710`, key `#f4a6bf`, bubble `#1d5a46`) to a transparent PNG master, `public/img/bookish-wordmark.png`. `scripts/wordmark-sizes.py` trims it and writes the `wordmark-{160,320,480}.webp` sizes the site uses. It needs Playwright; point `PLAYWRIGHT` at its `index.mjs`.
 
 ## Resources hub
 
@@ -134,10 +142,15 @@ All colours, fonts and textures are CSS variables in `src/theme.css`. `src/style
 
 ## Fonts
 
-Newsreader (Production Type, SIL Open Font License 1.1), self-hosted latin subset.
+"Y2K Sticker": Unbounded (display), Young Serif (titles) and Manrope (UI), all SIL Open Font License 1.1. They are self-hosted latin subsets in `public/fonts/`, copied from the r2 colour pass by `scripts/theme-assets.py`, with `font-display: optional` and preload so the layout never shifts. The wordmark's own fonts (Lilita One, Sniglet) are only used to render the logo image and are not shipped.
 
 ## Mascot art
 
-`public/img/lunair-*.webp` come from `scripts/stickers.py`. The script works on the existing cut-outs in `~/ted-screenshots/fictora-official/lunair-bible/`. It only scales them and adds a white die-cut border. It never mirrors or repaints them. The soft shadow is added in CSS.
+`public/img/lunair-*.webp` come from `scripts/stickers.py`. The script works on the existing cut-outs in `~/ted-screenshots/fictora-official/lunair-bible/`. It only scales them. It never mirrors, repaints or regenerates them. The Oxblood theme uses them without the white die-cut border, matching the locked renders; the soft shadow is added in CSS.
+
+- `lunair-hug`: fangirl-06, hugging a book (home hero, "Pull up a chair").
+- `lunair-gossip`: gossip-01, whispering (home "Start your own").
+- `lunair-reading`: reading-01, peeking over a book (the "Hosting a club?" card on every list page).
+- `lunair-wave`, `lunair-peek`, `lunair-shrug`: start page, empty states, 404.
 
 Re-run it with `python3 scripts/stickers.py`. It needs Pillow installed.

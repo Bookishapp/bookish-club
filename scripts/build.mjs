@@ -134,6 +134,8 @@ const sitemap = [];
 const page = (p, prio = 0.6) => sitemap.push({ loc: abs(p), prio });
 
 // ---------- layout ----------
+// R2-04 "ish reply" wordmark, Oxblood recolour (scripts/wordmark.mjs). Fixed box, so no layout shift.
+const WORDMARK = (eager) => `<img src="${url("/img/wordmark-160.webp")}" srcset="${url("/img/wordmark-160.webp")} 1x, ${url("/img/wordmark-320.webp")} 2x, ${url("/img/wordmark-480.webp")} 3x" width="160" height="62" alt="Bookish"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`;
 const CSS = (fs.readFileSync(path.join(ROOT, "src/theme.css"), "utf8") + fs.readFileSync(path.join(ROOT, "src/styles.css"), "utf8")).replaceAll("__BASE__", BASE).replace(/\n\s*/g, "\n");
 
 function layout({ title, desc, path: p, body, jsonld = [], noindex = false }) {
@@ -147,7 +149,7 @@ function layout({ title, desc, path: p, body, jsonld = [], noindex = false }) {
 <meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${canonical}">
 ${noindex ? '<meta name="robots" content="noindex">' : ""}
-<meta name="theme-color" content="#f6f0e4">
+<meta name="theme-color" content="#4a1420">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Bookish: Book Club Night">
 <meta property="og:title" content="${esc(title)}">
@@ -155,21 +157,23 @@ ${noindex ? '<meta name="robots" content="noindex">' : ""}
 <meta property="og:url" content="${canonical}">
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="${url("/favicon.svg")}" type="image/svg+xml">
-<link rel="preload" href="${url("/fonts/newsreader.woff2")}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="${url("/fonts/manrope-400_800.woff2")}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="${url("/fonts/unbounded-400_900.woff2")}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="${url("/fonts/youngserif-400.woff2")}" as="font" type="font/woff2" crossorigin>
 <style>${CSS}</style>
 ${jsonld.map((j) => `<script type="application/ld+json">${JSON.stringify(j).replace(/</g, "\\u003c")}</script>`).join("\n")}
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="mast"><div class="wrap">
-<a class="wordmark" href="${url("/")}"><span class="wm-b">Bookish</span><span class="wm-c">Book Club Night</span></a>
+<a class="wordmark" href="${url("/")}">${WORDMARK(true)}</a>
 <nav class="nav" aria-label="Main"><a class="hide-sm" href="${url("/book-clubs/")}">Browse</a><a class="hide-sm" href="${url("/hosts/")}">For hosts</a><a class="hide-sm" href="${url("/resources/")}">Resources</a><a class="btn-sm" href="${url("/start/")}">Start a club</a></nav>
 </div></header>
 <main id="main">
 ${body}
 </main>
 <footer class="foot-site"><div class="wrap cols">
-<div><a class="wordmark" href="${url("/")}"><span class="wm-b">Bookish</span><span class="wm-c">Book Club Night</span></a>
+<div><a class="wordmark" href="${url("/")}">${WORDMARK(false)}</a>
 <p>A directory of real book clubs that meet near you, gathered from the public pages of libraries and bookstores. Every listing links to its source. Details change, so check there before you go.</p></div>
 <div><p class="h">Find</p><ul><li><a href="${url("/book-clubs/")}">All cities</a></li>${["romance", "mystery-thriller", "fantasy", "nonfiction"].filter((g) => genreTotals[g] >= 5).map((g) => `<li><a href="${url(`/genres/${g}/`)}">${GENRES[g]} clubs</a></li>`).join("")}</ul></div>
 <div><p class="h">Hosts</p><ul><li><a href="${url("/start/")}">Start a club</a></li><li><a href="${url("/claim/")}">Claim your club</a></li><li><a href="${url("/hosts/")}">Host tools</a></li><li><a href="${url("/resources/")}">Resources</a></li><li><a href="${url("/about/")}">About &amp; sources</a></li><li><a href="${url("/privacy/")}">Privacy</a> · <a href="${url("/terms/")}">Terms</a></li></ul></div>
@@ -188,13 +192,14 @@ const crumbsLd = (items) => ({
   itemListElement: items.map(([name, href], i) => ({ "@type": "ListItem", position: i + 1, name, ...(href ? { item: abs(href) } : {}) })),
 });
 
-const HOST_IMG = lunair("lunair-host", 440, 225, 880, 447, "Bookish host, a witch in a sage hat, welcoming you in", "", true);
+const ARROW = `<svg aria-hidden="true" viewBox="0 0 18 12" width="15" height="10"><path d="M1 6h15M11 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const prop = (name, w, h, cls, eager = false) => `<img class="${cls}" src="${url(`/img/${name}`)}" width="${w}" height="${h}" alt=""${eager ? "" : ' loading="lazy"'} decoding="async">`;
 const GENRE_OPTIONS = (sel = "") => `<option value="">Any genre</option>${GENRES_LIST.filter(([g]) => genreTotals[g]).map(([g, l]) => `<option value="${g}"${g === sel ? " selected" : ""}>${l}</option>`).join("")}`;
-const searchBox = (sel = "", placeholder = "Sacramento, or a ZIP code") => `
+const searchBox = (sel = "", placeholder = "Sacramento, or a ZIP code", extra = "") => `
 <form id="search" class="search" role="search" action="${url("/")}" autocomplete="off">
-  <div class="field"><label for="q">City or ZIP</label><input id="q" name="q" type="search" placeholder="${esc(placeholder)}" inputmode="search" aria-autocomplete="list" aria-controls="suggest"></div>
+  <div class="field loc"><label for="q">City or ZIP</label><input id="q" name="q" type="search" placeholder="${esc(placeholder)}" inputmode="search" aria-autocomplete="list" aria-controls="suggest"></div>
   <div class="field"><label for="genre">Genre</label><select id="genre" name="genre">${GENRE_OPTIONS(sel)}</select></div>
-  <button class="btn" type="submit">Find clubs</button>
+  <button class="btn" type="submit">Find clubs ${ARROW}</button>${extra}
   <ul id="suggest" class="suggest" hidden role="listbox"></ul>
 </form>
 <div id="results" class="results" aria-live="polite"></div>`;
@@ -269,9 +274,9 @@ const clubsLd = (list, name) => ({
   })),
 });
 
-const hostCallout = (where) => `<section><div class="wrap"><div class="callout">
+const hostCallout = (where) => `<section><div class="wrap"><div class="callout-card">${lunair("lunair-reading", 200, 201, 400, 402, "", "cameo")}
 <div><h2>Hosting a club${where ? ` in ${esc(where)}` : ""}?</h2><p>List it for free so readers nearby can find you. Takes two minutes, no account needed.</p></div>
-<a class="btn" href="${url("/start/")}">Add your club</a></div></div></section>`;
+<a class="btn" href="${url("/start/")}">Add your club ${ARROW}</a></div></div></section>`;
 
 function summarize(list) {
   const lib = list.filter((c) => c.host_type === "library").length;
@@ -425,17 +430,32 @@ ${segToggle({ v: gvTotal, u: total - gvTotal, where: "", scope: "genre", none: `
 {
   const featured = [...clubs.filter((c) => c.verified).slice(0, 3), ...cities.slice(0, 12).map((c) => c.clubs.find((x) => !x.verified && x.genres.length && x.cadence) ?? c.clubs.find((x) => !x.verified)).filter(Boolean)].slice(0, 6);
   const genreChips = GENRES_LIST.filter(([g]) => (genreTotals[g] ?? 0) >= 5);
-  const body = `<section class="hero"><div class="wrap hero-grid"><div class="hero-copy">
-<p class="eyebrow">A directory of real book clubs</p>
-<h1>Find a club. <em>Make it more fun.</em></h1>
-<p class="lede">Library circles, bookstore clubs, mystery nights and romance meetups near you. Search by city or ZIP, request to join the clubs that are on Bookish, or start your own.</p>
-${searchBox()}
-<p class="hero-count"><b>${fmt(clubs.length)}</b> clubs in <b>${fmt(cities.length)}</b> cities${verifiedTotal ? `, <b>${fmt(verifiedTotal)}</b> on Bookish` : ""}. The rest are listed from ${fmt(new Set(clubs.filter((c) => !c.verified).map((c) => c.source_name ?? c.source)).size)} library and bookstore calendars.</p>
-</div>
-<figure class="hero-host">${HOST_IMG}<figcaption>Pull up a chair.</figcaption></figure>
+  const topCities = cities.slice(0, 6);
+  const cityChips = `<ul class="chips" aria-label="Popular cities">${topCities.map((c) => `<li><a class="chip" href="${url(`/book-clubs/${c.u}/`)}">${esc(c.name)}</a></li>`).join("")}</ul>`;
+  const body = `<section class="lander"><div class="wrap">
+<div class="l-sheet"><p class="l-tag">Bookish: book club night</p>
+<div class="hsheet"><h1>Find a club, make it more <span class="fun">fun.<svg aria-hidden="true" viewBox="0 0 226 20" preserveAspectRatio="none"><path d="M4 12C50 5 100 16 150 9s55 2 72 1" fill="none" stroke="#f4a6bf" stroke-width="6" stroke-linecap="round"/></svg></span></h1>
+<p class="sub">Real book clubs at libraries, bookstores and cafés near you. Ask to join one, or bring Bookish to the club you already have.</p></div>
+${prop("prop-sun-240.webp", 240, 243, "l-sun", true)}</div>
+<div class="l-art">${lunair("lunair-hug", 300, 252, 600, 503, "Lunair, the Bookish host, hugging a book", "", true)}<p class="bubble">Pull up a chair. I saved you a seat!</p>${prop("prop-daisy-240.webp", 240, 243, "daisy", true)}</div>
+<div class="l-search">${prop("prop-washi3-240.webp", 240, 151, "washi", true)}${searchBox("", "Sacramento, or a ZIP code", cityChips)}</div>
+<div class="l-count"><div class="libcard"><p class="lc-h"><span>The directory</span><span>Updated ${monthYear}</span></p><p class="hero-count"><b>${fmt(clubs.length)}</b> clubs in <b>${fmt(cities.length)}</b> cities${verifiedTotal ? `, <b>${fmt(verifiedTotal)}</b> on Bookish` : ""}. The rest are listed from ${fmt(new Set(clubs.filter((c) => !c.verified).map((c) => c.source_name ?? c.source)).size)} library and bookstore calendars.</p></div></div>
+<div class="l-own"><a class="startown" href="${url("/start/")}">No club nearby? <b>Start your own</b> ${ARROW}</a></div>
 </div></section>
 <section><div class="wrap">
-<h2>The club <em>map</em></h2>
+<div class="sh"><h2>A few clubs <em>to start with</em></h2></div>
+<p class="lede">Picked from around the country. Clubs marked "On Bookish" take requests to join. The rest link to the library or bookstore page they were listed on.</p>
+<ul class="clubs lander-clubs">${featured.map((c) => clubCard(c)).join("\n")}</ul>
+</div></section>
+<section><div class="wrap">
+<div class="sh"><h2>How it works <em>three things</em></h2></div>
+<div class="steps">
+<div class="step">${prop("prop-washi2-240.webp", 240, 144, "wt")}${prop("prop-daisy-240.webp", 240, 243, "")}<h3>Search your city</h3><p>Type a city or ZIP. See the clubs that meet nearby and how often.</p></div>
+<div class="step">${prop("prop-sun-240.webp", 240, 243, "")}<h3>On Bookish? Ask to join</h3><p>Clubs marked "On Bookish" have a host here. Send a note and they'll say yes or no.</p></div>
+<div class="step">${prop("prop-washi3-240.webp", 240, 151, "wt")}${prop("prop-daisy-240.webp", 240, 243, "")}<h3>From a calendar? Just go</h3><p>Library and bookstore clubs link to their own page for the date, time and book.</p></div>
+</div></div></section>
+<section><div class="wrap">
+<div class="sh"><h2>The map <em>city by city</em></h2></div>
 <p class="lede">Every city with book clubs, and how many are on Bookish. Tap a city to see its clubs.</p>
 <div id="club-map" class="club-map" role="region" aria-label="Map of book clubs"><p class="map-hint">Loading the club map…</p></div>
 <p class="small">The map shows cities, never addresses. Exact place and time are shared only with members a host approves.</p>
@@ -445,21 +465,12 @@ ${searchBox()}
 <ul class="chips">${genreChips.map(([g, l]) => `<li><a class="chip" href="${url(`/genres/${g}/`)}">${esc(l)} <span class="c">${fmt(genreTotals[g])}</span></a></li>`).join("")}</ul>
 </div></section>
 <section style="padding-top:0"><div class="wrap">
-<h2>Where readers are <em>meeting</em></h2>
-<div class="grid cols-3">${cities.slice(0, 18).map((c) => `<a class="city-tile" href="${url(`/book-clubs/${c.u}/`)}"><b>${esc(c.name)}, ${c.st}</b><span>${countLine(c.clubs.length, c.v)}</span></a>`).join("")}</div>
+<div class="sh"><h2>Where readers <em>are meeting</em></h2></div>
+<div class="grid cols-3 home-cities">${cities.slice(0, 18).map((c) => `<a class="city-tile" href="${url(`/book-clubs/${c.u}/`)}"><b>${esc(c.name)}, ${c.st}</b><span>${countLine(c.clubs.length, c.v)}</span></a>`).join("")}</div>
 <p style="margin-top:18px"><a href="${url("/book-clubs/")}">See every city →</a></p>
 </div></section>
-<section style="padding-top:0"><div class="wrap">
-<h2>A few clubs <em>to start with</em></h2>
-<p class="lede">Picked from around the country. Clubs marked "On Bookish" take requests to join. The rest link to the library or bookstore page they were listed on.</p>
-<ul class="clubs">${featured.map((c) => clubCard(c)).join("\n")}</ul>
-</div></section>
-<section><div class="wrap grid cols-3">
-<div><p class="eyebrow">01</p><h3>Search your city</h3><p class="muted">Type a city or ZIP. We'll show the clubs that meet nearby and how often.</p></div>
-<div><p class="eyebrow">02</p><h3>On Bookish? Request to join</h3><p class="muted">Clubs marked "On Bookish" have a host here. Send a note and they'll say yes or no.</p></div>
-<div><p class="eyebrow">03</p><h3>Listed from a calendar? Just go</h3><p class="muted">Library and bookstore clubs link to their own page for the date, time and book. Most welcome newcomers.</p></div>
-</div></section>
-${hostCallout()}
+<section><div class="wrap"><div class="own-wrap">${lunair("lunair-gossip", 220, 209, 440, 417, "Lunair whispering behind her hand")}
+<div class="own"><h2>No club nearby? Start your own.</h2><p>Pick a book, pick a night. List it free and readers nearby can find you.</p><a class="btn" href="${url("/start/")}">Start a club ${ARROW}</a></div></div></div></section>
 <section style="padding-top:0"><div class="wrap"><div class="note">Run a club already? <a href="${url("/claim/")}">Claim your listing</a> to fix the details, or <a href="${url("/hosts/")}">join the waitlist</a> for simple host tools: scheduling, book voting and invite links.</div></div></section>`;
   write("index.html", layout({
     title: "Bookish: Book Club Night | Find a club, make it more fun",
@@ -532,13 +543,19 @@ write("hosts/index.html", layout({
   body: `<div class="wrap">${crumbs([["Home", "/"], ["For hosts", null]])}
 <header class="page-head"><p class="eyebrow">For hosts · coming soon</p><h1>Less admin, <em>more books</em>.</h1>
 <p class="lede">We're building a small set of tools for the person who keeps the club going. No group-chat archaeology to find the date, no spreadsheet of who's read what. These aren't live yet. Join the waitlist and we'll invite hosts in small groups.</p></header>
-<section><div class="tools">
+<section><h2 class="sr-only">What we're building</h2><div class="tools">
 <div class="tool"><span class="soon">Coming soon</span><h3>Next-meeting scheduling</h3><p>Propose a few dates, members tap what works, and the winner goes on everyone's calendar.</p>
 <div class="mock" aria-hidden="true"><div class="l"><span class="t">Thu, Nov 6 · 7pm</span><span class="pill">8 can come</span></div><div class="l"><span>Sun, Nov 9 · 2pm</span><span>5 can come</span></div><div class="l"><span>Tue, Nov 11 · 7pm</span><span>3 can come</span></div></div></div>
 <div class="tool"><span class="soon">Coming soon</span><h3>Book voting</h3><p>Everyone nominates, everyone votes, and the pick is settled before the meeting ends.</p>
 <div class="mock" aria-hidden="true"><div class="l"><span class="t">The Thursday Murder Club</span><div class="bar"><i style="width:72%"></i></div><span>9</span></div><div class="l"><span class="t">Lessons in Chemistry</span><div class="bar"><i style="width:48%"></i></div><span>6</span></div><div class="l"><span class="t">Piranesi</span><div class="bar"><i style="width:24%"></i></div><span>3</span></div></div></div>
 <div class="tool"><span class="soon">Coming soon</span><h3>Reading progress</h3><p>See who's on track for the meeting, with no spoilers past the page you're on.</p>
-<div class="mock" aria-hidden="true"><div class="l"><span>Maya</span><div class="bar"><i style="width:100%"></i></div><span>Done</span></div><div class="l"><span>Jordan</span><div class="bar"><i style="width:64%"></i></div><span>p. 212</span></div><div class="l"><span>Priya</span><div class="bar"><i style="width:30%"></i></div><span>p. 98</span></div></div></div>
+${(() => {
+  // The Race: pages read vs the meet page. Velvet + bookmark ribbons, brass "You".
+  const total = 517, meet = 300, rows = [["Mira", 488], ["Priya", 371], ["You", 212], ["Dani", 160], ["Kat", 96], ["Elle", 40]];
+  const pct = (n) => (n / total * 100).toFixed(1);
+  return `<div class="race" aria-hidden="true"><div class="hd"><span class="ttl">The Race</span><span class="eb">First to the end</span><span class="pos">you're 3rd</span></div>
+<div class="rows"><span class="mline" style="left:calc((100% - 48px) * ${(meet / total).toFixed(3)})"><span>Meet · p.${meet}</span></span>${rows.map(([n, p], i) => `<div class="rr${n === "You" ? " me" : ""}"><span class="rn">${n}</span><span class="rt"><span class="rf" style="width:${pct(p)}%;--c:${["#a8324a", "#efe2c6", "#ecb74e", "#e6a2ac", "#a9c487", "#d97a52"][i]}"></span><span class="rp${p / total > .8 ? " in" : ""}" style="left:${pct(p)}%">p. ${p}</span></span></div>`).join("")}</div></div>`;
+})()}</div>
 <div class="tool"><span class="soon">Coming soon</span><h3>One invite link</h3><p>A single link for your club. New readers see what you're reading and when you meet, then ask to join.</p>
 <div class="mock" aria-hidden="true"><span class="link">bookishclub.com/c/tuesday-mysteries</span></div></div>
 </div></section>
@@ -669,14 +686,14 @@ ${R.categories.map(([id, name, intro]) => {
 <p class="small">Always have a good non-alcoholic option, and drink responsibly.</p>`);
 
   // printables (print-optimised)
-  const bm = Array.from({ length: 4 }, () => `<div class="bm"><div class="pw"><span class="wm-b">Bookish</span><span class="wm-c">Book Club Night</span></div><p class="pl">Our next book</p><span class="ln"></span><span class="ln"></span><p class="pl">Meeting</p><span class="ln"></span><p class="pl">Where</p><span class="ln"></span><p class="pq">"Come even if you didn't finish."</p></div>`).join("");
-  const rsvp = Array.from({ length: 4 }, () => `<div class="rsvp"><div class="pw"><span class="wm-b">Bookish</span><span class="wm-c">Book Club Night</span></div><p class="pt">You're invited to book club</p><p class="pl">Book</p><span class="ln"></span><p class="pl">Date &amp; time</p><span class="ln"></span><p class="pl">Place</p><span class="ln"></span><p class="pl">RSVP to</p><span class="ln"></span></div>`).join("");
+  const bm = Array.from({ length: 4 }, () => `<div class="bm"><div class="pw"><img src="${url("/img/wordmark-320.webp")}" width="120" height="47" alt="Bookish"></div><p class="pl">Our next book</p><span class="ln"></span><span class="ln"></span><p class="pl">Meeting</p><span class="ln"></span><p class="pl">Where</p><span class="ln"></span><p class="pq">"Come even if you didn't finish."</p></div>`).join("");
+  const rsvp = Array.from({ length: 4 }, () => `<div class="rsvp"><div class="pw"><img src="${url("/img/wordmark-320.webp")}" width="120" height="47" alt="Bookish"></div><p class="pt">You're invited to book club</p><p class="pl">Book</p><span class="ln"></span><p class="pl">Date &amp; time</p><span class="ln"></span><p class="pl">Place</p><span class="ln"></span><p class="pl">RSVP to</p><span class="ln"></span></div>`).join("");
   const pcss = `<style>
 .sheet{display:grid;gap:14px;margin:18px 0 34px}.bms{grid-template-columns:repeat(4,1fr)}.rsvps{grid-template-columns:repeat(2,1fr)}
-.bm,.rsvp{border:1.5px dashed var(--ink-3);border-radius:6px;padding:16px 14px;background:#fff;color:var(--ink)}
-.bm{min-height:440px;display:flex;flex-direction:column}.pw{display:flex;align-items:baseline;gap:.4em;margin-bottom:14px}.pw .wm-b{font-size:20px}
-.pl{font:600 10px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:14px 0 4px}.ln{display:block;border-bottom:1px solid var(--ink-3);height:24px}
-.pq{margin-top:auto;font-style:italic;font-size:14px;color:var(--ink-2)}.pt{font:italic 500 20px/1.2 var(--serif);margin:0 0 6px}
+.bm,.rsvp{border:1.5px dashed var(--ink-2);border-radius:6px;padding:16px 14px;background:#fff;color:var(--ink)}
+.bm{min-height:440px;display:flex;flex-direction:column}.pw{margin-bottom:14px}.pw img{display:block;width:120px;height:auto}
+.pl{font:700 10px/1 var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);margin:14px 0 4px}.ln{display:block;border-bottom:1px solid var(--ink-2);height:24px}
+.pq{margin-top:auto;font:400 14px/1.35 var(--title);color:var(--ink-2)}.pt{font:400 20px/1.2 var(--title);margin:0 0 6px}
 @media (max-width:700px){.bms{grid-template-columns:repeat(2,1fr)}.rsvps{grid-template-columns:1fr}}
 @media print{.mast,.foot-site,.crumbs,.noprint,.callout{display:none!important}body{background:#fff}.page-head{border:0;padding:0}.sheet{break-inside:avoid}.bms{grid-template-columns:repeat(4,1fr)}.rsvps{grid-template-columns:repeat(2,1fr);break-before:page}}
 </style>`;
@@ -706,7 +723,7 @@ write("map.js", fs.readFileSync(path.join(ROOT, "src/map.js"), "utf8"));
   console.log(`map: ${features.length} city points`);
 }
 
-write("favicon.svg", `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#2d4a3a"/><text x="32" y="45" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-weight="700" font-size="40" fill="#f6f0e4">B</text></svg>`);
+write("favicon.svg", `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#4a1420"/><text x="32" y="47" text-anchor="middle" font-family="Arial Black,Helvetica,sans-serif" font-weight="900" font-size="40" fill="#fbf1e2" stroke="#f4a6bf" stroke-width="3" paint-order="stroke">B</text></svg>`);
 write("robots.txt", `User-agent: *\nAllow: /\nDisallow: /claim/\nDisallow: /confirmed/\nDisallow: /join/\n\nSitemap: ${abs("/sitemap.xml")}\n`);
 write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemap.map((s) => `<url><loc>${esc(s.loc)}</loc><lastmod>${TODAY}</lastmod><priority>${s.prio.toFixed(1)}</priority></url>`).join("\n")}\n</urlset>\n`);
 write(".nojekyll", "");

@@ -1,26 +1,41 @@
 /* Bookish Club theme: every colour, font and texture lives here.
-   Swap this file to re-skin the site; src/styles.css only uses these variables.
-   Current theme: "Indie bookstore" (paper, bottle green, oxblood, brass; Newsreader). */
-@font-face{font-family:"Newsreader";src:url("__BASE__/fonts/newsreader.woff2") format("woff2");font-weight:400 700;font-style:normal;font-display:optional}
-@font-face{font-family:"Newsreader";src:url("__BASE__/fonts/newsreader-italic.woff2") format("woff2");font-weight:400 600;font-style:italic;font-display:optional}
+   src/styles.css only reads these variables (plus the theme's paper/ribbon motifs).
+   Current theme (locked 2026-10-14): palette 05 "Oxblood Reading Room" on the
+   gouache wall, M2 middle-ground motifs, R2-04 "ish reply" wordmark,
+   "Y2K Sticker" type (Unbounded / Young Serif / Manrope), self-hosted. */
+@font-face{font-family:"Unbounded";src:url("__BASE__/fonts/unbounded-400_900.woff2") format("woff2");font-weight:400 900;font-style:normal;font-display:optional}
+@font-face{font-family:"Young Serif";src:url("__BASE__/fonts/youngserif-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:optional}
+@font-face{font-family:"Manrope";src:url("__BASE__/fonts/manrope-400_800.woff2") format("woff2");font-weight:400 800;font-style:normal;font-display:optional}
 :root{
-  --paper:#f6f0e4;--paper-2:#efe6d4;--card:#fbf7ef;--ink:#231c16;--ink-2:#5b4f45;--ink-3:#6e6157;
-  --rule:#dccfb8;--green:#2d4a3a;--green-2:#3f6450;--oxblood:#7b2d26;--brass:#8a6420;
-  --serif:"Newsreader",Georgia,"Times New Roman",serif;
-  --sans:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  --r:10px;--wrap:1080px;
-  /* derived surfaces (override per theme) */
-  --page-bg:var(--paper);
-  --hero-bg:radial-gradient(1200px 300px at 80% -10%,rgba(167,122,44,.10),transparent 70%),var(--paper);
-  --bar-bg:rgba(246,240,228,.94);
-  --tag-genre-bg:#e3eadf;--tag-genre-ink:var(--green);
-  --ok-bg:#e3eadf;--ok-ink:var(--green);--err-bg:#f3e0dc;--err-ink:var(--oxblood);
-  --callout-sub:#d9e2d6;
-  --shadow-rgb:35,28,22;--focus-ring:rgba(45,74,58,.15);
+  /* the room (dark surfaces) */
+  --ox:#4a1420;--ox-deep:#33101a;--ox-night:#220710;
+  --on-dark:#f8ecd8;--on-dark-2:#e0c3bd;--line-dark:rgba(248,236,216,.2);
+  --brass:#ecb74e;--rose:#f4a6bf;
+  /* shelf paper (light surfaces) */
+  --card:#f3e6cf;--card-2:#e9dbc1;--note:#fffaf0;--sage:#d2e3cc;
+  --ink:#1d1712;--ink-2:#5a5047;--rule:rgba(29,23,18,.2);
+  /* bottle green + velvet */
+  --green:#1d5a46;--green-on:#f6eedc;--green-hover:#164a39;
+  --velvet:#17443a;--velvet-ink:#f6eedc;--velvet-muted:#c9dccf;--brass-txt:#f3c662;
+  --ribbons:#a8324a,#efe2c6,#ecb74e,#e6a2ac,#a9c487,#d97a52;
+  /* type */
+  --display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --title:"Young Serif",Georgia,"Times New Roman",serif;
+  --ui:"Manrope",ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
   --mono:ui-monospace,Menlo,monospace;
-  --map-bg:#ece5d6;--map-pin:#2d4a3a;--map-cluster:#7b2d26;--map-on:#8a6420;
+  /* textures: gouache wall (tall crop for phones, wide for desktop) + paper grain */
+  --wall-m:url("__BASE__/img/bg-oxblood-m.webp");--wall-m-ratio:2.047;
+  --wall-d:url("__BASE__/img/bg-oxblood-d.webp");--wall-d-ratio:.625;
+  --glow:radial-gradient(70% 38% at 92% 10%,rgba(255,190,110,.22),rgba(255,190,110,0) 70%);
+  --paper-tx:url("__BASE__/img/tx-paper-900.webp");
+  --r:6px;--wrap:1120px;
+  --shadow:0 16px 26px -14px rgba(0,0,0,.6);
+  --focus:var(--brass);--focus-on-card:var(--green);
+  /* states */
+  --ok-bg:#d2e3cc;--ok-ink:#143f31;--err-bg:#f6d3cf;--err-ink:#7a1a2a;
+  /* map */
+  --map-bg:#3a0f18;--map-pin:#1d5a46;--map-cluster:#a8324a;--map-on:#b5841f;
   /* verified ("On Bookish") vs unclaimed ("Listed from public calendars") */
-  --on-bg:var(--green);--on-ink:var(--paper);--on-edge:var(--green);
-  --off-card:#efe8da;--off-rule:#cdbfa6;--off-ink:var(--ink-2);--off-badge-ink:#5b4f45;
-  --seg-bg:var(--paper-2);--seg-on-bg:var(--card);--seg-on-ink:var(--ink)
+  --on-bg:var(--green);--on-ink:var(--green-on);
+  --off-card:#e3d3b8;--off-rule:rgba(29,23,18,.38);--off-ink:#4a4038
 }
