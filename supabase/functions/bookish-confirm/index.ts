@@ -2,7 +2,7 @@
 // and redirects to the site's /confirmed/ page.
 import { createClient } from "npm:@supabase/supabase-js@2";
 
-const SITE_URL = Deno.env.get("BOOKISH_SITE_URL") ?? "https://fictora.github.io/bookish-club";
+const SITE_URL = Deno.env.get("BOOKISH_SITE_URL") ?? "https://meetbookish.com";
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 const sb = createClient(

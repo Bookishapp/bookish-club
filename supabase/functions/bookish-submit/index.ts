@@ -9,9 +9,10 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 
 const ALLOWED_ORIGINS = [
-  "https://bookishclub.com",
-  "https://www.bookishclub.com",
-  "https://fictora.github.io",
+  "https://meetbookish.com",
+  "https://www.meetbookish.com",
+  "https://bookishapp.github.io",
+  "https://fictora.github.io", // legacy; drop once meetbookish.com is live
   "http://localhost:4321",
   "http://127.0.0.1:4321",
 ];
