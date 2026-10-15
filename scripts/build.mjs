@@ -301,6 +301,8 @@ const secList = (list, mode, head) => {
   return `<section class="seg-sec"${shown ? "" : " hidden"}><hr class="rule">${head}<ul class="clubs">${list.map((c) => clubCard(c, { hidden: c.verified !== (mode === "on") })).join("\n")}</ul></section>`;
 };
 const mainList = (list, mode) => `<ul class="clubs" id="club-list">${list.map((c) => clubCard(c, { hidden: c.verified !== (mode === "on") })).join("\n")}</ul>`;
+// Hide the on-Bookish count on the home card until it is big enough not to read as empty (Sebastian 10-14).
+const SHOW_VERIFIED_MIN = 20;
 const modeEmpty = (where) => `<div class="empty seg-empty" data-empty="on" hidden><p>No clubs${where ? ` in ${esc(where)}` : " here"} are on Bookish yet. <a href="${url("/start/")}">Start one</a>, or see the clubs listed from public calendars.</p></div>
 <div class="empty seg-empty" data-empty="listed" hidden><p>Every club${where ? ` in ${esc(where)}` : " here"} is on Bookish. Nice.</p></div>`;
 const verifiedLede = (v, n) => v
@@ -439,7 +441,7 @@ ${segToggle({ v: gvTotal, u: total - gvTotal, where: "", scope: "genre", none: `
 ${prop("prop-sun-240.webp", 240, 243, "l-sun", true)}</div>
 <div class="l-art">${lunair("lunair-hug", 300, 252, 600, 503, "Lunair, the Bookish host, hugging a book", "", true)}<p class="bubble">Pull up a chair. I saved you a seat!</p>${prop("prop-daisy-240.webp", 240, 243, "daisy", true)}</div>
 <div class="l-search">${prop("prop-washi3-240.webp", 240, 151, "washi", true)}${searchBox("", "Sacramento, or a ZIP code", cityChips)}</div>
-<div class="l-count"><div class="libcard"><p class="lc-h"><span>The directory</span><span>Updated ${monthYear}</span></p><p class="hero-count"><b>${fmt(clubs.length)}</b> clubs in <b>${fmt(cities.length)}</b> cities${verifiedTotal ? `, <b>${fmt(verifiedTotal)}</b> on Bookish` : ""}. The rest are listed from ${fmt(new Set(clubs.filter((c) => !c.verified).map((c) => c.source_name ?? c.source)).size)} library and bookstore calendars.</p></div></div>
+<div class="l-count"><div class="libcard"><p class="lc-h"><span>The directory</span><span>Updated ${monthYear}</span></p><p class="hero-count"><b>${fmt(clubs.length)}</b> clubs in <b>${fmt(cities.length)}</b> cities${verifiedTotal >= SHOW_VERIFIED_MIN ? `, <b>${fmt(verifiedTotal)}</b> on Bookish. The rest are listed from ${fmt(new Set(clubs.filter((c) => !c.verified).map((c) => c.source_name ?? c.source)).size)} library and bookstore calendars.` : `, gathered from ${fmt(new Set(clubs.filter((c) => !c.verified).map((c) => c.source_name ?? c.source)).size)} library and bookstore calendars.`}</p></div></div>
 <div class="l-own"><a class="startown" href="${url("/start/")}">No club nearby? <b>Start your own</b> ${ARROW}</a></div>
 </div></section>
 <section><div class="wrap">
