@@ -17,6 +17,12 @@ JOBS = [  # (source, output name, [target heights])
     ("poses/canonical/lunair-pose-peeking.png", "lunair-peek", [130, 260]),
     ("expressions/confused/confused-12-confused-shrug.webp", "lunair-shrug", [260, 520]),
     ("expressions/reading/reading-01-peek-over-book.webp", "lunair-reading", [200, 400]),
+    # Read next (10-15): cold-start taps, the Read next header, the why-line face.
+    ("expressions/talking/talking-07-explain.webp", "lunair-explain", [240, 480]),
+    ("expressions/scheming/scheming-24-grin-hidden-behind-a-book-eyes-visible.webp", "lunair-behind-book", [170, 340]),
+]
+FACES = [  # (source, output name, crop box as fractions of the cut-out's bbox, sizes)
+    ("expressions/joy/joy-26-smile-while-adjusting-her-glasses.webp", "lunair-face", (0.375, 0.30, 0.735, 0.644), [40, 80]),
 ]
 
 def sticker(im, h, border=False):
@@ -47,3 +53,18 @@ for src, name, heights in JOBS:
         path = os.path.join(OUT, f"{name}-{h}.webp")
         out.save(path, "WEBP", quality=82, method=6)
         print(path, out.size, os.path.getsize(path) // 1024, "KB")
+
+# Round face thumbnails for the why lines: a square crop around the face, scaled.
+for src, name, box, sizes in FACES:
+    im = Image.open(os.path.join(SRC, src)).convert("RGBA")
+    im = im.crop(im.getchannel("A").point(lambda a: 255 if a > 16 else 0).getbbox())
+    w, h = im.size
+    l, t, r, b = box or (0.30, 0.20, 0.62, 0.20 + 0.32 * w / h)
+    face = im.crop((round(l * w), round(t * h), round(r * w), round(b * h)))
+    for sz in sizes:
+        out = Image.new("RGBA", (sz, sz), (232, 195, 168, 255))
+        f = face.resize((sz, sz), Image.LANCZOS)
+        out.alpha_composite(f)
+        path = os.path.join(OUT, f"{name}-{sz}.webp")
+        out.save(path, "WEBP", quality=85, method=6)
+        print(path, out.size)

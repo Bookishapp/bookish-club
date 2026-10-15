@@ -1,0 +1,1195 @@
+{
+ "source": "Open Library (openlibrary.org), metadata + cover ids",
+ "fetched": "2026-10-15",
+ "books": [
+  {
+   "id": "fourth-wing",
+   "t": "Fourth Wing",
+   "a": "Rebecca Yarros",
+   "pages": 518,
+   "year": 2023,
+   "ol": "OL29226517W",
+   "cover": 14407898,
+   "moods": [
+    "big_fantasy",
+    "slow_burn"
+   ],
+   "series": [
+    "empyrean",
+    1
+   ],
+   "style": {
+    "cb": "#1d1712",
+    "ci": "#ecb74e",
+    "m": "sun"
+   }
+  },
+  {
+   "id": "iron-flame",
+   "t": "Iron Flame",
+   "a": "Rebecca Yarros",
+   "pages": 640,
+   "year": 2023,
+   "ol": "OL34028551W",
+   "cover": 14405746,
+   "moods": [
+    "big_fantasy",
+    "slow_burn"
+   ],
+   "series": [
+    "empyrean",
+    2
+   ],
+   "style": {
+    "cb": "#7a1a2a",
+    "ci": "#f3e6cf",
+    "m": "sun"
+   }
+  },
+  {
+   "id": "onyx-storm",
+   "t": "Onyx Storm",
+   "a": "Rebecca Yarros",
+   "pages": 544,
+   "year": 2025,
+   "ol": "OL41943074W",
+   "cover": 14826089,
+   "moods": [
+    "big_fantasy",
+    "fight"
+   ],
+   "series": [
+    "empyrean",
+    3
+   ],
+   "style": {
+    "cb": "#1d1712",
+    "ci": "#ecb74e",
+    "m": "key"
+   }
+  },
+  {
+   "id": "yellowface",
+   "t": "Yellowface",
+   "a": "R. F. Kuang",
+   "pages": 352,
+   "year": 2023,
+   "ol": "OL29050559W",
+   "cover": 13195421,
+   "moods": [
+    "fight"
+   ],
+   "style": {
+    "cb": "#ecb74e",
+    "ci": "#1d1712",
+    "m": "band"
+   }
+  },
+  {
+   "id": "babel",
+   "t": "Babel",
+   "a": "R. F. Kuang",
+   "pages": 577,
+   "year": 2022,
+   "ol": "OL26443093W",
+   "cover": 12468631,
+   "moods": [
+    "big_fantasy",
+    "fight"
+   ],
+   "style": {
+    "cb": "#d97a52",
+    "ci": "#1d1712",
+    "m": "band"
+   }
+  },
+  {
+   "id": "the-god-of-the-woods",
+   "t": "The God of the Woods",
+   "a": "Liz Moore",
+   "pages": 438,
+   "year": 2024,
+   "ol": "OL37827517W",
+   "cover": 14645734,
+   "moods": [
+    "mystery"
+   ],
+   "style": {
+    "cb": "#c9dcc0",
+    "ci": "#17443a",
+    "m": "frame"
+   }
+  },
+  {
+   "id": "the-housemaid",
+   "t": "The Housemaid",
+   "a": "Freida McFadden",
+   "pages": 336,
+   "year": 2022,
+   "ol": "OL27729743W",
+   "cover": 15105883,
+   "moods": [
+    "mystery",
+    "fight"
+   ],
+   "style": {
+    "cb": "#efe2c6",
+    "ci": "#7a1a2a",
+    "m": "key"
+   }
+  },
+  {
+   "id": "funny-story",
+   "t": "Funny Story",
+   "a": "Emily Henry",
+   "pages": 400,
+   "year": 2024,
+   "ol": "OL37575890W",
+   "cover": 14625690,
+   "moods": [
+    "slow_burn"
+   ],
+   "style": {
+    "cb": "#e6a2ac",
+    "ci": "#33101a",
+    "m": "band"
+   }
+  },
+  {
+   "id": "book-lovers",
+   "t": "Book Lovers",
+   "a": "Emily Henry",
+   "pages": 408,
+   "year": 2022,
+   "ol": "OL24801992W",
+   "cover": 11567819,
+   "moods": [
+    "slow_burn"
+   ],
+   "style": {
+    "cb": "#d97a52",
+    "ci": "#1d1712",
+    "m": "key"
+   }
+  },
+  {
+   "id": "beach-read",
+   "t": "Beach Read",
+   "a": "Emily Henry",
+   "pages": 376,
+   "year": 2020,
+   "ol": "OL20734329W",
+   "cover": 9426296,
+   "moods": [
+    "slow_burn",
+    "cry"
+   ],
+   "style": {
+    "cb": "#7a1a2a",
+    "ci": "#f3e6cf",
+    "m": "key"
+   }
+  },
+  {
+   "id": "james",
+   "t": "James",
+   "a": "Percival Everett",
+   "pages": 320,
+   "year": 2024,
+   "ol": "OL36506504W",
+   "cover": 15094964,
+   "moods": [
+    "fight",
+    "cry"
+   ],
+   "style": {
+    "cb": "#d97a52",
+    "ci": "#1d1712",
+    "m": "frame"
+   }
+  },
+  {
+   "id": "remarkably-bright-creatures",
+   "t": "Remarkably Bright Creatures",
+   "a": "Shelby Van Pelt",
+   "pages": 368,
+   "year": 2022,
+   "ol": "OL25382083W",
+   "cover": 12019989,
+   "moods": [
+    "cry"
+   ],
+   "style": {
+    "cb": "#22325a",
+    "ci": "#f3e6cf",
+    "m": "sun"
+   }
+  },
+  {
+   "id": "lessons-in-chemistry",
+   "t": "Lessons in Chemistry",
+   "a": "Bonnie Garmus",
+   "pages": 464,
+   "year": 2022,
+   "ol": "OL25344431W",
+   "cover": 12725772,
+   "moods": [
+    "fight"
+   ],
+   "style": {
+    "cb": "#a9c487",
+    "ci": "#1d1712",
+    "m": "band"
+   }
+  },
+  {
+   "id": "tomorrow-and-tomorrow-and-tomorrow",
+   "t": "Tomorrow, and Tomorrow, and Tomorrow",
+   "a": "Gabrielle Zevin",
+   "pages": 460,
+   "year": 2022,
+   "ol": "OL26004554W",
+   "cover": 12859975,
+   "moods": [
+    "cry",
+    "slow_burn"
+   ],
+   "style": {
+    "cb": "#c4485a",
+    "ci": "#fdfaf2",
+    "m": "key"
+   }
+  },
+  {
+   "id": "the-seven-husbands-of-evelyn-hugo",
+   "t": "The Seven Husbands of Evelyn Hugo",
+   "a": "Taylor Jenkins Reid",
+   "pages": 400,
+   "year": 2017,
+   "ol": "OL18203673W",
+   "cover": 8354226,
+   "moods": [
+    "cry",
+    "fight"
+   ],
+   "style": {
+    "cb": "#1d5a46",
+    "ci": "#ecb74e",
+    "m": "frame"
+   }
+  },
+  {
+   "id": "daisy-jones-and-the-six",
+   "t": "Daisy Jones & The Six",
+   "a": "Taylor Jenkins Reid",
+   "pages": 400,
+   "year": 2019,
+   "ol": "OL19922194W",
+   "cover": 8742674,
+   "moods": [
+    "fight"
+   ],
+   "style": {
+    "cb": "#1d5a46",
+    "ci": "#ecb74e",
+    "m": "key"
+   }
+  },
+  {
+   "id": "a-court-of-thorns-and-roses",
+   "t": "A Court of Thorns and Roses",
+   "a": "Sarah J. Maas",
+   "pages": 454,
+   "year": 2013,
+   "ol": "OL17352669W",
+   "cover": 15254465,
+   "moods": [
+    "big_fantasy",
+    "slow_burn"
+   ],
+   "series": [
+    "acotar",
+    1
+   ],
+   "style": {
+    "cb": "#d97a52",
+    "ci": "#1d1712",
+    "m": "band"
+   }
+  },
+  {
+   "id": "a-court-of-mist-and-fury",
+   "t": "A Court of Mist and Fury",
+   "a": "Sarah J. Maas",
+   "pages": 626,
+   "year": 2014,
+   "ol": "OL17860744W",
+   "cover": 14315081,
+   "moods": [
+    "big_fantasy",
+    "slow_burn"
+   ],
+   "series": [
+    "acotar",
+    2
+   ],
+   "style": {
+    "cb": "#e6a2ac",
+    "ci": "#33101a",
+    "m": "key"
+   }
+  },
+  {
+   "id": "the-silent-patient",
+   "t": "The Silent Patient",
+   "a": "Alex Michaelides",
+   "pages": 352,
+   "year": 2018,
+   "ol": "OL19096402W",
+   "cover": 9407338,
+   "moods": [
+    "mystery",
+    "fight"
+   ],
+   "style": {
+    "cb": "#ecb74e",
+    "ci": "#1d1712",
+    "m": "sun"
+   }
+  },
+  {
+   "id": "gone-girl",
+   "t": "Gone Girl",
+   "a": "Gillian Flynn",
+   "pages": 475,
+   "year": 2011,
+   "ol": "OL16239762W",
+   "cover": 8368314,
+   "moods": [
+    "mystery",
+    "fight"
+   ],
+   "style": {
+    "cb": "#d97a52",
+    "ci": "#1d1712",
+    "m": "band"
+   }
+  },
+  {
+   "id": "where-the-crawdads-sing",
+   "t": "Where the Crawdads Sing",
+   "a": "Delia Owens",
+   "pages": 416,
+   "year": 2018,
+   "ol": "OL18766691W",
+   "cover": 8362947,
+   "moods": [
+    "mystery",
+    "cry"
+   ],
+   "style": {
+    "cb": "#1d1712",
+    "ci": "#ecb74e",
+    "m": "key"
+   }
+  },
+  {
+   "id": "the-thursday-murder-club",
+   "t": "The Thursday Murder Club",
+   "a": "Richard Osman",
+   "pages": 449,
+   "year": 2020,
+   "ol": "OL20878311W",
+   "cover": 10201431,
+   "moods": [
+    "mystery"
+   ],
+   "series": [
+    "thursday-murder-club",
+    1
+   ],
+   "style": {
+    "cb": "#1d1712",
+    "ci": "#ecb74e",
+    "m": "band"
+   }
+  },
+  {
+   "id": "the-man-who-died-twice",
+   "t": "The Man Who Died Twice",
+   "a": "Richard Osman",
+   "pages": 480,
+   "year": 2019,
+   "ol": "OL24662687W",
+   "cover": 11358314,
+   "moods": [
+    "mystery"
+   ],
+   "series": [
+    "thursday-murder-club",
+    2
+   ],
+   "style": {
+    "cb": "#e6a2ac",
+    "ci": "#33101a",
+    "m": "band"
+   }
+  },
+  {
+   "id": "the-love-hypothesis",
+   "t": "The Love Hypothesis",
+   "a": "Ali Hazelwood",
+   "pages": 398,
+   "year": 2021,
+   "ol": "OL24178205W",
+   "cover": 10601402,
+   "moods": [
+    "slow_burn"
+   ],
+   "style": {
+    "cb": "#a9c487",
+    "ci": "#1d1712",
+    "m": "key"
+   }
+  },
+  {
+   "id": "normal-people",
+   "t": "Normal People",
+   "a": "Sally Rooney",
+   "pages": 304,
+   "year": 2018,
+   "ol": "OL20150260W",
+   "cover": 8794265,
+   "moods": [
+    "slow_burn",
+    "cry",
+    "fight"
+   ],
+   "style": {
+    "cb": "#1d5a46",
+    "ci": "#ecb74e",
+    "m": "band"
+   }
+  },
+  {
+   "id": "intermezzo",
+   "t": "Intermezzo",
+   "a": "Sally Rooney",
+   "pages": 454,
+   "year": 2024,
+   "ol": "OL37949460W",
+   "cover": 14836043,
+   "moods": [
+    "fight",
+    "cry"
+   ],
+   "style": {
+    "cb": "#d97a52",
+    "ci": "#1d1712",
+    "m": "frame"
+   }
+  },
+  {
+   "id": "pride-and-prejudice",
+   "t": "Pride and Prejudice",
+   "a": "Jane Austen",
+   "pages": 351,
+   "year": 1813,
+   "ol": "OL66554W",
+   "cover": 14348537,
+   "moods": [
+    "slow_burn"
+   ],
+   "style": {
+    "cb": "#1d5a46",
+    "ci": "#ecb74e",
+    "m": "key"
+   }
+  },
+  {
+   "id": "jane-eyre",
+   "t": "Jane Eyre",
+   "a": "Charlotte Brontë",
+   "pages": 480,
+   "year": 1847,
+   "ol": "OL1095427W",
+   "cover": 8235363,
+   "moods": [
+    "slow_burn",
+    "mystery"
+   ],
+   "style": {
+    "cb": "#7a1a2a",
+    "ci": "#f3e6cf",
+    "m": "key"
+   }
+  },
+  {
+   "id": "rebecca",
+   "t": "Rebecca",
+   "a": "Daphne du Maurier",
+   "pages": 386,
+   "year": 1938,
+   "ol": "OL36633W",
+   "cover": 8238729,
+   "moods": [
+    "mystery",
+    "slow_burn"
+   ],
+   "style": {
+    "cb": "#22325a",
+    "ci": "#f3e6cf",
+    "m": "band"
+   }
+  },
+  {
+   "id": "a-little-life",
+   "t": "A Little Life",
+   "a": "Hanya Yanagihara",
+   "pages": 800,
+   "year": 2008,
+   "ol": "OL17370186W",
+   "cover": 12065783,
+   "moods": [
+    "cry",
+    "fight"
+   ],
+   "style": {
+    "cb": "#1d5a46",
+    "ci": "#ecb74e",
+    "m": "band"
+   }
+  },
+  {
+   "id": "the-kite-runner",
+   "t": "The Kite Runner",
+   "a": "Khaled Hosseini",
+   "pages": 371,
+   "year": 2003,
+   "ol": "OL5781992W",
+   "cover": 14846827,
+   "moods": [
+    "cry"
+   ],
+   "style": {
+    "cb": "#1d1712",
+    "ci": "#ecb74e",
+    "m": "key"
+   }
+  },
+  {
+   "id": "klara-and-the-sun",
+   "t": "Klara and the Sun",
+   "a": "Kazuo Ishiguro",
+   "pages": 334,
+   "year": 2019,
+   "ol": "OL20883297W",
+   "cover": 10648686,
+   "moods": [
+    "cry"
+   ],
+   "style": {
+    "cb": "#efe2c6",
+    "ci": "#7a1a2a",
+    "m": "frame"
+   }
+  },
+  {
+   "id": "never-let-me-go",
+   "t": "Never Let Me Go",
+   "a": "Kazuo Ishiguro",
+   "pages": 319,
+   "year": 2005,
+   "ol": "OL59038W",
+   "cover": 1047334,
+   "moods": [
+    "cry",
+    "mystery"
+   ],
+   "style": {
+    "cb": "#e6a2ac",
+    "ci": "#33101a",
+    "m": "band"
+   }
+  },
+  {
+   "id": "the-midnight-library",
+   "t": "The Midnight Library",
+   "a": "Matt Haig",
+   "pages": 304,
+   "year": 2020,
+   "ol": "OL20965973W",
+   "cover": 10313767,
+   "moods": [
+    "cry"
+   ],
+   "style": {
+    "cb": "#c4485a",
+    "ci": "#fdfaf2",
+    "m": "sun"
+   }
+  },
+  {
+   "id": "circe",
+   "t": "Circe",
+   "a": "Madeline Miller",
+   "pages": 404,
+   "year": 2018,
+   "ol": "OL18012166W",
+   "cover": 8739376,
+   "moods": [
+    "big_fantasy",
+    "cry"
+   ],
+   "style": {
+    "cb": "#d97a52",
+    "ci": "#1d1712",
+    "m": "key"
+   }
+  },
+  {
+   "id": "the-song-of-achilles",
+   "t": "The Song of Achilles",
+   "a": "Madeline Miller",
+   "pages": 386,
+   "year": 2011,
+   "ol": "OL16509148W",
+   "cover": 7098465,
+   "moods": [
+    "cry",
+    "slow_burn"
+   ],
+   "style": {
+    "cb": "#c9dcc0",
+    "ci": "#17443a",
+    "m": "key"
+   }
+  },
+  {
+   "id": "the-night-circus",
+   "t": "The Night Circus",
+   "a": "Erin Morgenstern",
+   "pages": 512,
+   "year": 2011,
+   "ol": "OL16086747W",
+   "cover": 8773134,
+   "moods": [
+    "slow_burn",
+    "big_fantasy"
+   ],
+   "style": {
+    "cb": "#e6a2ac",
+    "ci": "#33101a",
+    "m": "key"
+   }
+  },
+  {
+   "id": "the-name-of-the-wind",
+   "t": "The Name of the Wind",
+   "a": "Patrick Rothfuss",
+   "pages": 736,
+   "year": 2007,
+   "ol": "OL8479867W",
+   "cover": 11480483,
+   "moods": [
+    "big_fantasy"
+   ],
+   "style": {
+    "cb": "#d97a52",
+    "ci": "#1d1712",
+    "m": "band"
+   }
+  },
+  {
+   "id": "mistborn-the-final-empire",
+   "t": "Mistborn: The Final Empire",
+   "a": "Brandon Sanderson",
+   "pages": 541,
+   "year": null,
+   "ol": null,
+   "cover": null,
+   "moods": [
+    "big_fantasy"
+   ],
+   "style": {
+    "cb": "#22325a",
+    "ci": "#f3e6cf",
+    "m": "frame"
+   }
+  },
+  {
+   "id": "tress-of-the-emerald-sea",
+   "t": "Tress of the Emerald Sea",
+   "a": "Brandon Sanderson",
+   "pages": 486,
+   "year": 2023,
+   "ol": "OL28687656W",
+   "cover": 13143232,
+   "moods": [
+    "big_fantasy"
+   ],
+   "style": {
+    "cb": "#1d1712",
+    "ci": "#ecb74e",
+    "m": "band"
+   }
+  },
+  {
+   "id": "the-priory-of-the-orange-tree",
+   "t": "The Priory of the Orange Tree",
+   "a": "Samantha Shannon",
+   "pages": 848,
+   "year": 2018,
+   "ol": "OL20157354W",
+   "cover": 8802446,
+   "moods": [
+    "big_fantasy"
+   ],
+   "style": {
+    "cb": "#efe2c6",
+    "ci": "#7a1a2a",
+    "m": "band"
+   }
+  },
+  {
+   "id": "the-invisible-life-of-addie-larue",
+   "t": "The Invisible Life of Addie LaRue",
+   "a": "V. E. Schwab",
+   "pages": 504,
+   "year": 2015,
+   "ol": "OL20796936W",
+   "cover": 10092261,
+   "moods": [
+    "slow_burn",
+    "cry"
+   ],
+   "style": {
+    "cb": "#c9dcc0",
+    "ci": "#17443a",
+    "m": "key"
+   }
+  },
+  {
+   "id": "project-hail-mary",
+   "t": "Project Hail Mary",
+   "a": "Andy Weir",
+   "pages": 496,
+   "year": 2021,
+   "ol": "OL21745884W",
+   "cover": 11200092,
+   "moods": [
+    "cry"
+   ],
+   "style": {
+    "cb": "#c4485a",
+    "ci": "#fdfaf2",
+    "m": "band"
+   }
+  },
+  {
+   "id": "big-little-lies",
+   "t": "Big Little Lies",
+   "a": "Liane Moriarty",
+   "pages": 512,
+   "year": 2014,
+   "ol": "OL17116911W",
+   "cover": 7352410,
+   "moods": [
+    "mystery",
+    "fight"
+   ],
+   "style": {
+    "cb": "#1d5a46",
+    "ci": "#ecb74e",
+    "m": "sun"
+   }
+  },
+  {
+   "id": "and-then-there-were-none",
+   "t": "And Then There Were None",
+   "a": "Agatha Christie",
+   "pages": 222,
+   "year": 1939,
+   "ol": "OL471565W",
+   "cover": 11172296,
+   "moods": [
+    "mystery",
+    "short"
+   ],
+   "style": {
+    "cb": "#e6a2ac",
+    "ci": "#33101a",
+    "m": "key"
+   }
+  },
+  {
+   "id": "the-guest-list",
+   "t": "The Guest List",
+   "a": "Lucy Foley",
+   "pages": 320,
+   "year": null,
+   "ol": null,
+   "cover": null,
+   "moods": [
+    "mystery"
+   ],
+   "style": {
+    "cb": "#a9c487",
+    "ci": "#1d1712",
+    "m": "key"
+   }
+  },
+  {
+   "id": "mexican-gothic",
+   "t": "Mexican Gothic",
+   "a": "Silvia Moreno-Garcia",
+   "pages": 352,
+   "year": 2020,
+   "ol": "OL20759125W",
+   "cover": 10239163,
+   "moods": [
+    "mystery"
+   ],
+   "style": {
+    "cb": "#22325a",
+    "ci": "#f3e6cf",
+    "m": "key"
+   }
+  },
+  {
+   "id": "piranesi",
+   "t": "Piranesi",
+   "a": "Susanna Clarke",
+   "pages": 272,
+   "year": 2020,
+   "ol": "OL20893680W",
+   "cover": 10226290,
+   "moods": [
+    "mystery",
+    "short"
+   ],
+   "style": {
+    "cb": "#c4485a",
+    "ci": "#fdfaf2",
+    "m": "band"
+   }
+  },
+  {
+   "id": "verity",
+   "t": "Verity",
+   "a": "Colleen Hoover",
+   "pages": 340,
+   "year": 2018,
+   "ol": "OL20068530W",
+   "cover": 8747160,
+   "moods": [
+    "fight",
+    "mystery"
+   ],
+   "style": {
+    "cb": "#1d5a46",
+    "ci": "#ecb74e",
+    "m": "sun"
+   }
+  },
+  {
+   "id": "it-ends-with-us",
+   "t": "It Ends with Us",
+   "a": "Colleen Hoover",
+   "pages": 384,
+   "year": 2012,
+   "ol": "OL18020194W",
+   "cover": 10473609,
+   "moods": [
+    "fight",
+    "cry"
+   ],
+   "style": {
+    "cb": "#22325a",
+    "ci": "#f3e6cf",
+    "m": "key"
+   }
+  },
+  {
+   "id": "educated",
+   "t": "Educated",
+   "a": "Tara Westover",
+   "pages": 384,
+   "year": 2018,
+   "ol": "OL18139176W",
+   "cover": 8314077,
+   "moods": [
+    "fight",
+    "cry"
+   ],
+   "style": {
+    "cb": "#c4485a",
+    "ci": "#fdfaf2",
+    "m": "sun"
+   }
+  },
+  {
+   "id": "demon-copperhead",
+   "t": "Demon Copperhead",
+   "a": "Barbara Kingsolver",
+   "pages": 560,
+   "year": 2022,
+   "ol": "OL27052926W",
+   "cover": 13141227,
+   "moods": [
+    "cry",
+    "fight"
+   ],
+   "style": {
+    "cb": "#c4485a",
+    "ci": "#fdfaf2",
+    "m": "band"
+   }
+  },
+  {
+   "id": "small-things-like-these",
+   "t": "Small Things Like These",
+   "a": "Claire Keegan",
+   "pages": 112,
+   "year": 2020,
+   "ol": "OL23020966W",
+   "cover": 10507091,
+   "moods": [
+    "cry",
+    "short"
+   ],
+   "style": {
+    "cb": "#e6a2ac",
+    "ci": "#33101a",
+    "m": "key"
+   }
+  },
+  {
+   "id": "convenience-store-woman",
+   "t": "Convenience Store Woman",
+   "a": "Sayaka Murata",
+   "pages": 163,
+   "year": 2018,
+   "ol": "OL19744024W",
+   "cover": 9315164,
+   "moods": [
+    "fight",
+    "short"
+   ],
+   "style": {
+    "cb": "#c4485a",
+    "ci": "#fdfaf2",
+    "m": "key"
+   }
+  },
+  {
+   "id": "the-vegetarian",
+   "t": "The Vegetarian",
+   "a": "Han Kang",
+   "pages": 188,
+   "year": null,
+   "ol": null,
+   "cover": null,
+   "moods": [
+    "fight",
+    "short"
+   ],
+   "style": {
+    "cb": "#7a1a2a",
+    "ci": "#f3e6cf",
+    "m": "key"
+   }
+  },
+  {
+   "id": "before-the-coffee-gets-cold",
+   "t": "Before the Coffee Gets Cold",
+   "a": "Toshikazu Kawaguchi",
+   "pages": 272,
+   "year": null,
+   "ol": "OL20832477W",
+   "cover": 10138333,
+   "moods": [
+    "cry",
+    "short"
+   ],
+   "style": {
+    "cb": "#7a1a2a",
+    "ci": "#f3e6cf",
+    "m": "band"
+   }
+  },
+  {
+   "id": "the-house-in-the-cerulean-sea",
+   "t": "The House in the Cerulean Sea",
+   "a": "TJ Klune",
+   "pages": 424,
+   "year": 2019,
+   "ol": "OL20656224W",
+   "cover": 9312772,
+   "moods": [
+    "slow_burn"
+   ],
+   "style": {
+    "cb": "#e6a2ac",
+    "ci": "#33101a",
+    "m": "key"
+   }
+  },
+  {
+   "id": "legends-and-lattes",
+   "t": "Legends & Lattes",
+   "a": "Travis Baldree",
+   "pages": 316,
+   "year": 2022,
+   "ol": "OL27591348W",
+   "cover": 13028635,
+   "moods": [
+    "slow_burn"
+   ],
+   "style": {
+    "cb": "#c4485a",
+    "ci": "#fdfaf2",
+    "m": "band"
+   }
+  },
+  {
+   "id": "the-women",
+   "t": "The Women",
+   "a": "Kristin Hannah",
+   "pages": 480,
+   "year": 2024,
+   "ol": "OL37247638W",
+   "cover": 14631595,
+   "moods": [
+    "cry"
+   ],
+   "style": {
+    "cb": "#c4485a",
+    "ci": "#fdfaf2",
+    "m": "key"
+   }
+  },
+  {
+   "id": "the-nightingale",
+   "t": "The Nightingale",
+   "a": "Kristin Hannah",
+   "pages": 560,
+   "year": 2000,
+   "ol": "OL17116910W",
+   "cover": 8314147,
+   "moods": [
+    "cry"
+   ],
+   "style": {
+    "cb": "#7a1a2a",
+    "ci": "#f3e6cf",
+    "m": "frame"
+   }
+  },
+  {
+   "id": "hello-beautiful",
+   "t": "Hello Beautiful",
+   "a": "Ann Napolitano",
+   "pages": 416,
+   "year": 2023,
+   "ol": "OL28723763W",
+   "cover": 14359793,
+   "moods": [
+    "cry"
+   ],
+   "style": {
+    "cb": "#1d5a46",
+    "ci": "#ecb74e",
+    "m": "frame"
+   }
+  },
+  {
+   "id": "the-covenant-of-water",
+   "t": "The Covenant of Water",
+   "a": "Abraham Verghese",
+   "pages": 724,
+   "year": 2023,
+   "ol": "OL29192912W",
+   "cover": 13190092,
+   "moods": [
+    "cry"
+   ],
+   "style": {
+    "cb": "#7a1a2a",
+    "ci": "#f3e6cf",
+    "m": "key"
+   }
+  },
+  {
+   "id": "crying-in-h-mart",
+   "t": "Crying in H Mart",
+   "a": "Michelle Zauner",
+   "pages": 256,
+   "year": 2020,
+   "ol": "OL22448002W",
+   "cover": 10462708,
+   "moods": [
+    "cry",
+    "short"
+   ],
+   "style": {
+    "cb": "#c4485a",
+    "ci": "#fdfaf2",
+    "m": "key"
+   }
+  },
+  {
+   "id": "killers-of-the-flower-moon",
+   "t": "Killers of the Flower Moon",
+   "a": "David Grann",
+   "pages": 350,
+   "year": 2017,
+   "ol": "OL17778665W",
+   "cover": 8055064,
+   "moods": [
+    "mystery",
+    "fight"
+   ],
+   "style": {
+    "cb": "#1d5a46",
+    "ci": "#ecb74e",
+    "m": "frame"
+   }
+  },
+  {
+   "id": "the-wedding-people",
+   "t": "The Wedding People",
+   "a": "Alison Espach",
+   "pages": 384,
+   "year": 2024,
+   "ol": "OL37618227W",
+   "cover": 15127690,
+   "moods": [
+    "fight"
+   ],
+   "style": {
+    "cb": "#c9dcc0",
+    "ci": "#17443a",
+    "m": "key"
+   }
+  },
+  {
+   "id": "sandwich",
+   "t": "Sandwich",
+   "a": "Catherine Newman",
+   "pages": 256,
+   "year": 2024,
+   "ol": "OL37572696W",
+   "cover": 14749853,
+   "moods": [
+    "cry",
+    "short"
+   ],
+   "style": {
+    "cb": "#1d1712",
+    "ci": "#ecb74e",
+    "m": "band"
+   }
+  }
+ ]
+}

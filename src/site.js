@@ -173,6 +173,10 @@ ${shown.length ? `<div class="grid cols-3">${shown.map(({ c, n, v }) =>
     if (seg || fb) applyAll();
   }
 
+  // Remember the last city page opened (this device only) so Read next can show
+  // "Clubs in <city> loved" when that city has enough clubs behind the number.
+  { const cm = $("#club-map[data-city]"); if (cm) try { localStorage.setItem("bk_city", JSON.stringify(cm.dataset.city)); } catch {} }
+
   // ---------- forms ----------
   const params = new URLSearchParams(location.search);
   $$("form[data-kind]").forEach((f) => {

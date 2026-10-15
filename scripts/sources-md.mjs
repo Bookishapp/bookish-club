@@ -15,6 +15,12 @@ Every listing on Bookish Club comes from a public, logged-out page. Before we us
 
 **Excluded for good: BiblioCommons.** 978 club listings collected from BiblioCommons library event feeds on 2026-10-13 were never published and were deleted on 2026-10-14. BiblioCommons' terms allow personal, non-commercial use only and bar republishing, and Bookish is a public, commercial directory. Details are in the BiblioCommons note below.
 
+**Book covers and book details: Open Library.** The "Stuck on what to read next?" page (\`/read-next/\`) uses [Open Library](https://openlibrary.org/) (Internet Archive), following its [API usage policy](https://openlibrary.org/developers/api) and [Covers API notes](https://openlibrary.org/dev/docs/api/covers), checked 2026-10-15:
+- \`scripts/catalog.mjs\` looks each book in \`data/books.seed.json\` up **once** on the Search API (metadata only: work id, cover id, median page count, first year) with an identified User-Agent, at most 1 request per second, responses cached in \`.cache/openlibrary/\`. The result is committed as \`data/books.json\`. Site builds never call Open Library, and nothing looks covers up by ISBN at runtime.
+- Pages load covers from \`covers.openlibrary.org/b/id/<cover id>-M.jpg\` (cover-id URLs are not rate-limited; we never bulk-download or crawl covers). They are shown as small/medium identification thumbnails, whole and unaltered, each linked to the book's Open Library page.
+- We never crop, recolour or overlay a cover, never combine covers into artwork, and never use them in ads or marketing. Books without a cover (or whose cover fails to load) get a designed typographic cover instead.
+- Credit: "Book covers and book details from Open Library" in the site footer and on the Read next page.
+
 Collection rules:
 - We make at most one request every 1.5 to 2 seconds per host, sequentially.
 - We back off on 429 and 5xx responses.

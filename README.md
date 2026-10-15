@@ -119,6 +119,19 @@ supabase functions deploy bookish-verified --project-ref wqnrortftkffmbeugjky --
 
 Read submissions with SQL as the service role, for example `select kind, email, payload, status, created_at from bookish_submissions order by created_at desc;`.
 
+## Read next ("Stuck on what to read next?")
+
+`/read-next/` suggests three books, then rows of more. Readers with no club get picks from day one through three taps (mood, length, one book they loved); "Skip" shows community rows only. No account, no model calls: `src/read-next.js` ranks `data/books.json` with fixed rules (spec weights: own/loved 0.35, history 0.20, community 0.20, taste 0.15; slots obvious / fit / wildcard; one book per author, one sequel max) and writes "why" lines from fixed templates. Taps and saved books stay in the reader's localStorage.
+
+- **Catalog:** `data/books.seed.json` (hand-picked titles + mood tags) -> `node scripts/catalog.mjs` -> `data/books.json` + `supabase/sql/004_bookish_books_seed.sql`. Open Library is called once per book at catalog time, never at build or runtime. See SOURCES.md.
+- **Covers:** Open Library Covers API by cover id, medium size, whole and unaltered, linked to the book. Never cropped, overlaid or used in marketing. No cover -> typographic cover.
+- **Community stats** ("Clubs in Chicago loved", "After Fourth Wing, clubs read", pours, % finish): `supabase/sql/003_bookish_read_next.sql` adds the reading tables and aggregate views. **Privacy floor:** `bookish_privacy_floor()` in 003 is the one constant (3 clubs at launch; raise to 5 later). Every view drops rows below it, and only active clubs (2+ members, 1+ finished book) count. The public `bookish-community` function returns only those views; the build writes them to `/data/community.json` (a failed fetch builds with no community rows). `BOOKISH_COMMUNITY_FILE=path.json` previews with fixture data.
+- Not built yet (needs the app's club/member model): the book-finished card, host vote builder, member vote and iMessage card (frames 01, 04-06).
+
+```sh
+supabase functions deploy bookish-community --project-ref wqnrortftkffmbeugjky --no-verify-jwt --use-api
+```
+
 ## Theme
 
 All colours, fonts and textures are CSS variables in `src/theme.css`. `src/styles.css` holds layout and the theme's motifs (paper cards, library card, bookmark ribbons) and reads those variables. To re-skin the site, swap or edit `theme.css` (plus any files in `public/fonts/` and `public/img/`) and rebuild.
