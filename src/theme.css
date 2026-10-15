@@ -3,9 +3,15 @@
    Current theme (locked 2026-10-14): palette 05 "Oxblood Reading Room" on the
    gouache wall, M2 middle-ground motifs, R2-04 "ish reply" wordmark,
    "Y2K Sticker" type (Unbounded / Young Serif / Manrope), self-hosted. */
-@font-face{font-family:"Unbounded";src:url("__BASE__/fonts/unbounded-400_900.woff2") format("woff2");font-weight:400 900;font-style:normal;font-display:optional}
-@font-face{font-family:"Young Serif";src:url("__BASE__/fonts/youngserif-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:optional}
-@font-face{font-family:"Manrope";src:url("__BASE__/fonts/manrope-400_800.woff2") format("woff2");font-weight:400 800;font-style:normal;font-display:optional}
+@font-face{font-family:"Unbounded";src:url("__BASE__/fonts/unbounded-400_900.woff2") format("woff2");font-weight:400 900;font-style:normal;font-display:swap}
+@font-face{font-family:"Young Serif";src:url("__BASE__/fonts/youngserif-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Manrope";src:url("__BASE__/fonts/manrope-400_800.woff2") format("woff2");font-weight:400 800;font-style:normal;font-display:swap}
+/* Metric-matched local fallbacks (size/ascent/descent from the real fonts) so the swap to the
+   web fonts doesn't move the layout. Regenerate if the fonts change. */
+@font-face{font-family:"Unbounded Fallback";src:local("Arial Black"),local("ArialBlack");font-weight:400 900;size-adjust:115.7%;ascent-override:86%;descent-override:21.2%;line-gap-override:0%}
+@font-face{font-family:"Young Serif Fallback";src:local("Georgia");font-weight:400;size-adjust:112%;ascent-override:93.4%;descent-override:32.7%;line-gap-override:0%}
+@font-face{font-family:"Manrope Fallback";src:local("Arial"),local("ArialMT");font-weight:400 599;size-adjust:102.8%;ascent-override:103.7%;descent-override:29.2%;line-gap-override:0%}
+@font-face{font-family:"Manrope Fallback";src:local("Arial Bold"),local("Arial-BoldMT");font-weight:600 900;size-adjust:99.1%;ascent-override:107.5%;descent-override:30.3%;line-gap-override:0%}
 :root{
   /* the room (dark surfaces) */
   --ox:#4a1420;--ox-deep:#33101a;--ox-night:#220710;
@@ -19,9 +25,9 @@
   --velvet:#17443a;--velvet-ink:#f6eedc;--velvet-muted:#c9dccf;--brass-txt:#f3c662;
   --ribbons:#a8324a,#efe2c6,#ecb74e,#e6a2ac,#a9c487,#d97a52;
   /* type */
-  --display:"Unbounded","Arial Black",system-ui,sans-serif;
-  --title:"Young Serif",Georgia,"Times New Roman",serif;
-  --ui:"Manrope",ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  --display:"Unbounded","Unbounded Fallback","Arial Black",system-ui,sans-serif;
+  --title:"Young Serif","Young Serif Fallback",Georgia,"Times New Roman",serif;
+  --ui:"Manrope","Manrope Fallback",ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
   --mono:ui-monospace,Menlo,monospace;
   /* textures: gouache wall (tall crop for phones, wide for desktop) + paper grain */
   --wall-m:url("__BASE__/img/bg-oxblood-m.webp");--wall-m-ratio:2.047;

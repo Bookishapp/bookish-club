@@ -142,7 +142,7 @@ Current theme (locked 2026-10-14): palette 05 **Oxblood Reading Room** on a goua
 
 ## Fonts
 
-"Y2K Sticker": Unbounded (display), Young Serif (titles) and Manrope (UI), all SIL Open Font License 1.1. They are self-hosted latin subsets in `public/fonts/`, copied from the r2 colour pass by `scripts/theme-assets.py`, with `font-display: optional` and preload so the layout never shifts. The wordmark's own fonts (Lilita One, Sniglet) are only used to render the logo image and are not shipped.
+"Y2K Sticker": Unbounded (display), Young Serif (titles) and Manrope (UI), all SIL Open Font License 1.1. They are self-hosted latin subsets in `public/fonts/`, copied from the r2 colour pass by `scripts/theme-assets.py`, with preload, `font-display: swap` and metric-matched local fallbacks (size-adjust, ascent and descent overrides in `theme.css`) so the swap barely moves the layout. The wordmark's own fonts (Lilita One, Sniglet) are only used to render the logo image and are not shipped.
 
 ## Mascot art
 
