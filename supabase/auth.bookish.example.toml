@@ -1,0 +1,40 @@
+# Reviewed configuration fragment, NOT an active config.toml.
+# Merge into an isolated local/staging project; do not replace shared production settings.
+[api]
+schemas = ["public"] # Never expose bookish_private in PostgREST.
+
+[auth]
+enabled = true
+site_url = "https://meetbookish.com"
+additional_redirect_urls = ["bookish://auth/callback"] # Coordinate final scheme with iOS.
+enable_signup = true
+enable_anonymous_sign_ins = false
+jwt_expiry = 3600
+
+[auth.email]
+enable_signup = true
+enable_confirmations = true
+double_confirm_changes = true
+max_frequency = "60s"
+otp_length = 6
+otp_expiry = 600
+
+[auth.email.template.magic_link]
+subject = "Your next chapter starts here"
+content_path = "./supabase/templates/bookish-otp.html"
+
+[auth.email.template.confirmation]
+subject = "Welcome to Bookish"
+content_path = "./supabase/templates/bookish-otp.html"
+
+[auth.external.apple]
+enabled = true
+client_id = "env(BOOKISH_APPLE_CLIENT_ID)"
+secret = "env(SUPABASE_AUTH_EXTERNAL_APPLE_SECRET)"
+skip_nonce_check = false
+
+[functions.bookish-delete-account]
+verify_jwt = false # Handler verifies the bearer session with Auth /user before any action.
+
+[functions.bookish-house-rules]
+verify_jwt = false

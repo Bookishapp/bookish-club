@@ -167,3 +167,14 @@ Current theme (locked 2026-10-14): palette 05 **Oxblood Reading Room** on a goua
 - `lunair-wave`, `lunair-peek`, `lunair-shrug`: start page, empty states, 404.
 
 Re-run it with `python3 scripts/stickers.py`. It needs Pillow installed.
+
+## v1.1 club backend (local, unapplied)
+
+See [RESULT.md](RESULT.md) for the upgrade order, schema, iOS API contract,
+auth configuration, moderation operations, verification, and release decisions.
+The SQL upgrades are `supabase/sql/005_*` through `008_*`; they extend PR #12.
+Nothing in this change applies them to the shared project automatically.
+
+Run `npm ci` and `npm test` with Node 24+. Use `npm run check:edge` with Deno
+for the two new edge functions. Their provider settings and secrets are examples
+only; never place a service key in the native app.
