@@ -1,6 +1,6 @@
 .cache/
 dist/
-node_modules/
+node_modules
 screenshots/dev/
 .DS_Store
 supabase/.temp/

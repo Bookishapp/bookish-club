@@ -1,0 +1,47 @@
+/* Bookish Club theme: every colour, font and texture lives here.
+   src/styles.css only reads these variables (plus the theme's paper/ribbon motifs).
+   Current theme (locked 2026-10-14): palette 05 "Oxblood Reading Room" on the
+   gouache wall, M2 middle-ground motifs, R2-04 "ish reply" wordmark,
+   "Y2K Sticker" type (Unbounded / Young Serif / Manrope), self-hosted. */
+@font-face{font-family:"Unbounded";src:url("/fonts/unbounded-400_900.woff2") format("woff2");font-weight:400 900;font-style:normal;font-display:swap}
+@font-face{font-family:"Young Serif";src:url("/fonts/youngserif-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Manrope";src:url("/fonts/manrope-400_800.woff2") format("woff2");font-weight:400 800;font-style:normal;font-display:swap}
+/* Metric-matched local fallbacks (size/ascent/descent from the real fonts) so the swap to the
+   web fonts doesn't move the layout. Regenerate if the fonts change. */
+@font-face{font-family:"Unbounded Fallback";src:local("Arial Black"),local("ArialBlack");font-weight:400 900;size-adjust:115.7%;ascent-override:86%;descent-override:21.2%;line-gap-override:0%}
+@font-face{font-family:"Young Serif Fallback";src:local("Georgia");font-weight:400;size-adjust:112%;ascent-override:93.4%;descent-override:32.7%;line-gap-override:0%}
+@font-face{font-family:"Manrope Fallback";src:local("Arial"),local("ArialMT");font-weight:400 599;size-adjust:102.8%;ascent-override:103.7%;descent-override:29.2%;line-gap-override:0%}
+@font-face{font-family:"Manrope Fallback";src:local("Arial Bold"),local("Arial-BoldMT");font-weight:600 900;size-adjust:99.1%;ascent-override:107.5%;descent-override:30.3%;line-gap-override:0%}
+:root{
+  /* the room (dark surfaces) */
+  --ox:#4a1420;--ox-deep:#33101a;--ox-night:#220710;
+  --on-dark:#f8ecd8;--on-dark-2:#e0c3bd;--line-dark:rgba(248,236,216,.2);
+  --brass:#ecb74e;--rose:#f4a6bf;
+  /* shelf paper (light surfaces) */
+  --card:#f3e6cf;--card-2:#e9dbc1;--note:#fffaf0;--sage:#d2e3cc;
+  --ink:#1d1712;--ink-2:#5a5047;--rule:rgba(29,23,18,.2);
+  /* bottle green + velvet */
+  --green:#1d5a46;--green-on:#f6eedc;--green-hover:#164a39;
+  --velvet:#17443a;--velvet-ink:#f6eedc;--velvet-muted:#c9dccf;--brass-txt:#f3c662;
+  --ribbons:#a8324a,#efe2c6,#ecb74e,#e6a2ac,#a9c487,#d97a52;
+  /* type */
+  --display:"Unbounded","Unbounded Fallback","Arial Black",system-ui,sans-serif;
+  --title:"Young Serif","Young Serif Fallback",Georgia,"Times New Roman",serif;
+  --ui:"Manrope","Manrope Fallback",ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  --mono:ui-monospace,Menlo,monospace;
+  /* textures: gouache wall (tall crop for phones, wide for desktop) + paper grain */
+  --wall-m:url("/img/bg-oxblood-m.webp");--wall-m-ratio:2.047;
+  --wall-d:url("/img/bg-oxblood-d.webp");--wall-d-ratio:.625;
+  --glow:radial-gradient(70% 38% at 92% 10%,rgba(255,190,110,.22),rgba(255,190,110,0) 70%);
+  --paper-tx:url("/img/tx-paper-900.webp");
+  --r:6px;--wrap:1120px;
+  --shadow:0 16px 26px -14px rgba(0,0,0,.6);
+  --focus:var(--brass);--focus-on-card:var(--green);
+  /* states */
+  --ok-bg:#d2e3cc;--ok-ink:#143f31;--err-bg:#f6d3cf;--err-ink:#7a1a2a;
+  /* map */
+  --map-bg:#3a0f18;--map-pin:#1d5a46;--map-cluster:#a8324a;--map-on:#b5841f;
+  /* verified ("On Bookish") vs unclaimed ("Listed from public calendars") */
+  --on-bg:var(--green);--on-ink:var(--green-on);
+  --off-card:#e3d3b8;--off-rule:rgba(29,23,18,.38);--off-ink:#4a4038
+}

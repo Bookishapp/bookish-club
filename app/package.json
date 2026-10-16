@@ -1,0 +1,32 @@
+{
+  "name": "bookish-ios",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 4321 --strictPort",
+    "snapshot": "node scripts/snapshot.mjs",
+    "check:release": "node scripts/check-release.mjs",
+    "build": "tsc --noEmit && vite build",
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "test:ui": "npm run build && node tests/ui-smoke.mjs",
+    "preview": "vite preview --host 127.0.0.1 --port 4321 --strictPort",
+    "sync": "npm run build && cap sync ios",
+    "ios": "cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/app": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/geolocation": "^7.0.0",
+    "@capacitor/ios": "^7.0.0",
+    "@capacitor/local-notifications": "^7.0.0",
+    "@capacitor/preferences": "^7.0.0",
+    "@capacitor/share": "^7.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.0.0",
+    "jsdom": "29.1.1",
+    "typescript": "5.9.3",
+    "vite": "8.0.10"
+  }
+}
