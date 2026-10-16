@@ -10,6 +10,22 @@ for(const name of Object.keys(pkg.dependencies)) {
 }
 const iconDir=new URL('ios/App/App/Assets.xcassets/AppIcon.appiconset/',root);
 const icons=JSON.parse(fs.readFileSync(new URL('Contents.json',iconDir)));
-assert.ok(icons.images.some(i=>i.filename&&fs.existsSync(new URL(i.filename,iconDir))),'Add the designer’s 1024×1024 opaque PNG to the app icon slot before a release build.');
+const source=fs.readFileSync(new URL('assets/icon-only.png',root));
+assert.ok(icons.images.some(i=>i.idiom==='ios-marketing'&&i.size==='1024x1024'&&i.scale==='1x'),'App Store marketing icon is required.');
+for(const icon of icons.images) {
+  assert.ok(icon.filename,`Missing filename for ${icon.idiom} ${icon.size} ${icon.scale}`);
+  const png=fs.readFileSync(new URL(icon.filename,iconDir));
+  const pixels=Number(icon.size.split('x')[0])*Number(icon.scale.replace('x',''));
+  assert.equal(png.subarray(0,8).toString('hex'),'89504e470d0a1a0a',`${icon.filename} must be a PNG`);
+  assert.equal(png.readUInt32BE(16),pixels,`${icon.filename} width`);
+  assert.equal(png.readUInt32BE(20),pixels,`${icon.filename} height`);
+  assert.equal(png[25],2,`${icon.filename} must be RGB without alpha`);
+  // RGB PNGs can still carry transparency in a tRNS chunk.
+  for(let offset=8;offset<png.length;) {
+    assert.notEqual(png.toString('ascii',offset+4,offset+8),'tRNS',`${icon.filename} must be opaque`);
+    offset+=png.readUInt32BE(offset)+12;
+  }
+  if(pixels===1024) assert.deepEqual(png,source,'Marketing icon must match the selected source artwork.');
+}
 assert.ok(fs.existsSync(new URL('package-lock.json',root)),'Generate the app lockfile with npm install before releasing.');
-console.log('Release prerequisites present: Capacitor 7 dependencies, designer app icon, npm lockfile.');
+console.log('Release prerequisites present: Capacitor 7 dependencies, selected opaque app icons, npm lockfile.');

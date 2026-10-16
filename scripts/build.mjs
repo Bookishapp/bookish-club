@@ -156,7 +156,10 @@ ${noindex ? '<meta name="robots" content="noindex">' : ""}
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:url" content="${canonical}">
 <meta name="twitter:card" content="summary">
-<link rel="icon" href="${url("/favicon.svg")}" type="image/svg+xml">
+<link rel="icon" href="${url("/favicon.ico")}" sizes="any">
+<link rel="icon" href="${url("/favicon-32x32.png")}" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="${url("/apple-touch-icon.png")}" sizes="180x180">
+<link rel="manifest" href="${url("/site.webmanifest")}">
 <link rel="preload" href="${url("/fonts/manrope-400_800.woff2")}" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="${url("/fonts/unbounded-400_900.woff2")}" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="${url("/fonts/youngserif-400.woff2")}" as="font" type="font/woff2" crossorigin>
@@ -793,7 +796,6 @@ write("map.js", fs.readFileSync(path.join(ROOT, "src/map.js"), "utf8"));
   console.log(`map: ${features.length} city points`);
 }
 
-write("favicon.svg", `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#4a1420"/><text x="32" y="47" text-anchor="middle" font-family="Arial Black,Helvetica,sans-serif" font-weight="900" font-size="40" fill="#fbf1e2" stroke="#f4a6bf" stroke-width="3" paint-order="stroke">B</text></svg>`);
 write("robots.txt", `User-agent: *\nAllow: /\nDisallow: /claim/\nDisallow: /confirmed/\nDisallow: /join/\n\nSitemap: ${abs("/sitemap.xml")}\n`);
 write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemap.map((s) => `<url><loc>${esc(s.loc)}</loc><lastmod>${TODAY}</lastmod><priority>${s.prio.toFixed(1)}</priority></url>`).join("\n")}\n</urlset>\n`);
 write(".nojekyll", "");
