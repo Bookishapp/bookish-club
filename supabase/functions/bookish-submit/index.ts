@@ -144,7 +144,7 @@ Deno.serve(async (req) => {
       headers: { authorization: `Bearer ${resendKey}`, "content-type": "application/json" },
       body: JSON.stringify({
         from, to: [email],
-        subject: "Bookish: Please confirm your email",
+        subject: "Please confirm your email for Bookish",
         text: `Hello${payload.first_name ? " " + payload.first_name : ""},\n\nThanks for reaching out about ${what}. Please confirm this is your email address:\n\n${confirmUrl}\n\nIf this wasn't you, ignore this note and nothing will happen.\n\nWarmly,\nBookish`,
       }),
     });

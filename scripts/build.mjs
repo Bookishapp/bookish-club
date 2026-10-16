@@ -570,7 +570,7 @@ ${(() => {
 <label>Email<input type="email" name="email" required maxlength="254" autocomplete="email"></label>
 <fieldset style="border:0;padding:0;margin:0"><legend class="small" style="margin-bottom:8px">What would help most?</legend>
 <div class="checks"><label class="check"><input type="checkbox" name="features" value="scheduling"> Scheduling</label><label class="check"><input type="checkbox" name="features" value="voting"> Book voting</label><label class="check"><input type="checkbox" name="features" value="progress"> Reading progress</label><label class="check"><input type="checkbox" name="features" value="invite"> Invite link</label></div></fieldset>
-<div class="row two"><label>Do you host a club now?<select name="is_host"><option value="yes">Yes</option><option value="soon">Starting one</option><option value="no">No, I'm a member</option></select></label><label>Club size<select name="club_size"><option value="">—</option><option>2–5</option><option>6–12</option><option>13–25</option><option>26+</option></select></label></div>
+<div class="row two"><label>Do you host a club now?<select name="is_host"><option value="yes">Yes</option><option value="soon">Starting one</option><option value="no">No, I'm a member</option></select></label><label>Club size<select name="club_size"><option value="">Select</option><option>2–5</option><option>6–12</option><option>13–25</option><option>26+</option></select></label></div>
 ${hp}${consent}
 <button class="btn" type="submit">Join the waitlist</button>
 <p class="form-msg" role="status"></p>
