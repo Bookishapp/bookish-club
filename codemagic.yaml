@@ -1,0 +1,67 @@
+# DRAFT: manual workflow only. See app/CODEMAGIC.md before enabling.
+# Mirrors Fictora's CLI-managed signing and TestFlight publication.
+workflows:
+  bookish-ios-testflight:
+    name: Bookish iOS TestFlight (draft)
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    integrations:
+      app_store_connect: codemagic
+    environment:
+      node: 24
+      xcode: latest
+      cocoapods: default
+      groups:
+        - code-signing
+      vars:
+        BUNDLE_ID: com.meetbookish.app
+        XCODE_WORKSPACE: app/ios/App/App.xcworkspace
+        XCODE_SCHEME: App
+        LANG: en_US.UTF-8
+        LC_ALL: en_US.UTF-8
+    # No trigger: start manually after signing, artwork and device QA are ready.
+    scripts:
+      - name: Install app dependencies
+        script: |
+          cd app
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+      - name: Generate the same public data as the site and bundle it
+        script: |
+          SITE_URL=https://meetbookish.com node scripts/build.mjs
+          cd app
+          npm run snapshot
+      - name: Check app and build web bundle
+        script: |
+          cd app
+          npm test
+          npm run test:ui
+          npm run check:release
+      - name: Sync Capacitor and install CocoaPods
+        script: |
+          cd app
+          npx cap sync ios
+      - name: Set build number
+        script: |
+          cd app/ios/App
+          agvtool new-version -all $(($BUILD_NUMBER + 1))
+      - name: Initialize keychain
+        script: keychain initialize
+      - name: Fetch signing files
+        script: |
+          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create
+      - name: Add certificates
+        script: keychain add-certificates
+      - name: Apply signing profiles
+        script: xcode-project use-profiles
+      - name: Build App Store IPA
+        script: |
+          xcode-project build-ipa --workspace "$XCODE_WORKSPACE" --scheme "$XCODE_SCHEME"
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - app/package-lock.json
+      - app/ios/App/Podfile.lock
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true

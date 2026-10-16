@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env.local
+ios/App/Pods/
+ios/App/build/
+ios/App/App/public/
+ios/App/App/capacitor.config.json
+ios/App/App.xcworkspace/xcuserdata/
+**/xcuserdata/
+*.xcuserstate

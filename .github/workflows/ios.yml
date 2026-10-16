@@ -1,0 +1,68 @@
+name: iOS app
+on:
+  pull_request:
+    paths: ["app/**", ".github/workflows/ios.yml"]
+  push:
+    branches: [main]
+    paths: ["app/**", ".github/workflows/ios.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  simulator:
+    runs-on: macos-15
+    timeout-minutes: 45
+    env:
+      LANG: en_US.UTF-8
+      LC_ALL: en_US.UTF-8
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci
+      - run: npm test
+      - run: npm run test:ui
+      - run: npx cap sync ios
+      - name: Pick an iPhone simulator
+        run: |
+          UDID=$(xcrun simctl list devices available -j | node -e '
+            const d = JSON.parse(require("fs").readFileSync(0, "utf8")).devices;
+            const runtimes = Object.keys(d).filter(k => k.includes("iOS")).sort().reverse();
+            for (const r of runtimes) { const p = d[r].find(x => /^iPhone \d+( Pro)?$/.test(x.name)); if (p) { console.log(p.udid); break; } }')
+          echo "UDID=$UDID" >> "$GITHUB_ENV"
+          xcrun simctl list devices | grep "$UDID"
+      - name: Build for simulator
+        working-directory: app/ios/App
+        run: |
+          set -o pipefail
+          xcodebuild -workspace App.xcworkspace -scheme App -configuration Debug \
+            -sdk iphonesimulator -destination "id=$UDID" -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO build | tail -n 40
+      - name: Boot, install, launch and screenshot every tab
+        run: |
+          mkdir -p ../screenshots/ios
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl status_bar "$UDID" override --time "9:41" --batteryState charged --batteryLevel 100 || true
+          xcrun simctl install "$UDID" ios/App/build/Build/Products/Debug-iphonesimulator/App.app
+          DISPLAY_NAME=$(/usr/libexec/PlistBuddy -c "Print :CFBundleDisplayName" ios/App/build/Build/Products/Debug-iphonesimulator/App.app/Info.plist)
+          test "$DISPLAY_NAME" = "Bookish"
+          for tab in near read saved about; do
+            xcrun simctl terminate "$UDID" com.meetbookish.app || true
+            SIMCTL_CHILD_BOOKISH_QA_TAB=$tab xcrun simctl launch "$UDID" com.meetbookish.app
+            sleep 10
+            xcrun simctl io "$UDID" screenshot "../screenshots/ios/$tab.png"
+          done
+          ls -la ../screenshots/ios
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ios-simulator-screenshots
+          path: screenshots/ios/

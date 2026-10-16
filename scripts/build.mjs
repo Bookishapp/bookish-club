@@ -771,6 +771,12 @@ ${R.categories.map(([id, name, intro]) => {
 const citiesJson = cities.map((c) => ({ n: c.name, s: c.st, u: c.u, c: c.clubs.length, v: c.v, g: c.genres, vg: c.vg, gp: c.genrePages, la: c.lat, lo: c.lng }));
 copyDir(path.join(ROOT, "public"), OUT);
 write("data/cities.json", JSON.stringify(citiesJson));
+// Public app feed: the same filtered, verification-aware directory rendered above.
+// Keep this projection explicit; raw collector venue/address fields never belong here.
+write("data/clubs.json", JSON.stringify(clubs.map(({ id, name, city, state, genres, vibe, cadence, format, source_name, source_url, last_seen, lat, lng, verified }) => ({
+  id, name, city, state, genres, vibe, cadence, format, source_name, source_url, last_seen, lat, lng, verified,
+  city_path: `/book-clubs/${cities.find((c) => c.name === city && c.st === state)?.u}/`,
+}))));
 write("site.js", fs.readFileSync(path.join(ROOT, "src/site.js"), "utf8"));
 write("read-next.js", fs.readFileSync(path.join(ROOT, "src/read-next.js"), "utf8"));
 write("map.js", fs.readFileSync(path.join(ROOT, "src/map.js"), "utf8"));

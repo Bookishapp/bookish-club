@@ -1,0 +1,8 @@
+{
+  "appId": "com.meetbookish.app",
+  "appName": "Bookish",
+  "webDir": "dist",
+  "backgroundColor": "#33101a",
+  "ios": { "contentInset": "never", "preferredContentMode": "mobile" },
+  "plugins": { "CapacitorHttp": { "enabled": false } }
+}
