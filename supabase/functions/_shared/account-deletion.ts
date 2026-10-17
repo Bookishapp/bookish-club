@@ -1,6 +1,7 @@
 // Kept free of runtime SDK imports so request and Apple security paths are testable.
 type User = {
   id: string;
+  app_metadata?: { app?: string };
   identities?: Array<{ provider: string; identity_data?: { sub?: string } }>;
 };
 type Dependencies = {
@@ -64,6 +65,9 @@ export async function handleAccountDeletion(
       ok: false,
       message: "Sign in to manage your account.",
     });
+  }
+  if (user.app_metadata?.app !== "bookish") {
+    return reply(403, { ok: false, message: "This is not a Bookish account." });
   }
   let body: { apple_authorization_code?: unknown };
   try {

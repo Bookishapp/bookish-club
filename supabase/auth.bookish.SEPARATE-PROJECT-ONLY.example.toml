@@ -1,3 +1,4 @@
+# SEPARATE BOOKISH PROJECT ONLY. NEVER apply this file to the shared Supabase project wqnrortftkffmbeugjky.
 # Reviewed configuration fragment, NOT an active config.toml.
 # Merge into an isolated local/staging project; do not replace shared production settings.
 [api]
