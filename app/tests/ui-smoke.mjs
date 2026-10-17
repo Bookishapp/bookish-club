@@ -78,8 +78,20 @@ assert.ok(w.document.querySelector('a.cover[href^="https://openlibrary.org/works
 click(w,'[data-book-save]');await until(()=>w.document.querySelector('[data-book-save][aria-pressed=true]'));
 click(w,'[data-tab=saved]');await until(()=>w.document.querySelector('h1').textContent.includes('collection'));
 assert.equal(w.document.querySelectorAll('.book-card').length,1);
-click(w,'[data-tab=about]');assert.ok(w.document.querySelector('a[href="https://meetbookish.com/privacy/"]'));
+assert.deepEqual([...w.document.querySelectorAll('.tabs button')].map(b=>b.dataset.tab),['near','read','saved','me']);
+click(w,'[data-tab=me]');assert.ok(w.document.querySelector('a[href="https://meetbookish.com/privacy/"]'));
 assert.ok(w.document.querySelector('a[href="https://meetbookish.com/terms/"]'));
+assert.ok(w.document.querySelector('#refresh'));
+click(w,'#open-resources');assert.equal(w.document.querySelector('h1').textContent,'Resources');
+assert.equal(w.document.querySelector('.tabs [aria-current]').dataset.tab,'me');
+for(const suffix of ['','hosting-tips/','pairings/','printables/'])assert.ok(w.document.querySelector(`a[href="https://meetbookish.com/resources/${suffix}"]`));
+assert.ok(!w.document.querySelector('.tabs [data-tab=resources]'));
+click(w,'#back-to-me');assert.ok(w.document.querySelector('#open-resources'));
+assert.equal(w.document.activeElement.id,'main');
+click(w,'#open-resources');click(w,'[data-tab=near]');click(w,'[data-tab=me]');
+assert.ok(w.document.querySelector('#open-resources'),'Returning to Me opens its home');
+click(w,'#refresh');await until(()=>!w.document.querySelector('#refresh').disabled);
+assert.ok(w.document.querySelector('a[href="https://meetbookish.com/about/"]'));
 offline.window.close();
 
 const online=await launch(true),v=online.window;
@@ -118,4 +130,4 @@ await until(()=>JSON.parse(nativeStore.get('bookish.reminders'))&&Object.keys(JS
 assert.ok(nativeCalls.some(c=>c.plugin==='LocalNotifications'&&c.method==='cancel'&&c.options.notifications[0].id===scheduled.id));
 native.window.close();
 assert.deepEqual(errors,[]);
-console.log('UI smoke passed: offline launch, clubs, city picker, map links, persistence, three-tap recommendations, covers, books, About, verified-only join payload, browser reminder fallback; mocked native permission denial/recovery, location, MapKit bridge, sharing, reminder permission/scheduling/cancellation. No requests sent to a real host.');
+console.log('UI smoke passed: offline launch, clubs, city picker, map links, persistence, three-tap recommendations, covers, books, Me, nested Resources, verified-only join payload, browser reminder fallback; mocked native permission denial/recovery, location, MapKit bridge, sharing, reminder permission/scheduling/cancellation. No requests sent to a real host.');
