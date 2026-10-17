@@ -29,10 +29,12 @@ backend service credentials, or Fictora app identifiers in this app.
    uses `npm ci` when a lockfile exists, otherwise `npm install` for the initial
    resolution. It exports the npm and Pods lockfiles as build artifacts. Once
    reviewed lockfiles exist, use `npm ci` unconditionally for repeatable releases.
-3. Replace the empty app-icon slot with the designer’s opaque 1024×1024 PNG and
-   set its `filename` in `Contents.json`. `npm run check:release` rejects the
-   empty slot or a non-7 native dependency. Complete the device checks in
-   `../RESULT.md`, privacy disclosures and App Store metadata/screenshots.
+3. The selected 11a icon and all native sizes are checked in. To regenerate
+   from `app/assets/icon-only.png`, run `python3 scripts/app-icons.py` at the
+   repository root with Pillow installed. `npm run check:release` validates all
+   native icon files, dimensions, RGB opacity, and marketing artwork, as well as
+   major-7 native dependencies and the lockfile. Complete the device checks in
+   `../RESULT.md`, privacy disclosures, and App Store metadata/screenshots.
 4. Deploy the site change that publishes `/data/clubs.json` before shipping the
    app. The workflow rebuilds the website locally solely to produce its data
    snapshot; it does not deploy the site. The public verified/community functions
