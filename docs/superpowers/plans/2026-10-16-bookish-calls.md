@@ -74,3 +74,8 @@ The request already authorizes implementation and PR creation. Execute inline wi
   a data-migration failure, and the computer-use bridge could not select Simulator.
   Native visual interaction was not verified. JSDOM exercised the Me and Resources
   flows, including mocked native bridges.
+
+- Final CI inspection found the existing simulator screenshot launch hook and
+  workflow still named About. Updated both to Me so native screenshot coverage
+  follows the renamed tab. This is a QA configuration follow-through, with no
+  release behavior change. Rebuilt the native target after this update.
