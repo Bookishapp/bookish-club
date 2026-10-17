@@ -125,7 +125,7 @@ Read submissions with SQL as the service role, for example `select kind, email, 
 
 - **Catalog:** `data/books.seed.json` (hand-picked titles + mood tags) -> `node scripts/catalog.mjs` -> `data/books.json` + `supabase/sql/004_bookish_books_seed.sql`. Open Library is called once per book at catalog time, never at build or runtime. See SOURCES.md.
 - **Covers:** Open Library Covers API by cover id, medium size, whole and unaltered, linked to the book. Never cropped, overlaid or used in marketing. No cover -> typographic cover.
-- **Community stats** ("Clubs in Chicago loved", "After Fourth Wing, clubs read", pours, % finish): `supabase/sql/003_bookish_read_next.sql` adds the reading tables and aggregate views. **Privacy floor:** `bookish_privacy_floor()` in 003 is the one constant (3 clubs at launch; raise to 5 later). Every view drops rows below it, and only active clubs (2+ members, 1+ finished book) count. The public `bookish-community` function returns only those views; the build writes them to `/data/community.json` (a failed fetch builds with no community rows). `BOOKISH_COMMUNITY_FILE=path.json` previews with fixture data.
+- **Community stats** ("Clubs in Chicago loved", "After Fourth Wing, clubs read", pours, % finish): `supabase/sql/003_bookish_read_next.sql` adds the reading tables and aggregate views. **Privacy floor:** `bookish_privacy_floor()` in 003 is the one constant (3 clubs at launch; raise to 5 later). Every view drops rows below it, and only independent clubs with three members joined for at least 14 days and a finished book count. The public `bookish-community` function returns only those views; the build writes them to `/data/community.json` (a failed fetch builds with no community rows). `BOOKISH_COMMUNITY_FILE=path.json` previews with fixture data.
 - Not built yet (needs the app's club/member model): the book-finished card, host vote builder, member vote and iMessage card (frames 01, 04-06).
 
 ```sh
@@ -176,5 +176,5 @@ The SQL upgrades are `supabase/sql/005_*` through `008_*`; they extend PR #12.
 Nothing in this change applies them to the shared project automatically.
 
 Run `npm ci` and `npm test` with Node 24+. Use `npm run check:edge` with Deno
-for the two new edge functions. Their provider settings and secrets are examples
+for the new edge functions. Their provider settings and secrets are examples
 only; never place a service key in the native app.

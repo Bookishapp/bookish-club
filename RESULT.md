@@ -1,10 +1,24 @@
 # Bookish v1.1 backend
 
-Implemented locally as SQL upgrade files, two edge functions, auth configuration examples, and executable tests. Nothing was applied to production, deployed, committed, pushed, or merged. `app/` was untouched.
+SQL upgrade files, two edge functions, auth configuration examples, and executable tests for PR #15. Reviewed in an isolated worktree, with the earlier uncommitted Review 1 fixes preserved in their original worktree and included here. No Supabase migrations, data changes, Auth changes, function deployments, or merges were performed. `app/` was untouched.
 
 The existing project is `wqnrortftkffmbeugjky` (README and existing edge URLs). Its migration history is shared: keep using reviewed raw SQL in `supabase/sql/`, **not `supabase db push`**.
 
 PR #12 is already merged in this checkout (`9049b5b`, feature commit `6f5887f`). It supplied the catalog, clubs/members, club books, pours, taste, suggestion events, community views, and `bookish-community`. Those are extended and reused. The existing three-club floor remains the single constant in `bookish_privacy_floor()`; no duplicate recommendation engine or community endpoint was added.
+
+## Review 1 fixes
+
+1. The deletion edge handler requires trusted `app_metadata.app = "bookish"` before any Apple or Auth deletion call. Fictora sessions return 403.
+2. Auth insert and update triggers skip unmarked users, log and swallow their own errors, and no longer backfill existing identities. The Auth delete trigger skips unmarked users. For marked Bookish accounts, cleanup failures abort deletion and preserve the identity for retry. Bookish RPC access checks the Auth marker, even if a stale profile exists.
+3. The Auth example was renamed `auth.bookish.SEPARATE-PROJECT-ONLY.example.toml`, with an explicit shared-project prohibition in its header.
+4. A block applies to one take and its replies. It cannot identify an anonymous author's other takes.
+5. Community counts require three distinct members with memberships at least 14 days old in each club. Clubs sharing any member with another eligible club do not contribute.
+6. Club Pour excludes members with `ratings_public = false`, suppresses both counts below five consented contributions, and independently requires five non-DNF ratings before returning a mean.
+7. The Tea hold filter matches the full normalized display name, requires at least three characters, and excludes common stopwords. Hyphens, apostrophes, and repeated whitespace use the same normalization as post text.
+8. Members cannot SELECT ballot rows. `bookish_vote_tally` exposes grouped counts only.
+9. SQL 005 through 008 uses conditional table, column, index, policy, trigger, and constraint creation, plus replaceable functions and views. The test suite reruns all four files against a populated local database. The preflight now flags existing reader rows for manual reconciliation, since no shared Auth identities are backfilled.
+
+A separate Bookish Supabase project is still the real fix and needs Sebastian. Until then, trusted Bookish signup must create a fresh identity with the app marker at creation; the direct Auth signup flow described before this review must not be used on the shared project.
 
 ## Schema diagram
 
@@ -40,7 +54,7 @@ auth.users
 
 bookish_private (never expose in PostgREST)
   take_authors: take -> reader, unavailable to clients and direct service queries
-  blocks: blocker -> blocked reader, resolved on the server from a take ID
+  blocks: blocker -> one take, with replies hidden through the ancestor check
   hidden_takes: per-reader hide/report suppression
   reports: take, reporter, reason, 24h due time, independent host/team review states
   content_holds: member-name references held outside the feed; private author FK
@@ -49,7 +63,7 @@ bookish_private (never expose in PostgREST)
   safety_audit: actor, reason, action, take, timestamp
 
 Existing community views -> bookish-community -> public aggregate-only results
-  active clubs = 2+ members and a finished book
+  active clubs = 3 distinct members joined for 14+ days, a finished book, and no members shared with another eligible club
   every displayed community count/average needs 3 contributing clubs
 ```
 
@@ -59,7 +73,7 @@ Tea bodies and reactions have no client table privileges. Feed/reply reads use o
 
 Page and chapter markers are independent. Without sufficient logged progress, `body` is `null` and `sealed` is true; reply thresholds inherit their ancestors' thresholds. Finished readers or readers who explicitly turn off their spoiler shield can unseal. The app must never place bodies in shared links, Messages fallbacks, notification previews, or widget payloads.
 
-Reports immediately hide content for the reporter, permanently across host dismissal. Blocks also work after reporting/hiding, cover signed and anonymous posts/replies by that author, and prevent the blocked reader reacting/replying to the blocker's conversation. Hiding an ancestor suppresses its replies. Allowed reactions are 🔥 😭 🍵 🤯.
+Reports immediately hide content for the reporter, permanently across host dismissal. Blocking hides only the selected take and its replies, without linking other anonymous takes by the same author. Hiding an ancestor suppresses its replies. Allowed reactions are 🔥 😭 🍵 🤯.
 
 ## Upgrade files
 
@@ -70,7 +84,7 @@ Apply **once, in order**, on a disposable staging clone first:
 3. `supabase/sql/007_bookish_tea_moderation_deletion.sql`: private authors, takes/replies, filtering/holds, reporting/blocking, moderation and deletion triggers.
 4. `supabase/sql/008_bookish_community_privacy.sql`: hardens existing views so a rating mean independently needs three rating-contributing clubs; adds member-only Club Pour RPC.
 
-These depend on existing files 001–004. New upgrade files are transactional and deliberately fail on inconsistent existing data; they are not rerunnable seed scripts. `supabase/checks/bookish-v11-preflight.sql` is a read-only audit for duplicate directory links/current reads, invalid club names, and orphan user/club IDs. Resolve audit results before applying; no automatic cleanup is included.
+These depend on existing files 001–004. New upgrade files are transactional, rerunnable on the local PGlite fixture, and deliberately fail on inconsistent existing data. `supabase/checks/bookish-v11-preflight.sql` is a read-only audit for duplicate directory links/current reads, invalid club names, and orphan user/club IDs. Resolve audit results before applying; no automatic cleanup is included.
 
 The 008 change fixes an existing edge case: three reading clubs plus one rating club previously exposed that one club's mean. The reading count can still appear; the mean is now null until three clubs contribute eligible ratings. Ratings opt-out still excludes those pours from community calculations. The public endpoint's response shape is unchanged.
 
@@ -80,13 +94,12 @@ Use the Supabase public key plus the signed-in reader's bearer token. Never embe
 
 ### Auth and account
 
-- Native Apple: obtain the Apple identity token with a fresh nonce and exchange through Supabase Auth `signInWithIdToken(provider: apple, idToken: ..., nonce: rawNonce)`. Send the nonce hash to Apple. Request name/email; Apple only provides the name on first authorization, so save it through the profile API. The auth trigger creates the profile.
-- Email fallback: Supabase Auth `signInWithOtp(email: ...)`, then `verifyOTP(email: ..., token: ..., type: email)`. The email template uses the numeric token, rather than requiring a browser link.
+- Auth onboarding is gated pending a trusted Bookish signup path that creates a new Auth identity with `raw_app_meta_data.app = "bookish"` at creation. Direct shared-project Apple and email OTP signup cannot create a usable Bookish account because they do not set trusted app metadata. A Fictora identity must never be upgraded or reused for Bookish. Sebastian must move Bookish to a separate Supabase project before the native signup flow ships.
 - `GET /functions/v1/bookish-house-rules`: published contact, terms/privacy URLs, terms version, 18+ minimum, and acceptance/report copy. Returns 503 until policy URLs and contact are configured.
 - `bookish_accept_terms(p_version text, p_adult boolean) -> void`: current version `2026-10-15`; must accept before creating/joining a club or posting/reacting.
 - `bookish_my_account() -> JSON`: own profile plus acceptance status.
 - Profile REST: read explicit columns `id,display_name,home_city,created_at`; PATCH own row with `display_name,home_city`. Do not use `select=*` on profiles: acceptance and ban fields have no client column grant.
-- `POST /functions/v1/bookish-delete-account`: authenticated; `{}` for email-only accounts, or `{ "apple_authorization_code": "<fresh native Apple code>" }` for Apple-linked accounts. Returns `{ok,message}`. It verifies the session at Supabase Auth, binds the Apple grant to that verified identity, revokes the Apple grant, then calls Auth hard deletion. A different user ID in the body has no effect. Missing session: 401; Apple reauthentication needed: 400 with `apple_reauthentication_required`; vendor/delete failure: 503 for retry. No codes/tokens are stored or logged.
+- `POST /functions/v1/bookish-delete-account`: authenticated; `{}` for email-only accounts, or `{ "apple_authorization_code": "<fresh native Apple code>" }` for Apple-linked accounts. Returns `{ok,message}`. It verifies the session at Supabase Auth, binds the Apple grant to that verified identity, revokes the Apple grant, then calls Auth hard deletion. A different user ID in the body has no effect. An identity without the Bookish app marker receives 403 before Apple revocation or Auth deletion. Missing session: 401; Apple reauthentication needed: 400 with `apple_reauthentication_required`; vendor/delete failure: 503 for retry. No codes/tokens are stored or logged.
 
 After successful deletion, clear the app's session, shared Keychain/App Group state, and widget caches. Deletion removes personal takes/replies, held drafts, reactions, logs, ballots, nominations, pours/taste/events, reports/blocks/hides, preferences, invites created by the reader, linked submissions, and matching legacy email records. Shared meetings/votes survive with creator/claim references cleared. A departing host's club passes to its longest-standing eligible member (cohosts first); an empty club is deleted.
 
@@ -137,7 +150,7 @@ Read `bookish_books` (catalog), `bookish_club_books` (joined club history/curren
 | `bookish_finish_book(p_club uuid,p_book text,p_status text='finished')` | Host shelves it as `finished` or `dropped` |
 | `bookish_log_page(p_club uuid,p_book text,p_page int,p_chapter int=null,p_finished boolean=false,p_request uuid=<generated>)` | Log UUID; pass one stable request UUID per logical widget/app action so retries do not duplicate it |
 | `bookish_race(p_club uuid)` | `user_id,display_name,page,finished,position,streak,title`; opts out readers who hide their Race |
-| `bookish_club_pour(p_club uuid,p_book text)` | Club mean, pour count, anonymous DNF count |
+| `bookish_club_pour(p_club uuid,p_book text)` | Consented pour count; mean and DNF count are null until five consented pours |
 | `bookish_schedule_meeting(p_club uuid,p_starts timestamptz,p_title text,p_location text,p_stop int=null)` | Meeting UUID; host only |
 | `bookish_edit_meeting(p_meeting uuid,p_starts timestamptz,p_title text,p_location text,p_stop int,p_cancel boolean=false)` | Host reschedules/moves/cancels |
 | `bookish_add_bring_item(p_meeting uuid,p_label text)` | Item UUID; host only |
@@ -149,13 +162,14 @@ RSVP REST upsert: `{meeting_id,club_id,user_id:<self>,response:"going"|"maybe"|"
 
 ### Next-book votes
 
-Read `bookish_votes`, `bookish_vote_options`, `bookish_vote_ballots`, and `bookish_nominations` through membership RLS. Tally ballots by option in the app. Nomination REST insert/delete uses `{club_id,book_id,user_id:<self>}`.
+Read `bookish_votes`, `bookish_vote_options`, and `bookish_nominations` through membership RLS. Ballot rows have no member SELECT grant. Use `bookish_vote_tally(p_vote uuid)` for option counts. Nomination REST insert/delete uses `{club_id,book_id,user_id:<self>}`.
 
 | RPC | Result / behavior |
 | --- | --- |
 | `bookish_open_vote(p_club uuid,p_closes timestamptz,p_books text[],p_chat boolean=false)` | Host opens one vote with 2–4 distinct catalog books; returns UUID |
 | `bookish_cast_ballot(p_vote uuid,p_option uuid,p_via text='app')` | One mutable ballot per member until closure/deadline; via `app`, `imessage`, or `web` |
 | `bookish_close_vote(p_vote uuid,p_winner uuid=null)` | Host closes atomically, returns winning option UUID, shelves previous current read and starts winner; host chooses among tied leaders |
+| `bookish_vote_tally(p_vote uuid)` | Member-only option IDs, book IDs, and ballot counts, with no voter identities |
 
 Options cannot be mixed between votes; closing and casting lock the vote row. Deadlines stop new ballots immediately, even if the host closes later. No unauthenticated web ballot is provided: a Messages/web token is a link identifier, never membership or authorization. `post_to_chat` is a client instruction; the backend cannot send Messages on someone's behalf.
 
@@ -173,7 +187,7 @@ A host decision never closes the separate team review. Due dates and queues are 
 
 ## Configuration and decisions before release
 
-- `supabase/auth.bookish.example.toml` is a configuration fragment, not an active project config. It includes Apple, email OTP confirmation/templates, disabled anonymous login, and function verification settings. Merge/review in staging; never replace shared production Auth settings blindly.
+- `supabase/auth.bookish.SEPARATE-PROJECT-ONLY.example.toml` is a configuration fragment only for a separate Bookish project, not an active project config. It includes Apple, email OTP confirmation/templates, disabled anonymous login, and function verification settings. Never apply it to the shared Fictora project.
 - Fill the names in `supabase/.env.bookish.example` through the secret store. The final Apple bundle/client ID, team ID, key ID and `.p8` are required for deletion revocation. Native Apple identity tokens must have an audience registered in the Supabase provider. Hosted Auth's Apple secret has its own renewal requirements. Configure a real Auth SMTP sender and Apple private-email-relay delivery.
 - Publish the final Terms/EULA and privacy policy, with zero tolerance for objectionable content; choose the monitored support/moderation address. Until configured, the house-rules endpoint fails closed. The app must show acceptance before its first create/join/post and expose the contact in Me → Help.
 - **Shared Auth boundary:** this repo uses a shared Supabase project. Deleting `auth.users` can affect another product if the same identity is reused there; creating the profile trigger also provisions profiles for existing/project-wide Auth users. Choose a dedicated Bookish Auth project or audit all shared Auth dependencies before deploying this hard-delete endpoint. No unrelated schemas are intentionally queried or edited by these files.
@@ -197,7 +211,7 @@ Auth configuration references: [Supabase Apple](https://supabase.com/docs/guides
 
 ## Verification
 
-- `npm test`: 30 passing tests. PGlite executes the actual SQL 001–008 with distinct Auth identities, anon/authenticated/service roles, and Supabase-style default grants. Coverage includes populated cross-club table isolation, role/terms tampering, private author denial, spoilers/replies/signed posts, filter/hold behavior, report/block/host moderation, invitations/approvals/directory matching, Race, meetings/claims/RSVPs, ballot constraints/deadlines/ties, the community floor, bans/stale tokens, and deletion/host succession. HTTP tests cover verified-session binding, Apple exchange/signing/subject/revocation and failure paths, hard-delete requests, and house-rules configuration.
+- `npm test`: 41 passing tests. PGlite executes the actual SQL 001–008 with distinct Auth identities, anon/authenticated/service roles, and Supabase-style default grants. Coverage includes populated cross-club table isolation, role/terms tampering, private author denial, spoilers/replies/signed posts, filter/hold behavior, report/block/host moderation, invitations/approvals/directory matching, Race, meetings/claims/RSVPs, ballot constraints/deadlines/ties, the community floor, bans/stale tokens, and deletion/host succession. HTTP tests cover verified-session binding, Apple exchange/signing/subject/revocation and failure paths, hard-delete requests, and house-rules configuration.
 - `npm run check:edge`: both new edge entrypoints type-check with Deno; no remote packages are required by them.
 - `deno lint --no-config` on the five new TypeScript files: passed.
 - Existing static build with local empty verified/community fixtures: passed; 922 indexable pages. No production fetch was needed.

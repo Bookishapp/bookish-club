@@ -30,3 +30,10 @@ test('Supabase auth adapter fails closed for rejected sessions and failed admin 
  assert.equal(await admin.getUser('bad-token'),null);
  await assert.rejects(admin.deleteUser('verified-reader'),/incomplete/);
 });
+
+test('auth configuration example is named and headed for a separate project only',async()=>{
+ const {readFile,access}=await import('node:fs/promises');
+ const text=await readFile('supabase/auth.bookish.SEPARATE-PROJECT-ONLY.example.toml','utf8');
+ assert.match(text.split('\n')[0],/NEVER apply.*shared Supabase project/);
+ await assert.rejects(access('supabase/auth.bookish.example.toml'));
+});

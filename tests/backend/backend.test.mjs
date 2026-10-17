@@ -19,14 +19,14 @@ before(async () => {
   await db.exec(`create role anon; create role authenticated; create role service_role bypassrls;
     alter default privileges in schema public grant all on tables to anon,authenticated,service_role;
     alter default privileges in schema public grant execute on functions to anon,authenticated,service_role;
-    create schema auth; create table auth.users(id uuid primary key, email text, email_confirmed_at timestamptz default now(), raw_user_meta_data jsonb default '{}');
+    create schema auth; create table auth.users(id uuid primary key, email text, email_confirmed_at timestamptz default now(), raw_user_meta_data jsonb default '{}', raw_app_meta_data jsonb default '{}');
     create table auth.identities(user_id uuid references auth.users(id) on delete cascade,identity_data jsonb);
     create function auth.uid() returns uuid language sql stable as $$ select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$;
     grant usage on schema auth to authenticated; grant execute on function auth.uid() to authenticated;`);
   for (const name of (await readdir('supabase/sql')).filter(n=>/^00[1-8]_/.test(n)).sort())
     try { await db.exec(await readFile('supabase/sql/'+name,'utf8')); } catch(e) { throw new Error(name+': '+e.message); }
   for (let i=0;i<users.length;i++) {
-    await q('insert into auth.users(id,email) values ($1,$2)', [users[i],`reader${i}@example.com`]);
+    await q(`insert into auth.users(id,email,raw_app_meta_data) values ($1,$2,'{"app":"bookish"}'::jsonb)`, [users[i],`reader${i}@example.com`]);
     await rpc(users[i], 'bookish_accept_terms', ['2026-10-15',true]);
   }
   clubA = (await rpc(users[0], 'bookish_create_club', ['Candlelight Readers','Chicago','IL']))[0].bookish_create_club;
@@ -88,8 +88,7 @@ test('report hides immediately, host can dismiss without identity, block works f
   await rpc(users[3],'bookish_take_action',[id,'block',null]);
   assert.equal((await rpc(users[3],'bookish_tea',[clubA,'fourth-wing',null,30,0])).some(r=>r.id===id),false);
   const own=postedId(await rpc(users[3],'bookish_post_take',[clubA,'fourth-wing','Theory: a lovely ending',false,0,null,null]));
-  await assert.rejects(rpc(users[1],'bookish_react',[own,'🍵']),/available/i);
-  await assert.rejects(rpc(users[1],'bookish_post_take',[clubA,'fourth-wing','Tell me more',false,0,null,own]),/available/i);
+  assert.equal((await rpc(users[1],'bookish_tea',[clubA,'fourth-wing',null,100,0])).some(r=>r.id===own),true);
 });
 
 test('chapter spoilers, inherited reply seals, signed posts and shield opt-out stay server-side',async()=>{
@@ -120,7 +119,7 @@ test('meetings, RSVPs, bring claims, progress and votes are isolated by club',as
   const options=await as(users[1],'select * from bookish_vote_options where vote_id=$1',[vote]);
   await rpc(users[1],'bookish_cast_ballot',[vote,options[0].id,'app']);
   await assert.rejects(rpc(users[2],'bookish_cast_ballot',[vote,options[0].id,'app']),/Join this club/i);
-  assert.equal((await as(users[2],'select * from bookish_vote_ballots where vote_id=$1',[vote])).length,0);
+  await assert.rejects(as(users[2],'select * from bookish_vote_ballots where vote_id=$1',[vote]),/permission denied/);
   await rpc(users[0],'bookish_close_vote',[vote,null]);
   assert.equal((await as(users[1],"select book_id from bookish_club_books where club_id=$1 and status='reading'",[clubA]))[0].book_id,'yellowface');
 });
@@ -141,7 +140,7 @@ test('host approval, verified directory linking and selected club are authorized
 
 test('directory ownership requires a confirmed Auth email, not just a matching address',async()=>{
  const u='10000000-0000-0000-0000-000000000007';
- await q('insert into auth.users(id,email,email_confirmed_at) values ($1,$2,null)',[u,'unconfirmed@example.com']);
+ await q(`insert into auth.users(id,email,email_confirmed_at,raw_app_meta_data) values ($1,$2,null,'{"app":"bookish"}'::jsonb)`,[u,'unconfirmed@example.com']);
  await rpc(u,'bookish_accept_terms',['2026-10-15',true]);
  const c=(await rpc(u,'bookish_create_club',['Email Readers','Chicago','IL']))[0].bookish_create_club;
  await q("insert into bookish_submissions(kind,email,club_ref,status) values ('claim','unconfirmed@example.com','confirm-first','confirmed')");
@@ -153,7 +152,7 @@ test('directory ownership requires a confirmed Auth email, not just a matching a
 
 test('every club table rejects reads from outsiders, and anonymous API execution is closed',async()=>{
  await as(users[1],"insert into bookish_nominations(club_id,book_id,user_id) values ($1,'babel',$2)",[clubA,users[1]]);
- const tables=['bookish_clubs','bookish_members','bookish_club_books','bookish_page_log','bookish_meetings','bookish_rsvps','bookish_bring_items','bookish_votes','bookish_vote_options','bookish_vote_ballots','bookish_nominations'];
+ const tables=['bookish_clubs','bookish_members','bookish_club_books','bookish_page_log','bookish_meetings','bookish_rsvps','bookish_bring_items','bookish_votes','bookish_vote_options','bookish_nominations'];
  for(const table of tables) {
  const key=table==='bookish_clubs'?'id':'club_id';
  assert.ok((await q(`select * from ${table} where ${key}=$1`,[clubA])).length>0,table+' fixture');
@@ -201,25 +200,39 @@ test('terms, role, author and moderation fields cannot be forged by API roles',a
  await rpc(users[1],'bookish_accept_terms',['2026-10-15',true]);
  await q("insert into bookish_pours(user_id,book_id,club_id,glasses,dnf) values ($1,'fourth-wing',$2,3,true)",[users[1],clubA]);
  assert.equal((await as(users[0],"select * from bookish_pours where user_id=$1",[users[1]])).length,0);
- assert.equal((await rpc(users[0],'bookish_club_pour',[clubA,'fourth-wing']))[0].bookish_club_pour.dnf_count,1);
+ assert.equal((await rpc(users[0],'bookish_club_pour',[clubA,'fourth-wing']))[0].bookish_club_pour.dnf_count,null);
 });
 
-test('community floor suppresses two clubs and suppresses means with fewer than three contributing clubs',async()=>{
+test('community floor requires three old members in each of three disjoint clubs',async()=>{
  const clubs=[];
+ const readers=[];
+ for(let i=0;i<9;i++){
+  const id=`20000000-0000-0000-0000-${String(i+100).padStart(12,'0')}`;
+  readers.push(id);
+  await q(`insert into auth.users(id,email,raw_app_meta_data) values ($1,$2,'{"app":"bookish"}'::jsonb)`,[id,`privacy${i}@example.com`]);
+ }
  for(let i=0;i<3;i++){
-  const c=(await q("insert into bookish_clubs(name,city,state) values ('Privacy Readers','Portland','OR') returning id"))[0].id;clubs.push(c);
-  await q('insert into bookish_members(club_id,user_id) values ($1,$2),($1,$3)',[c,users[i],users[(i+1)%3]]);
+  const c=(await q("insert into bookish_clubs(name,city,state) values ('Privacy Readers','Portland','OR') returning id"))[0].id; clubs.push(c);
+  for(let j=0;j<3;j++)await q("insert into bookish_members(club_id,user_id,joined_at) values ($1,$2,now()-interval '15 days')",[c,readers[i*3+j]]);
   await q("insert into bookish_club_books(club_id,book_id,status,finished_at) values ($1,'babel','finished',current_date)",[c]);
   if(i===1)assert.equal((await q("select * from bookish_book_stats where book_id='babel'")).length,0);
  }
- await q("insert into bookish_pours(user_id,book_id,club_id,glasses) values ($1,'babel',$2,4)",[users[0],clubs[0]]);
- assert.equal((await q("select mean_pour from bookish_book_stats where book_id='babel'"))[0].mean_pour,null);
- assert.equal((await q("select mean_pour from bookish_city_book where book_id='babel'"))[0].mean_pour,null);
- for(let i=1;i<3;i++)await q("insert into bookish_pours(user_id,book_id,club_id,glasses) values ($1,'babel',$2,4)",[users[i],clubs[i]]);
+ assert.equal((await q("select clubs from bookish_book_stats where book_id='babel'"))[0].clubs,3);
+ await q('update bookish_members set joined_at=now() where club_id=$1 and user_id=$2',[clubs[2],readers[8]]);
+ assert.equal((await q("select * from bookish_book_stats where book_id='babel'")).length,0);
+ await q("update bookish_members set joined_at=now()-interval '15 days' where club_id=$1 and user_id=$2",[clubs[2],readers[8]]);
+ await q('update bookish_members set user_id=$1 where club_id=$2 and user_id=$3',[readers[0],clubs[2],readers[8]]);
+ assert.equal((await q("select * from bookish_book_stats where book_id='babel'")).length,0);
+ await q('update bookish_members set user_id=$1 where club_id=$2 and user_id=$3',[readers[8],clubs[2],readers[0]]);
+ for(let i=0;i<3;i++){
+  await q("insert into bookish_pours(user_id,book_id,club_id,glasses) values ($1,'babel',$2,4)",[readers[i*3],clubs[i]]);
+  if(i<2)assert.equal((await q("select mean_pour from bookish_book_stats where book_id='babel'"))[0].mean_pour,null);
+ }
  assert.equal(Number((await q("select mean_pour from bookish_book_stats where book_id='babel'"))[0].mean_pour),4);
- await q('update bookish_members set ratings_public=false where club_id=$1 and user_id=$2',[clubs[2],users[2]]);
+ await q('update bookish_members set ratings_public=false where club_id=$1 and user_id=$2',[clubs[2],readers[6]]);
  assert.equal((await q("select mean_pour from bookish_book_stats where book_id='babel'"))[0].mean_pour,null);
  for(const c of clubs)await q('delete from bookish_clubs where id=$1',[c]);
+ for(const id of readers)await q('delete from auth.users where id=$1',[id]);
 });
 
 test('host removal rejects stale sessions and invite re-entry',async()=>{
@@ -231,7 +244,7 @@ test('host removal rejects stale sessions and invite re-entry',async()=>{
 
 test('safety queue access is scoped, author access is audited, and bans stop existing tokens',async()=>{
  const temp='10000000-0000-0000-0000-000000000009';
- await q('insert into auth.users(id,email) values ($1,$2)',[temp,'safety-reader@example.com']);
+ await q(`insert into auth.users(id,email,raw_app_meta_data) values ($1,$2,'{"app":"bookish"}'::jsonb)`,[temp,'safety-reader@example.com']);
  await rpc(temp,'bookish_accept_terms',['2026-10-15',true]);
  const c=(await rpc(temp,'bookish_create_club',['Safety Readers','Chicago','IL']))[0].bookish_create_club;
  await rpc(temp,'bookish_set_current_book',[c,'fourth-wing']);
@@ -250,7 +263,7 @@ test('safety queue access is scoped, author access is audited, and bans stop exi
 
 test('lone-host deletion cascades a closed vote, meetings, claims, preferences and private held drafts',async()=>{
  const u='10000000-0000-0000-0000-000000000008';
- await q('insert into auth.users(id,email) values ($1,$2)',[u,'lone-host@example.com']);
+ await q(`insert into auth.users(id,email,raw_app_meta_data) values ($1,$2,'{"app":"bookish"}'::jsonb)`,[u,'lone-host@example.com']);
  await rpc(u,'bookish_accept_terms',['2026-10-15',true]);
  const c=(await rpc(u,'bookish_create_club',['One Last Chapter','Chicago','IL']))[0].bookish_create_club;
  await rpc(u,'bookish_set_current_book',[c,'fourth-wing']);
@@ -289,4 +302,132 @@ test('deleting a host passes the ribbon to the longest-standing member',async()=
  await q('delete from auth.users where id=$1',[users[0]]);
  assert.equal((await as(users[1],"select role from bookish_members where club_id=$1 and user_id=$2",[clubA,users[1]]))[0].role,'host');
  assert.equal((await q('select * from bookish_clubs where id=$1',[clubA])).length,1);
+});
+
+test('unmarked shared Auth users receive no profile or Bookish RPC access',async()=>{
+ const foreign='10000000-0000-0000-0000-000000000099';
+ await q("insert into auth.users(id,email,raw_user_meta_data) values ($1,'fictora@example.com','{\"app\":\"bookish\"}'::jsonb)",[foreign]);
+ assert.equal((await q('select count(*) n from bookish_profiles where id=$1',[foreign]))[0].n,0);
+ await assert.rejects(rpc(foreign,'bookish_accept_terms',['2026-10-15',true]),/house rules|Bookish/i);
+ await q('delete from auth.users where id=$1',[foreign]);
+});
+
+test('a block on an anonymous take leaves the same author’s other takes visible',async()=>{
+ const c=(await rpc(users[1],'bookish_create_club',['Scoped Block Readers','Chicago','IL']))[0].bookish_create_club;
+ const invite=(await rpc(users[1],'bookish_create_invite',[c,2,1]))[0].bookish_create_invite;
+ await rpc(users[2],'bookish_redeem_invite',[invite]);
+ await rpc(users[1],'bookish_set_current_book',[c,'fourth-wing']);
+ const first=postedId(await rpc(users[2],'bookish_post_take',[c,'fourth-wing','First anonymous thought',false,0,null,null]));
+ const second=postedId(await rpc(users[2],'bookish_post_take',[c,'fourth-wing','Second anonymous thought',false,0,null,null]));
+ await rpc(users[1],'bookish_take_action',[first,'block',null]);
+ const feed=await rpc(users[1],'bookish_tea',[c,'fourth-wing',null,100,0]);
+ assert.equal(feed.some(r=>r.id===first),false);
+ assert.equal(feed.some(r=>r.id===second),true);
+});
+
+test('ballot identities are hidden and a member receives option counts only',async()=>{
+ const c=(await rpc(users[1],'bookish_create_club',['Private Ballot Readers','Chicago','IL']))[0].bookish_create_club;
+ const vote=(await rpc(users[1],'bookish_open_vote',[c,new Date(Date.now()+86400000).toISOString(),['babel','iron-flame'],false]))[0].bookish_open_vote;
+ const opts=await as(users[1],'select id from bookish_vote_options where vote_id=$1',[vote]);
+ await rpc(users[1],'bookish_cast_ballot',[vote,opts[0].id,'app']);
+ await assert.rejects(as(users[1],'select * from bookish_vote_ballots where vote_id=$1',[vote]),/permission denied/);
+ const tally=await rpc(users[1],'bookish_vote_tally',[vote]);
+ assert.equal(tally.reduce((n,r)=>n+Number(r.ballots),0),1);
+ assert.equal(tally.some(r=>'user_id' in r),false);
+});
+
+test('Auth trigger failures are logged and cannot break a Bookish or Fictora signup',async()=>{
+ await db.exec(`create function public.reject_profile_insert() returns trigger language plpgsql as $$ begin raise exception 'profile storage unavailable'; end $$;
+ create trigger reject_profile_insert before insert on public.bookish_profiles for each row execute function public.reject_profile_insert();`);
+ try {
+  const bookish='30000000-0000-0000-0000-000000000001';
+  const fictora='30000000-0000-0000-0000-000000000002';
+  await q(`insert into auth.users(id,email,raw_app_meta_data) values ($1,'bookish-trigger@example.com','{"app":"bookish"}'::jsonb)`,[bookish]);
+  await q("insert into auth.users(id,email) values ($1,'fictora-trigger@example.com')",[fictora]);
+  assert.equal((await q('select count(*) n from auth.users where id in ($1,$2)',[bookish,fictora]))[0].n,2);
+ } finally {
+  await db.exec('drop trigger reject_profile_insert on public.bookish_profiles; drop function public.reject_profile_insert()');
+ }
+});
+
+test('Auth updates survive link errors, while Bookish deletion failures preserve identity for retry',async()=>{
+ const updateId='30000000-0000-0000-0000-000000000004';
+ const deleteId='30000000-0000-0000-0000-000000000005';
+ await q(`insert into auth.users(id,email,raw_app_meta_data) values ($1,'update-trigger@example.com','{"app":"bookish"}'::jsonb),($2,'delete-trigger@example.com','{"app":"bookish"}'::jsonb)`,[updateId,deleteId]);
+ const a=(await q("insert into bookish_submissions(kind,email,club_ref,status) values ('claim','update-trigger@example.com','update-ref','confirmed') returning id"))[0].id;
+ const b=(await q("insert into bookish_submissions(kind,email,club_ref,status) values ('claim','delete-trigger@example.com','delete-ref','confirmed') returning id"))[0].id;
+ await q('update bookish_submissions set user_id=null where id in ($1,$2)',[a,b]);
+ await db.exec(`create function public.reject_submission_change() returns trigger language plpgsql as $$ begin raise exception 'submission storage unavailable'; end $$;
+ create trigger reject_submission_update before update on public.bookish_submissions for each row execute function public.reject_submission_change();
+ create trigger reject_submission_delete before delete on public.bookish_submissions for each row execute function public.reject_submission_change();`);
+ try {
+  await q('update auth.users set email_confirmed_at=now() where id=$1',[updateId]);
+  await assert.rejects(q('delete from auth.users where id=$1',[deleteId]),/submission storage unavailable/);
+  assert.equal((await q('select count(*) n from auth.users where id=$1',[updateId]))[0].n,1);
+  assert.equal((await q('select count(*) n from auth.users where id=$1',[deleteId]))[0].n,1);
+ } finally {
+  await db.exec('drop trigger reject_submission_update on public.bookish_submissions; drop trigger reject_submission_delete on public.bookish_submissions; drop function public.reject_submission_change()');
+  await q('delete from bookish_submissions where id in ($1,$2)',[a,b]);
+  await q('delete from auth.users where id=$1',[updateId]);
+  await q('delete from auth.users where id=$1',[deleteId]);
+ }
+});
+
+test('Fictora deletion leaves Bookish legacy records with the same email alone',async()=>{
+ const foreign='30000000-0000-0000-0000-000000000003';
+ await q("insert into auth.users(id,email) values ($1,'shared@example.com')",[foreign]);
+ const record=(await q("insert into bookish_submissions(kind,email,club_ref,status) values ('claim','shared@example.com','shared-ref','confirmed') returning id"))[0].id;
+ await q('delete from auth.users where id=$1',[foreign]);
+ assert.equal((await q('select count(*) n from bookish_submissions where id=$1',[record]))[0].n,1);
+ await q('delete from bookish_submissions where id=$1',[record]);
+});
+
+test('full display names match, while short names and stopwords do not hold Tea',async()=>{
+ const c=(await rpc(users[1],'bookish_create_club',['Name Check Readers','Chicago','IL']))[0].bookish_create_club;
+ const invite=(await rpc(users[1],'bookish_create_invite',[c,2,1]))[0].bookish_create_invite;
+ await rpc(users[2],'bookish_redeem_invite',[invite]);
+ await rpc(users[1],'bookish_set_current_book',[c,'fourth-wing']);
+ await as(users[1],"update bookish_profiles set display_name='Reader' where id=$1",[users[1]]);
+ await as(users[2],"update bookish_profiles set display_name='Maya Jane' where id=$1",[users[2]]);
+ assert.equal((await rpc(users[1],'bookish_post_take',[c,'fourth-wing','Maya liked the ending',false,0,null,null]))[0].bookish_post_take.status,'posted');
+ assert.equal((await rpc(users[1],'bookish_post_take',[c,'fourth-wing','Maya Jane liked the ending',false,0,null,null]))[0].bookish_post_take.status,'held');
+ await as(users[2],"update bookish_profiles set display_name='Maya-Jane' where id=$1",[users[2]]);
+ assert.equal((await rpc(users[1],'bookish_post_take',[c,'fourth-wing','Maya-Jane liked the ending',false,0,null,null]))[0].bookish_post_take.status,'held');
+ await as(users[2],"update bookish_profiles set display_name=$1 where id=$2",["O'Connor",users[2]]);
+ assert.equal((await rpc(users[1],'bookish_post_take',[c,'fourth-wing',"O'Connor liked the ending",false,0,null,null]))[0].bookish_post_take.status,'held');
+ await as(users[2],"update bookish_profiles set display_name='The' where id=$1",[users[2]]);
+ assert.equal((await rpc(users[1],'bookish_post_take',[c,'fourth-wing','The book was lovely',false,0,null,null]))[0].bookish_post_take.status,'posted');
+ await as(users[2],"update bookish_profiles set display_name='The Book' where id=$1",[users[2]]);
+ assert.equal((await rpc(users[1],'bookish_post_take',[c,'fourth-wing','The book was beautiful',false,0,null,null]))[0].bookish_post_take.status,'posted');
+});
+
+test('club pour hides small counts and honors each member’s ratings consent',async()=>{
+ const host=users[1];
+ const c=(await rpc(host,'bookish_create_club',['Pour Privacy Readers','Chicago','IL']))[0].bookish_create_club;
+ const ids=[host];
+ for(let i=0;i<5;i++){
+  const id=`30000000-0000-0000-0000-${String(i+100).padStart(12,'0')}`;
+  ids.push(id);
+  await q(`insert into auth.users(id,email,raw_app_meta_data) values ($1,$2,'{"app":"bookish"}'::jsonb)`,[id,`pour${i}@example.com`]);
+  await q('insert into bookish_members(club_id,user_id) values ($1,$2)',[c,id]);
+ }
+ for(let i=0;i<4;i++)await q("insert into bookish_pours(user_id,book_id,club_id,glasses,dnf) values ($1,'babel',$2,4,$3)",[ids[i],c,i===0]);
+ let result=(await rpc(host,'bookish_club_pour',[c,'babel']))[0].bookish_club_pour;
+ assert.equal(result.mean_pour,null); assert.equal(result.dnf_count,null); assert.equal(result.pours,null);
+ await q("insert into bookish_pours(user_id,book_id,club_id,glasses) values ($1,'babel',$2,5)",[ids[4],c]);
+ result=(await rpc(host,'bookish_club_pour',[c,'babel']))[0].bookish_club_pour;
+ assert.equal(result.dnf_count,1); assert.equal(result.mean_pour,null);
+ await q("insert into bookish_pours(user_id,book_id,club_id,glasses) values ($1,'babel',$2,5)",[ids[5],c]);
+ result=(await rpc(host,'bookish_club_pour',[c,'babel']))[0].bookish_club_pour;
+ assert.notEqual(result.mean_pour,null);
+ await q('update bookish_members set ratings_public=false where club_id=$1 and user_id=$2',[c,ids[4]]);
+ result=(await rpc(host,'bookish_club_pour',[c,'babel']))[0].bookish_club_pour;
+ assert.equal(result.mean_pour,null); assert.equal(result.dnf_count,1);
+});
+
+test('migration files 005 through 008 can be rerun without changing data',async()=>{
+ const before=(await q('select count(*) n from auth.users'))[0].n;
+ for(const name of (await readdir('supabase/sql')).filter(n=>/^00[5-8]_/.test(n)).sort())
+  await db.exec(await readFile('supabase/sql/'+name,'utf8'));
+ assert.equal((await q('select count(*) n from auth.users'))[0].n,before);
 });

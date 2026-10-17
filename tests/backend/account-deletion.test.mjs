@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { handleAccountDeletion, revokeAppleGrant } from '../../supabase/functions/_shared/account-deletion.ts';
-const emailUser={id:'reader-id',identities:[{provider:'email'}]};
+const emailUser={id:'reader-id',app_metadata:{app:'bookish'},identities:[{provider:'email'}]};
 const request=(body={},token='real-user-token')=>new Request('https://example.com/delete',{method:'POST',headers:{authorization:`Bearer ${token}`,'content-type':'application/json'},body:JSON.stringify(body)});
 function deps(user=emailUser) {
  const calls=[];
@@ -18,14 +18,14 @@ test('missing and invalid sessions cannot delete accounts',async()=>{
  }
 });
 test('linked Apple accounts require a fresh grant and failed revocation preserves the account',async()=>{
- const d=deps({id:'apple-reader',identities:[{provider:'apple',identity_data:{sub:'apple-sub'}}]});
+ const d=deps({id:'apple-reader',app_metadata:{app:'bookish'},identities:[{provider:'apple',identity_data:{sub:'apple-sub'}}]});
  assert.equal((await handleAccountDeletion(request(),d)).status,400);
  d.revokeApple=async()=>{throw new Error('vendor down, secret details');};
  const r=await handleAccountDeletion(request({apple_authorization_code:'fresh-code'}),d);
  assert.equal(r.status,503); assert.deepEqual(d.calls,[]); assert.equal((await r.text()).includes('secret'),false);
 });
 test('Apple revocation is bound to verified identity and precedes hard deletion',async()=>{
- const d=deps({id:'apple-reader',identities:[{provider:'apple',identity_data:{sub:'apple-sub'}}]});
+ const d=deps({id:'apple-reader',app_metadata:{app:'bookish'},identities:[{provider:'apple',identity_data:{sub:'apple-sub'}}]});
  d.revokeApple=async(code,sub)=>{assert.equal(code,'fresh-code');assert.equal(sub,'apple-sub');d.calls.push('revoked');};
  assert.equal((await handleAccountDeletion(request({apple_authorization_code:'fresh-code'}),d)).status,200);
  assert.deepEqual(d.calls,['revoked','apple-reader']);
@@ -69,4 +69,12 @@ test('Apple grant exchange and revocation use the same client and fresh returned
   assert.equal(calls[1].form.get('client_id'),'com.bookish.test');
   assert.equal(calls[0].form.get('code'),'fresh-code');
  }
+});
+
+test('shared Fictora identity is refused before Apple revocation or Auth deletion',async()=>{
+ const d=deps({id:'fictora-reader',app_metadata:{app:'fictora'},identities:[{provider:'apple',identity_data:{sub:'shared-sub'}}]});
+ d.revokeApple=async()=>{d.calls.push('revoked');};
+ const r=await handleAccountDeletion(request({apple_authorization_code:'fresh-code'}),d);
+ assert.equal(r.status,403);
+ assert.deepEqual(d.calls,[]);
 });
