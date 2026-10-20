@@ -1,8 +1,8 @@
 # Bookish: Book Club Night
 
-*Find a club, make it more fun.* (Repo name: bookish-club.)
+*Your book club, just more fun.* (Repo name: bookish-club.)
 
-A directory of real book clubs that meet across the US, built as a static site. Every page is pre-rendered HTML: city pages, genre-in-city pages, state pages and genre hubs. The forms post to one small Supabase edge function.
+Bookish brings more fun to the club you already have, with an iMessage experience in development. The home, host, and press pages lead with anonymous hot takes, club memories, and easier hosting, with a waitlist for launch. The web finder is already available as a supporting feature. Every page is pre-rendered HTML: marketing pages, city pages, genre-in-city pages, state pages, and genre hubs. The existing forms post to Supabase edge functions.
 
 - **Live (temporary):** https://fictora.github.io/bookish-club/
 - **Planned domain:** bookishclub.com (not bought yet; see "Custom domain" below)
@@ -140,7 +140,7 @@ Current theme (locked 2026-10-14): palette 05 **Oxblood Reading Room** on a goua
 
 - **Wall:** `public/img/bg-oxblood-{m,d}.webp`, recoloured from the raw gouache by `scripts/theme-assets.py` (tall crop for phones, wide crop for desktop). Below it the page is plain oxblood (`--ox-deep`).
 - **Cards:** shelf paper (`--card`) with the paper grain `tx-paper-900.webp`. Verified clubs carry a brass bookmark ribbon; unclaimed clubs are a muted paper with an outline.
-- **The Race** (hosts page): bottle-green velvet, satin bookmark-ribbon bars with notched tails, brass "You".
+- **Club story** (home, hosts, and press): paper chat examples, drawn Lunair art, shared reading check-ins, and a small finder at the bottom. No rankings or comparative progress displays.
 - **Props:** sun, daisy and two washi tapes from the r2 pass. No rainbow tape, sparkles or butterflies.
 - **Wordmark:** `scripts/wordmark.mjs` renders R2-04 with the Oxblood colours (outer `#220710`, key `#f4a6bf`, bubble `#1d5a46`) to a transparent PNG master, `public/img/bookish-wordmark.png`. `scripts/wordmark-sizes.py` trims it and writes the `wordmark-{160,320,480}.webp` sizes the site uses. It needs Playwright; point `PLAYWRIGHT` at its `index.mjs`.
 

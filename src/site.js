@@ -104,7 +104,12 @@ ${shown.length ? `<div class="grid cols-3">${shown.map(({ c, n, v }) =>
       box.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
     const pre = new URLSearchParams(location.search).get("q");
-    if (pre) { q.value = pre; form.requestSubmit(); }
+    if (pre) {
+      const disclosure = form.closest("details");
+      if (disclosure) disclosure.open = true;
+      q.value = pre;
+      form.requestSubmit();
+    }
   }
 
   // ---------- "On Bookish" / "Listed from public calendars" toggle ----------
