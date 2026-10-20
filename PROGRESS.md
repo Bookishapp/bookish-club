@@ -8,6 +8,7 @@ Task 1: complete. Database and actual public edge entrypoints verified locally.
 Task 2: complete. Geographic website, host controls, invite-code joins, and iOS fresh discovery verified.
 Task 3: author review complete; code and SQL remain pending Ted review and deployment.
 Final review: self-review, per the no-worker card instruction. All decisions and rollout limitations are in docs/club-visibility.md.
-Validation: 23 local privacy/integration tests, five iOS domain tests, UI smoke, website and app builds, and eight Edge Function type checks.
+Validation: 24 local privacy/integration tests, five iOS domain tests, UI smoke, website and app builds, and eight Edge Function type checks.
 Production: read-only inspection only.
 Final review fix: live public-calendar cards retain the scoped claim link, so an existing host changes the same directory record rather than creating a duplicate. Browser regression verified RED to GREEN.
+Final review fix: a valid invite or Open visibility promotes a prior Private request, and retries do not consume another invite use. Database regression verified RED to GREEN.

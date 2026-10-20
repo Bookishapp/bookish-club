@@ -107,3 +107,12 @@ test('a hidden invite code works by itself without exposing a club reference fir
  const joined=await call('bookish_visibility_join',['','codeonly@example.test','','',invite.invite,'code-only']);
  assert.equal(joined.status,'joined');
 });
+test('a valid invite promotes an existing private request exactly once',async()=>{
+ await call('bookish_visibility_host',[token,'save','secret-ref','private',null,null]);
+ assert.equal((await call('bookish_visibility_join',['secret-ref','promote@example.test','','','','promote-request'])).status,'pending');
+ const invite=await call('bookish_visibility_host',[token,'rotate','secret-ref',null,null,null]);
+ assert.equal((await call('bookish_visibility_join',['','promote@example.test','','',invite.invite,'promote-invite'])).status,'joined');
+ assert.equal((await call('bookish_visibility_join',['','promote@example.test','','',invite.invite,'promote-retry'])).status,'joined');
+ assert.deepEqual((await db.query("select status from bookish_join_requests where email='promote@example.test'")).rows,[{status:'approved'}]);
+ assert.equal((await db.query('select uses from bookish_invites where code=$1',[invite.invite])).rows[0].uses,1);
+});

@@ -127,7 +127,7 @@ end $$;
 
 create function public.bookish_visibility_join(p_ref text,p_email text,p_name text,p_note text,p_code text,p_ip text) returns jsonb
 language plpgsql security definer set search_path='' as $$
-declare c public.bookish_clubs; inv public.bookish_invites; joined boolean:=false; decision uuid; resolved_ref text;
+declare c public.bookish_clubs; inv public.bookish_invites; joined boolean:=false; decision uuid; resolved_ref text; prior public.bookish_join_requests;
 begin
  if p_email is null or length(p_email) not between 5 and 254 or length(coalesce(p_note,''))>500 or p_ip is null then return jsonb_build_object('ok',false,'error','invalid'); end if;
  -- Serialize retries across every club so rate limits cannot be raced.
@@ -150,11 +150,19 @@ begin
   joined:=true;
  elsif c.visibility='hidden' then return jsonb_build_object('ok',false,'error','unavailable');
  else joined:=c.visibility='open'; end if;
- if exists(select 1 from public.bookish_join_requests where club_ref=resolved_ref and lower(email)=lower(p_email) and status in ('pending','approved'))
- then return jsonb_build_object('ok',true,'status','already_requested'); end if;
- insert into public.bookish_join_requests(club_ref,club_name,email,first_name,note,via,status,ip_hash,decided_at)
- values(resolved_ref,c.name,lower(p_email),left(p_name,60),p_note,case when inv.code is null then 'request' else 'invite' end,
- case when joined then 'approved' else 'pending' end,p_ip,case when joined then now() end) returning decision_token into decision;
+ select * into prior from public.bookish_join_requests
+ where club_ref=resolved_ref and lower(email)=lower(p_email) and status in ('pending','approved')
+ order by (status='approved') desc,created_at,id limit 1 for update;
+ if prior.status='approved' then return jsonb_build_object('ok',true,'status','joined'); end if;
+ if prior.status='pending' and not joined then return jsonb_build_object('ok',true,'status','already_requested'); end if;
+ if prior.id is not null then
+  update public.bookish_join_requests set status='approved',via=case when inv.code is null then 'request' else 'invite' end,decided_at=now()
+  where id=prior.id returning decision_token into decision;
+ else
+  insert into public.bookish_join_requests(club_ref,club_name,email,first_name,note,via,status,ip_hash,decided_at)
+  values(resolved_ref,c.name,lower(p_email),left(p_name,60),p_note,case when inv.code is null then 'request' else 'invite' end,
+  case when joined then 'approved' else 'pending' end,p_ip,case when joined then now() end) returning decision_token into decision;
+ end if;
  if inv.code is not null then update public.bookish_invites set uses=uses+1 where code=inv.code; end if;
  return jsonb_build_object('ok',true,'status',case when joined then 'joined' else 'pending' end,'notice',case when not joined then jsonb_build_object('kind','request','to',(select email from public.bookish_submissions where id=c.owner_submission_id),'name',p_name,'note',p_note,'club',c.name,'decision_token',decision) else jsonb_build_object('kind','decision','to',p_email,'name',p_name,'club',c.name,'approved',true,'host_email',(select email from public.bookish_submissions where id=c.owner_submission_id)) end);
 end $$;
