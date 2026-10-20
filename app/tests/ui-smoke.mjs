@@ -8,19 +8,23 @@ const root = new URL('../', import.meta.url);
 const html = fs.readFileSync(new URL('dist/index.html',root),'utf8');
 const file = html.match(/src="([^"]+\.js)"/)[1];
 const script = fs.readFileSync(new URL(`dist/${file.replace(/^\//,'')}`,root),'utf8');
-const feeds = Object.fromEntries(['clubs','books','community'].map(k=>[k,JSON.parse(fs.readFileSync(new URL(`public/data/${k}.json`,root),'utf8'))]));
+const feeds = Object.fromEntries(['books','community'].map(k=>[k,JSON.parse(fs.readFileSync(new URL(`public/data/${k}.json`,root),'utf8'))]));
+feeds.clubs=JSON.parse(fs.readFileSync(new URL('../data/clubs.json',root),'utf8')).map(c=>({...c,visibility:'open',verified:false,city_path:`/book-clubs/${c.city.toLowerCase().replace(/[^a-z0-9]+/g,'-')}-${c.state.toLowerCase()}/`}));
 const errors=[],posts=[];
 const virtualConsole = new VirtualConsole();
 virtualConsole.on('jsdomError',e=>errors.push(e.message));
 const nativeCalls=[],nativeStore=new Map();
 let locationAllowed=true,notificationAllowed=true;
-async function launch(online=false,native=false) {
+async function launch(online=true,native=false,verified=false) {
   const dom = new JSDOM('<!doctype html><html><body><div id="app"></div><div id="toast"></div></body></html>',{url:'https://localhost/',runScripts:'outside-only',virtualConsole,pretendToBeVisual:true});
   const w=dom.window;
   w.scrollTo=()=>{};
   w.HTMLDialogElement.prototype.showModal=function(){this.open=true;};
   w.HTMLDialogElement.prototype.close=function(){this.open=false;};
   w.AbortSignal=globalThis.AbortSignal;
+  if(!online){w.localStorage.setItem('bookish.saved',JSON.stringify({'secret-old':{id:'secret-old',name:'Old hidden canary',city:'Austin',state:'TX'}}));w.localStorage.setItem('bookish.feed',JSON.stringify({clubs:[{id:'secret-old',name:'Old hidden canary'}]}));}
+  const publicClubs=feeds.clubs.map((c,i)=>({...c,verified:verified&&i===0}));
+  const remoteValue=url=>String(url).includes('bookish-directory')?{ok:true,clubs:publicClubs}:String(url).includes('bookish-community')?feeds.community:null;
   if(native){
     w.CapacitorCustomPlatform={name:'ios'};
     const methods={Preferences:['get','set'],Geolocation:['requestPermissions','getCurrentPosition'],Share:['share'],LocalNotifications:['requestPermissions','schedule','getPending','cancel','addListener','removeListener'],App:['addListener','removeListener'],BookishMap:['present'],CapacitorHttp:['request']};
@@ -30,26 +34,32 @@ async function launch(online=false,native=false) {
       if(plugin==='Geolocation')return method==='requestPermissions'?{location:locationAllowed?'granted':'denied'}:{coords:{latitude:41.88,longitude:-87.63}};
       if(plugin==='LocalNotifications'){if(method==='requestPermissions')return{display:notificationAllowed?'granted':'denied'};if(method==='getPending')return{notifications:[]};return{};}
       if(plugin==='BookishMap')return{cityKey:'Chicago, IL'};
-      if(plugin==='CapacitorHttp')return{status:503,data:{}};
+      if(plugin==='CapacitorHttp')return{status:online?200:503,data:remoteValue(options.url)};
       return{};
     }};
   }
   w.fetch=async(url,options={})=>{
     if(options.method==='POST'){posts.push({url,body:JSON.parse(options.body)});return{ok:true,json:async()=>({ok:true,status:'pending',host_notified:true})};}
+    const remote=remoteValue(url);
+    if(remote){if(!online)throw new Error('offline test');return{ok:true,json:async()=>JSON.parse(JSON.stringify(remote))};}
     const key=String(url).match(/\/data\/(clubs|books|community)\.json/)?.[1];
-    if(String(url).startsWith('https://meetbookish.com')&&!online)throw new Error('offline test');
-    const value=key==='clubs'&&online?feeds.clubs.map((c,i)=>({...c,verified:i===0})):feeds[key];
-    return{ok:true,json:async()=>JSON.parse(JSON.stringify(value))};
+    return{ok:true,json:async()=>JSON.parse(JSON.stringify(feeds[key]))};
   };
   w.eval(script);
-  await until(()=>w.document.querySelector('.club-open'));
-  if(online)await until(()=>w.document.querySelector('.verified'));
+  await until(()=>w.document.querySelector('h1')?.textContent.includes('Pull up a chair'));
+  if(online)await until(()=>w.document.querySelector('.club-open'));
   return dom;
 }
 async function until(fn){for(let i=0;i<100;i++){if(fn())return;await new Promise(r=>setTimeout(r,10));}throw new Error('UI state did not arrive');}
 function click(w,selector){const el=w.document.querySelector(selector);assert.ok(el,`control ${selector}`);el.click();}
 function input(w,selector,value,event='input'){const el=w.document.querySelector(selector);assert.ok(el,`input ${selector}`);el.value=value;el.dispatchEvent(new w.Event(event,{bubbles:true}));}
 
+const unavailable=await launch(false),u=unavailable.window;
+assert.equal(u.document.querySelectorAll('.club-card').length,0);
+assert.ok(!u.document.body.textContent.includes('Old hidden canary'));
+assert.deepEqual(JSON.parse(u.localStorage.getItem('bookish.saved')),[]);
+assert.ok(!u.localStorage.getItem('bookish.feed').includes('secret-old'));
+click(u,'[data-tab=saved]');assert.equal(u.document.querySelectorAll('.club-card').length,0);unavailable.window.close();
 const offline=await launch(),w=offline.window;
 assert.match(w.document.querySelector('h1').textContent,/Pull up a chair/);
 assert.equal(w.document.querySelectorAll('.club-card').length,40);
@@ -82,7 +92,7 @@ click(w,'[data-tab=about]');assert.ok(w.document.querySelector('a[href="https://
 assert.ok(w.document.querySelector('a[href="https://meetbookish.com/terms/"]'));
 offline.window.close();
 
-const online=await launch(true),v=online.window;
+const online=await launch(true,false,true),v=online.window;
 let now=Date.now();v.Date.now=()=>now;
 click(v,'.verified .club-open');assert.ok(v.document.querySelector('#join'));
 input(v,'#join [name=email]','reader@example.com');input(v,'#join [name=first_name]','Reader');
@@ -94,7 +104,7 @@ assert.equal(v.document.querySelector('#join button[type=submit]').disabled,true
 assert.match(posts[0].url,/\/bookish-join$/);assert.equal(posts[0].body.consent,true);assert.ok(posts[0].body.elapsed_ms>=2500);
 assert.equal(posts[0].body.website,'');assert.equal(posts[0].body.club_id,feeds.clubs[0].id);
 online.window.close();
-const native=await launch(false,true),n=native.window;
+const native=await launch(true,true),n=native.window;
 locationAllowed=false;click(n,'#locate');await until(()=>n.document.querySelector('#toast').textContent.includes('Pick a city'));
 assert.ok(n.document.querySelector('#city'));
 locationAllowed=true;click(n,'#locate');await until(()=>n.document.querySelector('#toast').textContent.includes('location is ready'));
@@ -118,4 +128,4 @@ await until(()=>JSON.parse(nativeStore.get('bookish.reminders'))&&Object.keys(JS
 assert.ok(nativeCalls.some(c=>c.plugin==='LocalNotifications'&&c.method==='cancel'&&c.options.notifications[0].id===scheduled.id));
 native.window.close();
 assert.deepEqual(errors,[]);
-console.log('UI smoke passed: offline launch, clubs, city picker, map links, persistence, three-tap recommendations, covers, books, About, verified-only join payload, browser reminder fallback; mocked native permission denial/recovery, location, MapKit bridge, sharing, reminder permission/scheduling/cancellation. No requests sent to a real host.');
+console.log('UI smoke passed: offline discovery fails closed, stale snapshots purged; offline launch, clubs, city picker, map links, persistence, three-tap recommendations, covers, books, About, verified-only join payload, browser reminder fallback; mocked native permission denial/recovery, location, MapKit bridge, sharing, reminder permission/scheduling/cancellation. No requests sent to a real host.');

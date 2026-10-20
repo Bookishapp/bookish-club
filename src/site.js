@@ -8,15 +8,16 @@
   const norm = (s) => s.toLowerCase().normalize("NFKD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
 
   // ---------- search ----------
-  let cities = null;
-  const loadCities = () => cities ? Promise.resolve(cities) :
-    fetch(`${BASE}/data/cities.json`).then((r) => r.json()).then((d) => (cities = d));
+  const loadCities = () => window.bookishDiscovery('cities').catch(()=>[]);
+  const clearDiscovery = () => { for(const id of ['suggest','results']) {const el=document.getElementById(id);if(el)el.innerHTML='';} };
+  window.addEventListener('focus', clearDiscovery);
+  document.addEventListener('visibilitychange', clearDiscovery);
   const miles = (a, b, c, d) => {
     const R = 3958.8, r = Math.PI / 180, x = (c - a) * r, y = (d - b) * r;
     const h = Math.sin(x / 2) ** 2 + Math.cos(a * r) * Math.cos(c * r) * Math.sin(y / 2) ** 2;
     return 2 * R * Math.asin(Math.sqrt(h));
   };
-  const cityUrl = (c, genre, mode) => `${BASE}/book-clubs/${c.u}/${genre && c.gp && c.gp.includes(genre) ? genre + "/" : ""}${mode ? `#${mode === "on" ? "on-bookish" : "listed"}` : genre && !(c.gp && c.gp.includes(genre)) ? "#" + genre : ""}`;
+  const cityUrl = (c, genre, mode) => `${BASE}/book-clubs/?city=${encodeURIComponent(c.n)}&state=${c.s}${genre?`&genre=${encodeURIComponent(genre)}`:''}${mode?`#${mode==='on'?'on-bookish':'listed'}`:''}`;
 
   const countText = (n, v) => `${n} club${n === 1 ? "" : "s"}${v ? ` · ${v} on Bookish` : ""}`;
   function renderResults(box, title, list, genre) {
@@ -179,6 +180,11 @@ ${shown.length ? `<div class="grid cols-3">${shown.map(({ c, n, v }) =>
 
   // ---------- forms ----------
   const params = new URLSearchParams(location.search);
+  const invite = new URLSearchParams(location.hash.slice(1));
+  if (invite.has('club')) params.set('club_id',invite.get('club'));
+  if (invite.has('invite')) params.set('invite_code',invite.get('invite'));
+  if (invite.has('invite')) history.replaceState(null,'',location.pathname);
+
   $$("form[data-kind]").forEach((f) => {
     const started = Date.now();
     for (const [k, v] of params) {
@@ -223,9 +229,9 @@ ${shown.length ? `<div class="grid cols-3">${shown.map(({ c, n, v }) =>
           f.reset();
           msg.className = "form-msg ok";
           msg.textContent = f.dataset.kind === "join"
-            ? ({ joined: "You're in! The host will see you on the list. Check your email for the details.",
+            ? ({ joined: "You're in! Ask the host for the next meeting details.",
                  already_requested: "You've already asked to join this club. We'll email you when the host replies." }[j.status]
-               || "Request sent. The host will get your note and can say yes or no. We'll email you either way.")
+               || "Request sent. The host can approve it in club settings.")
             : j.confirm_sent
             ? "Thank you. Check your inbox for a short note from us and tap the link to confirm."
             : "Thank you, it's in. We read every note and will be in touch by email.";
@@ -234,7 +240,7 @@ ${shown.length ? `<div class="grid cols-3">${shown.map(({ c, n, v }) =>
         }
         const why = { email: "That email address doesn't look right.", rate_limited: "You've sent a few of these already. Please try again later.",
           links_not_allowed: "Please leave links out of the message.", consent: "Please tick the box so we can email you.",
-          club_details: "Please add your club's name and city.", invite_invalid: "That invite code doesn't match this club. Check it with your host, or send a request without it.",
+          club_details: "Please add your club's name and city.", visibility: "Choose Open, Private, or Hidden.", city: "Use a supported US city and its state. Check the city spelling.", unavailable: "This club or invite is unavailable. Check with your host.", invite_invalid: "That invite code doesn't match this club. Check it with your host, or send a request without it.",
           club: "We couldn't tell which club this is. Go back and tap Request to join on the club's listing.",
           not_on_bookish: "This club isn't on Bookish yet, so its host can't get requests here. Check its listing for the time and place." }[j.error];
         throw new Error(why || "Something went wrong on our side. Please try again in a minute.");
