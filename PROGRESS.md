@@ -10,3 +10,4 @@ Task 3: author review complete; code and SQL remain pending Ted review and deplo
 Final review: self-review, per the no-worker card instruction. All decisions and rollout limitations are in docs/club-visibility.md.
 Validation: 23 local privacy/integration tests, five iOS domain tests, UI smoke, website and app builds, and eight Edge Function type checks.
 Production: read-only inspection only.
+Final review fix: live public-calendar cards retain the scoped claim link, so an existing host changes the same directory record rather than creating a duplicate. Browser regression verified RED to GREEN.

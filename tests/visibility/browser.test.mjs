@@ -9,10 +9,11 @@ test('discovery renders fresh server results and clears cards when refresh fails
  const dom=new JSDOM('<html data-directory-api="https://local.test/bookish-directory"><body><section id="live-directory"><input id="live-query"><p id="live-status"></p><ul id="live-clubs"></ul><button id="live-more"></button></section></body></html>',{url:'https://meetbookish.com',runScripts:'outside-only'}),w=dom.window;
  w.AbortSignal=globalThis.AbortSignal;
  let hidden=false;
- w.fetch=async()=>({ok:!hidden,json:async()=>({ok:true,clubs:[{id:'public-ref',name:'Canary club',city:'Austin',state:'TX',visibility:'private',verified:true,current_book:{title:'Piranesi'},genres:[]}]})});
+ w.fetch=async()=>({ok:!hidden,json:async()=>({ok:true,clubs:[{id:'public-ref',name:'Canary club',city:'Austin',state:'TX',visibility:'private',verified:true,current_book:{title:'Piranesi'},genres:[]},{id:'calendar-ref',name:'Calendar club',city:'Austin',state:'TX',visibility:'open',verified:false,source_url:'https://example.test/calendar',genres:[]}]})});
  w.eval(script('discovery.js'));await tick();
  assert.match(w.document.querySelector('#live-clubs').textContent,/Canary club/);assert.match(w.document.querySelector('#live-clubs').textContent,/Piranesi/);
  assert.match(w.document.querySelector('#live-clubs a').textContent,/Request to join/);
+ assert.ok(w.document.querySelector('a[href*="claim/?club_id=calendar-ref"]'));
  hidden=true;w.dispatchEvent(new w.Event('focus'));assert.equal(w.document.querySelector('#live-clubs').textContent,'');await tick();
  assert.ok(!w.document.body.textContent.includes('Canary club'));dom.window.close();
 });
