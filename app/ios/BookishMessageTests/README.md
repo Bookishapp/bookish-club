@@ -1,0 +1,7 @@
+# Message model checks
+
+Run `sh app/ios/BookishMessageTests/run-model-tests.sh` from the repository root. These tests require Foundation and `swiftc`, and they do not require an iOS simulator or a Messages account. `SWIFTC=/path/to/swiftc` selects a standalone toolchain if the system toolchain is unavailable. Temporary binaries are removed when the runner exits.
+
+The message URL contains the complete card, including names and responses shared by members. People who receive the message in the transcript receive this data. Base64 encoding is not encryption. State stays in the fragment of `https://meetbookish.com/imessage/v1#payload=...`, which browsers do not send in HTTP requests. There is no interactive Mac fallback. The model does not upload data, discover real names, authenticate identities, or send messages.
+
+Merging combines responses only when the card identifier and all card metadata agree. The newest timestamp wins for each participant, and an equal timestamp preserves the local response. Cards hold at most 40 members, but Apple's 5,000-character message URL limit can fill a card sooner, depending on names and identifiers. Encoding rejects an oversized snapshot before insertion. If a combined snapshot would exceed the member limit, existing local members stay, and additional members are admitted in name and identifier order until the card is full. Display order uses names and identifiers, never page progress, RSVP choice, or vote totals. A message can contain an older snapshot, so participants should reopen the latest card when responding.

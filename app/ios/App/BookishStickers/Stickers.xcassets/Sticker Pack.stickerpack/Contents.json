@@ -1,0 +1,29 @@
+{
+  "info": {
+    "author": "xcode",
+    "version": 1
+  },
+  "properties": {
+    "grid-size": "regular"
+  },
+  "stickers": [
+    {
+      "filename": "lunair_yes.sticker"
+    },
+    {
+      "filename": "lunair_maybe.sticker"
+    },
+    {
+      "filename": "lunair_cant_make_it.sticker"
+    },
+    {
+      "filename": "lunair_book_club.sticker"
+    },
+    {
+      "filename": "lunair_one_more_chapter.sticker"
+    },
+    {
+      "filename": "lunair_bookmark.sticker"
+    }
+  ]
+}
