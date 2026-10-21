@@ -29,13 +29,21 @@
 		D10000000000000000000009 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000009 /* Stickers.xcassets */; };
 		D1000000000000000000000A /* BookishMessages.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D2000000000000000000000A /* BookishMessages.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D1000000000000000000000C /* StickerPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000000E /* StickerPickerViewController.swift */; };
-		D1000000000000000000000D /* lunair_yes.png in Resources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000000F /* lunair_yes.png */; };
-		D1000000000000000000000E /* lunair_maybe.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000010 /* lunair_maybe.png */; };
-		D1000000000000000000000F /* lunair_cant_make_it.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000011 /* lunair_cant_make_it.png */; };
-		D10000000000000000000010 /* lunair_one_more_chapter.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000012 /* lunair_one_more_chapter.png */; };
-		D10000000000000000000011 /* lunair_book_club.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000013 /* lunair_book_club.png */; };
-		D10000000000000000000012 /* lunair_bookmark.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000014 /* lunair_bookmark.png */; };
 		DB0000000000000000000001 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0000000000000000000001 /* SceneDelegate.swift */; };
+		D10000000000000000000100 /* lunair-sticker-01-hi-book-club.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000100 /* lunair-sticker-01-hi-book-club.png */; };
+		D10000000000000000000101 /* lunair-sticker-02-im-in.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000101 /* lunair-sticker-02-im-in.png */; };
+		D10000000000000000000102 /* lunair-sticker-03-see-you-thursday.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000102 /* lunair-sticker-03-see-you-thursday.png */; };
+		D10000000000000000000103 /* lunair-sticker-04-no-spoilers.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000103 /* lunair-sticker-04-no-spoilers.png */; };
+		D10000000000000000000104 /* lunair-sticker-05-i-cannot.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000104 /* lunair-sticker-05-i-cannot.png */; };
+		D10000000000000000000105 /* lunair-sticker-06-swooning.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000105 /* lunair-sticker-06-swooning.png */; };
+		D10000000000000000000106 /* lunair-sticker-07-not-crying.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000106 /* lunair-sticker-07-not-crying.png */; };
+		D10000000000000000000107 /* lunair-sticker-08-spill-it.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000107 /* lunair-sticker-08-spill-it.png */; };
+		D10000000000000000000108 /* lunair-sticker-09-plot-twist.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000108 /* lunair-sticker-09-plot-twist.png */; };
+		D10000000000000000000109 /* lunair-sticker-10-one-more-chapter.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000109 /* lunair-sticker-10-one-more-chapter.png */; };
+		D1000000000000000000010A /* lunair-sticker-11-youre-invited.png in Resources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000010A /* lunair-sticker-11-youre-invited.png */; };
+		D1000000000000000000010B /* lunair-sticker-12-your-turn-to-host.png in Resources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000010B /* lunair-sticker-12-your-turn-to-host.png */; };
+		D1000000000000000000010C /* lunair-sticker-13-on-my-way.png in Resources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000010C /* lunair-sticker-13-on-my-way.png */; };
+		D1000000000000000000010D /* lunair-sticker-14-no-peeking.png in Resources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000010D /* lunair-sticker-14-no-peeking.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,13 +100,21 @@
 		D2000000000000000000000C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D2000000000000000000000D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D2000000000000000000000E /* StickerPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPickerViewController.swift; sourceTree = "<group>"; };
-		D2000000000000000000000F /* lunair_yes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lunair_yes.png; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair_yes.sticker/lunair_yes.png"; sourceTree = SOURCE_ROOT; };
-		D20000000000000000000010 /* lunair_maybe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lunair_maybe.png; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair_maybe.sticker/lunair_maybe.png"; sourceTree = SOURCE_ROOT; };
-		D20000000000000000000011 /* lunair_cant_make_it.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lunair_cant_make_it.png; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair_cant_make_it.sticker/lunair_cant_make_it.png"; sourceTree = SOURCE_ROOT; };
-		D20000000000000000000012 /* lunair_one_more_chapter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lunair_one_more_chapter.png; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair_one_more_chapter.sticker/lunair_one_more_chapter.png"; sourceTree = SOURCE_ROOT; };
-		D20000000000000000000013 /* lunair_book_club.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lunair_book_club.png; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair_book_club.sticker/lunair_book_club.png"; sourceTree = SOURCE_ROOT; };
-		D20000000000000000000014 /* lunair_bookmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lunair_bookmark.png; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair_bookmark.sticker/lunair_bookmark.png"; sourceTree = SOURCE_ROOT; };
 		DA0000000000000000000001 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		D20000000000000000000100 /* lunair-sticker-01-hi-book-club.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-01-hi-book-club.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-01-hi-book-club.sticker/lunair-sticker-01-hi-book-club.png"; sourceTree = SOURCE_ROOT; };
+		D20000000000000000000101 /* lunair-sticker-02-im-in.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-02-im-in.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-02-im-in.sticker/lunair-sticker-02-im-in.png"; sourceTree = SOURCE_ROOT; };
+		D20000000000000000000102 /* lunair-sticker-03-see-you-thursday.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-03-see-you-thursday.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-03-see-you-thursday.sticker/lunair-sticker-03-see-you-thursday.png"; sourceTree = SOURCE_ROOT; };
+		D20000000000000000000103 /* lunair-sticker-04-no-spoilers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-04-no-spoilers.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-04-no-spoilers.sticker/lunair-sticker-04-no-spoilers.png"; sourceTree = SOURCE_ROOT; };
+		D20000000000000000000104 /* lunair-sticker-05-i-cannot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-05-i-cannot.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-05-i-cannot.sticker/lunair-sticker-05-i-cannot.png"; sourceTree = SOURCE_ROOT; };
+		D20000000000000000000105 /* lunair-sticker-06-swooning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-06-swooning.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-06-swooning.sticker/lunair-sticker-06-swooning.png"; sourceTree = SOURCE_ROOT; };
+		D20000000000000000000106 /* lunair-sticker-07-not-crying.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-07-not-crying.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-07-not-crying.sticker/lunair-sticker-07-not-crying.png"; sourceTree = SOURCE_ROOT; };
+		D20000000000000000000107 /* lunair-sticker-08-spill-it.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-08-spill-it.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-08-spill-it.sticker/lunair-sticker-08-spill-it.png"; sourceTree = SOURCE_ROOT; };
+		D20000000000000000000108 /* lunair-sticker-09-plot-twist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-09-plot-twist.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-09-plot-twist.sticker/lunair-sticker-09-plot-twist.png"; sourceTree = SOURCE_ROOT; };
+		D20000000000000000000109 /* lunair-sticker-10-one-more-chapter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-10-one-more-chapter.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-10-one-more-chapter.sticker/lunair-sticker-10-one-more-chapter.png"; sourceTree = SOURCE_ROOT; };
+		D2000000000000000000010A /* lunair-sticker-11-youre-invited.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-11-youre-invited.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-11-youre-invited.sticker/lunair-sticker-11-youre-invited.png"; sourceTree = SOURCE_ROOT; };
+		D2000000000000000000010B /* lunair-sticker-12-your-turn-to-host.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-12-your-turn-to-host.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-12-your-turn-to-host.sticker/lunair-sticker-12-your-turn-to-host.png"; sourceTree = SOURCE_ROOT; };
+		D2000000000000000000010C /* lunair-sticker-13-on-my-way.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-13-on-my-way.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-13-on-my-way.sticker/lunair-sticker-13-on-my-way.png"; sourceTree = SOURCE_ROOT; };
+		D2000000000000000000010D /* lunair-sticker-14-no-peeking.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-14-no-peeking.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-14-no-peeking.sticker/lunair-sticker-14-no-peeking.png"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,12 +226,20 @@
 		D60000000000000000000003 /* Sticker Images */ = {
 			isa = PBXGroup;
 			children = (
-				D2000000000000000000000F /* lunair_yes.png */,
-				D20000000000000000000010 /* lunair_maybe.png */,
-				D20000000000000000000011 /* lunair_cant_make_it.png */,
-				D20000000000000000000012 /* lunair_one_more_chapter.png */,
-				D20000000000000000000013 /* lunair_book_club.png */,
-				D20000000000000000000014 /* lunair_bookmark.png */,
+				D20000000000000000000100 /* lunair-sticker-01-hi-book-club.png */,
+				D20000000000000000000101 /* lunair-sticker-02-im-in.png */,
+				D20000000000000000000102 /* lunair-sticker-03-see-you-thursday.png */,
+				D20000000000000000000103 /* lunair-sticker-04-no-spoilers.png */,
+				D20000000000000000000104 /* lunair-sticker-05-i-cannot.png */,
+				D20000000000000000000105 /* lunair-sticker-06-swooning.png */,
+				D20000000000000000000106 /* lunair-sticker-07-not-crying.png */,
+				D20000000000000000000107 /* lunair-sticker-08-spill-it.png */,
+				D20000000000000000000108 /* lunair-sticker-09-plot-twist.png */,
+				D20000000000000000000109 /* lunair-sticker-10-one-more-chapter.png */,
+				D2000000000000000000010A /* lunair-sticker-11-youre-invited.png */,
+				D2000000000000000000010B /* lunair-sticker-12-your-turn-to-host.png */,
+				D2000000000000000000010C /* lunair-sticker-13-on-my-way.png */,
+				D2000000000000000000010D /* lunair-sticker-14-no-peeking.png */,
 			);
 			name = "Sticker Images";
 			sourceTree = "<group>";
@@ -342,12 +366,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				D10000000000000000000006 /* Assets.xcassets in Resources */,
-				D1000000000000000000000D /* lunair_yes.png in Resources */,
-				D1000000000000000000000E /* lunair_maybe.png in Resources */,
-				D1000000000000000000000F /* lunair_cant_make_it.png in Resources */,
-				D10000000000000000000010 /* lunair_one_more_chapter.png in Resources */,
-				D10000000000000000000011 /* lunair_book_club.png in Resources */,
-				D10000000000000000000012 /* lunair_bookmark.png in Resources */,
+				D10000000000000000000100 /* lunair-sticker-01-hi-book-club.png in Resources */,
+				D10000000000000000000101 /* lunair-sticker-02-im-in.png in Resources */,
+				D10000000000000000000102 /* lunair-sticker-03-see-you-thursday.png in Resources */,
+				D10000000000000000000103 /* lunair-sticker-04-no-spoilers.png in Resources */,
+				D10000000000000000000104 /* lunair-sticker-05-i-cannot.png in Resources */,
+				D10000000000000000000105 /* lunair-sticker-06-swooning.png in Resources */,
+				D10000000000000000000106 /* lunair-sticker-07-not-crying.png in Resources */,
+				D10000000000000000000107 /* lunair-sticker-08-spill-it.png in Resources */,
+				D10000000000000000000108 /* lunair-sticker-09-plot-twist.png in Resources */,
+				D10000000000000000000109 /* lunair-sticker-10-one-more-chapter.png in Resources */,
+				D1000000000000000000010A /* lunair-sticker-11-youre-invited.png in Resources */,
+				D1000000000000000000010B /* lunair-sticker-12-your-turn-to-host.png in Resources */,
+				D1000000000000000000010C /* lunair-sticker-13-on-my-way.png in Resources */,
+				D1000000000000000000010D /* lunair-sticker-14-no-peeking.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

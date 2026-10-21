@@ -14,9 +14,9 @@ Open `app/ios/App/App.xcworkspace` for the host app. The project contains these 
 
 `App` depends on `BookishMessages` and copies its `.appex` product into `App.app/PlugIns` through its **Embed App Extensions** phase. Both extension targets use the host's iOS 16.0 deployment target, iPhone device family, `0.1.0` marketing version, `1` build number, and automatic signing style. Keep the embedded extension's versions aligned with the host when preparing a release.
 
-`BookishMessages` links Messages and UIKit, compiles the six Swift files in `BookishMessages`, and includes `Assets.xcassets`. Its extension point is `com.apple.message-payload-provider`, and its principal class is `$(PRODUCT_MODULE_NAME).MessagesViewController`. There is no storyboard entry point. Its native sticker browser loads six loose PNG resources referenced directly from the sticker catalog's source files, so replacing the art updates both targets without duplicating files.
+`BookishMessages` links Messages and UIKit, compiles the six Swift files in `BookishMessages`, and includes `Assets.xcassets`. Its extension point is `com.apple.message-payload-provider`, and its principal class is `$(PRODUCT_MODULE_NAME).MessagesViewController`. There is no storyboard entry point. Its native sticker browser loads 14 loose PNG resources referenced directly from the sticker catalog's source files, so replacing the art updates both targets without duplicating files.
 
-`BookishStickers` includes `Stickers.xcassets`, has no source files, and uses Apple's `com.apple.product-type.app-extension.messages-sticker-pack` product type. Its system principal class is `StickerBrowserViewController`. Its six medium stickers are transparent 408 x 408 PNGs, and its `iMessage App Icon` asset has the template's icon slots. The sticker pack sets `NSStickerSharingLevel` to `OS`, matching the installed Xcode template.
+`BookishStickers` includes `Stickers.xcassets`, has no source files, and uses Apple's `com.apple.product-type.app-extension.messages-sticker-pack` product type. Its system principal class is `StickerBrowserViewController`. Its 14 final Lunair stickers are transparent 408 x 408 PNGs, and its `iMessage App Icon` asset has the template's icon slots. The sticker pack sets `NSStickerSharingLevel` to `OS`, matching the installed Xcode template.
 
 The iOS 27.1 simulator rejects a containing app with two `com.apple.message-payload-provider` extensions: `Multiple message payload provider extensions found in app but only one is allowed`. Therefore, the bundled app embeds only `BookishMessages`, which provides its own sticker browser. `BookishStickers` remains buildable for art validation and alternate packaging, but its `.appex` is not installed with `App`. Distributing that target requires an alternate containing-app configuration with a single Messages provider.
 
@@ -124,11 +124,11 @@ If shared host data is added later, the owner must choose and register a real Ap
 
 ## Use and manual acceptance
 
-Install the containing app, open an iMessage conversation in Messages, and choose Bookish from the conversation's apps menu. The extension provides compact and expanded presentations. Choose its **Stickers** mode to send one of the six static stickers through the native sticker browser. The exact location of the Messages apps menu varies by iOS version.
+Install the containing app, open an iMessage conversation in Messages, and choose Bookish from the conversation's apps menu. The extension provides compact and expanded presentations. Choose its **Stickers** mode to send one of the 14 static stickers through the native sticker browser. The exact location of the Messages apps menu varies by iOS version.
 
 Use two physical devices and a test conversation for final acceptance:
 
-- Confirm the containing app still launches, Bookish is discoverable in Messages, and its Stickers mode shows all six images after installation.
+- Confirm the containing app still launches, Bookish is discoverable in Messages, and its Stickers mode shows all 14 images after installation.
 - Open Bookish in compact mode, expand it, and return to compact mode. Check small screens, Dynamic Type, VoiceOver labels, and light and dark appearance.
 - Compose each card type, confirm a draft appears in the Messages input field, and send it manually. Confirm the receiving device displays the artwork and can open the interactive card.
 - On the second device, respond to the card, send the updated message manually, and reopen it on the first device. Confirm the expected state and session are retained.
@@ -153,10 +153,10 @@ Sample data is deliberately labeled `Sample Bookish club`, with no seeded member
 
 `BookishMessages/BookishTheme.swift` owns every font choice, palette reference, and illustration asset name. The `Paper`, `Ink`, `Pink`, `Butter`, `Mint`, `Sky`, and `Lilac` color sets in `BookishMessages/Assets.xcassets` own the replaceable colors. Add approved art to the empty `LunairRSVP`, `LunairVote`, and `LunairBookmarks` image sets using those exact names. The neutral drawn-book fallback disappears automatically when a named image is present. These are placeholders, not final Lunair mascot art.
 
-Replace the DRAFT `iMessage App Icon.stickersiconset` PNGs in both extension catalogs before release. The sticker pack's [README](../app/ios/App/BookishStickers/README.md) lists all six drop-in filenames, exact pixel sizes, and accessibility metadata. Asset and theme changes require a rebuild, with no flow or controller code changes.
+Replace the DRAFT `iMessage App Icon.stickersiconset` PNGs in both extension catalogs before release. The sticker pack's [README](../app/ios/App/BookishStickers/README.md) describes the 14 final stickers, exact pixel sizes, and caption-based accessibility metadata. Asset and theme changes require a rebuild, with no flow or controller code changes.
 
 
-## Recorded verification
+## Initial scaffold verification
 
 On 2026-10-21, Xcode 27.1 (27A9275) successfully built `App`, `BookishMessages`, and `BookishStickers` for the booted iPhone Duo running iOS 27.1, using the commands above with `CODE_SIGNING_ALLOWED=NO`. No deployment-target override was needed after the Podfile compatibility fix.
 

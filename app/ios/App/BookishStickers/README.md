@@ -1,8 +1,8 @@
 # Bookish Stickers
 
-This is the resource-only scaffold for the `BookishStickers` Messages sticker pack extension. All supplied art is deliberately labeled **ART PLACEHOLDER** or **DRAFT**. The neutral drawn book mark is not Lunair, approved mascot art, or final release art.
+The pack contains 14 final Lunair stickers, in the supplied manifest order. Each sticker is a transparent 408 x 408 PNG, with its manifest caption as the accessibility label.
 
-The containing app uses these same six source PNGs through the native sticker browser inside `BookishMessages`. `BookishStickers` remains a separately buildable target and scheme. It is not embedded alongside `BookishMessages`, because the tested iOS runtime rejects two message payload provider extensions in one containing app.
+The containing app uses these same 14 source PNGs through the native sticker browser inside `BookishMessages`. `BookishStickers` remains a separately buildable target and scheme. It is not embedded alongside `BookishMessages`, because the tested iOS runtime rejects two message payload provider extensions in one containing app.
 
 ## Xcode integration
 
@@ -15,26 +15,11 @@ The containing app uses these same six source PNGs through the native sticker br
 
 Only the catalog belongs in the target's Resources phase. The Info file is the target's Info.plist, and this README is documentation.
 
-## Final Lunair art drop-in
+## Lunair sticker assets
 
-Replace each PNG in place, preserving its filename and folder. All six assets use **408 x 408 pixels**, at the regular size's @3x resolution. Export static, transparent, 8-bit RGBA PNGs, each **less than 500 KB**. Do not add @1x or @2x copies. Messages derives those sizes. Keep the artwork comfortably inside the canvas so its edges are not clipped when peeled onto a message.
+The folders under `Stickers.xcassets/Sticker Pack.stickerpack/` contain the final artwork. The same PNGs are registered as loose resources in `BookishMessages`, without duplicate source images. `BookishTheme.stickerAssets` holds the matching ordered names and captions for the embedded browser. Keep the pack index, project resources, accessibility labels, and theme entries aligned when changing the collection.
 
-| Sticker folder | PNG to replace | Intended phrase |
-| --- | --- | --- |
-| `lunair_yes.sticker` | `lunair_yes.png` | yes |
-| `lunair_maybe.sticker` | `lunair_maybe.png` | maybe |
-| `lunair_cant_make_it.sticker` | `lunair_cant_make_it.png` | can't make it |
-| `lunair_book_club.sticker` | `lunair_book_club.png` | book club |
-| `lunair_one_more_chapter.sticker` | `lunair_one_more_chapter.png` | one more chapter |
-| `lunair_bookmark.sticker` | `lunair_bookmark.png` | bookmark |
-
-The folders are under `Stickers.xcassets/Sticker Pack.stickerpack/`. The same PNGs are also registered as loose resources in `BookishMessages`, with no duplicate source images. No catalog or project changes are needed for a swap with the same names. After replacing art, update each sticker's `properties.accessibility-label` in its `Contents.json` and its label in `BookishTheme.stickerAssets` to describe the final art and phrase, removing the placeholder wording. Keep labels concise and readable with VoiceOver.
-
-Use approved Lunair artwork. Do not generate or redraw the mascot from these neutral placeholders. Keep the tone communal, warm, and noncompetitive. Use drawn art rather than emoji. Do not introduce races, rankings, first-to-finish copy, or superlatives.
-
-The shared scaffold palette is cream `#FFF8EC`, pink `#F8CADB`, butter `#F8E7A4`, mint `#D2E9D9`, sky `#CCE5F1`, and lilac `#DFD2EC`. Wine `#6F2940` is reserved for ink and buttons. The placeholders use wine only for text and linework.
-
-Apple supports small at 300 x 300 pixels, regular at 408 x 408 pixels, and large at 618 x 618 pixels. Choose one size for the whole pack. If the final artwork requires another size, change every sticker's pixel dimensions and the pack's `grid-size` together, then rebuild.
+All 14 stickers use 408 x 408 pixels, at the regular size's @3x resolution. Keep static, transparent, 8-bit RGBA PNGs below 500 KB each. Do not add @1x or @2x copies. Messages derives those sizes. Preserve the supplied artwork and captions.
 
 ## Extension icon replacement
 
@@ -53,7 +38,7 @@ Apple supports small at 300 x 300 pixels, regular at 408 x 408 pixels, and large
 
 ## Review before release
 
-Open the catalog in Xcode to confirm all six stickers and all icon slots appear. Build the containing app, then inspect the pack in Messages on a simulator and a device. Verify the phrases remain legible at displayed size, transparency looks clean on light and dark message backgrounds, VoiceOver describes each sticker, and the pack supports sending and peeling onto a message. Replace every placeholder before App Store submission.
+Open the catalog in Xcode to confirm all 14 stickers and all icon slots appear. Build the containing app, then inspect the pack in Messages on a simulator and a device. Verify the phrases remain legible at displayed size, transparency looks clean on light and dark message backgrounds, VoiceOver describes each sticker, and the pack supports sending and peeling onto a message. Replace the separate icon placeholders before App Store submission.
 
 ## Sources
 

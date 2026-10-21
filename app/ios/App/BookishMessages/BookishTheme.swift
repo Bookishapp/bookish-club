@@ -4,12 +4,20 @@ import UIKit
 enum BookishTheme {
     enum TypeStyle { case title, heading, body, caption, button }
     static let stickerAssets: [(name: String, label: String)] = [
-        ("lunair_yes", "Yes. Bookish sticker."),
-        ("lunair_maybe", "Maybe. Bookish sticker."),
-        ("lunair_cant_make_it", "Can't make it. Bookish sticker."),
-        ("lunair_book_club", "Book club. Bookish sticker."),
-        ("lunair_one_more_chapter", "One more chapter. Bookish sticker."),
-        ("lunair_bookmark", "Bookmark. Bookish sticker.")
+        ("lunair-sticker-01-hi-book-club", "hi book club"),
+        ("lunair-sticker-02-im-in", "I'm in"),
+        ("lunair-sticker-03-see-you-thursday", "see you thursday"),
+        ("lunair-sticker-04-no-spoilers", "no spoilers"),
+        ("lunair-sticker-05-i-cannot", "I cannot"),
+        ("lunair-sticker-06-swooning", "swooning"),
+        ("lunair-sticker-07-not-crying", "not crying"),
+        ("lunair-sticker-08-spill-it", "spill it"),
+        ("lunair-sticker-09-plot-twist", "plot twist"),
+        ("lunair-sticker-10-one-more-chapter", "one more chapter"),
+        ("lunair-sticker-11-youre-invited", "you're invited"),
+        ("lunair-sticker-12-your-turn-to-host", "your turn to host"),
+        ("lunair-sticker-13-on-my-way", "on my way"),
+        ("lunair-sticker-14-no-peeking", "no peeking")
     ]
     static var cream: UIColor { color("Paper", 0xFFF8EC) }
     static var wine: UIColor { color("Ink", 0x6F2940) }
