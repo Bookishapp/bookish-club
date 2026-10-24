@@ -12,9 +12,9 @@ create table public.bookish_city_centers (
  city text not null,state text not null,lat double precision not null,lng double precision not null,
  primary key(city,state),check(lat between -90 and 90),check(lng between -180 and 180)
 );
+grant select,insert,update,delete on table public.bookish_city_centers to service_role;
 alter table public.bookish_city_centers enable row level security;
-revoke all on public.bookish_city_centers from public,anon,authenticated;
-grant select,insert,update,delete on public.bookish_city_centers to service_role;
+revoke all on table public.bookish_city_centers from public,anon,authenticated;
 create function public.bookish_visibility_location(p_city text,p_state text) returns boolean
 language sql stable security definer set search_path='' as $$
  select exists(select 1 from public.bookish_city_centers where lower(city)=lower(trim(p_city)) and state=upper(trim(p_state)))
@@ -26,11 +26,11 @@ create table public.bookish_join_attempts (
   id uuid primary key default gen_random_uuid(), ip_hash text not null,
   email text not null, created_at timestamptz not null default now()
 );
+grant select,insert,update,delete on table public.bookish_join_attempts to service_role;
+alter table public.bookish_join_attempts enable row level security;
+revoke all on table public.bookish_join_attempts from public,anon,authenticated;
 create index bookish_join_attempts_ip on public.bookish_join_attempts(ip_hash,created_at);
 create index bookish_join_attempts_email on public.bookish_join_attempts(email,created_at);
-alter table public.bookish_join_attempts enable row level security;
-revoke all on public.bookish_join_attempts from public,anon,authenticated;
-grant select,insert,delete on public.bookish_join_attempts to service_role;
 -- No raw access: even the owner capability goes through a scoped server function.
 revoke all on public.bookish_clubs,public.bookish_submissions,public.bookish_join_requests,public.bookish_invites from public,anon,authenticated;
 grant select,insert,update,delete on public.bookish_clubs,public.bookish_submissions,public.bookish_join_requests,public.bookish_invites to service_role;

@@ -25,6 +25,8 @@ Review focus: stale static output and iOS saved records; arbitrary host token ac
 
 ## Task 3: Review and delivery
 - [x] Self-review against the brief and security boundaries, per the no-worker instruction.
-- [ ] Generate apply.sql with backup, rollback.sql, and check.sql in the job directory. Never apply to production.
-- [ ] Commit, push the feature branch, and create a review PR with deployment order and limitations.
-- [ ] Write REPORT.md with NEEDS TED REVIEW and a blocked delivery state, update the card, and report in five lines.
+- [x] Generate apply.sql with backup, rollback.sql, and check.sql in the job directory. Never apply to production.
+- [x] Commit, push the feature branch, and create a review PR with deployment order and limitations.
+- [x] Write REPORT.md with NEEDS TED REVIEW and a blocked delivery state, update the card, and report in five lines.
+
+October 23 readiness follow-up: enforce the current grant guard, preserve legacy ACLs without dynamic SQL, capture Chrome QA screenshots, rerun CI on the review commit, and hand back to Ted. Production application and coordinated release remain gated.
