@@ -105,7 +105,7 @@ The repo is public because GitHub Pages for private repos needs a paid plan.
 - `bookish-join-respond` (GET `?token=&action=approve|decline`) records the decision, emails the reader, and redirects the host to `/join/done/`.
 - Email is a **logged stub** until `BOOKISH_EMAIL_FROM` is set (see `supabase/functions/_shared/bookish.ts`).
 - `bookish-confirm` (GET `?token=`) handles double opt-in. It sets `status='confirmed'` and redirects to `/confirmed/`.
-- Confirmation emails are sent only when `BOOKISH_EMAIL_FROM` is set, for example `Bookish Club <hello@bookishclub.com>`. They are sent through Resend using the existing `RESEND_API_KEY`. Until `bookishclub.com` is verified in Resend, rows stay `pending`.
+- The code gates confirmation email attempts only on the presence of both `BOOKISH_EMAIL_FROM` and `RESEND_API_KEY`; it does not check DNS or domain verification. An unverified `meetbookish.com` fails closed only because Resend rejects the send. Verify its sending DNS in Resend before setting `BOOKISH_EMAIL_FROM` to an approved sender such as `Bookish <hello@meetbookish.com>`. A submission stays `pending` until its confirmation link is used, even after Resend accepts the email. Provider rejection or a thrown email request leaves `email_sent_at` unset and returns success for the saved row with `confirm_sent: false`. Enabling the sender does not resend existing pending submissions. See the [confirmation email activation guide](docs/confirmation-emails.md) for verification, rollout, rollback, and offline tests. Production setup, deployment, and test sends require separate approval.
 
 Deploy the functions:
 

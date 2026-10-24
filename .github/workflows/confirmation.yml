@@ -1,0 +1,24 @@
+name: Confirmation email checks
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  confirmation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Test confirmation handlers without network or credentials
+        run: npm run test:confirmation
+      - name: Build website with offline fixtures
+        run: npm run build
+        env:
+          SITE_URL: https://meetbookish.com
+          BOOKISH_VERIFIED_FILE: tests/confirmation/fixtures/verified.json
+          BOOKISH_COMMUNITY_FILE: tests/confirmation/fixtures/community.json

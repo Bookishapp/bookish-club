@@ -41,8 +41,10 @@ export async function sha256(s: string) {
 export const ipOf = (req: Request) => (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || "unknown";
 
 // Email: sends through Resend only when a Bookish sender is configured
-// (BOOKISH_EMAIL_FROM, e.g. "Bookish <hello@bookishclub.com>" on a verified
-// domain). Otherwise it is a logged stub and returns false.
+// (BOOKISH_EMAIL_FROM, e.g. "Bookish <hello@meetbookish.com>", plus
+// RESEND_API_KEY). This is a secret-presence gate, not a verification check.
+// Verify DNS before setting BOOKISH_EMAIL_FROM; Resend enforces verification.
+// Without both settings it is a logged stub and returns false.
 export async function sendEmail(to: string, subject: string, text: string): Promise<boolean> {
   const from = Deno.env.get("BOOKISH_EMAIL_FROM");
   const key = Deno.env.get("RESEND_API_KEY");
