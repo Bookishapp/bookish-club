@@ -18,7 +18,58 @@
 		BB0000000000000000000001 /* BookishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0000000000000000000001 /* BookishViewController.swift */; };
 		BB0000000000000000000002 /* BookishMapPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0000000000000000000002 /* BookishMapPlugin.swift */; };
 		BB0000000000000000000003 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = BA0000000000000000000003 /* PrivacyInfo.xcprivacy */; };
+		D10000000000000000000001 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000001 /* MessagesViewController.swift */; };
+		D10000000000000000000002 /* MessageState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000002 /* MessageState.swift */; };
+		D10000000000000000000003 /* BookishTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000003 /* BookishTheme.swift */; };
+		D10000000000000000000004 /* ClubDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000004 /* ClubDataStore.swift */; };
+		D10000000000000000000005 /* CardRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000005 /* CardRenderer.swift */; };
+		D10000000000000000000006 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000006 /* Assets.xcassets */; };
+		D10000000000000000000007 /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D20000000000000000000007 /* Messages.framework */; };
+		D10000000000000000000008 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D20000000000000000000008 /* UIKit.framework */; };
+		D10000000000000000000009 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000009 /* Stickers.xcassets */; };
+		D1000000000000000000000A /* BookishStickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D2000000000000000000000B /* BookishStickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D1000000000000000000000C /* StickerPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000000E /* StickerPickerViewController.swift */; };
+		DB0000000000000000000001 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0000000000000000000001 /* SceneDelegate.swift */; };
+		D10000000000000000000100 /* lunair-sticker-01-hi-book-club.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000100 /* lunair-sticker-01-hi-book-club.png */; };
+		D10000000000000000000101 /* lunair-sticker-02-im-in.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000101 /* lunair-sticker-02-im-in.png */; };
+		D10000000000000000000102 /* lunair-sticker-03-see-you-thursday.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000102 /* lunair-sticker-03-see-you-thursday.png */; };
+		D10000000000000000000103 /* lunair-sticker-04-no-spoilers.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000103 /* lunair-sticker-04-no-spoilers.png */; };
+		D10000000000000000000104 /* lunair-sticker-05-i-cannot.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000104 /* lunair-sticker-05-i-cannot.png */; };
+		D10000000000000000000105 /* lunair-sticker-06-swooning.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000105 /* lunair-sticker-06-swooning.png */; };
+		D10000000000000000000106 /* lunair-sticker-07-not-crying.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000106 /* lunair-sticker-07-not-crying.png */; };
+		D10000000000000000000107 /* lunair-sticker-08-spill-it.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000107 /* lunair-sticker-08-spill-it.png */; };
+		D10000000000000000000108 /* lunair-sticker-09-plot-twist.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000108 /* lunair-sticker-09-plot-twist.png */; };
+		D10000000000000000000109 /* lunair-sticker-10-one-more-chapter.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000109 /* lunair-sticker-10-one-more-chapter.png */; };
+		D1000000000000000000010A /* lunair-sticker-11-youre-invited.png in Resources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000010A /* lunair-sticker-11-youre-invited.png */; };
+		D1000000000000000000010B /* lunair-sticker-12-your-turn-to-host.png in Resources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000010B /* lunair-sticker-12-your-turn-to-host.png */; };
+		D1000000000000000000010C /* lunair-sticker-13-on-my-way.png in Resources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000010C /* lunair-sticker-13-on-my-way.png */; };
+		D1000000000000000000010D /* lunair-sticker-14-no-peeking.png in Resources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000010D /* lunair-sticker-14-no-peeking.png */; };
+		BD0000000000000000000001 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = BE0000000000000000000001 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D30000000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 504EC2FC1FED79650016851F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D40000000000000000000002;
+			remoteInfo = BookishStickers;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D50000000000000000000001 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				D1000000000000000000000A /* BookishStickers.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		2FAD9762203C412B000D30F8 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
@@ -36,6 +87,36 @@
 		BA0000000000000000000001 /* BookishViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookishViewController.swift; sourceTree = "<group>"; };
 		BA0000000000000000000002 /* BookishMapPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookishMapPlugin.swift; sourceTree = "<group>"; };
 		BA0000000000000000000003 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		D20000000000000000000001 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
+		D20000000000000000000002 /* MessageState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageState.swift; sourceTree = "<group>"; };
+		D20000000000000000000003 /* BookishTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookishTheme.swift; sourceTree = "<group>"; };
+		D20000000000000000000004 /* ClubDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubDataStore.swift; sourceTree = "<group>"; };
+		D20000000000000000000005 /* CardRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardRenderer.swift; sourceTree = "<group>"; };
+		D20000000000000000000006 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D20000000000000000000007 /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = System/Library/Frameworks/Messages.framework; sourceTree = SDKROOT; };
+		D20000000000000000000008 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		D20000000000000000000009 /* Stickers.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Stickers.xcassets; sourceTree = "<group>"; };
+		D2000000000000000000000A /* BookishMessages.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BookishMessages.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2000000000000000000000B /* BookishStickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BookishStickers.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2000000000000000000000C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D2000000000000000000000D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D2000000000000000000000E /* StickerPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPickerViewController.swift; sourceTree = "<group>"; };
+		DA0000000000000000000001 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		D20000000000000000000100 /* lunair-sticker-01-hi-book-club.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-01-hi-book-club.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-01-hi-book-club.sticker/lunair-sticker-01-hi-book-club.png"; sourceTree = SOURCE_ROOT; };
+		D20000000000000000000101 /* lunair-sticker-02-im-in.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-02-im-in.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-02-im-in.sticker/lunair-sticker-02-im-in.png"; sourceTree = SOURCE_ROOT; };
+		D20000000000000000000102 /* lunair-sticker-03-see-you-thursday.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-03-see-you-thursday.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-03-see-you-thursday.sticker/lunair-sticker-03-see-you-thursday.png"; sourceTree = SOURCE_ROOT; };
+		D20000000000000000000103 /* lunair-sticker-04-no-spoilers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-04-no-spoilers.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-04-no-spoilers.sticker/lunair-sticker-04-no-spoilers.png"; sourceTree = SOURCE_ROOT; };
+		D20000000000000000000104 /* lunair-sticker-05-i-cannot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-05-i-cannot.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-05-i-cannot.sticker/lunair-sticker-05-i-cannot.png"; sourceTree = SOURCE_ROOT; };
+		D20000000000000000000105 /* lunair-sticker-06-swooning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-06-swooning.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-06-swooning.sticker/lunair-sticker-06-swooning.png"; sourceTree = SOURCE_ROOT; };
+		D20000000000000000000106 /* lunair-sticker-07-not-crying.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-07-not-crying.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-07-not-crying.sticker/lunair-sticker-07-not-crying.png"; sourceTree = SOURCE_ROOT; };
+		D20000000000000000000107 /* lunair-sticker-08-spill-it.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-08-spill-it.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-08-spill-it.sticker/lunair-sticker-08-spill-it.png"; sourceTree = SOURCE_ROOT; };
+		D20000000000000000000108 /* lunair-sticker-09-plot-twist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-09-plot-twist.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-09-plot-twist.sticker/lunair-sticker-09-plot-twist.png"; sourceTree = SOURCE_ROOT; };
+		D20000000000000000000109 /* lunair-sticker-10-one-more-chapter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-10-one-more-chapter.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-10-one-more-chapter.sticker/lunair-sticker-10-one-more-chapter.png"; sourceTree = SOURCE_ROOT; };
+		D2000000000000000000010A /* lunair-sticker-11-youre-invited.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-11-youre-invited.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-11-youre-invited.sticker/lunair-sticker-11-youre-invited.png"; sourceTree = SOURCE_ROOT; };
+		D2000000000000000000010B /* lunair-sticker-12-your-turn-to-host.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-12-your-turn-to-host.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-12-your-turn-to-host.sticker/lunair-sticker-12-your-turn-to-host.png"; sourceTree = SOURCE_ROOT; };
+		D2000000000000000000010C /* lunair-sticker-13-on-my-way.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-13-on-my-way.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-13-on-my-way.sticker/lunair-sticker-13-on-my-way.png"; sourceTree = SOURCE_ROOT; };
+		D2000000000000000000010D /* lunair-sticker-14-no-peeking.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-14-no-peeking.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-14-no-peeking.sticker/lunair-sticker-14-no-peeking.png"; sourceTree = SOURCE_ROOT; };
+		BE0000000000000000000001 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +128,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D50000000000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D10000000000000000000007 /* Messages.framework in Frameworks */,
+				D10000000000000000000008 /* UIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -54,6 +144,8 @@
 			isa = PBXGroup;
 			children = (
 				AF277DCFFFF123FFC6DF26C7 /* Pods_App.framework */,
+				D20000000000000000000007 /* Messages.framework */,
+				D20000000000000000000008 /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -62,6 +154,8 @@
 			isa = PBXGroup;
 			children = (
 				504EC3061FED79650016851F /* App */,
+				D60000000000000000000001 /* BookishMessages */,
+				D60000000000000000000002 /* BookishStickers */,
 				504EC3051FED79650016851F /* Products */,
 				7F8756D8B27F46E3366F6CEA /* Pods */,
 				27E2DDA53C4D2A4D1A88CE4A /* Frameworks */,
@@ -72,6 +166,8 @@
 			isa = PBXGroup;
 			children = (
 				504EC3041FED79650016851F /* App.app */,
+				D2000000000000000000000A /* BookishMessages.appex */,
+				D2000000000000000000000B /* BookishStickers.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -81,6 +177,7 @@
 			children = (
 				50379B222058CBB4000EE86E /* capacitor.config.json */,
 				504EC3071FED79650016851F /* AppDelegate.swift */,
+				DA0000000000000000000001 /* SceneDelegate.swift */,
 				BA0000000000000000000003 /* PrivacyInfo.xcprivacy */,
 				BA0000000000000000000002 /* BookishMapPlugin.swift */,
 				BA0000000000000000000001 /* BookishViewController.swift */,
@@ -103,6 +200,53 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		D60000000000000000000001 /* BookishMessages */ = {
+			isa = PBXGroup;
+			children = (
+				D20000000000000000000001 /* MessagesViewController.swift */,
+				D20000000000000000000002 /* MessageState.swift */,
+				D20000000000000000000003 /* BookishTheme.swift */,
+				D20000000000000000000004 /* ClubDataStore.swift */,
+				D20000000000000000000005 /* CardRenderer.swift */,
+				D2000000000000000000000E /* StickerPickerViewController.swift */,
+				D20000000000000000000006 /* Assets.xcassets */,
+				D60000000000000000000003 /* Sticker Images */,
+				D2000000000000000000000C /* Info.plist */,
+			);
+			path = BookishMessages;
+			sourceTree = "<group>";
+		};
+		D60000000000000000000002 /* BookishStickers */ = {
+			isa = PBXGroup;
+			children = (
+				D20000000000000000000009 /* Stickers.xcassets */,
+				D2000000000000000000000D /* Info.plist */,
+				BE0000000000000000000001 /* PrivacyInfo.xcprivacy */,
+			);
+			path = BookishStickers;
+			sourceTree = "<group>";
+		};
+		D60000000000000000000003 /* Sticker Images */ = {
+			isa = PBXGroup;
+			children = (
+				D20000000000000000000100 /* lunair-sticker-01-hi-book-club.png */,
+				D20000000000000000000101 /* lunair-sticker-02-im-in.png */,
+				D20000000000000000000102 /* lunair-sticker-03-see-you-thursday.png */,
+				D20000000000000000000103 /* lunair-sticker-04-no-spoilers.png */,
+				D20000000000000000000104 /* lunair-sticker-05-i-cannot.png */,
+				D20000000000000000000105 /* lunair-sticker-06-swooning.png */,
+				D20000000000000000000106 /* lunair-sticker-07-not-crying.png */,
+				D20000000000000000000107 /* lunair-sticker-08-spill-it.png */,
+				D20000000000000000000108 /* lunair-sticker-09-plot-twist.png */,
+				D20000000000000000000109 /* lunair-sticker-10-one-more-chapter.png */,
+				D2000000000000000000010A /* lunair-sticker-11-youre-invited.png */,
+				D2000000000000000000010B /* lunair-sticker-12-your-turn-to-host.png */,
+				D2000000000000000000010C /* lunair-sticker-13-on-my-way.png */,
+				D2000000000000000000010D /* lunair-sticker-14-no-peeking.png */,
+			);
+			name = "Sticker Images";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -115,15 +259,49 @@
 				504EC3011FED79650016851F /* Frameworks */,
 				504EC3021FED79650016851F /* Resources */,
 				9592DBEFFC6D2A0C8D5DEB22 /* [CP] Embed Pods Frameworks */,
+				D50000000000000000000001 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D70000000000000000000001 /* PBXTargetDependency */,
 			);
 			name = App;
 			productName = App;
 			productReference = 504EC3041FED79650016851F /* App.app */;
 			productType = "com.apple.product-type.application";
+		};
+		D40000000000000000000001 /* BookishMessages */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D80000000000000000000001 /* Build configuration list for PBXNativeTarget "BookishMessages" */;
+			buildPhases = (
+				D50000000000000000000003 /* Sources */,
+				D50000000000000000000002 /* Frameworks */,
+				D50000000000000000000004 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BookishMessages;
+			productName = BookishMessages;
+			productReference = D2000000000000000000000A /* BookishMessages.appex */;
+			productType = "com.apple.product-type.app-extension.messages";
+		};
+		D40000000000000000000002 /* BookishStickers */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D80000000000000000000002 /* Build configuration list for PBXNativeTarget "BookishStickers" */;
+			buildPhases = (
+				D50000000000000000000005 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BookishStickers;
+			productName = BookishStickers;
+			productReference = D2000000000000000000000B /* BookishStickers.appex */;
+			productType = "com.apple.product-type.app-extension.messages-sticker-pack";
 		};
 /* End PBXNativeTarget section */
 
@@ -134,6 +312,14 @@
 				LastSwiftUpdateCheck = 0920;
 				LastUpgradeCheck = 0920;
 				TargetAttributes = {
+					D40000000000000000000001 = {
+						CreatedOnToolsVersion = 27.1;
+						ProvisioningStyle = Automatic;
+					};
+					D40000000000000000000002 = {
+						CreatedOnToolsVersion = 27.1;
+						ProvisioningStyle = Automatic;
+					};
 					504EC3031FED79650016851F = {
 						CreatedOnToolsVersion = 9.2;
 						LastSwiftMigration = 1100;
@@ -157,6 +343,8 @@
 			projectRoot = "";
 			targets = (
 				504EC3031FED79650016851F /* App */,
+				D40000000000000000000001 /* BookishMessages */,
+				D40000000000000000000002 /* BookishStickers */,
 			);
 		};
 /* End PBXProject section */
@@ -173,6 +361,37 @@
 				50379B232058CBB4000EE86E /* capacitor.config.json in Resources */,
 				504EC30D1FED79650016851F /* Main.storyboard in Resources */,
 				2FAD9763203C412B000D30F8 /* config.xml in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D50000000000000000000004 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D10000000000000000000006 /* Assets.xcassets in Resources */,
+				D10000000000000000000100 /* lunair-sticker-01-hi-book-club.png in Resources */,
+				D10000000000000000000101 /* lunair-sticker-02-im-in.png in Resources */,
+				D10000000000000000000102 /* lunair-sticker-03-see-you-thursday.png in Resources */,
+				D10000000000000000000103 /* lunair-sticker-04-no-spoilers.png in Resources */,
+				D10000000000000000000104 /* lunair-sticker-05-i-cannot.png in Resources */,
+				D10000000000000000000105 /* lunair-sticker-06-swooning.png in Resources */,
+				D10000000000000000000106 /* lunair-sticker-07-not-crying.png in Resources */,
+				D10000000000000000000107 /* lunair-sticker-08-spill-it.png in Resources */,
+				D10000000000000000000108 /* lunair-sticker-09-plot-twist.png in Resources */,
+				D10000000000000000000109 /* lunair-sticker-10-one-more-chapter.png in Resources */,
+				D1000000000000000000010A /* lunair-sticker-11-youre-invited.png in Resources */,
+				D1000000000000000000010B /* lunair-sticker-12-your-turn-to-host.png in Resources */,
+				D1000000000000000000010C /* lunair-sticker-13-on-my-way.png in Resources */,
+				D1000000000000000000010D /* lunair-sticker-14-no-peeking.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D50000000000000000000005 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D10000000000000000000009 /* Stickers.xcassets in Resources */,
+				BD0000000000000000000001 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -220,12 +439,34 @@
 			buildActionMask = 2147483647;
 			files = (
 				504EC3081FED79650016851F /* AppDelegate.swift in Sources */,
+				DB0000000000000000000001 /* SceneDelegate.swift in Sources */,
 				BB0000000000000000000002 /* BookishMapPlugin.swift in Sources */,
 				BB0000000000000000000001 /* BookishViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D50000000000000000000003 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D10000000000000000000001 /* MessagesViewController.swift in Sources */,
+				D10000000000000000000002 /* MessageState.swift in Sources */,
+				D10000000000000000000003 /* BookishTheme.swift in Sources */,
+				D10000000000000000000004 /* ClubDataStore.swift in Sources */,
+				D10000000000000000000005 /* CardRenderer.swift in Sources */,
+				D1000000000000000000000C /* StickerPickerViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D70000000000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D40000000000000000000002 /* BookishStickers */;
+			targetProxy = D30000000000000000000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		504EC30B1FED79650016851F /* Main.storyboard */ = {
@@ -360,11 +601,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L8YGD7ATLL;
+				CURRENT_PROJECT_VERSION = 3;
 				INFOPLIST_FILE = App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 1.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEBUG\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.meetbookish.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -380,15 +622,106 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L8YGD7ATLL;
+				CURRENT_PROJECT_VERSION = 3;
 				INFOPLIST_FILE = App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.meetbookish.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		D90000000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = L8YGD7ATLL;
+				CURRENT_PROJECT_VERSION = 3;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = BookishMessages/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.meetbookish.app.BookishMessages;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		D90000000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = L8YGD7ATLL;
+				CURRENT_PROJECT_VERSION = 3;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = BookishMessages/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.meetbookish.app.BookishMessages;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		D90000000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = L8YGD7ATLL;
+				CURRENT_PROJECT_VERSION = 3;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = BookishStickers/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.meetbookish.app.BookishStickers;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		D90000000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = L8YGD7ATLL;
+				CURRENT_PROJECT_VERSION = 3;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = BookishStickers/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.meetbookish.app.BookishStickers;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
@@ -410,6 +743,24 @@
 			buildConfigurations = (
 				504EC3171FED79650016851F /* Debug */,
 				504EC3181FED79650016851F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D80000000000000000000001 /* Build configuration list for PBXNativeTarget "BookishMessages" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D90000000000000000000001 /* Debug */,
+				D90000000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D80000000000000000000002 /* Build configuration list for PBXNativeTarget "BookishStickers" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D90000000000000000000003 /* Debug */,
+				D90000000000000000000004 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

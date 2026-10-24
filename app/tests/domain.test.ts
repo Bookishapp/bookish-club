@@ -23,6 +23,29 @@ test('feed rejects malformed data and strips fields outside the public city-leve
   assert.equal(c.verified, true);
   assert.throws(() => validateFeed('books', [{ id: 'broken' }]));
 });
+test('public-calendar clubs always retain a safe original-listing action after refresh', () => {
+  const club = { name: 'Readers', city: 'San Antonio', state: 'TX', verified: false };
+  const clubs = validateFeed('clubs', [
+    { ...club, id: 'https', source_url: 'https://library.example/events' },
+    { ...club, id: 'verified-upgrade', source_url: 'http://mysapl.org/EventsNews/EventsCalendar.aspx?trumbaEmbed=view%3Devent%26eventid%3D183243992' },
+    { ...club, id: 'unverified-http', source_url: 'http://unknown.example/event' },
+    { ...club, id: 'missing-source', source_url: null },
+    { ...club, id: 'unsafe-source', source_url: 'javascript:alert(1)' },
+    { ...club, id: 'hosted', source_url: null, verified: true },
+  ]);
+  assert.deepEqual(clubs.map(c => c.id), ['https', 'verified-upgrade', 'hosted']);
+  assert.equal(clubs[0].source_url, 'https://library.example/events');
+  assert.equal(clubs[1].source_url, 'https://www.mysapl.org/Events-News/Events-Calendar?trumbaEmbed=view%3Devent%26eventid%3D183243992');
+  assert.equal(clubs[2].verified, true, 'Hosted clubs can use their in-app join action without an external calendar');
+});
+test('bundled public-calendar clubs have usable HTTPS listing links before the first refresh', () => {
+  const clubs = JSON.parse(fs.readFileSync(new URL('../public/data/clubs.json', import.meta.url), 'utf8'));
+  assert.ok(clubs.length > 2000, 'Keep the nationwide directory available offline');
+  for (const c of clubs) {
+    if (!c.verified) assert.equal(new URL(c.source_url).protocol, 'https:', c.id);
+  }
+  assert.equal(validateFeed('clubs', clubs).length, clubs.length, 'The bundle should not lose clubs when validated');
+});
 test('read-next preserves sequel preference, author diversity, and excludes loved book', () => {
   const books = JSON.parse(fs.readFileSync(new URL('../public/data/books.json', import.meta.url), 'utf8'));
   const taste = { moods: ['big_fantasy'], length: 'any', loved: 'fourth-wing' };

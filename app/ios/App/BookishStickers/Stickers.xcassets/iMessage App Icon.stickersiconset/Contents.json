@@ -1,0 +1,85 @@
+{
+  "images": [
+    {
+      "idiom": "iphone",
+      "size": "29x29",
+      "scale": "2x",
+      "filename": "bookish_stickers_iphone_29x29_2x.png"
+    },
+    {
+      "idiom": "iphone",
+      "size": "29x29",
+      "scale": "3x",
+      "filename": "bookish_stickers_iphone_29x29_3x.png"
+    },
+    {
+      "idiom": "iphone",
+      "size": "60x45",
+      "scale": "2x",
+      "filename": "bookish_stickers_iphone_60x45_2x.png"
+    },
+    {
+      "idiom": "iphone",
+      "size": "60x45",
+      "scale": "3x",
+      "filename": "bookish_stickers_iphone_60x45_3x.png"
+    },
+    {
+      "idiom": "ipad",
+      "size": "29x29",
+      "scale": "2x",
+      "filename": "bookish_stickers_ipad_29x29_2x.png"
+    },
+    {
+      "idiom": "ipad",
+      "size": "67x50",
+      "scale": "2x",
+      "filename": "bookish_stickers_ipad_67x50_2x.png"
+    },
+    {
+      "idiom": "ipad",
+      "size": "74x55",
+      "scale": "2x",
+      "filename": "bookish_stickers_ipad_74x55_2x.png"
+    },
+    {
+      "idiom": "universal",
+      "size": "27x20",
+      "scale": "2x",
+      "filename": "bookish_stickers_universal_27x20_2x.png",
+      "platform": "ios"
+    },
+    {
+      "idiom": "universal",
+      "size": "27x20",
+      "scale": "3x",
+      "filename": "bookish_stickers_universal_27x20_3x.png",
+      "platform": "ios"
+    },
+    {
+      "idiom": "universal",
+      "size": "32x24",
+      "scale": "2x",
+      "filename": "bookish_stickers_universal_32x24_2x.png",
+      "platform": "ios"
+    },
+    {
+      "idiom": "universal",
+      "size": "32x24",
+      "scale": "3x",
+      "filename": "bookish_stickers_universal_32x24_3x.png",
+      "platform": "ios"
+    },
+    {
+      "idiom": "ios-marketing",
+      "size": "1024x768",
+      "scale": "1x",
+      "filename": "bookish_stickers_ios-marketing_1024x768_1x.png",
+      "platform": "ios"
+    }
+  ],
+  "info": {
+    "author": "xcode",
+    "version": 1
+  }
+}
