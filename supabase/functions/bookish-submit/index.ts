@@ -131,7 +131,8 @@ Deno.serve(async (req) => {
     return json({ ok: false, error: "server" }, 500, origin);
   }
 
-  // Double opt-in, only when a Bookish Club sender is configured.
+  // Secret-presence gate only. Verify the sender domain before setting FROM;
+  // Resend, not this handler, rejects sends from an unverified domain.
   const from = Deno.env.get("BOOKISH_EMAIL_FROM");
   const resendKey = Deno.env.get("RESEND_API_KEY");
   let confirmSent = false;
@@ -140,18 +141,26 @@ Deno.serve(async (req) => {
     const what = kind === "claim"
       ? `your claim for ${payload.club_name}`
       : kind === "start" ? `your new club, ${payload.club_name}` : "the host tools waitlist";
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { authorization: `Bearer ${resendKey}`, "content-type": "application/json" },
-      body: JSON.stringify({
-        from, to: [email],
-        subject: "Please confirm your email for Bookish",
-        text: `Hello${payload.first_name ? " " + payload.first_name : ""},\n\nThanks for reaching out about ${what}. Please confirm this is your email address:\n\n${confirmUrl}\n\nIf this wasn't you, ignore this note and nothing will happen.\n\nWarmly,\nBookish`,
-      }),
-    });
+    let res: Response;
+    try {
+      res = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: { authorization: `Bearer ${resendKey}`, "content-type": "application/json" },
+        body: JSON.stringify({
+          from, to: [email],
+          subject: "Please confirm your email for Bookish",
+          text: `Hello${payload.first_name ? " " + payload.first_name : ""},\n\nThanks for reaching out about ${what}. Please confirm this is your email address:\n\n${confirmUrl}\n\nIf this wasn't you, ignore this note and nothing will happen.\n\nWarmly,\nBookish`,
+        }),
+      });
+    } catch {
+      // The row is already saved. Do not turn an email transport failure into
+      // a failed submission, or log exception details that could expose data.
+      console.error("confirm email request failed");
+      return json({ ok: true, confirm_sent: false }, 200, origin);
+    }
     confirmSent = res.ok;
     if (res.ok) await sb.from("bookish_submissions").update({ email_sent_at: new Date().toISOString() }).eq("id", data.id);
-    else console.error("confirm email failed", res.status, await res.text());
+    else console.error("confirm email failed", res.status);
   }
 
   return json({ ok: true, confirm_sent: confirmSent }, 200, origin);

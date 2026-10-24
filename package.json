@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "test:confirmation": "node --test tests/confirmation/*.test.mjs",
     "ref": "node scripts/build-ref.mjs",
     "merge": "node scripts/merge.mjs",
     "build": "node scripts/build.mjs",
