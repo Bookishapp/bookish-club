@@ -1,0 +1,62 @@
+name: Site checks
+on:
+  pull_request:
+    paths:
+      - "src/**"
+      - "scripts/**"
+      - "public/**"
+      - "data/**"
+      - "app/**"
+      - "package.json"
+      - ".github/workflows/site-checks.yml"
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "scripts/**"
+      - "public/**"
+      - "data/**"
+      - "app/**"
+      - "package.json"
+      - ".github/workflows/site-checks.yml"
+permissions:
+  contents: read
+concurrency:
+  group: site-checks-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  site-and-app:
+    name: Static site and app tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - name: Check site JavaScript syntax
+        run: |
+          node --check scripts/build.mjs
+          node --check src/site.js
+          node --check src/map.js
+          node --check src/read-next.js
+      - name: Build static site with local fixtures
+        run: |
+          printf '%s\n' '{"clubs":[]}' > "$RUNNER_TEMP/bookish-verified.json"
+          printf '%s\n' '{"city":[],"state":[],"national":[],"next":[]}' > "$RUNNER_TEMP/bookish-community.json"
+          BOOKISH_VERIFIED_FILE="$RUNNER_TEMP/bookish-verified.json" \
+          BOOKISH_COMMUNITY_FILE="$RUNNER_TEMP/bookish-community.json" \
+          npm run build
+        env:
+          SITE_URL: https://meetbookish.com
+      - name: Install app test dependencies
+        run: npm ci
+        working-directory: app
+      - name: Run app unit tests
+        run: npm test
+        working-directory: app
+      - name: Build app and run UI smoke tests
+        run: npm run test:ui
+        working-directory: app
