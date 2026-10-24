@@ -138,8 +138,9 @@ const page = (p, prio = 0.6) => sitemap.push({ loc: abs(p), prio });
 const WORDMARK = (eager) => `<img src="${url("/img/wordmark-160.webp")}" srcset="${url("/img/wordmark-160.webp")} 1x, ${url("/img/wordmark-320.webp")} 2x, ${url("/img/wordmark-480.webp")} 3x" width="160" height="62" alt="Bookish"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`;
 const CSS = (fs.readFileSync(path.join(ROOT, "src/theme.css"), "utf8") + fs.readFileSync(path.join(ROOT, "src/styles.css"), "utf8")).replaceAll("__BASE__", BASE).replace(/\n\s*/g, "\n");
 
-function layout({ title, desc, path: p, body, jsonld = [], noindex = false }) {
+function layout({ title, desc, path: p, body, jsonld = [], noindex = false, landing = false }) {
   const canonical = abs(p);
+  const landingCSS = landing ? fs.readFileSync(path.join(ROOT, "src/landing.css"), "utf8").replaceAll("__BASE__", BASE) : "";
   return `<!doctype html>
 <html lang="en" data-base="${BASE}" data-api="${API}" data-join-api="${JOIN_API}">
 <head>
@@ -161,27 +162,27 @@ ${noindex ? '<meta name="robots" content="noindex">' : ""}
 <link rel="apple-touch-icon" href="${url("/apple-touch-icon.png")}" sizes="180x180">
 <link rel="manifest" href="${url("/site.webmanifest")}">
 <link rel="preload" href="${url("/fonts/manrope-400_800.woff2")}" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="${url("/fonts/unbounded-400_900.woff2")}" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="${url("/fonts/youngserif-400.woff2")}" as="font" type="font/woff2" crossorigin>
-<style>${CSS}</style>
+${landing ? `<link rel="preload" href="${url("/img/landing/fonts/BricolageGrotesque-var.woff2")}" as="font" type="font/woff2" crossorigin>` : `<link rel="preload" href="${url("/fonts/unbounded-400_900.woff2")}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="${url("/fonts/youngserif-400.woff2")}" as="font" type="font/woff2" crossorigin>`}
+<style>${landing ? landingCSS : CSS}</style>
 ${jsonld.map((j) => `<script type="application/ld+json">${JSON.stringify(j).replace(/</g, "\\u003c")}</script>`).join("\n")}
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<header class="mast"><div class="wrap">
+${landing ? "" : `<header class="mast"><div class="wrap">
 <a class="wordmark" href="${url("/")}">${WORDMARK(true)}</a>
-<nav class="nav" aria-label="Main"><a class="hide-sm" href="${url("/book-clubs/")}">Browse</a><a class="hide-sm" href="${url("/read-next/")}">Read next</a><a class="hide-sm" href="${url("/hosts/")}">For hosts</a><a class="hide-sm" href="${url("/resources/")}">Resources</a><a class="btn-sm" href="${url("/start/")}">Start a club</a></nav>
-</div></header>
+<nav class="nav" aria-label="Main"><a class="hide-sm" href="${url("/hosts/")}">For your club</a><a class="hide-sm" href="${url("/read-next/")}">Read next</a><a class="hide-sm" href="${url("/resources/")}">Resources</a><a class="btn-sm" href="${url("/hosts/#waitlist")}">Bring my club</a></nav>
+</div></header>`}
 <main id="main">
 ${body}
 </main>
-<footer class="foot-site"><div class="wrap cols">
+${landing ? "" : `<footer class="foot-site"><div class="wrap cols">
 <div><a class="wordmark" href="${url("/")}">${WORDMARK(false)}</a>
-<p>A directory of real book clubs that meet near you, gathered from the public pages of libraries and bookstores. Every listing links to its source. Details change, so check there before you go.</p>
+<p>Your book club, just more fun. We're bringing the hot takes, the next book vote, and the next meeting into your club's iMessage thread. Join the host waitlist for what's coming.</p>
 <p class="credit">Book covers and book details from <a href="https://openlibrary.org/" rel="noopener">Open Library</a>.</p></div>
 <div><p class="h">Find</p><ul><li><a href="${url("/book-clubs/")}">All cities</a></li><li><a href="${url("/read-next/")}">What to read next</a></li>${["romance", "mystery-thriller", "fantasy", "nonfiction"].filter((g) => genreTotals[g] >= 5).map((g) => `<li><a href="${url(`/genres/${g}/`)}">${GENRES[g]} clubs</a></li>`).join("")}</ul></div>
-<div><p class="h">Hosts</p><ul><li><a href="${url("/start/")}">Start a club</a></li><li><a href="${url("/claim/")}">Claim your club</a></li><li><a href="${url("/hosts/")}">Host tools</a></li><li><a href="${url("/resources/")}">Resources</a></li><li><a href="${url("/about/")}">About &amp; sources</a></li><li><a href="${url("/support/")}">Support</a></li><li><a href="${url("/privacy/")}">Privacy</a> · <a href="${url("/terms/")}">Terms</a></li></ul></div>
-</div></footer>
+<div><p class="h">Your club</p><ul><li><a href="${url("/hosts/#waitlist")}">Bring my club</a></li><li><a href="${url("/start/")}">List your club</a></li><li><a href="${url("/claim/")}">Claim your listing</a></li><li><a href="${url("/resources/")}">Resources</a></li><li><a href="${url("/press/")}">Press</a></li><li><a href="${url("/about/")}">About &amp; sources</a></li><li><a href="${url("/support/")}">Support</a></li><li><a href="${url("/privacy/")}">Privacy</a> · <a href="${url("/terms/")}">Terms</a></li></ul></div>
+</div></footer>`}
 <script src="${url("/site.js")}" defer></script>
 ${body.includes('id="club-map"') ? `<script src="${url("/map.js")}" defer></script>` : ""}
 ${body.includes('id="rn"') ? `<script src="${url("/read-next.js")}" defer></script>` : ""}
@@ -280,8 +281,8 @@ const clubsLd = (list, name) => ({
 });
 
 const hostCallout = (where) => `<section><div class="wrap"><div class="callout-card">${lunair("lunair-reading", 200, 201, 400, 402, "", "cameo")}
-<div><h2>Hosting a club${where ? ` in ${esc(where)}` : ""}?</h2><p>List it for free so readers nearby can find you. Takes two minutes, no account needed.</p></div>
-<a class="btn" href="${url("/start/")}">Add your club ${ARROW}</a></div></div></section>`;
+<div><h2>Already have a club${where ? ` in ${esc(where)}` : ""}?</h2><p>Keep your people. Add anonymous hot takes, book votes, and a little less herding. Coming soon to your iMessage thread.</p></div>
+<a class="btn" href="${url("/hosts/#waitlist")}">Bring my club ${ARROW}</a></div></div></section>`;
 
 function summarize(list) {
   const lib = list.filter((c) => c.host_type === "library").length;
@@ -306,8 +307,6 @@ const secList = (list, mode, head) => {
   return `<section class="seg-sec"${shown ? "" : " hidden"}><hr class="rule">${head}<ul class="clubs">${list.map((c) => clubCard(c, { hidden: c.verified !== (mode === "on") })).join("\n")}</ul></section>`;
 };
 const mainList = (list, mode) => `<ul class="clubs" id="club-list">${list.map((c) => clubCard(c, { hidden: c.verified !== (mode === "on") })).join("\n")}</ul>`;
-// Hide the on-Bookish count on the home card until it is big enough not to read as empty (Sebastian 10-14).
-const SHOW_VERIFIED_MIN = 20;
 const modeEmpty = (where) => `<div class="empty seg-empty" data-empty="on" hidden><p>No clubs${where ? ` in ${esc(where)}` : " here"} are on Bookish yet. <a href="${url("/start/")}">Start one</a>, or see the clubs listed from public calendars.</p></div>
 <div class="empty seg-empty" data-empty="listed" hidden><p>Every club${where ? ` in ${esc(where)}` : " here"} is on Bookish. Nice.</p></div>`;
 const verifiedLede = (v, n) => v
@@ -433,62 +432,74 @@ ${segToggle({ v: gvTotal, u: total - gvTotal, where: "", scope: "genre", none: `
   page(p, 0.8);
 }
 
+// ---------- club-first marketing ----------
+const clubFun = () => `<section class="club-story" aria-labelledby="club-fun"><div class="wrap">
+<h2 id="club-fun">For the chat that gets good after the last page.</h2>
+<p class="lede">The book is only half the fun. Leave a little room for the things you'd never put in the discussion guide.</p>
+<div class="story-grid">
+<div class="paper chat-paper"><h3>Anonymous comments. Very real opinions.</h3>
+<p>Say the quiet part in an anonymous comment, or visit the DNF confessional. Didn't finish? You're still part of the conversation.</p>
+<div class="chat-example" aria-label="An example of anonymous club comments"><p class="chat-label">The club thread</p><blockquote><span>Anonymous hot take</span>I came for the mystery. I stayed for the villain.</blockquote><blockquote><span>DNF confessional</span>I didn't finish. I am absolutely coming for the snacks.</blockquote></div>
+</div>
+<div class="story-notes">
+<div><h3>Hot takes, with the spoilers tucked away.</h3><p>Spoiler-safe conversations and where-is-everyone-at check-ins leave room for readers at different places in the book. Read together, at your own pace.</p></div>
+<div><h3>A meeting worth remembering.</h3><p>Keep the conversation going with post-meeting superlatives: Hottest Take, Cried First, and Defended the Villain. Little club memories, lovingly named.</p></div>
+<div><h3>Your year, all wrapped up.</h3><p>Club Wrapped gathers the books, the moments, and the hot takes into a keepsake of your reading year together.</p></div>
+</div></div></div></section>`;
+
+const clubHost = () => `<section class="club-story" aria-labelledby="club-host"><div class="wrap"><div class="host-story">
+<div>${lunair("lunair-reading", 200, 201, 400, 402, "Lunair peeking over a book", "host-story-art")}<h2 id="club-host">Less herding. More book club.</h2>
+<p class="lede">For the person who always ends up asking, &ldquo;So, who's coming?&rdquo;</p>
+<p>RSVPs, reminders, book votes, the bring-list, and the next meeting all happen in the thread. Keep your club's plans beside the conversation, right inside iMessage.</p></div>
+<div class="paper meeting-paper"><h3>Next on the club calendar</h3><dl><div><dt>The next meeting</dt><dd>Thursday at 7. Same lovely people.</dd></div><div><dt>The RSVP</dt><dd>A quick yes, no, or maybe.</dd></div><div><dt>The bring-list</dt><dd>Someone's got the snacks. Someone's got the tea.</dd></div><div><dt>The next book</dt><dd>Put a few on the table. Let the club vote.</dd></div></dl><p class="example-note">A little peek at what we're building.</p></div>
+</div></div></section>`;
+
+const clubRules = () => `<section class="club-story" aria-labelledby="club-rules"><div class="wrap">
+<h2 id="club-rules">Your club, your rules.</h2><p class="lede">A full table or a few familiar faces. Choose how people find and join your club.</p>
+<p class="small">Planned club settings for the iMessage launch:</p>
+<div class="rules-grid"><div><h3>Open</h3><p>On the map. Anyone can join. Pull up another chair.</p></div><div><h3>Private</h3><p>On the map. The host approves requests to join.</p></div><div><h3>Hidden</h3><p>Off the map. Invite code only. Just your people.</p></div></div>
+<p class="small">The map shows your city, never your meeting address.</p></div></section>`;
+
+const clubFinder = (withSearch = false) => `<section class="club-finder" aria-label="Find a club"><div class="wrap">
+<p>Looking for a club? <a href="${url("/book-clubs/")}">Find one near you.</a></p>
+${withSearch ? `<details><summary>Search by city, ZIP, or genre</summary>${searchBox()}</details>` : ""}
+</div></section>`;
+
+const clubIntro = ({ press = false } = {}) => `<section class="lander club-lander"><div class="wrap">
+<div class="l-sheet"><p class="l-tag">${press ? "Meet Bookish" : "Bring the club you already have"}</p>
+<div class="hsheet"><h1>${press ? "The group chat for book clubs." : "Your book club, just more fun."}</h1>
+<p class="sub">Bookish lives in your club's group chat: RSVPs, book votes, anonymous hot takes, and where-is-everyone-at check-ins, right inside iMessage.</p>
+<p class="launch-note">Coming soon to iMessage. ${press ? "We're building for the clubs that already have their people." : "Keep your people. Bring your club."}</p>
+<a class="btn" href="${url("/hosts/#waitlist")}">Join the host waitlist ${ARROW}</a>
+</div>${prop("prop-sun-240.webp", 240, 243, "l-sun", true)}</div>
+<div class="l-art">${lunair("lunair-hug", 300, 252, 600, 503, "Lunair hugging a book", "", true)}<p class="bubble">Same people. A little more plot.</p>${prop("prop-daisy-240.webp", 240, 243, "daisy", true)}</div>
+</div></section>`;
+
 // ---------- home ----------
 {
-  const featured = [...clubs.filter((c) => c.verified).slice(0, 3), ...cities.slice(0, 12).map((c) => c.clubs.find((x) => !x.verified && x.genres.length && x.cadence) ?? c.clubs.find((x) => !x.verified)).filter(Boolean)].slice(0, 6);
-  const genreChips = GENRES_LIST.filter(([g]) => (genreTotals[g] ?? 0) >= 5);
-  const topCities = cities.slice(0, 6);
-  const cityChips = `<ul class="chips" aria-label="Popular cities">${topCities.map((c) => `<li><a class="chip" href="${url(`/book-clubs/${c.u}/`)}">${esc(c.name)}</a></li>`).join("")}</ul>`;
-  const body = `<section class="lander"><div class="wrap">
-<div class="l-sheet"><p class="l-tag">Bookish: book club night</p>
-<div class="hsheet"><h1>Find a club, make it more <span class="fun">fun.<svg aria-hidden="true" viewBox="0 0 226 20" preserveAspectRatio="none"><path d="M4 12C50 5 100 16 150 9s55 2 72 1" fill="none" stroke="#f4a6bf" stroke-width="6" stroke-linecap="round"/></svg></span></h1>
-<p class="sub">Real book clubs at libraries, bookstores and cafés near you. Ask to join one, or bring Bookish to the club you already have.</p></div>
-${prop("prop-sun-240.webp", 240, 243, "l-sun", true)}</div>
-<div class="l-art">${lunair("lunair-hug", 300, 252, 600, 503, "Lunair, the Bookish host, hugging a book", "", true)}<p class="bubble">Pull up a chair. I saved you a seat!</p>${prop("prop-daisy-240.webp", 240, 243, "daisy", true)}</div>
-<div class="l-search">${prop("prop-washi3-240.webp", 240, 151, "washi", true)}${searchBox("", "Sacramento, or a ZIP code", cityChips)}</div>
-<div class="l-count"><div class="libcard"><p class="lc-h"><span>The directory</span><span>Updated ${monthYear}</span></p><p class="hero-count"><b>${fmt(clubs.length)}</b> clubs in <b>${fmt(cities.length)}</b> cities${verifiedTotal >= SHOW_VERIFIED_MIN ? `, <b>${fmt(verifiedTotal)}</b> on Bookish. The rest are listed from ${fmt(new Set(clubs.filter((c) => !c.verified).map((c) => c.source_name ?? c.source)).size)} library and bookstore calendars.` : `, gathered from ${fmt(new Set(clubs.filter((c) => !c.verified).map((c) => c.source_name ?? c.source)).size)} library and bookstore calendars.`}</p></div></div>
-<div class="l-own"><a class="startown" href="${url("/start/")}">No club nearby? <b>Start your own</b> ${ARROW}</a></div>
-</div></section>
-<section><div class="wrap">
-<div class="sh"><h2>A few clubs <em>to start with</em></h2></div>
-<p class="lede">Picked from around the country. Clubs marked "On Bookish" take requests to join. The rest link to the library or bookstore page they were listed on.</p>
-<ul class="clubs lander-clubs">${featured.map((c) => clubCard(c)).join("\n")}</ul>
-</div></section>
-<section><div class="wrap">
-<div class="sh"><h2>How it works <em>three things</em></h2></div>
-<div class="steps">
-<div class="step">${prop("prop-washi2-240.webp", 240, 144, "wt")}${prop("prop-daisy-240.webp", 240, 243, "")}<h3>Search your city</h3><p>Type a city or ZIP. See the clubs that meet nearby and how often.</p></div>
-<div class="step">${prop("prop-sun-240.webp", 240, 243, "")}<h3>On Bookish? Ask to join</h3><p>Clubs marked "On Bookish" have a host here. Send a note and they'll say yes or no.</p></div>
-<div class="step">${prop("prop-washi3-240.webp", 240, 151, "wt")}${prop("prop-daisy-240.webp", 240, 243, "")}<h3>From a calendar? Just go</h3><p>Library and bookstore clubs link to their own page for the date, time and book.</p></div>
-</div></div></section>
-<section><div class="wrap">
-<div class="sh"><h2>The map <em>city by city</em></h2></div>
-<p class="lede">Every city with book clubs, and how many are on Bookish. Tap a city to see its clubs.</p>
-<div id="club-map" class="club-map" role="region" aria-label="Map of book clubs"><p class="map-hint">Loading the club map…</p></div>
-<p class="small">The map shows cities, never addresses. Exact place and time are shared only with members a host approves.</p>
-</div></section>
-<section style="padding-top:0"><div class="wrap">
-<p class="eyebrow">Browse by genre</p>
-<ul class="chips">${genreChips.map(([g, l]) => `<li><a class="chip" href="${url(`/genres/${g}/`)}">${esc(l)} <span class="c">${fmt(genreTotals[g])}</span></a></li>`).join("")}</ul>
-</div></section>
-<section style="padding-top:0"><div class="wrap">
-<div class="sh"><h2>Where readers <em>are meeting</em></h2></div>
-<div class="grid cols-3 home-cities">${cities.slice(0, 18).map((c) => `<a class="city-tile" href="${url(`/book-clubs/${c.u}/`)}"><b>${esc(c.name)}, ${c.st}</b><span>${countLine(c.clubs.length, c.v)}</span></a>`).join("")}</div>
-<p style="margin-top:18px"><a href="${url("/book-clubs/")}">See every city →</a></p>
-</div></section>
-<section style="padding-top:0"><div class="wrap"><a class="rn-cta" href="${url("/read-next/")}">${lunair("lunair-behind-book", 170, 161, 340, 323, "")}<span><b>Stuck on what to read next?</b><span>Three taps and Lunair hands you three books. No sign-up.</span></span>${ARROW}</a></div></section>
-<section><div class="wrap"><div class="own-wrap">${lunair("lunair-gossip", 220, 209, 440, 417, "Lunair whispering behind her hand")}
-<div class="own"><h2>No club nearby? Start your own.</h2><p>Pick a book, pick a night. List it free and readers nearby can find you.</p><a class="btn" href="${url("/start/")}">Start a club ${ARROW}</a></div></div></div></section>
-<section style="padding-top:0"><div class="wrap"><div class="note">Run a club already? <a href="${url("/claim/")}">Claim your listing</a> to fix the details, or <a href="${url("/hosts/")}">join the waitlist</a> for simple host tools: scheduling, book voting and invite links.</div></div></section>`;
+  const body = fs.readFileSync(path.join(ROOT, "src/landing.html"), "utf8")
+    .replace("__SEARCH__", searchBox()).replaceAll("__BASE__", BASE);
   write("index.html", layout({
-    title: "Bookish: Book Club Night | Find a club, make it more fun",
-    desc: `Find a club, make it more fun. ${fmt(clubs.length)} library, bookstore and community book clubs in ${fmt(cities.length)} US cities, searchable by city, ZIP and genre. Free for hosts.`,
-    path: "/", body,
+    title: "Bookish: Book Club Night | Your book club, just more fun",
+    desc: "Bring the club you already have. Bookish is bringing anonymous hot takes, book votes, RSVPs, and easier hosting to your iMessage group chat. Join the host waitlist.",
+    path: "/", body, landing: true,
     jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Bookish: Book Club Night", alternateName: "Bookish", url: abs("/"),
       potentialAction: { "@type": "SearchAction", target: { "@type": "EntryPoint", urlTemplate: `${abs("/")}?q={search_term_string}` }, "query-input": "required name=search_term_string" } },
       { "@context": "https://schema.org", "@type": "Organization", name: "Bookish", url: abs("/") }],
   }));
   page("/", 1.0);
+}
+
+// ---------- press ----------
+{
+  const body = `${clubIntro({ press: true })}${clubFun()}${clubHost()}${clubRules()}
+<section class="club-story"><div class="wrap"><div class="paper press-notes"><h2>Bookish, in a few words.</h2>
+<h3>The short version</h3><p>Bookish is building the group chat for book clubs: more fun for the club you already have, and less herding for the host. Anonymous comments, the DNF confessional, spoiler-safe hot takes, post-meeting superlatives, and Club Wrapped sit alongside RSVPs, reminders, book votes, and meeting plans, right inside iMessage.</p>
+<h3 id="creators">Availability</h3><p>The iMessage experience and club settings described here are coming soon. Hosts can join the waitlist now. The club finder is already available on the web.</p>
+<h3>Art and press questions</h3><p><a href="${url("/img/bookish-wordmark.png")}" download>Download the Bookish wordmark</a>. For press questions, write to <a href="mailto:hello@meetbookish.com">hello@meetbookish.com</a>.</p>
+</div></div></section>${clubFinder()}`;
+  write("press/index.html", layout({ title: "Bookish Press | The group chat for book clubs", desc: "Bookish is building the group chat for book clubs. Anonymous hot takes, club memories, and easier hosting for the club you already have, right inside iMessage.", path: "/press/", body }));
+  page("/press/", 0.5);
 }
 
 // ---------- host funnel ----------
@@ -521,10 +532,11 @@ ${hp}${consent}
 }));
 
 write("start/index.html", layout({
-  title: "Start a Book Club or List Yours Free | Bookish", desc: "Add your book club to Bookish for free so readers nearby can find it, or start a new one in your city.", path: "/start/",
-  body: `<div class="wrap">${crumbs([["Home", "/"], ["Start a club", null]])}
-<header class="page-head with-art">${lunair("lunair-wave", 360, 153, 720, 301, "Bookish host waving hello", "head-art", true)}<p class="eyebrow">Free for hosts</p><h1>Start a book club, or <em>list yours</em>.</h1>
-<p class="lede">Tell us about your club and we'll add it to the directory once we've confirmed your email. Starting from scratch? Tell us the city and the kind of books, and we'll let readers nearby know.</p></header>
+  title: "List Your Book Club | Bookish", desc: "Already have a club? Bring your people to Bookish. You can also add an optional city-level listing so new readers can find you.", path: "/start/",
+  body: `<div class="wrap">${crumbs([["Home", "/"], ["List your club", null]])}
+<header class="page-head with-art">${lunair("lunair-wave", 360, 153, 720, 301, "Bookish host waving hello", "head-art", true)}<p class="eyebrow">Your people, your club</p><h1>Already have a club? <em>Bring your people.</em></h1>
+<p class="lede">Keep the group chat and the people you love reading with. Bookish is bringing more fun and a little less herding to iMessage. <a href="${url("/hosts/#waitlist")}">Join the host waitlist</a> for the launch.</p></header>
+<section class="listing-intro"><h2>Want new readers at the table, too?</h2><p>This optional form adds a listing to the web finder after you confirm your email. It doesn't sign you up for the iMessage launch. You can keep your listing off the map with the checkbox below.</p></section>
 <section><form class="form" data-kind="start" novalidate>
 <label>Club name<input name="club_name" required maxlength="160" placeholder="The Tuesday Night Mystery Society"></label>
 <div class="row two"><label>City<input name="city" required maxlength="80" autocomplete="address-level2"></label><label>State<select name="state" required><option value="">Choose…</option>${stateOptions}</select></label></div>
@@ -536,7 +548,7 @@ write("start/index.html", layout({
 <label class="check"><input type="radio" name="meets_at" value="online"> Online</label>
 <label class="check toggle"><input type="checkbox" name="show_on_map" checked> <span><b>List my club in <span class="list-city">my city</span>.</b> <span class="map-note">Readers see the club and your city, never the address. Exact place and time are only shared with members you approve.</span></span></label>
 </fieldset>
-<label>About the club <span class="muted">(optional)</span><textarea name="about" maxlength="1000" placeholder="Where you meet, the vibe, who it's for."></textarea></label>
+<label>About the club <span class="muted">(optional)</span><textarea name="about" maxlength="1000" placeholder="The books, the vibe, and who it's for. Leave out addresses."></textarea></label>
 <div class="row two"><label>Your first name<input name="first_name" maxlength="60" autocomplete="given-name"></label><label>Email<input type="email" name="email" required maxlength="254" autocomplete="email"></label></div>
 <p class="small">We never show your email on the site. Readers who want to join will be able to contact you through Bookish once host tools open.</p>
 ${hp}${consent}
@@ -547,27 +559,10 @@ ${hp}${consent}
 page("/start/", 0.6);
 
 write("hosts/index.html", layout({
-  title: "Host Tools for Book Clubs: Coming Soon | Bookish", desc: "Simple tools for book club hosts: schedule the next meeting, let members vote on the book, track reading progress and share one invite link. Join the waitlist.", path: "/hosts/",
-  body: `<div class="wrap">${crumbs([["Home", "/"], ["For hosts", null]])}
-<header class="page-head"><p class="eyebrow">For hosts · coming soon</p><h1>Less admin, <em>more books</em>.</h1>
-<p class="lede">We're building a small set of tools for the person who keeps the club going. No group-chat archaeology to find the date, no spreadsheet of who's read what. These aren't live yet. Join the waitlist and we'll invite hosts in small groups.</p></header>
-<section><h2 class="sr-only">What we're building</h2><div class="tools">
-<div class="tool"><span class="soon">Coming soon</span><h3>Next-meeting scheduling</h3><p>Propose a few dates, members tap what works, and the winner goes on everyone's calendar.</p>
-<div class="mock" aria-hidden="true"><div class="l"><span class="t">Thu, Nov 6 · 7pm</span><span class="pill">8 can come</span></div><div class="l"><span>Sun, Nov 9 · 2pm</span><span>5 can come</span></div><div class="l"><span>Tue, Nov 11 · 7pm</span><span>3 can come</span></div></div></div>
-<div class="tool"><span class="soon">Coming soon</span><h3>Book voting</h3><p>Everyone nominates, everyone votes, and the pick is settled before the meeting ends.</p>
-<div class="mock" aria-hidden="true"><div class="l"><span class="t">The Thursday Murder Club</span><div class="bar"><i style="width:72%"></i></div><span>9</span></div><div class="l"><span class="t">Lessons in Chemistry</span><div class="bar"><i style="width:48%"></i></div><span>6</span></div><div class="l"><span class="t">Piranesi</span><div class="bar"><i style="width:24%"></i></div><span>3</span></div></div></div>
-<div class="tool"><span class="soon">Coming soon</span><h3>Reading progress</h3><p>See who's on track for the meeting, with no spoilers past the page you're on.</p>
-${(() => {
-  // The Race: pages read vs the meet page. Velvet + bookmark ribbons, brass "You".
-  const total = 517, meet = 300, rows = [["Mira", 488], ["Priya", 371], ["You", 212], ["Dani", 160], ["Kat", 96], ["Elle", 40]];
-  const pct = (n) => (n / total * 100).toFixed(1);
-  return `<div class="race" aria-hidden="true"><div class="hd"><span class="ttl">The Race</span><span class="eb">First to the end</span><span class="pos">you're 3rd</span></div>
-<div class="rows"><span class="mline" style="left:calc((100% - 48px) * ${(meet / total).toFixed(3)})"><span>Meet · p.${meet}</span></span>${rows.map(([n, p], i) => `<div class="rr${n === "You" ? " me" : ""}"><span class="rn">${n}</span><span class="rt"><span class="rf" style="width:${pct(p)}%;--c:${["#a8324a", "#efe2c6", "#ecb74e", "#e6a2ac", "#a9c487", "#d97a52"][i]}"></span><span class="rp${p / total > .8 ? " in" : ""}" style="left:${pct(p)}%">p. ${p}</span></span></div>`).join("")}</div></div>`;
-})()}</div>
-<div class="tool"><span class="soon">Coming soon</span><h3>One invite link</h3><p>A single link for your club. New readers see what you're reading and when you meet, then ask to join.</p>
-<div class="mock" aria-hidden="true"><span class="link">bookishclub.com/c/tuesday-mysteries</span></div></div>
-</div></section>
-<section style="padding-top:0"><h2>Join the <em>host waitlist</em></h2>
+  title: "Bring Your Book Club to iMessage | Bookish", desc: "More fun for your existing book club, and less herding for the host. Anonymous comments, RSVPs, book votes, and meeting plans in iMessage. Join the waitlist.", path: "/hosts/",
+  body: `${clubIntro()}${clubFun()}${clubHost()}${clubRules()}
+<section id="waitlist" class="club-story"><div class="wrap"><h2>Bring your club. We'll save you a seat.</h2>
+<p class="lede">Join the host waitlist for the iMessage launch. Tell us a little about your people, and we'll be in touch when your club can come in.</p>
 <form class="form" data-kind="waitlist" novalidate>
 <div class="row two"><label>Your first name<input name="first_name" maxlength="60" autocomplete="given-name"></label><label>City<input name="city" maxlength="80" autocomplete="address-level2"></label></div>
 <label>Email<input type="email" name="email" required maxlength="254" autocomplete="email"></label>
@@ -577,7 +572,8 @@ ${(() => {
 ${hp}${consent}
 <button class="btn" type="submit">Join the waitlist</button>
 <p class="form-msg" role="status"></p>
-</form></section></div>`,
+</form>
+</div></section>${clubFinder()}`,
 }));
 page("/hosts/", 0.6);
 
@@ -615,10 +611,13 @@ write("confirmed/index.html", layout({
 }));
 
 const prose = (p, title, desc, h, html) => { write(`${p.slice(1)}index.html`, layout({ title, desc, path: p, body: `<div class="wrap">${crumbs([["Home", "/"], [h, null]])}<header class="page-head"><h1>${h}</h1></header><section class="prose">${html}</section></div>` })); page(p, 0.3); };
-prose("/about/", "About Bookish and Our Sources", "How Bookish finds and lists book clubs, and how to fix or remove a listing.", "About Bookish", `
-<p>Bookish is a directory of book clubs that meet in person across the United States. Finding one shouldn't take an evening of searching library calendars and bookstore newsletters, so we gather them in one place.</p>
+prose("/about/", "About Bookish and Our Sources", "More fun for the book club you already have, plus the sources behind the Bookish club finder.", "About Bookish", `
+<p>Your book club, just more fun. Bookish is bringing anonymous hot takes, the DNF confessional, spoiler-safe conversations, post-meeting superlatives, and Club Wrapped to the club you already have, right inside iMessage.</p>
+<p>For the host, that means RSVPs, reminders, book votes, the bring-list, and the next meeting in the thread. The iMessage experience is coming soon. <a href="${url("/hosts/#waitlist")}">Join the host waitlist</a> to bring your club.</p>
+<h2>Your club, your rules</h2><p>For the iMessage launch, we're planning three club settings: Open is on the map and anyone can join, Private is on the map and the host approves requests, and Hidden is off the map and invite code only.</p>
+<h2>Looking for a club?</h2><p>The <a href="${url("/book-clubs/")}">web finder</a> is already here, with book clubs across the United States gathered from public library and bookstore calendars.</p>
 <h2>Where listings come from</h2>
-<p>Listings come from the public event pages of libraries and independent bookstores. We read those pages slowly and politely, follow each site's robots.txt and terms, and store only the basics: the club's name, city, genre and meeting rhythm as published, plus a link to the source and the date we last saw it. We don't collect anyone's personal email address or phone number, and we never show a venue or address: our pages and map are city-level only. Exact place and time are shared only with members a host approves.</p>
+<p>Listings come from the public event pages of libraries and independent bookstores. We read those pages slowly and politely, follow each site's robots.txt and terms, and store only the basics: the club's name, city, genre, and meeting rhythm as published, plus a link to the source and the date we last saw it. We don't collect anyone's personal email address or phone number, and we never show a venue or address: our pages and map are city-level only. Exact place and time are shared only with members a host approves.</p>
 <p>Clubs change. Always check the source page, linked on every listing, for the current book and date.</p>
 <h2>Fix or remove a listing</h2>
 <p>If you host a club, <a href="${url("/claim/")}">claim it</a> and we'll update it with you. If you'd like a listing removed, use the same form and say so in the message. We'll take it down.</p>`);
