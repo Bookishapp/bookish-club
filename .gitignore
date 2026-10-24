@@ -7,3 +7,7 @@ supabase/.temp/
 
 # Raw source records include venue/branch names: never publish them.
 data/raw/*.json
+
+# Python migration guard caches
+__pycache__/
+*.pyc

@@ -1,0 +1,17 @@
+# Deploy reviewed functions individually. Do not run db push or change shared Auth.
+[functions.bookish-directory]
+verify_jwt = false
+[functions.bookish-club-settings]
+verify_jwt = false
+[functions.bookish-verified]
+verify_jwt = false
+[functions.bookish-join]
+verify_jwt = false
+[functions.bookish-join-respond]
+verify_jwt = false
+[functions.bookish-submit]
+verify_jwt = false
+[functions.bookish-confirm]
+verify_jwt = false
+[functions.bookish-community]
+verify_jwt = false

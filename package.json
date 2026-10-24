@@ -6,6 +6,11 @@
     "ref": "node scripts/build-ref.mjs",
     "merge": "node scripts/merge.mjs",
     "build": "node scripts/build.mjs",
-    "seed": "node scripts/sources/library-other.mjs; node scripts/sources/bookstores.mjs; node scripts/merge.mjs"
+    "seed": "node scripts/sources/library-other.mjs; node scripts/sources/bookstores.mjs; node scripts/merge.mjs",
+    "test": "python3 scripts/check_data_api_grants.py && python3 -m unittest discover -s tests -p 'test_data_api_grants.py' && npm run build && npm run snapshot --prefix app && node --experimental-vm-modules --test tests/visibility/*.test.mjs && npm test --prefix app && npm run test:ui --prefix app",
+    "test:server": "node --test tests/visibility/database.test.mjs tests/visibility/http.test.mjs"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.10"
   }
 }

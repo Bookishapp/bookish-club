@@ -1,5 +1,5 @@
 export interface Club {
-  id: string; name: string; city: string; state: string; genres: string[];
+  visibility?: 'open'|'private'; current_book?: {title:string;authors:string[]}|null; id: string; name: string; city: string; state: string; genres: string[];
   vibe: string | null; cadence: string | null; format: string | null;
   source_name: string | null; source_url: string | null; last_seen: string;
   lat: number | null; lng: number | null; verified: boolean; city_path?: string;
@@ -15,7 +15,7 @@ export const cityKey = (c: Pick<Club, 'city' | 'state'>) => `${c.city}, ${c.stat
 export const safeURL = (v: unknown): string | null => {
   try { const u = new URL(String(v)); return u.protocol === 'https:' ? u.href : null; } catch { return null; }
 };
-export const clubURL = (c: Club) => `https://meetbookish.com${c.city_path || '/'}#${encodeURIComponent(c.id)}`;
+export const clubURL = (c: Club) => `https://meetbookish.com${c.city_path || `/book-clubs/?city=${encodeURIComponent(c.city)}&state=${c.state}`}#${encodeURIComponent(c.id)}`;
 export function appleMapsURL(c: Pick<Club, 'city' | 'state' | 'lat' | 'lng'>) {
   const p = new URLSearchParams({ q: cityKey(c) });
   if (c.lat != null && c.lng != null) p.set('ll', `${c.lat},${c.lng}`);
@@ -49,9 +49,9 @@ export function validateFeed(kind: string, value: unknown): Club[] | Book[] | Co
     out.next = v.next.filter(r => typeof r.from_book === 'string' && typeof r.to_book === 'string' && Number.isFinite(r.clubs) && r.clubs >= 3);
     return out;
   }
-  if (!Array.isArray(value) || !value.length || value.length > 20_000) throw new Error(`${kind} schema`);
+  if (!Array.isArray(value) || (kind !== 'clubs' && !value.length) || value.length > 20_000) throw new Error(`${kind} schema`);
   const seen = new Set<string>();
-  return value.map(v => {
+  return value.filter(v => kind !== 'clubs' || v?.visibility !== 'hidden').map(v => {
     if (!v || typeof v !== 'object' || !str(v.id, 80) || seen.has(v.id)) throw new Error(`${kind} schema`);
     seen.add(v.id);
     if (kind === 'books') {
@@ -65,7 +65,7 @@ export function validateFeed(kind: string, value: unknown): Club[] | Book[] | Co
     return { id: str(v.id, 80), name: str(v.name, 160), city: str(v.city, 80), state: v.state,
       genres: strings(v.genres), vibe: optional(v.vibe), cadence: optional(v.cadence), format: optional(v.format),
       source_name: optional(v.source_name), source_url: safeURL(v.source_url), last_seen: str(v.last_seen, 10),
-      lat: coord(v.lat, 90), lng: coord(v.lng, 180), verified: v.verified === true,
+      lat: coord(v.lat, 90), lng: coord(v.lng, 180), verified: v.verified === true, visibility: v.visibility === 'private' ? 'private' : 'open', current_book: v.current_book && typeof v.current_book.title==='string' ? {title:str(v.current_book.title,200),authors:strings(v.current_book.authors)} : null,
       city_path: /^\/book-clubs\/[a-z0-9/-]+\/$/.test(v.city_path) ? v.city_path : undefined };
   }) as Club[] | Book[];
 }

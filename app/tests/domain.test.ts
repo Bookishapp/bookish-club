@@ -34,3 +34,8 @@ test('read-next preserves sequel preference, author diversity, and excludes love
   assert.equal(new Set(chosen.map(r => r.b.a)).size, 3);
   assert.ok(chosen.filter(r => r.sequel).length <= 1);
 });
+
+test('empty discovery and hidden records cannot revive clubs in the app', () => {
+  assert.deepEqual(validateFeed('clubs', []), []);
+  assert.deepEqual(validateFeed('clubs', [{id:'secret',name:'Secret Canary',city:'Austin',state:'TX',visibility:'hidden'}]), []);
+});
