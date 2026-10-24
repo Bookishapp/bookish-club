@@ -11,12 +11,13 @@ create table if not exists public.bookish_takes (
  foreign key(parent_id,club_id,book_id) references public.bookish_takes(id,club_id,book_id) on delete cascade,
  check((anonymous and signed_name is null) or (not anonymous and signed_name is not null))
 );
-create index if not exists bookish_tea_feed on public.bookish_takes(club_id,book_id,parent_id,created_at desc);
+grant select,insert,update,delete on table public.bookish_takes to service_role;
 alter table public.bookish_takes enable row level security;
+revoke all on table public.bookish_takes from public,anon,authenticated;
+create index if not exists bookish_tea_feed on public.bookish_takes(club_id,book_id,parent_id,created_at desc);
 do $guard$ begin if not exists (select 1 from pg_policy where polname='tea_member' and polrelid='public.bookish_takes'::regclass) then
  create policy tea_member on public.bookish_takes for select to authenticated using(bookish_private.is_member(club_id));
  end if; end $guard$;
-revoke all on public.bookish_takes from public,anon,authenticated;
 create table if not exists bookish_private.take_authors (
  take_id uuid primary key references public.bookish_takes(id) on delete cascade,
  author_id uuid not null references public.bookish_profiles(id) on delete cascade
@@ -73,13 +74,24 @@ create table if not exists public.bookish_take_reactions (
  user_id uuid not null references public.bookish_profiles(id) on delete cascade,
  reaction text not null check(reaction in ('🔥','😭','🍵','🤯')),primary key(take_id,user_id)
 );
+grant select,insert,update,delete on table public.bookish_take_reactions to service_role;
 alter table public.bookish_take_reactions enable row level security;
+revoke all on table public.bookish_take_reactions from public,anon,authenticated;
 -- No raw reaction identities; the feed returns aggregate counts only.
-revoke all on public.bookish_take_reactions from public,anon,authenticated;
-do $$ declare t text; begin foreach t in array array['take_authors','blocks','hidden_takes','reports','safety_audit','content_rules','content_holds'] loop
- execute format('alter table bookish_private.%I enable row level security',t);
- execute format('revoke all on bookish_private.%I from public,anon,authenticated,service_role',t);
-end loop; end $$;
+alter table bookish_private.take_authors enable row level security;
+revoke all on bookish_private.take_authors from public,anon,authenticated,service_role;
+alter table bookish_private.blocks enable row level security;
+revoke all on bookish_private.blocks from public,anon,authenticated,service_role;
+alter table bookish_private.hidden_takes enable row level security;
+revoke all on bookish_private.hidden_takes from public,anon,authenticated,service_role;
+alter table bookish_private.reports enable row level security;
+revoke all on bookish_private.reports from public,anon,authenticated,service_role;
+alter table bookish_private.safety_audit enable row level security;
+revoke all on bookish_private.safety_audit from public,anon,authenticated,service_role;
+alter table bookish_private.content_rules enable row level security;
+revoke all on bookish_private.content_rules from public,anon,authenticated,service_role;
+alter table bookish_private.content_holds enable row level security;
+revoke all on bookish_private.content_holds from public,anon,authenticated,service_role;
 
 create or replace function bookish_private.content_verdict(p_club uuid,p_body text) returns text language plpgsql stable security definer set search_path='' as $$
 declare normalized text;
@@ -101,9 +113,7 @@ begin
  if bookish_private.content_verdict(new.club_id,new.body)<>'allowed' then raise exception 'Spill about the book, never the club.'; end if;
  return new;
 end $$;
-do $guard$ begin if not exists (select 1 from pg_trigger where tgname='bookish_filter_take' and tgrelid='public.bookish_takes'::regclass) then
- create trigger bookish_filter_take before insert or update of body on public.bookish_takes for each row execute function bookish_private.filter_take();
- end if; end $guard$;
+create or replace trigger bookish_filter_take before insert or update of body on public.bookish_takes for each row execute function bookish_private.filter_take();
 
 -- Ancestors are checked too: replies cannot reveal a hidden or blocked conversation.
 create or replace function bookish_private.can_view_take(p_take uuid) returns boolean language sql stable security definer set search_path='' as $$
@@ -252,9 +262,7 @@ begin
  end loop;
  return old;
 end $$;
-do $guard$ begin if not exists (select 1 from pg_trigger where tgname='bookish_delete_profile_data' and tgrelid='public.bookish_profiles'::regclass) then
- create trigger bookish_delete_profile_data before delete on public.bookish_profiles for each row execute function bookish_private.delete_profile_data();
- end if; end $guard$;
+create or replace trigger bookish_delete_profile_data before delete on public.bookish_profiles for each row execute function bookish_private.delete_profile_data();
 create or replace function bookish_private.delete_legacy_data() returns trigger language plpgsql security definer set search_path='' as $$
 begin
  if old.raw_app_meta_data->>'app' is distinct from 'bookish' or old.email_confirmed_at is null then return old; end if;
@@ -264,18 +272,12 @@ begin
 -- Marked Bookish deletions are atomic: failed cleanup preserves Auth for retry.
 -- Unmarked Fictora identities returned above and never enter this cleanup.
 end $$;
-do $guard$ begin if not exists (select 1 from pg_trigger where tgname='bookish_delete_legacy_data' and tgrelid='auth.users'::regclass) then
- create trigger bookish_delete_legacy_data before delete on auth.users for each row execute function bookish_private.delete_legacy_data();
- end if; end $guard$;
+create or replace trigger bookish_delete_legacy_data before delete on auth.users for each row execute function bookish_private.delete_legacy_data();
 
 revoke all on all functions in schema bookish_private from public,anon,authenticated,service_role;
 grant execute on function bookish_private.active_user(),bookish_private.is_member(uuid),bookish_private.is_host(uuid) to authenticated;
-do $$ declare f regprocedure; begin
- for f in select p.oid::regprocedure from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.proname in
- ('bookish_post_take','bookish_tea','bookish_react','bookish_take_action','bookish_host_reports','bookish_moderate_take')
- loop execute format('revoke all on function %s from public,anon,authenticated',f); execute format('grant execute on function %s to authenticated',f); end loop;
- for f in select p.oid::regprocedure from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.proname in
- ('bookish_review_queue','bookish_safety_review','bookish_escalate_author','bookish_held_queue','bookish_dismiss_hold')
- loop execute format('revoke all on function %s from public,anon,authenticated',f); execute format('grant execute on function %s to service_role',f); end loop;
-end $$;
+revoke all on function public.bookish_post_take(uuid, text, text, boolean, integer, integer, uuid),public.bookish_tea(uuid, text, uuid, integer, integer),public.bookish_react(uuid, text),public.bookish_take_action(uuid, text, text),public.bookish_host_reports(uuid),public.bookish_moderate_take(uuid, text) from public,anon,authenticated;
+grant execute on function public.bookish_post_take(uuid, text, text, boolean, integer, integer, uuid),public.bookish_tea(uuid, text, uuid, integer, integer),public.bookish_react(uuid, text),public.bookish_take_action(uuid, text, text),public.bookish_host_reports(uuid),public.bookish_moderate_take(uuid, text) to authenticated;
+revoke all on function public.bookish_review_queue(),public.bookish_safety_review(uuid, text, text, text),public.bookish_escalate_author(uuid, text, text),public.bookish_held_queue(),public.bookish_dismiss_hold(uuid, text, text) from public,anon,authenticated;
+grant execute on function public.bookish_review_queue(),public.bookish_safety_review(uuid, text, text, text),public.bookish_escalate_author(uuid, text, text),public.bookish_held_queue(),public.bookish_dismiss_hold(uuid, text, text) to service_role;
 commit;

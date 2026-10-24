@@ -32,9 +32,10 @@ create table if not exists public.bookish_page_log (
  foreign key(club_id,book_id) references public.bookish_club_books(club_id,book_id) on delete cascade,
  unique(user_id,request_id)
 );
-create index if not exists bookish_latest_page on public.bookish_page_log(club_id,book_id,user_id,logged_at desc,id desc);
+grant select,insert,update,delete on table public.bookish_page_log to service_role;
 alter table public.bookish_page_log enable row level security;
-revoke all on public.bookish_page_log from public,anon,authenticated;
+revoke all on table public.bookish_page_log from public,anon,authenticated;
+create index if not exists bookish_latest_page on public.bookish_page_log(club_id,book_id,user_id,logged_at desc,id desc);
 do $guard$ begin if not exists (select 1 from pg_policy where polname='page_log_self' and polrelid='public.bookish_page_log'::regclass) then
  create policy page_log_self on public.bookish_page_log for select to authenticated using(user_id=auth.uid() and bookish_private.is_member(club_id));
  end if; end $guard$;
@@ -93,24 +94,34 @@ create table if not exists public.bookish_meetings (
  status text not null default 'scheduled' check(status in ('scheduled','cancelled')),
  unique(id,club_id)
 );
+grant select,insert,update,delete on table public.bookish_meetings to service_role;
+alter table public.bookish_meetings enable row level security;
+revoke all on table public.bookish_meetings from public,anon,authenticated;
 create table if not exists public.bookish_rsvps (
  meeting_id uuid not null,club_id uuid not null,user_id uuid not null references public.bookish_profiles(id) on delete cascade,
  response text not null check(response in ('going','maybe','next_time')),primary key(meeting_id,user_id),
  foreign key(meeting_id,club_id) references public.bookish_meetings(id,club_id) on delete cascade
 );
+grant select,insert,update,delete on table public.bookish_rsvps to service_role;
+alter table public.bookish_rsvps enable row level security;
+revoke all on table public.bookish_rsvps from public,anon,authenticated;
 create table if not exists public.bookish_bring_items (
  id uuid primary key default gen_random_uuid(),meeting_id uuid not null,club_id uuid not null,
  label text not null check(length(trim(label)) between 1 and 120),claimed_by uuid references public.bookish_profiles(id) on delete set null,
  foreign key(meeting_id,club_id) references public.bookish_meetings(id,club_id) on delete cascade
 );
-do $$ declare t text; begin foreach t in array array['bookish_meetings','bookish_rsvps','bookish_bring_items'] loop
- execute format('alter table public.%I enable row level security',t);
- execute format('revoke all on public.%I from public,anon,authenticated',t);
- if not exists(select 1 from pg_policy where polname='club_read' and polrelid=format('public.%I',t)::regclass) then
-  execute format('create policy club_read on public.%I for select to authenticated using(bookish_private.is_member(club_id))',t);
- end if;
- execute format('grant select on public.%I to authenticated',t);
-end loop; end $$;
+grant select,insert,update,delete on table public.bookish_bring_items to service_role;
+alter table public.bookish_bring_items enable row level security;
+revoke all on table public.bookish_bring_items from public,anon,authenticated;
+drop policy if exists club_read on public.bookish_meetings;
+create policy club_read on public.bookish_meetings for select to authenticated using(bookish_private.is_member(club_id));
+grant select on public.bookish_meetings to authenticated;
+drop policy if exists club_read on public.bookish_rsvps;
+create policy club_read on public.bookish_rsvps for select to authenticated using(bookish_private.is_member(club_id));
+grant select on public.bookish_rsvps to authenticated;
+drop policy if exists club_read on public.bookish_bring_items;
+create policy club_read on public.bookish_bring_items for select to authenticated using(bookish_private.is_member(club_id));
+grant select on public.bookish_bring_items to authenticated;
 do $guard$ begin if not exists (select 1 from pg_policy where polname='rsvp_write' and polrelid='public.bookish_rsvps'::regclass) then
  create policy rsvp_write on public.bookish_rsvps for all to authenticated using(user_id=auth.uid() and bookish_private.is_member(club_id)) with check(user_id=auth.uid() and bookish_private.is_member(club_id));
  end if; end $guard$;
@@ -136,12 +147,18 @@ create table if not exists public.bookish_votes (
  status text not null default 'open' check(status in ('open','closed')),post_to_chat boolean not null default false,
  winner_option uuid,imsg_token text unique not null default gen_random_uuid()::text,unique(id,club_id)
 );
+grant select,insert,update,delete on table public.bookish_votes to service_role;
+alter table public.bookish_votes enable row level security;
+revoke all on table public.bookish_votes from public,anon,authenticated;
 create unique index if not exists bookish_one_open_vote on public.bookish_votes(club_id) where status='open';
 create table if not exists public.bookish_vote_options (
  id uuid primary key default gen_random_uuid(),vote_id uuid not null,club_id uuid not null,book_id text not null references public.bookish_books(id),
  origin text not null default 'nominated' check(origin in ('suggested','nominated')),why_key text,why_text text,
  unique(id,vote_id),unique(vote_id,book_id),foreign key(vote_id,club_id) references public.bookish_votes(id,club_id) on delete cascade
 );
+grant select,insert,update,delete on table public.bookish_vote_options to service_role;
+alter table public.bookish_vote_options enable row level security;
+revoke all on table public.bookish_vote_options from public,anon,authenticated;
 do $guard$ begin if not exists (select 1 from pg_constraint where conname='bookish_winner_same_vote' and conrelid='public.bookish_votes'::regclass) then
  alter table public.bookish_votes add constraint bookish_winner_same_vote foreign key(winner_option,id) references public.bookish_vote_options(id,vote_id) deferrable initially deferred;
  end if; end $guard$;
@@ -151,21 +168,27 @@ create table if not exists public.bookish_vote_ballots (
  foreign key(vote_id,club_id) references public.bookish_votes(id,club_id) on delete cascade,
  foreign key(option_id,vote_id) references public.bookish_vote_options(id,vote_id) on delete cascade
 );
+grant select,insert,update,delete on table public.bookish_vote_ballots to service_role;
+alter table public.bookish_vote_ballots enable row level security;
+revoke all on table public.bookish_vote_ballots from public,anon,authenticated;
 create table if not exists public.bookish_nominations (
  club_id uuid not null references public.bookish_clubs(id) on delete cascade,book_id text not null references public.bookish_books(id),
  user_id uuid not null references public.bookish_profiles(id) on delete cascade,created_at timestamptz not null default now(),primary key(club_id,book_id,user_id)
 );
-do $$ declare t text; begin foreach t in array array['bookish_votes','bookish_vote_options','bookish_vote_ballots','bookish_nominations'] loop
- execute format('alter table public.%I enable row level security',t);
- execute format('revoke all on public.%I from public,anon,authenticated',t);
- if t<>'bookish_vote_ballots' and not exists(select 1 from pg_policy where polname='club_read' and polrelid=format('public.%I',t)::regclass) then
-  execute format('create policy club_read on public.%I for select to authenticated using(bookish_private.is_member(club_id))',t);
- end if;
- if t<>'bookish_vote_ballots' then execute format('grant select on public.%I to authenticated',t); end if;
-end loop; end $$;
+grant select,insert,update,delete on table public.bookish_nominations to service_role;
+alter table public.bookish_nominations enable row level security;
+revoke all on table public.bookish_nominations from public,anon,authenticated;
+drop policy if exists club_read on public.bookish_votes;
+create policy club_read on public.bookish_votes for select to authenticated using(bookish_private.is_member(club_id));
+grant select on public.bookish_votes to authenticated;
+drop policy if exists club_read on public.bookish_vote_options;
+create policy club_read on public.bookish_vote_options for select to authenticated using(bookish_private.is_member(club_id));
+grant select on public.bookish_vote_options to authenticated;
+drop policy if exists club_read on public.bookish_nominations;
+create policy club_read on public.bookish_nominations for select to authenticated using(bookish_private.is_member(club_id));
+grant select on public.bookish_nominations to authenticated;
 -- A ballot is private even to other club members. Expose only grouped counts.
 drop policy if exists club_read on public.bookish_vote_ballots;
-revoke all on public.bookish_vote_ballots from public,anon,authenticated;
 create or replace function public.bookish_vote_tally(p_vote uuid)
 returns table(option_id uuid,book_id text,ballots bigint)
 language plpgsql stable security definer set search_path='' as $$
@@ -214,9 +237,6 @@ declare v public.bookish_votes; winner uuid; top_count bigint; n int; next_book 
 end $$;
 -- Deliberately no public token ballot: every voter must authenticate and be a member.
 
-do $$ declare f regprocedure; begin
- for f in select p.oid::regprocedure from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.proname in
- ('bookish_set_current_book','bookish_finish_book','bookish_log_page','bookish_race','bookish_schedule_meeting','bookish_edit_meeting','bookish_add_bring_item','bookish_claim_bring_item','bookish_open_vote','bookish_cast_ballot','bookish_close_vote')
- loop execute format('revoke all on function %s from public,anon,authenticated',f); execute format('grant execute on function %s to authenticated',f); end loop;
-end $$;
+revoke all on function public.bookish_set_current_book(uuid, text),public.bookish_finish_book(uuid, text, text),public.bookish_log_page(uuid, text, integer, integer, boolean, uuid),public.bookish_race(uuid),public.bookish_schedule_meeting(uuid, timestamp with time zone, text, text, integer),public.bookish_edit_meeting(uuid, timestamp with time zone, text, text, integer, boolean),public.bookish_add_bring_item(uuid, text),public.bookish_claim_bring_item(uuid, boolean),public.bookish_open_vote(uuid, timestamp with time zone, text[], boolean),public.bookish_cast_ballot(uuid, uuid, text),public.bookish_close_vote(uuid, uuid) from public,anon,authenticated;
+grant execute on function public.bookish_set_current_book(uuid, text),public.bookish_finish_book(uuid, text, text),public.bookish_log_page(uuid, text, integer, integer, boolean, uuid),public.bookish_race(uuid),public.bookish_schedule_meeting(uuid, timestamp with time zone, text, text, integer),public.bookish_edit_meeting(uuid, timestamp with time zone, text, text, integer, boolean),public.bookish_add_bring_item(uuid, text),public.bookish_claim_bring_item(uuid, boolean),public.bookish_open_vote(uuid, timestamp with time zone, text[], boolean),public.bookish_cast_ballot(uuid, uuid, text),public.bookish_close_vote(uuid, uuid) to authenticated;
 commit;

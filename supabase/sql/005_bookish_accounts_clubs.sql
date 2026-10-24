@@ -15,8 +15,9 @@ create table if not exists public.bookish_profiles (
   banned_at timestamptz,
   created_at timestamptz not null default now()
 );
+grant select,insert,update,delete on table public.bookish_profiles to service_role;
 alter table public.bookish_profiles enable row level security;
-revoke all on public.bookish_profiles from public,anon,authenticated;
+revoke all on table public.bookish_profiles from public,anon,authenticated;
 alter table public.bookish_submissions add column if not exists user_id uuid references public.bookish_profiles(id) on delete cascade;
 create or replace function bookish_private.new_profile() returns trigger language plpgsql security definer set search_path='' as $$
 begin
@@ -30,17 +31,13 @@ exception when others then
   raise log 'Bookish profile trigger skipped auth user %: %', new.id, sqlerrm;
   return new;
 end $$;
-do $guard$ begin if not exists (select 1 from pg_trigger where tgname='bookish_new_profile' and tgrelid='auth.users'::regclass) then
- create trigger bookish_new_profile after insert on auth.users for each row execute function bookish_private.new_profile();
- end if; end $guard$;
+create or replace trigger bookish_new_profile after insert on auth.users for each row execute function bookish_private.new_profile();
 create or replace function bookish_private.link_submission_user() returns trigger language plpgsql security definer set search_path='' as $$
 begin
  select u.id into new.user_id from auth.users u where lower(u.email)=lower(new.email) and u.email_confirmed_at is not null and u.raw_app_meta_data->>'app'='bookish' and exists(select 1 from public.bookish_profiles p where p.id=u.id) limit 1;
  return new;
 end $$;
-do $guard$ begin if not exists (select 1 from pg_trigger where tgname='bookish_link_submission_user' and tgrelid='public.bookish_submissions'::regclass) then
- create trigger bookish_link_submission_user before insert on public.bookish_submissions for each row execute function bookish_private.link_submission_user();
- end if; end $guard$;
+create or replace trigger bookish_link_submission_user before insert on public.bookish_submissions for each row execute function bookish_private.link_submission_user();
 
 do $guard$ begin if not exists (select 1 from pg_constraint where conname='bookish_member_profile_fk' and conrelid='public.bookish_members'::regclass) then
  alter table public.bookish_members add constraint bookish_member_profile_fk foreign key(user_id) references public.bookish_profiles(id) on delete cascade;
@@ -78,9 +75,7 @@ exception when others then
  raise log 'Bookish confirmed links trigger skipped auth user %: %', new.id, sqlerrm;
  return new;
 end $$;
-do $guard$ begin if not exists (select 1 from pg_trigger where tgname='bookish_confirmed_user_links' and tgrelid='auth.users'::regclass) then
- create trigger bookish_confirmed_user_links after update of email,email_confirmed_at on auth.users for each row execute function bookish_private.confirmed_user_links();
- end if; end $guard$;
+create or replace trigger bookish_confirmed_user_links after update of email,email_confirmed_at on auth.users for each row execute function bookish_private.confirmed_user_links();
 create unique index if not exists bookish_pending_member_request on public.bookish_join_requests(club_id,user_id) where status='pending' and user_id is not null;
 alter table public.bookish_invites add column if not exists club_id uuid references public.bookish_clubs(id) on delete cascade;
 alter table public.bookish_invites add column if not exists created_by uuid references public.bookish_profiles(id) on delete cascade;
@@ -95,8 +90,9 @@ create table if not exists public.bookish_preferences (
   user_id uuid primary key references public.bookish_profiles(id) on delete cascade,
   active_club_id uuid references public.bookish_clubs(id) on delete set null
 );
+grant select,insert,update,delete on table public.bookish_preferences to service_role;
 alter table public.bookish_preferences enable row level security;
-revoke all on public.bookish_preferences from public,anon,authenticated;
+revoke all on table public.bookish_preferences from public,anon,authenticated;
 
 create or replace function bookish_private.active_user() returns boolean language sql stable security definer set search_path='' as $$
  select exists(select 1 from public.bookish_profiles p join auth.users u on u.id=p.id where p.id=auth.uid() and p.banned_at is null and u.raw_app_meta_data->>'app'='bookish')
@@ -247,9 +243,6 @@ end $$;
 revoke all on all tables in schema bookish_private from public,anon,authenticated,service_role;
 revoke all on all functions in schema bookish_private from public,anon,authenticated,service_role;
 grant execute on function bookish_private.active_user(),bookish_private.is_member(uuid),bookish_private.is_host(uuid) to authenticated;
-do $$ declare f regprocedure; begin
- for f in select p.oid::regprocedure from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.proname in
- ('bookish_accept_terms','bookish_my_account','bookish_create_club','bookish_switch_club','bookish_member_preferences','bookish_link_directory','bookish_set_listing','bookish_discover_clubs','bookish_create_invite','bookish_redeem_invite','bookish_request_join','bookish_join_queue','bookish_decide_join','bookish_remove_member','bookish_transfer_host')
- loop execute format('revoke all on function %s from public,anon,authenticated',f); execute format('grant execute on function %s to authenticated',f); end loop;
-end $$;
+revoke all on function public.bookish_accept_terms(text, boolean),public.bookish_my_account(),public.bookish_create_club(text, text, text),public.bookish_switch_club(uuid),public.bookish_member_preferences(uuid, boolean, boolean, boolean),public.bookish_link_directory(uuid, text),public.bookish_set_listing(uuid, boolean),public.bookish_discover_clubs(text, text),public.bookish_create_invite(uuid, integer, integer),public.bookish_redeem_invite(text),public.bookish_request_join(uuid, text),public.bookish_join_queue(uuid),public.bookish_decide_join(uuid, boolean),public.bookish_remove_member(uuid, uuid),public.bookish_transfer_host(uuid, uuid) from public,anon,authenticated;
+grant execute on function public.bookish_accept_terms(text, boolean),public.bookish_my_account(),public.bookish_create_club(text, text, text),public.bookish_switch_club(uuid),public.bookish_member_preferences(uuid, boolean, boolean, boolean),public.bookish_link_directory(uuid, text),public.bookish_set_listing(uuid, boolean),public.bookish_discover_clubs(text, text),public.bookish_create_invite(uuid, integer, integer),public.bookish_redeem_invite(text),public.bookish_request_join(uuid, text),public.bookish_join_queue(uuid),public.bookish_decide_join(uuid, boolean),public.bookish_remove_member(uuid, uuid),public.bookish_transfer_host(uuid, uuid) to authenticated;
 commit;

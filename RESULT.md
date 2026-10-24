@@ -20,6 +20,16 @@ PR #12 is already merged in this checkout (`9049b5b`, feature commit `6f5887f`).
 
 A separate Bookish Supabase project is still the real fix and needs Sebastian. Until then, trusted Bookish signup must create a fresh identity with the app marker at creation; the direct Auth signup flow described before this review must not be used on the shared project.
 
+## October 23 resume
+
+Rebased onto current `main`, including the existing native finder. Its directory refresh, verified flags, and legacy join form already use the published feed and `bookish-join`. This PR does not add native account or member-club screens, or connect that UI to the v1.1 RPCs. Native account integration remains blocked by the database and trusted Auth provisioning review. No UI files changed in this PR.
+
+Fresh read-only history and catalog checks on October 23 confirm 005-008 remain unapplied: the private schema and new tables are absent, the 66 catalog books remain, the other nine existing Bookish tables have zero rows, and no Auth identity has the trusted Bookish marker. Shared Auth now has 170 identities. Review artifacts and the fresh catalog snapshot remain in the local `card-bk-backend` job directory.
+
+New public tables now receive explicit service-role CRUD immediately after creation, followed by RLS and client-role revocation. Existing reviewed member policies and narrow authenticated grants remain. Dynamic ACL and RLS loops are replaced by literal statements, and triggers use `CREATE OR REPLACE TRIGGER`. Existing applied SQL 001-004 is unchanged. A local PGlite regression disables inherited table grants before applying each new migration and checks service CRUD, anon denial, and private ballot, Tea, and reaction access.
+
+The `Backend and finder` PR check runs backend tests, edge type checks, edge lint and formatting, an offline finder build, native domain tests, and the app UI smoke test. It uses local empty aggregate and verified fixtures, needs no secrets, and performs no deployments or database operations against Supabase.
+
 ## Schema diagram
 
 ```text

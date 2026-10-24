@@ -1,0 +1,55 @@
+name: Backend and finder
+on:
+  pull_request:
+    paths:
+      - "supabase/**"
+      - "tests/**"
+      - "scripts/build.mjs"
+      - "scripts/lib.mjs"
+      - "src/**"
+      - "data/**"
+      - "package*.json"
+      - ".github/workflows/backend.yml"
+  push:
+    branches: [main]
+    paths:
+      - "supabase/**"
+      - "tests/**"
+      - "scripts/build.mjs"
+      - "scripts/lib.mjs"
+      - "src/**"
+      - "data/**"
+      - "package*.json"
+      - ".github/workflows/backend.yml"
+permissions:
+  contents: read
+concurrency:
+  group: backend-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - run: npm ci
+      - run: npm test
+      - run: npm run check:edge
+      - name: Lint and format new edge functions
+        run: |
+          deno lint supabase/functions/_shared/account-deletion.ts supabase/functions/_shared/auth-admin.ts supabase/functions/_shared/house-rules.ts supabase/functions/bookish-delete-account/index.ts supabase/functions/bookish-house-rules/index.ts
+          deno fmt --check supabase/functions/_shared/account-deletion.ts supabase/functions/_shared/auth-admin.ts supabase/functions/_shared/house-rules.ts supabase/functions/bookish-delete-account/index.ts supabase/functions/bookish-house-rules/index.ts
+      - name: Build finder with local fixtures
+        run: npm run build
+        env:
+          BOOKISH_VERIFIED_FILE: tests/fixtures/verified-empty.json
+          BOOKISH_COMMUNITY_FILE: tests/fixtures/community-empty.json
+      - run: npm ci --prefix app
+      - run: npm test --prefix app
+      - run: npm run test:ui --prefix app
