@@ -42,11 +42,29 @@ for (const [kind, fields, phrase] of [
 });
 
 // Regression caught: treating provider rejection as a successful send.
-test("provider rejection keeps the row pending without claiming delivery", async () => {
-  const app = edge("bookish-submit", { mailStatus: 403 });
+test("Resend 403 for a meetbookish.com sender keeps the saved row pending", async () => {
+  const app = edge("bookish-submit", {
+    mailStatus: 403, env: { BOOKISH_EMAIL_FROM: "Bookish <hello@meetbookish.com>" },
+  });
   const response = await app.handler(submission());
+  assert.equal(response.status, 200);
   assert.deepEqual(await response.json(), { ok: true, confirm_sent: false });
   assert.equal(app.emails.length, 1);
+  assert.equal(app.emails[0].from, "Bookish <hello@meetbookish.com>");
+  assert.equal(app.rows.length, 1);
+  assert.equal(app.rows[0].status, "pending");
+  assert.equal(app.rows[0].email_sent_at, null);
+});
+
+// Regression caught: an email transport failure must not fail an already saved submission.
+test("a thrown Resend fetch returns success for the saved row without marking email sent", async () => {
+  const app = edge("bookish-submit", { mailThrows: true });
+  const response = await app.handler(submission());
+  assert.equal(response.status, 200);
+  assert.deepEqual(await response.json(), { ok: true, confirm_sent: false });
+  assert.equal(app.emails.length, 1);
+  assert.equal(app.rows.length, 1);
+  assert.equal(app.rows[0].email, "reader@example.test");
   assert.equal(app.rows[0].status, "pending");
   assert.equal(app.rows[0].email_sent_at, null);
 });

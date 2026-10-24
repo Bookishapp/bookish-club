@@ -65,6 +65,7 @@ export function edge(name, options = {}) {
       assert.equal(init.method, "POST");
       assert.equal(init.headers.authorization, "Bearer offline-mail-placeholder");
       emails.push(JSON.parse(init.body));
+      if (options.mailThrows) throw new TypeError("offline mail transport failure");
       return new Response("{}", { status: options.mailStatus ?? 200 });
     },
   });
