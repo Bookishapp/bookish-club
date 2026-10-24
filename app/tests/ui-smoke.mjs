@@ -111,8 +111,8 @@ assert.ok(!nativeCalls.some(c=>c.plugin==='LocalNotifications'&&c.method==='sche
 notificationAllowed=true;n.document.querySelector('#remind').dispatchEvent(new n.Event('submit',{bubbles:true,cancelable:true}));
 await until(()=>nativeStore.has('bookish.reminders'));
 const scheduled=nativeCalls.find(c=>c.plugin==='LocalNotifications'&&c.method==='schedule').options.notifications[0];
-assert.ok(scheduled.id>0);assert.ok(scheduled.schedule.at.endsWith('Z'));assert.ok(scheduled.extra.clubId);
-assert.equal(new Date(scheduled.schedule.at).getTime(),new Date('2030-01-01T18:00').getTime()-3600000);
+assert.ok(scheduled.id>0);assert.ok(scheduled.schedule.at instanceof n.Date,'Native reminder schedule.at must be a Date, not an ISO string.');assert.ok(scheduled.extra.clubId);
+assert.equal(scheduled.schedule.at.getTime(),new Date('2030-01-01T18:00').getTime()-3600000);
 await until(()=>n.document.querySelector('[data-cancel]'));click(n,'[data-cancel]');
 await until(()=>JSON.parse(nativeStore.get('bookish.reminders'))&&Object.keys(JSON.parse(nativeStore.get('bookish.reminders'))).length===0);
 assert.ok(nativeCalls.some(c=>c.plugin==='LocalNotifications'&&c.method==='cancel'&&c.options.notifications[0].id===scheduled.id));

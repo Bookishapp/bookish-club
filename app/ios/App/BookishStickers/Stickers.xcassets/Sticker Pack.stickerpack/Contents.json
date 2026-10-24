@@ -1,0 +1,53 @@
+{
+  "info": {
+    "author": "xcode",
+    "version": 1
+  },
+  "properties": {
+    "grid-size": "regular"
+  },
+  "stickers": [
+    {
+      "filename": "lunair-sticker-01-hi-book-club.sticker"
+    },
+    {
+      "filename": "lunair-sticker-02-im-in.sticker"
+    },
+    {
+      "filename": "lunair-sticker-03-see-you-thursday.sticker"
+    },
+    {
+      "filename": "lunair-sticker-04-no-spoilers.sticker"
+    },
+    {
+      "filename": "lunair-sticker-05-i-cannot.sticker"
+    },
+    {
+      "filename": "lunair-sticker-06-swooning.sticker"
+    },
+    {
+      "filename": "lunair-sticker-07-not-crying.sticker"
+    },
+    {
+      "filename": "lunair-sticker-08-spill-it.sticker"
+    },
+    {
+      "filename": "lunair-sticker-09-plot-twist.sticker"
+    },
+    {
+      "filename": "lunair-sticker-10-one-more-chapter.sticker"
+    },
+    {
+      "filename": "lunair-sticker-11-youre-invited.sticker"
+    },
+    {
+      "filename": "lunair-sticker-12-your-turn-to-host.sticker"
+    },
+    {
+      "filename": "lunair-sticker-13-on-my-way.sticker"
+    },
+    {
+      "filename": "lunair-sticker-14-no-peeking.sticker"
+    }
+  ]
+}

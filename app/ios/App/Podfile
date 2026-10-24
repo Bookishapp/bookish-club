@@ -25,4 +25,20 @@ end
 
 post_install do |installer|
   assertDeploymentTarget(installer)
+  # Keep generated Pods aligned with the host's iOS 16.0 minimum.
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      if config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'].to_f < 16.0
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '16.0'
+      end
+    end
+  end
+  # Preferences uses UserDefaults. Put the required-reason declaration in the
+  # dynamic framework itself, as well as in the containing app's manifest.
+  preferences = installer.pods_project.targets.find { |target| target.name == 'CapacitorPreferences' }
+  if preferences
+    privacy_path = File.join(__dir__, 'Privacy/CapacitorPreferences/PrivacyInfo.xcprivacy')
+    reference = installer.pods_project.main_group.new_file(privacy_path)
+    preferences.resources_build_phase.add_file_reference(reference, true)
+  end
 end
