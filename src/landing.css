@@ -28,7 +28,7 @@ body{font-family:Manrope,sans-serif;-webkit-font-smoothing:antialiased;color:var
 .cv .ca{font:800 .5em/1 Manrope;letter-spacing:.14em;text-transform:uppercase;opacity:.8}
 .av{border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;color:#2b1218;flex:none;box-shadow:0 0 0 2px #fffaf0}
 
-html{background:var(--oxd)}
+html{background:var(--oxd);overflow-x:clip}
 body{background:var(--oxd) var(--tile) top center/100% auto repeat-y;overflow-x:hidden;color:var(--on)}
 .wrap{max-width:1200px;margin:0 auto;padding:0 40px;position:relative}
 .nav{display:flex;align-items:center;gap:30px;height:84px}

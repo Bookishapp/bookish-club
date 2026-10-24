@@ -16,3 +16,9 @@ The approved body, phone, cards, drawing, red wall, font axes, hard shadows, and
 Technique: value grouping, ink edge control, overlap, and repetition with variation. Cream type and a white phone form the primary masses on the red wall; butter stickers carry the focal accents. The visual critique included a thumbnail view, a grayscale study, a horizontal flip, and section-by-section comparison with the approved reference.
 
 Verification used local data fixtures and blocked external browser requests. No real form submissions were made.
+
+## Ted review, fix round 1
+
+The hero lead now uses a comma after “and more.” The six illustration and phone PNGs are WebP at twice their displayed widths, ranging from 45,504 to 74,426 bytes each. Their total transfer size fell from 2,790,409 to 382,072 bytes. Every landing image has intrinsic width and height, and the below-the-fold images load lazily. The root clips horizontal overflow.
+
+The comparisons and process strip were refreshed after scrolling through the page in Chrome to exercise lazy loading. The existing Support route from current main remains available in the footer disclosure. Chrome verified 375, 390, 768, 1024, and 1440 widths. No Safari session was used, so iOS Safari behavior is not represented as device-tested.
