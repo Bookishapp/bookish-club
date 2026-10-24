@@ -54,6 +54,8 @@ jobs:
       - name: Install app test dependencies
         run: npm ci
         working-directory: app
+      - name: Check landing, navigation, assets, and existing site contracts
+        run: node --test scripts/test-site.mjs
       - name: Run app unit tests
         run: npm test
         working-directory: app

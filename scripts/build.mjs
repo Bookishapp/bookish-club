@@ -138,8 +138,9 @@ const page = (p, prio = 0.6) => sitemap.push({ loc: abs(p), prio });
 const WORDMARK = (eager) => `<img src="${url("/img/wordmark-160.webp")}" srcset="${url("/img/wordmark-160.webp")} 1x, ${url("/img/wordmark-320.webp")} 2x, ${url("/img/wordmark-480.webp")} 3x" width="160" height="62" alt="Bookish"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`;
 const CSS = (fs.readFileSync(path.join(ROOT, "src/theme.css"), "utf8") + fs.readFileSync(path.join(ROOT, "src/styles.css"), "utf8")).replaceAll("__BASE__", BASE).replace(/\n\s*/g, "\n");
 
-function layout({ title, desc, path: p, body, jsonld = [], noindex = false }) {
+function layout({ title, desc, path: p, body, jsonld = [], noindex = false, landing = false }) {
   const canonical = abs(p);
+  const landingCSS = landing ? fs.readFileSync(path.join(ROOT, "src/landing.css"), "utf8").replaceAll("__BASE__", BASE) : "";
   return `<!doctype html>
 <html lang="en" data-base="${BASE}" data-api="${API}" data-join-api="${JOIN_API}">
 <head>
@@ -161,27 +162,27 @@ ${noindex ? '<meta name="robots" content="noindex">' : ""}
 <link rel="apple-touch-icon" href="${url("/apple-touch-icon.png")}" sizes="180x180">
 <link rel="manifest" href="${url("/site.webmanifest")}">
 <link rel="preload" href="${url("/fonts/manrope-400_800.woff2")}" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="${url("/fonts/unbounded-400_900.woff2")}" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="${url("/fonts/youngserif-400.woff2")}" as="font" type="font/woff2" crossorigin>
-<style>${CSS}</style>
+${landing ? `<link rel="preload" href="${url("/img/landing/fonts/BricolageGrotesque-var.woff2")}" as="font" type="font/woff2" crossorigin>` : `<link rel="preload" href="${url("/fonts/unbounded-400_900.woff2")}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="${url("/fonts/youngserif-400.woff2")}" as="font" type="font/woff2" crossorigin>`}
+<style>${landing ? landingCSS : CSS}</style>
 ${jsonld.map((j) => `<script type="application/ld+json">${JSON.stringify(j).replace(/</g, "\\u003c")}</script>`).join("\n")}
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<header class="mast"><div class="wrap">
+${landing ? "" : `<header class="mast"><div class="wrap">
 <a class="wordmark" href="${url("/")}">${WORDMARK(true)}</a>
 <nav class="nav" aria-label="Main"><a class="hide-sm" href="${url("/hosts/")}">For your club</a><a class="hide-sm" href="${url("/read-next/")}">Read next</a><a class="hide-sm" href="${url("/resources/")}">Resources</a><a class="btn-sm" href="${url("/hosts/#waitlist")}">Bring my club</a></nav>
-</div></header>
+</div></header>`}
 <main id="main">
 ${body}
 </main>
-<footer class="foot-site"><div class="wrap cols">
+${landing ? "" : `<footer class="foot-site"><div class="wrap cols">
 <div><a class="wordmark" href="${url("/")}">${WORDMARK(false)}</a>
 <p>Your book club, just more fun. We're bringing the hot takes, the next book vote, and the next meeting into your club's iMessage thread. Join the host waitlist for what's coming.</p>
 <p class="credit">Book covers and book details from <a href="https://openlibrary.org/" rel="noopener">Open Library</a>.</p></div>
 <div><p class="h">Find</p><ul><li><a href="${url("/book-clubs/")}">All cities</a></li><li><a href="${url("/read-next/")}">What to read next</a></li>${["romance", "mystery-thriller", "fantasy", "nonfiction"].filter((g) => genreTotals[g] >= 5).map((g) => `<li><a href="${url(`/genres/${g}/`)}">${GENRES[g]} clubs</a></li>`).join("")}</ul></div>
 <div><p class="h">Your club</p><ul><li><a href="${url("/hosts/#waitlist")}">Bring my club</a></li><li><a href="${url("/start/")}">List your club</a></li><li><a href="${url("/claim/")}">Claim your listing</a></li><li><a href="${url("/resources/")}">Resources</a></li><li><a href="${url("/press/")}">Press</a></li><li><a href="${url("/about/")}">About &amp; sources</a></li><li><a href="${url("/support/")}">Support</a></li><li><a href="${url("/privacy/")}">Privacy</a> · <a href="${url("/terms/")}">Terms</a></li></ul></div>
-</div></footer>
+</div></footer>`}
 <script src="${url("/site.js")}" defer></script>
 ${body.includes('id="club-map"') ? `<script src="${url("/map.js")}" defer></script>` : ""}
 ${body.includes('id="rn"') ? `<script src="${url("/read-next.js")}" defer></script>` : ""}
@@ -476,14 +477,12 @@ const clubIntro = ({ press = false } = {}) => `<section class="lander club-lande
 
 // ---------- home ----------
 {
-  const body = `${clubIntro()}${clubFun()}${clubHost()}${clubRules()}
-<section class="club-story club-invite"><div class="wrap"><div class="own-wrap">${lunair("lunair-gossip", 220, 209, 440, 417, "Lunair whispering behind her hand")}
-<div class="own"><h2>Save your club a seat.</h2><p>Already have a group chat, a monthly table, or a book everyone has opinions about? You're our kind of club.</p><a class="btn" href="${url("/hosts/#waitlist")}">Bring my club ${ARROW}</a><p class="small">Join the waitlist. We'll be in touch when it's your club's turn.</p></div></div></div></section>
-${clubFinder(true)}`;
+  const body = fs.readFileSync(path.join(ROOT, "src/landing.html"), "utf8")
+    .replace("__SEARCH__", searchBox()).replaceAll("__BASE__", BASE);
   write("index.html", layout({
     title: "Bookish: Book Club Night | Your book club, just more fun",
     desc: "Bring the club you already have. Bookish is bringing anonymous hot takes, book votes, RSVPs, and easier hosting to your iMessage group chat. Join the host waitlist.",
-    path: "/", body,
+    path: "/", body, landing: true,
     jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Bookish: Book Club Night", alternateName: "Bookish", url: abs("/"),
       potentialAction: { "@type": "SearchAction", target: { "@type": "EntryPoint", urlTemplate: `${abs("/")}?q={search_term_string}` }, "query-input": "required name=search_term_string" } },
       { "@context": "https://schema.org", "@type": "Organization", name: "Bookish", url: abs("/") }],
@@ -496,7 +495,7 @@ ${clubFinder(true)}`;
   const body = `${clubIntro({ press: true })}${clubFun()}${clubHost()}${clubRules()}
 <section class="club-story"><div class="wrap"><div class="paper press-notes"><h2>Bookish, in a few words.</h2>
 <h3>The short version</h3><p>Bookish is building the group chat for book clubs: more fun for the club you already have, and less herding for the host. Anonymous comments, the DNF confessional, spoiler-safe hot takes, post-meeting superlatives, and Club Wrapped sit alongside RSVPs, reminders, book votes, and meeting plans, right inside iMessage.</p>
-<h3>Availability</h3><p>The iMessage experience and club settings described here are coming soon. Hosts can join the waitlist now. The club finder is already available on the web.</p>
+<h3 id="creators">Availability</h3><p>The iMessage experience and club settings described here are coming soon. Hosts can join the waitlist now. The club finder is already available on the web.</p>
 <h3>Art and press questions</h3><p><a href="${url("/img/bookish-wordmark.png")}" download>Download the Bookish wordmark</a>. For press questions, write to <a href="mailto:hello@meetbookish.com">hello@meetbookish.com</a>.</p>
 </div></div></section>${clubFinder()}`;
   write("press/index.html", layout({ title: "Bookish Press | The group chat for book clubs", desc: "Bookish is building the group chat for book clubs. Anonymous hot takes, club memories, and easier hosting for the club you already have, right inside iMessage.", path: "/press/", body }));
