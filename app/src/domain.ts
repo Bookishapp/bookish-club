@@ -1,3 +1,5 @@
+import { sourceURLUpgrades } from './source-urls.ts';
+
 export interface Club {
   id: string; name: string; city: string; state: string; genres: string[];
   vibe: string | null; cadence: string | null; format: string | null;
@@ -51,7 +53,7 @@ export function validateFeed(kind: string, value: unknown): Club[] | Book[] | Co
   }
   if (!Array.isArray(value) || !value.length || value.length > 20_000) throw new Error(`${kind} schema`);
   const seen = new Set<string>();
-  return value.map(v => {
+  const records = value.map(v => {
     if (!v || typeof v !== 'object' || !str(v.id, 80) || seen.has(v.id)) throw new Error(`${kind} schema`);
     seen.add(v.id);
     if (kind === 'books') {
@@ -64,8 +66,11 @@ export function validateFeed(kind: string, value: unknown): Club[] | Book[] | Co
     // Only city-level public facts cross into the app; never retain arbitrary remote fields.
     return { id: str(v.id, 80), name: str(v.name, 160), city: str(v.city, 80), state: v.state,
       genres: strings(v.genres), vibe: optional(v.vibe), cadence: optional(v.cadence), format: optional(v.format),
-      source_name: optional(v.source_name), source_url: safeURL(v.source_url), last_seen: str(v.last_seen, 10),
+      source_name: optional(v.source_name), source_url: safeURL(sourceURLUpgrades.get(v.source_url) || v.source_url), last_seen: str(v.last_seen, 10),
       lat: coord(v.lat, 90), lng: coord(v.lng, 180), verified: v.verified === true,
       city_path: /^\/book-clubs\/[a-z0-9/-]+\/$/.test(v.city_path) ? v.city_path : undefined };
   }) as Club[] | Book[];
+  // A public-calendar club needs a usable source action. Hosted clubs have the
+  // in-app join form, so a missing external calendar does not exclude them.
+  return kind === 'clubs' ? (records as Club[]).filter(c => c.verified || c.source_url !== null) : records;
 }

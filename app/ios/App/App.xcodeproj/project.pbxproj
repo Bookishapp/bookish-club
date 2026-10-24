@@ -27,7 +27,7 @@
 		D10000000000000000000007 /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D20000000000000000000007 /* Messages.framework */; };
 		D10000000000000000000008 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D20000000000000000000008 /* UIKit.framework */; };
 		D10000000000000000000009 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000009 /* Stickers.xcassets */; };
-		D1000000000000000000000A /* BookishMessages.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D2000000000000000000000A /* BookishMessages.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D1000000000000000000000A /* BookishStickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D2000000000000000000000B /* BookishStickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D1000000000000000000000C /* StickerPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000000E /* StickerPickerViewController.swift */; };
 		DB0000000000000000000001 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0000000000000000000001 /* SceneDelegate.swift */; };
 		D10000000000000000000100 /* lunair-sticker-01-hi-book-club.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000100 /* lunair-sticker-01-hi-book-club.png */; };
@@ -44,6 +44,7 @@
 		D1000000000000000000010B /* lunair-sticker-12-your-turn-to-host.png in Resources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000010B /* lunair-sticker-12-your-turn-to-host.png */; };
 		D1000000000000000000010C /* lunair-sticker-13-on-my-way.png in Resources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000010C /* lunair-sticker-13-on-my-way.png */; };
 		D1000000000000000000010D /* lunair-sticker-14-no-peeking.png in Resources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000010D /* lunair-sticker-14-no-peeking.png */; };
+		BD0000000000000000000001 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = BE0000000000000000000001 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,8 +52,8 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 504EC2FC1FED79650016851F /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D40000000000000000000001;
-			remoteInfo = BookishMessages;
+			remoteGlobalIDString = D40000000000000000000002;
+			remoteInfo = BookishStickers;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -63,7 +64,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				D1000000000000000000000A /* BookishMessages.appex in Embed App Extensions */,
+				D1000000000000000000000A /* BookishStickers.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -115,6 +116,7 @@
 		D2000000000000000000010B /* lunair-sticker-12-your-turn-to-host.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-12-your-turn-to-host.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-12-your-turn-to-host.sticker/lunair-sticker-12-your-turn-to-host.png"; sourceTree = SOURCE_ROOT; };
 		D2000000000000000000010C /* lunair-sticker-13-on-my-way.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-13-on-my-way.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-13-on-my-way.sticker/lunair-sticker-13-on-my-way.png"; sourceTree = SOURCE_ROOT; };
 		D2000000000000000000010D /* lunair-sticker-14-no-peeking.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-14-no-peeking.png"; path = "BookishStickers/Stickers.xcassets/Sticker Pack.stickerpack/lunair-sticker-14-no-peeking.sticker/lunair-sticker-14-no-peeking.png"; sourceTree = SOURCE_ROOT; };
+		BE0000000000000000000001 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -219,6 +221,7 @@
 			children = (
 				D20000000000000000000009 /* Stickers.xcassets */,
 				D2000000000000000000000D /* Info.plist */,
+				BE0000000000000000000001 /* PrivacyInfo.xcprivacy */,
 			);
 			path = BookishStickers;
 			sourceTree = "<group>";
@@ -388,6 +391,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D10000000000000000000009 /* Stickers.xcassets in Resources */,
+				BD0000000000000000000001 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -459,7 +463,7 @@
 /* Begin PBXTargetDependency section */
 		D70000000000000000000001 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D40000000000000000000001 /* BookishMessages */;
+			target = D40000000000000000000002 /* BookishStickers */;
 			targetProxy = D30000000000000000000001 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -597,11 +601,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L8YGD7ATLL;
+				CURRENT_PROJECT_VERSION = 3;
 				INFOPLIST_FILE = App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 1.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEBUG\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.meetbookish.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -617,11 +622,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L8YGD7ATLL;
+				CURRENT_PROJECT_VERSION = 3;
 				INFOPLIST_FILE = App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.meetbookish.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
@@ -637,12 +643,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L8YGD7ATLL;
+				CURRENT_PROJECT_VERSION = 3;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = BookishMessages/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.meetbookish.app.BookishMessages;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -659,12 +666,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L8YGD7ATLL;
+				CURRENT_PROJECT_VERSION = 3;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = BookishMessages/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.meetbookish.app.BookishMessages;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -681,12 +689,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L8YGD7ATLL;
+				CURRENT_PROJECT_VERSION = 3;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = BookishStickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.meetbookish.app.BookishStickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -702,12 +711,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L8YGD7ATLL;
+				CURRENT_PROJECT_VERSION = 3;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = BookishStickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.meetbookish.app.BookishStickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

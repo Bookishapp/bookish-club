@@ -2,7 +2,7 @@
 
 The pack contains 14 final Lunair stickers, in the supplied manifest order. Each sticker is a transparent 408 x 408 PNG, with its manifest caption as the accessibility label.
 
-The containing app uses these same 14 source PNGs through the native sticker browser inside `BookishMessages`. `BookishStickers` remains a separately buildable target and scheme. It is not embedded alongside `BookishMessages`, because the tested iOS runtime rejects two message payload provider extensions in one containing app.
+The App Store release embeds `BookishStickers`, which contains the final 14-sticker pack. The interactive `BookishMessages` source and scheme remain available for the first update, but the containing app does not depend on or embed that sample feature. Only one message payload provider extension is embedded, because the tested iOS runtime rejects two in one containing app.
 
 ## Xcode integration
 
@@ -13,7 +13,7 @@ The containing app uses these same 14 source PNGs through the native sticker bro
 - Pack: `Sticker Pack.stickerpack`, with `grid-size` set to `regular`.
 - Principal class: Apple's built-in `StickerBrowserViewController`. A custom Swift class is not needed for this static pack.
 
-Only the catalog belongs in the target's Resources phase. The Info file is the target's Info.plist, and this README is documentation.
+The catalog and `PrivacyInfo.xcprivacy` belong in the target's Resources phase. The static pack does not collect data or use required-reason APIs. The Info file is the target's Info.plist, and this README is documentation.
 
 ## Lunair sticker assets
 
@@ -23,7 +23,7 @@ All 14 stickers use 408 x 408 pixels, at the regular size's @3x resolution. Keep
 
 ## Extension icon replacement
 
-`iMessage App Icon.stickersiconset` contains opaque, square-cornered RGB PNG placeholders using the installed Xcode template's icon slots. Replace the PNGs in place with approved extension icon art. Keep every slot's exact size and filename, and let the system apply its corner mask. These are separate from the containing iOS app's AppIcon assets.
+`iMessage App Icon.stickersiconset` contains opaque, square-cornered RGB PNGs using the approved containing app artwork and the installed Xcode template's icon slots. Each image is proportionally resized from `app/assets/icon-only.png`, centered, and padded with the existing burgundy `#33101A` background. No draft art remains in the shipped static pack. Keep every slot's exact size and filename, and let the system apply its corner mask. These are separate from the containing iOS app's AppIcon assets.
 
 | Slot | Scale | PNG dimensions |
 | --- | --- | --- |
@@ -38,7 +38,7 @@ All 14 stickers use 408 x 408 pixels, at the regular size's @3x resolution. Keep
 
 ## Review before release
 
-Open the catalog in Xcode to confirm all 14 stickers and all icon slots appear. Build the containing app, then inspect the pack in Messages on a simulator and a device. Verify the phrases remain legible at displayed size, transparency looks clean on light and dark message backgrounds, VoiceOver describes each sticker, and the pack supports sending and peeling onto a message. Replace the separate icon placeholders before App Store submission.
+Open the catalog in Xcode to confirm all 14 stickers and all icon slots appear. Build the containing app, then inspect the pack in Messages on a simulator and a device. Verify the phrases remain legible at displayed size, transparency looks clean on light and dark message backgrounds, VoiceOver describes each sticker, and the pack supports sending and peeling onto a message. The release icon conversion is mechanical, and uses the same approved artwork as the containing app.
 
 ## Sources
 
