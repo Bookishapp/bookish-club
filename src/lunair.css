@@ -1,0 +1,54 @@
+@font-face{font-family:"Young Serif";src:url("__BASE__/fonts/youngserif-400.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:Manrope;src:url("__BASE__/fonts/manrope-400_800.woff2") format("woff2");font-weight:400 800;font-display:swap}
+:root{color-scheme:light;--ink:#1e1428;--plum:#4b3866;--wine:#6e2335;--butter:#f6d27a;--cream:#faf3e8}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:20px}
+body{margin:0;background:var(--plum);color:var(--cream);font-family:Manrope,sans-serif;font-size:15px;line-height:1.65}
+a{color:inherit;text-underline-offset:4px}
+a:focus-visible,button:focus-visible{outline:3px solid var(--butter);outline-offset:5px}
+.skip{position:absolute;top:-100px;left:16px;z-index:5;background:var(--cream);color:var(--ink);padding:12px}
+.skip:focus{top:12px}
+.hub{max-width:960px;margin:auto;padding:34px 20px 20px}
+.intro{text-align:center;margin-bottom:32px}
+.signature{margin:0 0 15px;font-size:12px;font-weight:600}
+h1,h2,h3{font-family:"Young Serif",Georgia,serif;font-weight:400;line-height:1.12;letter-spacing:-.035em}
+h1{font-size:clamp(44px,12vw,64px);margin:0;color:var(--butter)}
+.lede{font-size:18px;line-height:1.45;margin:17px 0 7px}
+.aside{font-size:12px;margin:0}
+.art{margin:30px 0 0}
+.posters{display:flex;align-items:center;justify-content:center;padding:12px 8px}
+.poster{display:block;width:36%;height:auto;border:4px solid var(--cream);border-radius:7px;box-shadow:3px 5px 0 var(--ink)}
+.first{transform:rotate(-10deg);margin-right:-8%;z-index:1}
+.middle{transform:rotate(2deg);z-index:3}
+.last{transform:rotate(12deg);margin-left:-8%;z-index:2}
+figcaption{font-size:12px;margin-top:17px}
+.section-title{font-size:24px;margin:0 0 12px;text-align:center;color:var(--butter)}
+.opening-note{font-size:13px;max-width:45ch;text-align:center;margin:0 auto 22px}
+.products{display:grid;gap:18px}
+.product{display:flex;flex-direction:column;padding:22px;border-radius:18px;color:var(--ink);background:var(--cream);border:2px solid var(--ink);box-shadow:4px 5px 0 var(--ink)}
+.product-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}
+.edition{font-size:12px;font-weight:700;line-height:1.4;margin:0;max-width:18ch}
+.price{font-family:"Young Serif",Georgia,serif;font-size:26px;line-height:1;margin:0;color:var(--wine)}
+.product h3{font-size:36px;margin:0}
+.volume{font-size:12px;font-weight:700;margin:10px 0 16px}
+.product>p:not(.volume){margin:0 0 14px}
+.product .detail{font-size:12px}
+.buy{display:block;width:100%;min-height:48px;margin-top:auto;padding:12px 14px;background:var(--wine);color:var(--cream);border:2px solid var(--wine);border-radius:9px;text-align:center;text-decoration:none;font:700 14px/1.5 Manrope,sans-serif}
+.buy:disabled{background:#e2d7c9;color:#5e4b60;border-color:#c7b8be;cursor:default}
+.product a:focus-visible{outline-color:var(--wine)}
+.vault{background:var(--butter)}
+.vault .buy:disabled{background:#e4be68;color:#4f3b4c;border-color:#b18a47}
+.merch{display:flex;flex-direction:column;align-items:flex-start;gap:14px;margin-top:23px;padding:23px;background:var(--wine);border:1px solid #bb8190;border-radius:18px}
+.merch h3{font-size:26px;margin:0 0 10px}
+.merch p{font-size:13px;margin:0}
+.soon{font-size:12px;line-height:1.4;font-weight:700;padding:7px 11px;border:1px solid var(--cream);border-radius:30px}
+.elsewhere{margin-top:28px;display:grid;gap:12px}
+.elsewhere a{display:block;padding:16px 20px;border:1px solid #a899ba;border-radius:12px;text-decoration:none}
+.elsewhere a:hover{background:#3d2c56}
+.link-title{display:block;font-size:14px;font-weight:700;line-height:1.5}
+.link-detail{display:block;font-size:12px;margin-top:4px}
+footer{text-align:center;margin-top:30px;font-size:12px;line-height:1.8}
+footer p{margin:0 0 12px}
+footer a{display:inline-block;padding:8px;margin:0 3px}
+@media(min-width:650px){.hub{padding:55px 38px 25px}.intro{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:22px;margin-bottom:48px}.hello{text-align:left}.signature{font-size:13px}h1{font-size:67px}.lede{font-size:21px}.art{margin:0}.posters{padding:30px 0}.poster{width:39%}figcaption{font-size:12px}.section-title{font-size:30px}.opening-note{max-width:60ch}.products{grid-template-columns:1fr 1fr;gap:24px}.product{padding:27px}.product h3{font-size:40px}.merch{flex-direction:row;align-items:center;justify-content:space-between;padding:27px}.elsewhere{grid-template-columns:1fr 1fr;gap:24px}.elsewhere a{padding:21px}.merch h3{font-size:29px}footer{margin-top:38px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}

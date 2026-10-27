@@ -42,6 +42,8 @@ jobs:
           node --check src/site.js
           node --check src/map.js
           node --check src/read-next.js
+          node --check scripts/build-lunair.mjs
+          node --check src/lunair.js
       - name: Build static site with local fixtures
         run: |
           printf '%s\n' '{"clubs":[]}' > "$RUNNER_TEMP/bookish-verified.json"
@@ -55,7 +57,7 @@ jobs:
         run: npm ci
         working-directory: app
       - name: Check landing, navigation, assets, and existing site contracts
-        run: node --test scripts/test-site.mjs
+        run: node --test scripts/test-site.mjs scripts/test-lunair.mjs
       - name: Run app unit tests
         run: npm test
         working-directory: app
