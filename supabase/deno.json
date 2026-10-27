@@ -1,0 +1,10 @@
+{
+  "nodeModulesDir": "auto",
+  "lock": "deno.lock",
+  "compilerOptions": { "strict": true },
+  "lint": { "rules": { "exclude": ["no-import-prefix"] } },
+  "tasks": {
+    "test:lunair": "deno test --allow-read --allow-env tests/lunair",
+    "check:lunair": "deno check functions/lunair-shop-webhook/index.ts functions/lunair-library/index.ts"
+  }
+}

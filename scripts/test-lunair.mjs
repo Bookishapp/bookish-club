@@ -131,3 +131,10 @@ test('Midnight redirect preserves the exact query and fragment', async () => {
   assert.equal(destination, '/lunair/?utm_source=instagram&utm_campaign=lunairandmidnight&x=a%2Bb#shop');
   assert.equal(document.querySelector('a').getAttribute('href'), '/lunair/');
 });
+
+test('Stripe test checkout links clearly label the shop and the purchase actions as test mode', async () => {
+  const { html } = await render({ checkout: { vol1: 'https://buy.stripe.com/test_examplevol1', grimoire: 'https://buy.stripe.com/test_examplegrimoire' } });
+  const document = new JSDOM(html).window.document;
+  assert.match(document.querySelector('[data-test-mode]')?.textContent ?? '', /test mode.*no real payment/i);
+  for (const link of document.querySelectorAll('a[data-checkout]')) assert.match(link.textContent, /test checkout/i);
+});

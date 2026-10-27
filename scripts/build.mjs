@@ -6,6 +6,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { GENRES_LIST, STATE_NAMES } from "./lib.mjs";
 import { renderLunair } from "./build-lunair.mjs";
+import { renderLunairLibrary } from "./build-lunair-library.mjs";
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
 const SITE_URL = (process.env.SITE_URL || "https://fictora.github.io/bookish-club").replace(/\/$/, "");
@@ -802,6 +803,10 @@ write("lunair/index.html", lunairShop.html);
 write("midnight/index.html", lunairShop.redirect);
 write("lunair.css", fs.readFileSync(path.join(ROOT, "src/lunair.css"), "utf8").replaceAll("__BASE__", BASE));
 write("lunair.js", fs.readFileSync(path.join(ROOT, "src/lunair.js"), "utf8"));
+const lunairLibrary = JSON.parse(fs.readFileSync(path.join(ROOT, "public/lunair/library.json"), "utf8"));
+write("lunair/library/index.html", renderLunairLibrary({ siteUrl: SITE_URL, config: lunairLibrary }));
+write("lunair-library.css", fs.readFileSync(path.join(ROOT, "src/lunair-library.css"), "utf8"));
+write("lunair-library.js", fs.readFileSync(path.join(ROOT, "src/lunair-library.js"), "utf8"));
 page("/lunair/", 0.7);
 const citiesJson = cities.map((c) => ({ n: c.name, s: c.st, u: c.u, c: c.clubs.length, v: c.v, g: c.genres, vg: c.vg, gp: c.genrePages, la: c.lat, lo: c.lng }));
 copyDir(path.join(ROOT, "public"), OUT);
