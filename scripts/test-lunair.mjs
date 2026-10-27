@@ -13,13 +13,22 @@ async function render(options = {}) {
   return (await import(file)).renderLunair({ siteUrl: 'https://meetbookish.com', checkout, ...options });
 }
 
-test('shop build produces an accessible page with unavailable checkout and real local assets', () => {
+test('shop build produces an accessible page with configured checkout states and real local assets', () => {
   assert.ok(fs.existsSync(pageFile), 'build emits /lunair/index.html');
   const document = new JSDOM(fs.readFileSync(pageFile, 'utf8')).window.document;
   assert.equal(document.querySelectorAll('h1').length, 1);
   assert.match(document.querySelector('h1').textContent, /Lunair.*Midnight/s);
-  assert.equal(document.querySelectorAll('button[disabled][data-checkout]').length, 2);
-  assert.equal(document.querySelectorAll('a[data-checkout]').length, 0);
+  const configured = JSON.parse(fs.readFileSync(new URL('public/lunair/checkout.json', root), 'utf8'));
+  for (const key of ['vol1', 'grimoire']) {
+    const button = document.querySelector(`[data-checkout="${key}"]`);
+    if (configured[key]) {
+      assert.equal(button.tagName, 'A');
+      assert.equal(button.href, new URL(configured[key]).href);
+    } else {
+      assert.equal(button.tagName, 'BUTTON');
+      assert.equal(button.disabled, true);
+    }
+  }
   assert.match(document.body.textContent, /30 wallpapers/);
   assert.match(document.body.textContent, /\$9/);
   assert.match(document.body.textContent, /\$19/);
@@ -28,6 +37,39 @@ test('shop build produces an accessible page with unavailable checkout and real 
     assert.ok(fs.existsSync(new URL('dist' + asset, root)), asset);
     if (element.tagName === 'IMG') assert.ok(element.alt.trim());
   }
+});
+
+test('empty checkout renders two distinctly named unavailable buttons', async () => {
+  const { html } = await render();
+  const document = new JSDOM(html).window.document;
+  assert.equal(document.querySelectorAll('button[disabled][data-checkout]').length, 2);
+  assert.equal(document.querySelectorAll('a[data-checkout]').length, 0);
+  assert.equal(document.querySelector('[data-checkout="vol1"]').getAttribute('aria-label'), 'Spells for Grown-Ups, Vol. 1, coming soon');
+  assert.equal(document.querySelector('[data-checkout="grimoire"]').getAttribute('aria-label'), 'The Grimoire, coming soon');
+});
+
+test('one live product does not appear under a shop-opening-soon notice', async () => {
+  for (const configured of [{ vol1: 'https://merchant.example/pack', grimoire: '' }, { vol1: '', grimoire: 'https://merchant.example/grimoire' }]) {
+    const { html } = await render({ checkout: configured });
+    const document = new JSDOM(html).window.document;
+    assert.equal(document.querySelectorAll('a[data-checkout]').length, 1);
+    assert.equal(document.querySelectorAll('button[disabled][data-checkout]').length, 1);
+    assert.equal(document.querySelector('.opening-note'), null);
+  }
+});
+
+test('two offers cannot silently sell the same checkout product', async () => {
+  await assert.rejects(render({ checkout: { vol1: 'https://merchant.example/product', grimoire: 'https://merchant.example/product' } }), /checkout.*different/i);
+});
+
+test('mixed-case UTM keys override defaults without duplicating campaign dimensions', async () => {
+  const { html } = await render();
+  const dom = new JSDOM(html, { url: 'https://meetbookish.com/lunair/?UTM_Source=story&utm_source=last&UTM_Campaign=moon', runScripts: 'outside-only' });
+  dom.window.eval(fs.readFileSync(new URL('src/lunair.js', root), 'utf8'));
+  const link = new URL(dom.window.document.querySelector('[data-pass-utm]').href);
+  assert.equal(link.searchParams.get('utm_source'), 'story');
+  assert.equal(link.searchParams.get('utm_campaign'), 'moon');
+  assert.deepEqual([...link.searchParams.keys()], ['utm_source', 'utm_campaign']);
 });
 
 test('configured checkout opens the correct products without requiring JavaScript', async () => {

@@ -5,17 +5,20 @@ export function renderLunair({ siteUrl, checkout }) {
   const base = new URL(siteUrl).pathname.replace(/\/$/, '');
   const asset = pathname => `${base}${pathname}`;
   const canonical = `${siteUrl.replace(/\/$/, '')}/lunair/`;
-  function buy(key, label) {
+  const destinations = new Set();
+  function buy(key, label, product) {
     const value = checkout[key];
-    if (value === '' || value == null) return `<button class="buy" type="button" data-checkout="${key}" disabled>Coming soon</button>`;
+    if (value === '' || value == null) return `<button class="buy" type="button" data-checkout="${key}" aria-label="${product}, coming soon" disabled>Coming soon</button>`;
     let destination;
     try { destination = new URL(value); } catch { throw new Error(`${key} checkout must be a valid https URL`); }
     if (destination.protocol !== 'https:' || destination.username || destination.password) throw new Error(`${key} checkout must be a valid https URL without credentials`);
+    if (destinations.has(destination.href)) throw new Error('Checkout URLs must point to different products');
+    destinations.add(destination.href);
     return `<a class="buy" data-checkout="${key}" href="${esc(destination.href)}">${label}</a>`;
   }
-  const packButton = buy('vol1', 'Get Vol. 1 for $9');
-  const vaultButton = buy('grimoire', 'Get The Grimoire for $19');
-  const unavailable = !checkout.vol1 || !checkout.grimoire;
+  const packButton = buy('vol1', 'Get Vol. 1 for $9', 'Spells for Grown-Ups, Vol. 1');
+  const vaultButton = buy('grimoire', 'Get The Grimoire for $19', 'The Grimoire');
+  const unavailable = !checkout.vol1 && !checkout.grimoire;
   const html = `<!doctype html>
 <html lang="en">
 <head>
@@ -29,8 +32,12 @@ export function renderLunair({ siteUrl, checkout }) {
 <meta property="og:description" content="A little magic for your very human life. Wallpapers, little spells, and a cat with opinions.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${esc(canonical)}">
-<meta property="og:image" content="${esc(siteUrl.replace(/\/$/, '') + '/img/lunair/small-rooms.webp')}">
-<meta property="og:image:alt" content="Lunair and Midnight with a tiny house under a crescent moon.">
+<meta property="og:image" content="${esc(siteUrl.replace(/\/$/, '') + '/img/lunair/social.png')}">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Lunair and Midnight, with three illustrated little spells.">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="${asset('/favicon.ico')}">
 <link rel="preload" href="${asset('/fonts/youngserif-400.woff2')}" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${asset('/lunair.css')}">

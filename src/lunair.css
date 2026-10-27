@@ -21,13 +21,13 @@ h1{font-size:clamp(44px,12vw,64px);margin:0;color:var(--butter)}
 .first{transform:rotate(-10deg);margin-right:-8%;z-index:1}
 .middle{transform:rotate(2deg);z-index:3}
 .last{transform:rotate(12deg);margin-left:-8%;z-index:2}
-figcaption{font-size:11px;margin-top:17px}
+figcaption{font-size:12px;margin-top:17px}
 .section-title{font-size:24px;margin:0 0 12px;text-align:center;color:var(--butter)}
 .opening-note{font-size:13px;max-width:45ch;text-align:center;margin:0 auto 22px}
 .products{display:grid;gap:18px}
 .product{display:flex;flex-direction:column;padding:22px;border-radius:18px;color:var(--ink);background:var(--cream);border:2px solid var(--ink);box-shadow:4px 5px 0 var(--ink)}
 .product-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}
-.edition{font-size:11px;font-weight:700;line-height:1.4;margin:0;max-width:18ch}
+.edition{font-size:12px;font-weight:700;line-height:1.4;margin:0;max-width:18ch}
 .price{font-family:"Young Serif",Georgia,serif;font-size:26px;line-height:1;margin:0;color:var(--wine)}
 .product h3{font-size:36px;margin:0}
 .volume{font-size:12px;font-weight:700;margin:10px 0 16px}
@@ -41,13 +41,13 @@ figcaption{font-size:11px;margin-top:17px}
 .merch{display:flex;flex-direction:column;align-items:flex-start;gap:14px;margin-top:23px;padding:23px;background:var(--wine);border:1px solid #bb8190;border-radius:18px}
 .merch h3{font-size:26px;margin:0 0 10px}
 .merch p{font-size:13px;margin:0}
-.soon{font-size:11px;line-height:1.4;font-weight:700;padding:7px 11px;border:1px solid var(--cream);border-radius:30px}
+.soon{font-size:12px;line-height:1.4;font-weight:700;padding:7px 11px;border:1px solid var(--cream);border-radius:30px}
 .elsewhere{margin-top:28px;display:grid;gap:12px}
 .elsewhere a{display:block;padding:16px 20px;border:1px solid #a899ba;border-radius:12px;text-decoration:none}
 .elsewhere a:hover{background:#3d2c56}
 .link-title{display:block;font-size:14px;font-weight:700;line-height:1.5}
-.link-detail{display:block;font-size:11px;margin-top:4px}
-footer{text-align:center;margin-top:30px;font-size:10px;line-height:1.8}
+.link-detail{display:block;font-size:12px;margin-top:4px}
+footer{text-align:center;margin-top:30px;font-size:12px;line-height:1.8}
 footer p{margin:0 0 12px}
 footer a{display:inline-block;padding:8px;margin:0 3px}
 @media(min-width:650px){.hub{padding:55px 38px 25px}.intro{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:22px;margin-bottom:48px}.hello{text-align:left}.signature{font-size:13px}h1{font-size:67px}.lede{font-size:21px}.art{margin:0}.posters{padding:30px 0}.poster{width:39%}figcaption{font-size:12px}.section-title{font-size:30px}.opening-note{max-width:60ch}.products{grid-template-columns:1fr 1fr;gap:24px}.product{padding:27px}.product h3{font-size:40px}.merch{flex-direction:row;align-items:center;justify-content:space-between;padding:27px}.elsewhere{grid-template-columns:1fr 1fr;gap:24px}.elsewhere a{padding:21px}.merch h3{font-size:29px}footer{margin-top:38px}}

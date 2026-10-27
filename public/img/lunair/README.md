@@ -9,3 +9,5 @@ Existing approved illustrations were converted to WebP at 480 pixels wide withou
 - `small-rooms.webp`: `post3-smallrooms-FINAL.png`
 
 These are website previews, not the paid wallpaper files.
+
+`social.png` is a 1200 by 630 social preview, composed in HTML with these existing illustrations and the local site fonts, then rendered in Google Chrome.

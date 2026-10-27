@@ -15,7 +15,7 @@ The bio URL is `https://meetbookish.com/lunair?utm_source=instagram&utm_campaign
 }
 ```
 
-Empty values show disabled “Coming soon” buttons. Each nonempty value must be an HTTPS URL with no embedded credentials. The build fails on unsafe URLs. Configuration is public, so put only customer-facing checkout URLs here, never API keys or private download URLs.
+Empty values show disabled “Coming soon” buttons. Each nonempty value must be an HTTPS URL with no embedded credentials. The URLs must point to different products. The build fails on unsafe or duplicate URLs. Configuration is public, so put only customer-facing checkout URLs here, never API keys or private download URLs.
 
 Before adding URLs, configure two one-time digital products with the chosen merchant:
 
@@ -28,7 +28,7 @@ After updating the JSON file, rebuild and deploy. Buttons are rendered at build 
 
 ## Attribution and assets
 
-The Fictora link includes the Instagram source and Lunair & Midnight campaign by default. `src/lunair.js` forwards nonempty inbound `utm_*` values to Fictora, preserving the first value for duplicate keys. Unrelated query parameters are excluded. The canonical page URL remains clean.
+The Fictora link includes the Instagram source and Lunair & Midnight campaign by default, including when JavaScript is disabled. With JavaScript enabled, `src/lunair.js` forwards nonempty inbound `utm_*` values to Fictora, lowercases keys, and preserves the first nonempty value for duplicate keys. Custom inbound UTM forwarding requires JavaScript. Unrelated query parameters are excluded. The canonical page URL remains clean.
 
 The three preview images are optimized WebP copies of existing Lunair & Midnight illustrations. No character art was generated or repainted for this page. All fonts are served locally. The previews illustrate the collection; they are not public download files.
 
