@@ -1,5 +1,7 @@
 name: Deploy site
 on:
+  pull_request:
+    paths: ["scripts/**", "src/**", "public/**", "data/**", "package.json", ".github/workflows/deploy.yml"]
   push:
     branches: [main]
   workflow_dispatch:
@@ -9,10 +11,8 @@ on:
     - cron: "17 * * * *"
 permissions:
   contents: read
-  pages: write
-  id-token: write
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   build:
@@ -32,6 +32,10 @@ jobs:
         with:
           path: dist
   deploy:
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      pages: write
+      id-token: write
     needs: build
     runs-on: ubuntu-latest
     environment:
