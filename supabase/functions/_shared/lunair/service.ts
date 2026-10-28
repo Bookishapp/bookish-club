@@ -63,9 +63,12 @@ export function readConfig(env: (name: string) => string | undefined): Config {
     return value;
   };
   const siteOrigin = env("LUNAIR_SITE_ORIGIN") || "https://meetbookish.com";
+  const parsedSiteOrigin = new URL(siteOrigin);
   if (
-    new URL(siteOrigin).origin !== siteOrigin ||
-    !siteOrigin.startsWith("https://")
+    parsedSiteOrigin.origin !== siteOrigin ||
+    (parsedSiteOrigin.protocol !== "https:" &&
+      !(parsedSiteOrigin.protocol === "http:" &&
+        ["localhost", "127.0.0.1"].includes(parsedSiteOrigin.hostname)))
   ) throw new Error("Invalid site origin");
   const supabaseUrl = required("SUPABASE_URL");
   // Hard isolation guard. This implementation is test-only, including library access.
