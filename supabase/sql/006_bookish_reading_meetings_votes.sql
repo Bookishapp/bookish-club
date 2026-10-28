@@ -66,25 +66,19 @@ begin
  on conflict(user_id,request_id) do update set request_id=excluded.request_id returning id into rid;
  return rid;
 end $$;
-create or replace function public.bookish_race(p_club uuid) returns table(user_id uuid,display_name text,page int,finished boolean,"position" bigint,streak bigint,title text) language plpgsql stable security definer set search_path='' as $$
+-- Legacy RPC name retained for callers; shared reading has no rank or streak.
+create or replace function public.bookish_race(p_club uuid) returns table(user_id uuid,display_name text,page int,finished boolean) language plpgsql stable security definer set search_path='' as $$
 begin perform bookish_private.require_member(p_club);
  return query
  with current_read as(select b.book_id,b.reading_started_at from public.bookish_club_books b where b.club_id=p_club and b.status='reading'),
  latest as (
-  select m.user_id,p.display_name,coalesce(l.page,0) page,coalesce(l.finished,false) finished,l.logged_at
+  select m.user_id,p.display_name,coalesce(l.page,0) page,coalesce(l.finished,false) finished
   from public.bookish_members m join public.bookish_profiles p on p.id=m.user_id
   left join lateral(select l.* from public.bookish_page_log l join current_read c on c.book_id=l.book_id and l.logged_at>=c.reading_started_at where l.club_id=p_club and l.user_id=m.user_id order by l.logged_at desc,l.id desc limit 1) l on true
   where m.club_id=p_club and m.race_visible and p.banned_at is null
- ), days as (
-  select distinct l.user_id,(l.logged_at at time zone 'UTC')::date log_day from public.bookish_page_log l join current_read c on c.book_id=l.book_id and l.logged_at>=c.reading_started_at where l.club_id=p_club
- ), numbered as (
-  select d.*,d.log_day+row_number() over(partition by d.user_id order by d.log_day desc)::int grp from days d
- ), streaks as (
-  select n.user_id,count(*) n from numbered n where n.grp in (select n2.grp from numbered n2 where n2.user_id=n.user_id and n2.log_day>=(now() at time zone 'UTC')::date-1) group by n.user_id
  )
- select l.user_id,l.display_name,l.page,l.finished,rank() over(order by l.finished desc,l.page desc),coalesce(s.n,0),
- case when l.finished then 'Lovely finish' when l.page>0 then 'Page turner' else 'A fresh chapter' end
- from latest l left join streaks s on s.user_id=l.user_id order by 5,l.user_id;
+ select l.user_id,l.display_name,l.page,l.finished
+ from latest l order by l.user_id;
 end $$;
 
 create table if not exists public.bookish_meetings (

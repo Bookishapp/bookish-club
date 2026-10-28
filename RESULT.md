@@ -121,7 +121,7 @@ Read `bookish_clubs` and `bookish_members` through REST: RLS returns joined club
 | --- | --- |
 | `bookish_create_club(p_name text,p_city text,p_state text)` | Club UUID; caller becomes host and selects it |
 | `bookish_switch_club(p_club uuid)` | Select a joined club; app updates its shared cache/widgets |
-| `bookish_member_preferences(p_club uuid,p_race boolean,p_shield boolean,p_ratings boolean)` | Own Race visibility, spoiler shield and community-rating consent |
+| `bookish_member_preferences(p_club uuid,p_race boolean,p_shield boolean,p_ratings boolean)` | Own shared-progress visibility, spoiler shield, and community-rating consent |
 | `bookish_discover_clubs(p_city text,p_state text)` | At most 100 listed club summaries: ID, directory ref, name, city/state; no precise location |
 | `bookish_link_directory(p_club uuid,p_ref text)` | Host only; requires a confirmed existing claim/start belonging to the caller's verified Auth email |
 | `bookish_set_listing(p_club uuid,p_listed boolean)` | Host listing toggle; defaults off |
@@ -159,7 +159,7 @@ Read `bookish_books` (catalog), `bookish_club_books` (joined club history/curren
 | `bookish_set_current_book(p_club uuid,p_book text)` | Host chooses current book; finish the previous read first |
 | `bookish_finish_book(p_club uuid,p_book text,p_status text='finished')` | Host shelves it as `finished` or `dropped` |
 | `bookish_log_page(p_club uuid,p_book text,p_page int,p_chapter int=null,p_finished boolean=false,p_request uuid=<generated>)` | Log UUID; pass one stable request UUID per logical widget/app action so retries do not duplicate it |
-| `bookish_race(p_club uuid)` | `user_id,display_name,page,finished,position,streak,title`; opts out readers who hide their Race |
+| `bookish_race(p_club uuid)` | `user_id,display_name,page,finished`; legacy RPC name for the shared reading shelf. Excludes opted-out readers and returns a stable user-ID order, with no rank, streak, or title |
 | `bookish_club_pour(p_club uuid,p_book text)` | Consented pour count; mean and DNF count are null until five consented pours |
 | `bookish_schedule_meeting(p_club uuid,p_starts timestamptz,p_title text,p_location text,p_stop int=null)` | Meeting UUID; host only |
 | `bookish_edit_meeting(p_meeting uuid,p_starts timestamptz,p_title text,p_location text,p_stop int,p_cancel boolean=false)` | Host reschedules/moves/cancels |
@@ -168,7 +168,7 @@ Read `bookish_books` (catalog), `bookish_club_books` (joined club history/curren
 
 RSVP REST upsert: `{meeting_id,club_id,user_id:<self>,response:"going"|"maybe"|"next_time"}`, conflict key `meeting_id,user_id`; DELETE own RSVP to clear it. Composite foreign keys prevent substituting another club ID. A meeting's optional `stop_page` supports the meeting marker in the app.
 
-`bookish_page_log` REST reads return only your own logs. Race progress is computed for the current reading start, so a new book starts fresh. UTC calendar dates define streaks for this version. Pours and taste REST writes/reads are self-only. Pours accept half-glass increments, 0–5; other members receive Club Pour aggregates rather than the identities of DNF readers.
+`bookish_page_log` REST reads return only your own logs. Shared progress is computed for the current reading start, so a new book starts fresh. Rank, streak, and competitive title outputs are removed; reading speed never determines response order. Pours and taste REST writes/reads are self-only. Pours accept half-glass increments, 0–5; other members receive Club Pour aggregates rather than the identities of DNF readers.
 
 ### Next-book votes
 
@@ -204,7 +204,7 @@ A host decision never closes the separate team review. Due dates and queues are 
 - A claim under an email different from Apple's relay address requires sign-in with the matching verified email; decide the account-linking UX. Directory entries are never claimed merely by submitting their IDs.
 - Final universal-link path, native callback scheme, and invitation landing page need website/iOS coordination. The backend consumes invite codes today.
 - Cohost remains accepted for compatibility but creation/invites produce host/member roles. Decide whether to add cohost management UI. Host removal has a re-entry tombstone; reinstatement and invite-revocation UI can be added later.
-- Streak time zone is UTC; decide whether clubs need a local time zone before exposing nightly-streak copy. Standings currently share rank at equal progress; a separate first-finisher crown is a later presentation/data refinement.
+- The legacy `bookish_race` RPC name and `race_visible` preference remain internal compatibility names. The response has no rank, streak, or title, and uses stable user-ID order. This changes the return contract of an unapplied migration; verify migrations 005-008 are still unapplied before integrating this review patch. If deployed, prepare a separately reviewed forward migration instead.
 - Bring list uses one claimant per item; create multiple items for quantities. Votes accept 2–4 books; native design can restrict its builder to 3–4. Closing a vote marks the current book finished, so the native host action should make that consequence clear.
 - The content rules are an English launch baseline, not comprehensive context recognition. Test real launch-language samples, evasion, false positives and real-person sexual references with the moderation team. Held drafts do not auto-publish. The 24-hour deadline is not an automated promise of staffed review.
 - Age is declared 18+, not externally verified. Complete the current App Store age-rating questionnaire and policy wording.

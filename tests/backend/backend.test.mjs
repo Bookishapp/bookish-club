@@ -164,7 +164,29 @@ test('every club table rejects reads from outsiders, and anonymous API execution
  await assert.rejects(as(users[0],"select bookish_escalate_author(null,'host','Looking for an author')"),/permission denied/);
 });
 
-test('race log retries are idempotent, standings honor opt-out and new books reset progress',async()=>{
+test('shared reading exposes no rank or streak and never reorders readers by progress',async()=>{
+ const club=(await rpc(users[0],'bookish_create_club',['Shared Shelf','Chicago','IL']))[0].bookish_create_club;
+ const invite=(await rpc(users[0],'bookish_create_invite',[club,2,1]))[0].bookish_create_invite;
+ await rpc(users[1],'bookish_redeem_invite',[invite]);
+ await rpc(users[0],'bookish_set_current_book',[club,'fourth-wing']);
+ await rpc(users[0],'bookish_log_page',[club,'fourth-wing',5,1,false,'20000000-0000-0000-0000-000000000090']);
+ await rpc(users[1],'bookish_log_page',[club,'fourth-wing',60,4,false,'20000000-0000-0000-0000-000000000091']);
+ const first=await rpc(users[0],'bookish_race',[club]);
+ assert.deepEqual(Object.keys(first[0]).sort(),['display_name','finished','page','user_id']);
+ assert.deepEqual(first.map(r=>r.user_id),[users[0],users[1]]);
+ await rpc(users[0],'bookish_log_page',[club,'fourth-wing',100,7,false,'20000000-0000-0000-0000-000000000092']);
+ const next=await rpc(users[0],'bookish_race',[club]);
+ assert.deepEqual(next.map(r=>r.user_id),[users[0],users[1]]);
+ assert.equal(next.find(r=>r.user_id===users[0]).page,100);
+ await rpc(users[1],'bookish_member_preferences',[club,false,true,true]);
+ assert.deepEqual((await rpc(users[0],'bookish_race',[club])).map(r=>r.user_id),[users[0]]);
+ await assert.rejects(rpc(users[2],'bookish_race',[club]),/Join this club/);
+ await db.exec('set role anon');
+ try {await assert.rejects(q('select * from public.bookish_race($1)',[club]),/permission denied/);}
+ finally {await db.exec('reset role');}
+});
+
+test('reading log retries are idempotent and shared progress honors opt-out',async()=>{
  const request='20000000-0000-0000-0000-000000000003';
  const first=(await rpc(users[1],'bookish_log_page',[clubA,'yellowface',42,1,false,request]))[0].bookish_log_page;
  assert.equal((await rpc(users[1],'bookish_log_page',[clubA,'yellowface',42,1,false,request]))[0].bookish_log_page,first);
