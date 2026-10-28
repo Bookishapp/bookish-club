@@ -6,6 +6,7 @@ export function renderLunair({ siteUrl, checkout }) {
   const asset = pathname => `${base}${pathname}`;
   const canonical = `${siteUrl.replace(/\/$/, '')}/lunair/`;
   const destinations = new Set();
+  let testMode = false;
   function buy(key, label, product) {
     const value = checkout[key];
     if (value === '' || value == null) return `<button class="buy" type="button" data-checkout="${key}" aria-label="${product}, coming soon" disabled>Coming soon</button>`;
@@ -14,6 +15,10 @@ export function renderLunair({ siteUrl, checkout }) {
     if (destination.protocol !== 'https:' || destination.username || destination.password) throw new Error(`${key} checkout must be a valid https URL without credentials`);
     if (destinations.has(destination.href)) throw new Error('Checkout URLs must point to different products');
     destinations.add(destination.href);
+    if (destination.hostname === 'buy.stripe.com' && destination.pathname.startsWith('/test_')) {
+      testMode = true;
+      label = `Test checkout: ${key === 'vol1' ? 'Vol. 1 for $9' : 'The Grimoire for $19'}`;
+    }
     return `<a class="buy" data-checkout="${key}" href="${esc(destination.href)}">${label}</a>`;
   }
   const packButton = buy('vol1', 'Get Vol. 1 for $9', 'Spells for Grown-Ups, Vol. 1');
@@ -46,6 +51,7 @@ export function renderLunair({ siteUrl, checkout }) {
 <body>
 <a class="skip" href="#shop">Skip to the shop</a>
 <main class="hub">
+  ${testMode ? '<p class="shop-test-mode" data-test-mode><strong>Test mode.</strong> No real payment is taken. These checkout links are for testing.</p>' : ''}
   <header class="intro">
     <div class="hello">
       <p class="signature">a witch, a cat, and a few little spells.</p>
@@ -65,6 +71,7 @@ export function renderLunair({ siteUrl, checkout }) {
 
   <section id="shop" aria-labelledby="shop-heading">
     <h2 class="section-title" id="shop-heading">Keep a little magic close.</h2>
+    <p class="library-shop-access">Already have a little magic? <a href="${asset('/lunair/library/')}">Open your library</a>.</p>
     ${unavailable ? '<p class="opening-note">The wallpaper shop is opening soon. Have a look around while Midnight supervises.</p>' : ''}
     <div class="products">
       <article class="product pack">

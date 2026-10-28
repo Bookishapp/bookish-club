@@ -1,0 +1,9 @@
+project_id = "lunair-stripe-test"
+
+# Stripe authenticates raw webhook payloads. The library uses its own hashed,
+# single-use magic links and short-lived access tokens. Neither accepts Auth JWTs.
+[functions.lunair-shop-webhook]
+verify_jwt = false
+
+[functions.lunair-library]
+verify_jwt = false
