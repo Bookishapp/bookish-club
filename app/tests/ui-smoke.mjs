@@ -89,8 +89,13 @@ input(v,'#join [name=email]','reader@example.com');input(v,'#join [name=first_na
 v.document.querySelector('#join [name=consent]').checked=true;now+=3000;
 v.document.querySelector('#join').dispatchEvent(new v.Event('submit',{bubbles:true,cancelable:true}));
 await until(()=>posts.length===1);
-await until(()=>v.document.querySelector('#join .form-message').textContent.includes('on its way'));
-assert.equal(v.document.querySelector('#join button[type=submit]').disabled,true,'Successful join stays submitted');
+await until(()=>v.document.querySelector('.join-sent'));
+assert.equal(v.document.querySelector('#detail-title').textContent,'Fingers crossed.');
+assert.ok(v.document.querySelector('.sent-lede').textContent.includes(`with the host at ${feeds.clubs[0].name}.`));
+assert.equal(v.document.querySelectorAll('.sent-steps li').length,3);assert.match(v.document.querySelector('.sent-steps .done').textContent,/Request sent\s*Today, /);
+assert.ok(!v.document.querySelector('#join'),'Sent screen replaces the form');
+click(v,'#sent-back');assert.ok(!v.document.querySelector('#join'),'Returning to the club does not offer a second request');
+assert.match(v.document.querySelector('.join-section h2').textContent,/Request sent/);
 assert.match(posts[0].url,/\/bookish-join$/);assert.equal(posts[0].body.consent,true);assert.ok(posts[0].body.elapsed_ms>=2500);
 assert.equal(posts[0].body.website,'');assert.equal(posts[0].body.club_id,feeds.clubs[0].id);
 online.window.close();
@@ -118,4 +123,4 @@ await until(()=>JSON.parse(nativeStore.get('bookish.reminders'))&&Object.keys(JS
 assert.ok(nativeCalls.some(c=>c.plugin==='LocalNotifications'&&c.method==='cancel'&&c.options.notifications[0].id===scheduled.id));
 native.window.close();
 assert.deepEqual(errors,[]);
-console.log('UI smoke passed: offline launch, clubs, city picker, map links, persistence, three-tap recommendations, covers, books, About, verified-only join payload, browser reminder fallback; mocked native permission denial/recovery, location, MapKit bridge, sharing, reminder permission/scheduling/cancellation. No requests sent to a real host.');
+console.log('UI smoke passed: offline launch, clubs, city picker, map links, persistence, three-tap recommendations, covers, books, About, verified-only join payload and request-sent screen, browser reminder fallback; mocked native permission denial/recovery, location, MapKit bridge, sharing, reminder permission/scheduling/cancellation. No requests sent to a real host.');
