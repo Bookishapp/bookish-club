@@ -96,6 +96,7 @@ assert.equal(v.document.querySelectorAll('.sent-steps li').length,3);assert.matc
 assert.ok(!v.document.querySelector('#join'),'Sent screen replaces the form');
 click(v,'#sent-back');assert.ok(!v.document.querySelector('#join'),'Returning to the club does not offer a second request');
 assert.match(v.document.querySelector('.join-section h2').textContent,/Request sent/);
+assert.equal(v.document.activeElement,v.document.querySelector('.join-section h2'),'Back keeps focus in the sheet');
 assert.match(posts[0].url,/\/bookish-join$/);assert.equal(posts[0].body.consent,true);assert.ok(posts[0].body.elapsed_ms>=2500);
 assert.equal(posts[0].body.website,'');assert.equal(posts[0].body.club_id,feeds.clubs[0].id);
 online.window.close();
