@@ -51,7 +51,9 @@ test('existing search contract, directory, app routes, and forms remain availabl
     assert.ok(fs.existsSync(new URL(route + '/index.html', root)), route);
   }
   const hosts = new JSDOM(fs.readFileSync(new URL('hosts/index.html', root), 'utf8')).window.document;
-  assert.ok(hosts.querySelector('#waitlist form[data-kind="waitlist"] input[name="email"]'));
+  assert.equal(hosts.querySelector('form[data-kind="waitlist"]'), null);
+  assert.ok(hosts.querySelector(`a[href="${base}/start/"]`));
+  assert.ok(hosts.querySelector(`a[href="${base}/claim/"]`));
   for (const route of ['start','claim']) {
     const page = new JSDOM(fs.readFileSync(new URL(route + '/index.html', root), 'utf8')).window.document;
     assert.ok(page.querySelector(`form[data-kind="${route}"]`));

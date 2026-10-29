@@ -7,3 +7,5 @@ supabase/.temp/
 
 # Raw source records include venue/branch names: never publish them.
 data/raw/*.json
+
+app/web-dist/
