@@ -532,7 +532,16 @@ copyDir(path.join(ROOT, "public"), OUT);
 write("data/cities.json", "[]");
 write("data/clubs.json", "[]");
 write("data/clubs.geojson", JSON.stringify({type:"FeatureCollection",features:[]}));
-for (const file of ["site.js","discovery.js","club-settings.js","read-next.js","map.js"]) write(file, fs.readFileSync(path.join(ROOT,`src/${file}`),"utf8"));
+for (const file of ["site.js","discovery.js","club-settings.js","read-next.js","map.js"]) {
+ let source=fs.readFileSync(path.join(ROOT,`src/${file}`),"utf8");
+ if(file==='discovery.js'){
+  const marker='/* __SOURCE_URL_UPGRADES__ */ []';
+  if(!source.includes(marker))throw new Error('Discovery source replacements marker is missing.');
+  const upgrades=JSON.parse(fs.readFileSync(path.join(ROOT,'data/source-url-upgrades.json'),'utf8'));
+  source=source.replace(marker,JSON.stringify(upgrades));
+ }
+ write(file,source);
+}
 write("club-settings/index.html",layout({title:"Club settings | Bookish",desc:"Manage your club visibility, invites, and join requests.",path:"/club-settings/",noindex:true,body:`<div class="wrap"><header class="page-head"><h1>Club settings</h1><p>Open your host link from the club confirmation email. Keep it private: it controls your club.</p></header><section id="host-settings"><form id="host-link" class="form"><label>Host link<input name="link" type="password" required autocomplete="off"></label><button class="btn">Open settings</button></form><p id="host-status" role="status"></p><div id="host-controls"></div></section></div><script src="${url('/club-settings.js')}" defer></script>`}));
 write("robots.txt", `User-agent: *\nAllow: /\nDisallow: /claim/\nDisallow: /confirmed/\nDisallow: /join/\n\nSitemap: ${abs("/sitemap.xml")}\n`);
 write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemap.map((s) => `<url><loc>${esc(s.loc)}</loc><lastmod>${TODAY}</lastmod><priority>${s.prio.toFixed(1)}</priority></url>`).join("\n")}\n</urlset>\n`);

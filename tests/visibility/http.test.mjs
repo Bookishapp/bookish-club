@@ -55,3 +55,9 @@ test('successful invite joins keep internal email notices and host contact out o
  assert.equal(response.status,200);const j=await response.json();assert.equal(j.status,'joined');
  assert.ok(!JSON.stringify(j).includes('host@example.test'));assert.ok(!('notice' in j));assert.ok(!JSON.stringify(j).includes('HTTP Secret Canary'));
 });
+test('an unclaimed public calendar club cannot be joined through the hosted-club endpoint',async()=>{
+ const send=ref=>join(new Request('https://local.test/',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({club_id:ref,email:'reader@example.test',consent:true,elapsed_ms:3000})}));
+ const unclaimed=await send('open-ref'),missing=await send('missing-ref');
+ assert.equal(unclaimed.status,404);
+ assert.deepEqual(await unclaimed.json(),await missing.json());
+});

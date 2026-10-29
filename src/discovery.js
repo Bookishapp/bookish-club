@@ -3,13 +3,15 @@
  const base=document.documentElement.dataset.base||'';
  const api=document.documentElement.dataset.directoryApi;
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ // The build injects the same checked replacements used by the app.
+ const sourceURLUpgrades=new Map(/* __SOURCE_URL_UPGRADES__ */ []);
  const safe=s=>{try{const u=new URL(s);return u.protocol==='https:'?u.href:null;}catch{return null;}};
  window.bookishDiscovery=async format=>{
   const r=await fetch(`${api}?format=${format||'clubs'}`,{cache:'no-store',signal:AbortSignal.timeout(15000)});
   if(!r.ok)throw new Error('Current listings are unavailable. Please try again.');
   const j=await r.json();if(format==='cities'||format==='geojson')return j;
   if(!j.ok||!Array.isArray(j.clubs))throw new Error('Current listings are unavailable. Please try again.');
-  return j.clubs;
+  return j.clubs.map(c=>({...c,source_url:safe(sourceURLUpgrades.get(c.source_url)||c.source_url)})).filter(c=>c.verified||c.source_url);
  };
  const section=document.querySelector('#live-directory');if(!section)return;
  const params=new URLSearchParams(location.search);
