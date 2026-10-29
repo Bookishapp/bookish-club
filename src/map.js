@@ -20,7 +20,7 @@
       load("link", { rel: "stylesheet", href: `https://unpkg.com/maplibre-gl@${MLV}/dist/maplibre-gl.css` }),
       load("script", { src: `https://unpkg.com/maplibre-gl@${MLV}/dist/maplibre-gl.js` }),
     ]);
-    const data = await fetch(`${BASE}/data/clubs.geojson`).then((r) => r.json());
+    const data = await window.bookishDiscovery('geojson');
     const focus = el.dataset.city;
     const here = focus && data.features.find((f) => f.properties.u === focus);
     const map = new maplibregl.Map({
@@ -33,6 +33,10 @@
       el.classList.remove("loading");
       const attr = el.querySelector(".maplibregl-ctrl-attrib");
       if (attr) attr.classList.remove("maplibregl-compact-show");
+      let revision=0;
+      const revalidate=async()=>{const current=++revision;map.getSource('cities').setData({type:'FeatureCollection',features:[]});sheet.hidden=true;try{const fresh=await window.bookishDiscovery('geojson');if(current===revision)map.getSource('cities').setData(fresh);}catch{}};
+      window.addEventListener('focus',revalidate);
+      document.addEventListener('visibilitychange',()=>{if(document.hidden){revision++;map.getSource('cities').setData({type:'FeatureCollection',features:[]});sheet.hidden=true;}else void revalidate();});
       map.addSource("cities", { type: "geojson", data, cluster: true, clusterRadius: 44, clusterMaxZoom: 7,
         clusterProperties: { total: ["+", ["get", "n"]] } });
       map.addLayer({ id: "clusters", type: "circle", source: "cities", filter: ["has", "point_count"], paint: {
@@ -67,7 +71,7 @@
         const n = +p.n, v = +p.v || 0, u = n - v;
         const on = String(p.topv || "").split("\u001f").filter(Boolean);
         const off = String(p.top || "").split("\u001f").filter(Boolean);
-        const city = `${BASE}/book-clubs/${p.u}/`;
+        const city = `${BASE}/book-clubs/?city=${encodeURIComponent(p.c.slice(0,-4))}&state=${encodeURIComponent(p.c.slice(-2))}`;
         sheet.innerHTML = `<div class="ms-head"><h3 class="pop-name">${esc(p.c)} <span>· ${n} club${n === 1 ? "" : "s"}${v ? ` · ${v} on Bookish` : ""}</span></h3><button type="button" class="ms-x" aria-label="Close">×</button></div>
 <div class="seg seg-sm" role="group" aria-label="Which clubs to show">
 <button type="button" class="seg-b" data-mode="on" aria-pressed="${mode === "on"}">On Bookish <span class="c">${v}</span></button>

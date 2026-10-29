@@ -19,6 +19,11 @@ export function edge(name, options = {}) {
     ...options.env,
   };
   const sb = {
+    async rpc(name, args) {
+      assert.equal(name, "bookish_visibility_location");
+      assert.deepEqual(JSON.parse(JSON.stringify(args)), { p_city: "Austin", p_state: "TX" });
+      return { data: options.validCity ?? true, error: null };
+    },
     from(table) {
       assert.equal(table, "bookish_submissions");
       let operation = "select", values, count = false, single = false;
@@ -82,7 +87,7 @@ export function submission(overrides = {}, origin = "https://meetbookish.com") {
   return new Request("https://database.example.test/functions/v1/bookish-submit", {
     method: "POST", headers: { "content-type": "application/json", origin, "x-forwarded-for": "192.0.2.1" },
     body: JSON.stringify({ kind: "claim", club_name: "Reading Together", club_id: "club-1",
-      email: " Reader@Example.test ", first_name: "Ada", consent: true, elapsed_ms: 3000, ...overrides }),
+      email: " Reader@Example.test ", first_name: "Ada", visibility: "private", consent: true, elapsed_ms: 3000, ...overrides }),
   });
 }
 

@@ -55,6 +55,9 @@ test('existing search contract, directory, app routes, and forms remain availabl
   for (const route of ['start','claim']) {
     const page = new JSDOM(fs.readFileSync(new URL(route + '/index.html', root), 'utf8')).window.document;
     assert.ok(page.querySelector(`form[data-kind="${route}"]`));
-    assert.ok(page.querySelector('[name="show_on_map"]'));
+    const choices = [...page.querySelectorAll('input[name="visibility"]')];
+    assert.deepEqual(choices.map(input => input.value), ['open', 'private', 'hidden']);
+    assert.ok(choices.every(input => input.required), 'Visibility requires an explicit choice');
+    assert.equal(choices.find(input => input.checked)?.value, 'private');
   }
 });
