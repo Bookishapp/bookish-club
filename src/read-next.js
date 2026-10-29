@@ -239,7 +239,7 @@
 ${top.length ? `<div class="rn-card"><p class="eb2"><span>Just for you</span><span class="muted2">from your taps</span></p><h2 class="rn-ch">Three I'd hand you.</h2><ul class="sugs">${top.map((r) => sugRow(r, t)).join("")}</ul></div>` : ""}
 ${rows.join("")}
 <div class="rn-saved-wrap"></div>
-<p class="note rn-host">Reading with a club? Book voting for hosts is on the way. <a href="${BASE}/hosts/">Join the host waitlist</a>.</p>
+<p class="note rn-host">Reading with a club? <a href="${BASE}/resources/">Find discussion guides and hosting resources</a>.</p>
 <p class="small rn-credit">Covers and book details from <a href="https://openlibrary.org/" rel="noopener">Open Library</a>. Tap a cover to see the book there.</p>`;
     paintSaved();
     $(".rn-taps").hidden = true; res.hidden = false; root.dataset.view = "results";

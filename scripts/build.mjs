@@ -19,6 +19,8 @@ const GENRES = Object.fromEntries(GENRES_LIST);
 const KEEP_CASE = new Set(["spanish-language", "lgbtq"]);
 const lc = (g) => KEEP_CASE.has(g) ? GENRES[g] : GENRES[g].toLowerCase();
 const clubs = JSON.parse(fs.readFileSync(path.join(ROOT, "data/clubs.json"), "utf8"));
+// Keep imported source facts while removing launch-style terminology from the public copy.
+for (const club of clubs) if (club.vibe) club.vibe = club.vibe.replace(/\bwaitlist\b/gi, "reservation queue");
 
 // ---------- verified vs unclaimed ----------
 // VERIFIED ("On Bookish"): a host claimed or started the club and confirmed
@@ -172,17 +174,17 @@ ${jsonld.map((j) => `<script type="application/ld+json">${JSON.stringify(j).repl
 <a class="skip" href="#main">Skip to content</a>
 ${landing ? "" : `<header class="mast"><div class="wrap">
 <a class="wordmark" href="${url("/")}">${WORDMARK(true)}</a>
-<nav class="nav" aria-label="Main"><a class="hide-sm" href="${url("/hosts/")}">For your club</a><a class="hide-sm" href="${url("/read-next/")}">Read next</a><a class="hide-sm" href="${url("/resources/")}">Resources</a><a class="btn-sm" href="${url("/hosts/#waitlist")}">Bring my club</a></nav>
+<nav class="nav" aria-label="Main"><a class="hide-sm" href="${url("/app/")}">Open Bookish</a><a class="hide-sm" href="${url("/hosts/")}">For your club</a><a class="hide-sm" href="${url("/read-next/")}">Read next</a><a class="hide-sm" href="${url("/resources/")}">Resources</a><a class="btn-sm" href="${url("/start/")}">Bring my club</a></nav>
 </div></header>`}
 <main id="main">
 ${body}
 </main>
 ${landing ? "" : `<footer class="foot-site"><div class="wrap cols">
 <div><a class="wordmark" href="${url("/")}">${WORDMARK(false)}</a>
-<p>Your book club, just more fun. We're bringing the hot takes, the next book vote, and the next meeting into your club's iMessage thread. Join the host waitlist for what's coming.</p>
+<p>Your book club, just more fun. Find your people, choose your next read, and keep your favorites close on Bookish.</p>
 <p class="credit">Book covers and book details from <a href="https://openlibrary.org/" rel="noopener">Open Library</a>.</p></div>
 <div><p class="h">Find</p><ul><li><a href="${url("/book-clubs/")}">All cities</a></li><li><a href="${url("/read-next/")}">What to read next</a></li>${["romance", "mystery-thriller", "fantasy", "nonfiction"].filter((g) => genreTotals[g] >= 5).map((g) => `<li><a href="${url(`/genres/${g}/`)}">${GENRES[g]} clubs</a></li>`).join("")}</ul></div>
-<div><p class="h">Your club</p><ul><li><a href="${url("/hosts/#waitlist")}">Bring my club</a></li><li><a href="${url("/start/")}">List your club</a></li><li><a href="${url("/claim/")}">Claim your listing</a></li><li><a href="${url("/resources/")}">Resources</a></li><li><a href="${url("/press/")}">Press</a></li><li><a href="${url("/about/")}">About &amp; sources</a></li><li><a href="${url("/support/")}">Support</a></li><li><a href="${url("/privacy/")}">Privacy</a> · <a href="${url("/terms/")}">Terms</a></li></ul></div>
+<div><p class="h">Your club</p><ul><li><a href="${url("/start/")}">Bring my club</a></li><li><a href="${url("/start/")}">List your club</a></li><li><a href="${url("/claim/")}">Claim your listing</a></li><li><a href="${url("/resources/")}">Resources</a></li><li><a href="${url("/press/")}">Press</a></li><li><a href="${url("/about/")}">About &amp; sources</a></li><li><a href="${url("/support/")}">Support</a></li><li><a href="${url("/privacy/")}">Privacy</a> · <a href="${url("/terms/")}">Terms</a></li></ul></div>
 </div></footer>`}
 <script src="${url("/site.js")}" defer></script>
 ${body.includes('id="club-map"') ? `<script src="${url("/map.js")}" defer></script>` : ""}
@@ -282,8 +284,8 @@ const clubsLd = (list, name) => ({
 });
 
 const hostCallout = (where) => `<section><div class="wrap"><div class="callout-card">${lunair("lunair-reading", 200, 201, 400, 402, "", "cameo")}
-<div><h2>Already have a club${where ? ` in ${esc(where)}` : ""}?</h2><p>Keep your people. Add anonymous hot takes, book votes, and a little less herding. Coming soon to your iMessage thread.</p></div>
-<a class="btn" href="${url("/hosts/#waitlist")}">Bring my club ${ARROW}</a></div></div></section>`;
+<div><h2>Already have a club${where ? ` in ${esc(where)}` : ""}?</h2><p>Keep your people. Add your club to the city finder, or claim an existing public-calendar listing.</p></div>
+<a class="btn" href="${url("/start/")}">Bring my club ${ARROW}</a></div></div></section>`;
 
 function summarize(list) {
   const lib = list.filter((c) => c.host_type === "library").length;
@@ -469,9 +471,9 @@ ${withSearch ? `<details><summary>Search by city, ZIP, or genre</summary>${searc
 const clubIntro = ({ press = false } = {}) => `<section class="lander club-lander"><div class="wrap">
 <div class="l-sheet"><p class="l-tag">${press ? "Meet Bookish" : "Bring the club you already have"}</p>
 <div class="hsheet"><h1>${press ? "The group chat for book clubs." : "Your book club, just more fun."}</h1>
-<p class="sub">Bookish lives in your club's group chat: RSVPs, book votes, anonymous hot takes, and where-is-everyone-at check-ins, right inside iMessage.</p>
-<p class="launch-note">Coming soon to iMessage. ${press ? "We're building for the clubs that already have their people." : "Keep your people. Bring your club."}</p>
-<a class="btn" href="${url("/hosts/#waitlist")}">Join the host waitlist ${ARROW}</a>
+<p class="sub">Preview the shared club experience: RSVPs, book votes, anonymous hot takes, and reading check-ins in iMessage. These features are not available in the current guest app.</p>
+<p class="launch-note">Find your people, or bring the club you already have.</p>
+<a class="btn" href="${url("/start/")}">Add your club ${ARROW}</a>
 </div>${prop("prop-sun-240.webp", 240, 243, "l-sun", true)}</div>
 <div class="l-art">${lunair("lunair-hug", 300, 252, 600, 503, "Lunair hugging a book", "", true)}<p class="bubble">Same people. A little more plot.</p>${prop("prop-daisy-240.webp", 240, 243, "daisy", true)}</div>
 </div></section>`;
@@ -482,7 +484,7 @@ const clubIntro = ({ press = false } = {}) => `<section class="lander club-lande
     .replace("__SEARCH__", searchBox()).replaceAll("__BASE__", BASE);
   write("index.html", layout({
     title: "Bookish: Book Club Night | Your book club, just more fun",
-    desc: "Bring the club you already have. Bookish is bringing anonymous hot takes, book votes, RSVPs, and easier hosting to your iMessage group chat. Join the host waitlist.",
+    desc: "Bring the club you already have. Bookish is bringing anonymous hot takes, book votes, RSVPs, and easier hosting to your iMessage group chat. Explore the club finder, reading suggestions, and resources.",
     path: "/", body, landing: true,
     jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Bookish: Book Club Night", alternateName: "Bookish", url: abs("/"),
       potentialAction: { "@type": "SearchAction", target: { "@type": "EntryPoint", urlTemplate: `${abs("/")}?q={search_term_string}` }, "query-input": "required name=search_term_string" } },
@@ -496,7 +498,7 @@ const clubIntro = ({ press = false } = {}) => `<section class="lander club-lande
   const body = `${clubIntro({ press: true })}${clubFun()}${clubHost()}${clubRules()}
 <section class="club-story"><div class="wrap"><div class="paper press-notes"><h2>Bookish, in a few words.</h2>
 <h3>The short version</h3><p>Bookish is building the group chat for book clubs: more fun for the club you already have, and less herding for the host. Anonymous comments, the DNF confessional, spoiler-safe hot takes, post-meeting superlatives, and Club Wrapped sit alongside RSVPs, reminders, book votes, and meeting plans, right inside iMessage.</p>
-<h3 id="creators">Availability</h3><p>The iMessage experience and club settings described here are coming soon. Hosts can join the waitlist now. The club finder is already available on the web.</p>
+<h3 id="creators">Availability</h3><p>Explore the <a href="${url("/app/")}">Bookish web app</a> for club discovery, reading suggestions, and saved favorites. The social club screens shown on this page are feature previews; shared clubs and interactive iMessage cards are not available in the current release.</p>
 <h3>Art and press questions</h3><p><a href="${url("/img/bookish-wordmark.png")}" download>Download the Bookish wordmark</a>. For press questions, write to <a href="mailto:hello@meetbookish.com">hello@meetbookish.com</a>.</p>
 </div></div></section>${clubFinder()}`;
   write("press/index.html", layout({ title: "Bookish Press | The group chat for book clubs", desc: "Bookish is building the group chat for book clubs. Anonymous hot takes, club memories, and easier hosting for the club you already have, right inside iMessage.", path: "/press/", body }));
@@ -536,7 +538,7 @@ write("start/index.html", layout({
   title: "List Your Book Club | Bookish", desc: "Already have a club? Bring your people to Bookish. You can also add an optional city-level listing so new readers can find you.", path: "/start/",
   body: `<div class="wrap">${crumbs([["Home", "/"], ["List your club", null]])}
 <header class="page-head with-art">${lunair("lunair-wave", 360, 153, 720, 301, "Bookish host waving hello", "head-art", true)}<p class="eyebrow">Your people, your club</p><h1>Already have a club? <em>Bring your people.</em></h1>
-<p class="lede">Keep the group chat and the people you love reading with. Bookish is bringing more fun and a little less herding to iMessage. <a href="${url("/hosts/#waitlist")}">Join the host waitlist</a> for the launch.</p></header>
+<p class="lede">Keep the group chat and the people you love reading with. Add your club to Bookish, or claim its existing listing.</p></header>
 <section class="listing-intro"><h2>Want new readers at the table, too?</h2><p>This optional form adds a listing to the web finder after you confirm your email. It doesn't sign you up for the iMessage launch. You can keep your listing off the map with the checkbox below.</p></section>
 <section><form class="form" data-kind="start" novalidate>
 <label>Club name<input name="club_name" required maxlength="160" placeholder="The Tuesday Night Mystery Society"></label>
@@ -560,20 +562,13 @@ ${hp}${consent}
 page("/start/", 0.6);
 
 write("hosts/index.html", layout({
-  title: "Bring Your Book Club to iMessage | Bookish", desc: "More fun for your existing book club, and less herding for the host. Anonymous comments, RSVPs, book votes, and meeting plans in iMessage. Join the waitlist.", path: "/hosts/",
+  title: "Bring Your Book Club to iMessage | Bookish", desc: "More fun for your existing book club, and less herding for the host. List your book club, claim your existing listing, and explore reading resources.", path: "/hosts/",
   body: `${clubIntro()}${clubFun()}${clubHost()}${clubRules()}
-<section id="waitlist" class="club-story"><div class="wrap"><h2>Bring your club. We'll save you a seat.</h2>
-<p class="lede">Join the host waitlist for the iMessage launch. Tell us a little about your people, and we'll be in touch when your club can come in.</p>
-<form class="form" data-kind="waitlist" novalidate>
-<div class="row two"><label>Your first name<input name="first_name" maxlength="60" autocomplete="given-name"></label><label>City<input name="city" maxlength="80" autocomplete="address-level2"></label></div>
-<label>Email<input type="email" name="email" required maxlength="254" autocomplete="email"></label>
-<fieldset style="border:0;padding:0;margin:0"><legend class="small" style="margin-bottom:8px">What would help most?</legend>
-<div class="checks"><label class="check"><input type="checkbox" name="features" value="scheduling"> Scheduling</label><label class="check"><input type="checkbox" name="features" value="voting"> Book voting</label><label class="check"><input type="checkbox" name="features" value="progress"> Reading progress</label><label class="check"><input type="checkbox" name="features" value="invite"> Invite link</label></div></fieldset>
-<div class="row two"><label>Do you host a club now?<select name="is_host"><option value="yes">Yes</option><option value="soon">Starting one</option><option value="no">No, I'm a member</option></select></label><label>Club size<select name="club_size"><option value="">Select</option><option>2–5</option><option>6–12</option><option>13–25</option><option>26+</option></select></label></div>
-${hp}${consent}
-<button class="btn" type="submit">Join the waitlist</button>
-<p class="form-msg" role="status"></p>
-</form>
+<section id="bring-your-club" class="club-story"><div class="wrap"><h2>Bring your club.</h2>
+<p class="lede">Add your club to the finder, or claim the listing your library or bookstore already has.</p>
+<a class="btn" href="${url("/start/")}">Add your club ${ARROW}</a>
+<a class="btn" href="${url("/claim/")}">Claim your listing ${ARROW}</a>
+<p><a href="${url("/app/")}">Open Bookish</a> for club discovery, reading suggestions, and saved favorites. Shared club features and interactive iMessage cards shown above are feature previews.</p>
 </div></section>${clubFinder()}`,
 }));
 page("/hosts/", 0.6);
@@ -614,7 +609,7 @@ write("confirmed/index.html", layout({
 const prose = (p, title, desc, h, html) => { write(`${p.slice(1)}index.html`, layout({ title, desc, path: p, body: `<div class="wrap">${crumbs([["Home", "/"], [h, null]])}<header class="page-head"><h1>${h}</h1></header><section class="prose">${html}</section></div>` })); page(p, 0.3); };
 prose("/about/", "About Bookish and Our Sources", "More fun for the book club you already have, plus the sources behind the Bookish club finder.", "About Bookish", `
 <p>Your book club, just more fun. Bookish is bringing anonymous hot takes, the DNF confessional, spoiler-safe conversations, post-meeting superlatives, and Club Wrapped to the club you already have, right inside iMessage.</p>
-<p>For the host, that means RSVPs, reminders, book votes, the bring-list, and the next meeting in the thread. The iMessage experience is coming soon. <a href="${url("/hosts/#waitlist")}">Join the host waitlist</a> to bring your club.</p>
+<p>For the host, that means RSVPs, reminders, book votes, the bring-list, and the next meeting in the thread. The social club screens are feature previews. <a href="${url("/app/")}">Open Bookish on the web</a> for the club finder, reading suggestions, and saved favorites.</p>
 <h2>Your club, your rules</h2><p>For the iMessage launch, we're planning three club settings: Open is on the map and anyone can join, Private is on the map and the host approves requests, and Hidden is off the map and invite code only.</p>
 <h2>Looking for a club?</h2><p>The <a href="${url("/book-clubs/")}">web finder</a> is already here, with book clubs across the United States gathered from public library and bookstore calendars.</p>
 <h2>Where listings come from</h2>
@@ -632,8 +627,8 @@ prose("/privacy/", "Privacy | Bookish", "What Bookish collects and why.", "Priva
 <p>Your saved clubs, saved books, reading preferences, selected city, and meeting reminders stay in storage on your device. Bookish does not upload this information to its servers. The website uses browser storage, and the iOS app uses app storage. A local notification uses the meeting date and club name you chose, and does not require a push-notification server.</p>
 <p>If you choose Use my location, the app requests location permission and uses the coordinates on your device to sort nearby cities. Bookish does not send these coordinates to its servers or save them after the app closes. You can choose a city instead, and you can change location and notification permissions in iOS Settings.</p>
 <h2>Optional forms and join requests</h2>
-<p>If you request to join a club, claim or add a club, join a waitlist, or contact support, we receive the information you submit. This may include your first name, email address, selected club, note, invite code, and club details. We use this information to handle your request, verify listings, reply to you, and protect the service.</p>
-<p>A join request shares your first name and note with the verified host so they can decide whether to approve it. The host's reply-to email is shared with you after approval. Public-calendar clubs cannot be joined through Bookish. We store a one-way hash of the request's IP address with form records to detect spam and enforce rate limits. Website claim, start, and waitlist forms also store browser user-agent information. These records are not anonymous when stored alongside your email address.</p>
+<p>If you request to join a club, claim or add a club, send a host interest form, or contact support, we receive the information you submit. This may include your first name, email address, selected club, note, invite code, and club details. We use this information to handle your request, verify listings, reply to you, and protect the service.</p>
+<p>A join request shares your first name and note with the verified host so they can decide whether to approve it. The host's reply-to email is shared with you after approval. Public-calendar clubs cannot be joined through Bookish. We store a one-way hash of the request's IP address with form records to detect spam and enforce rate limits. Website claim, start, and past host interest forms also store browser user-agent information. These records are not anonymous when stored alongside your email address.</p>
 <p>Form records are stored in Supabase. If email delivery is enabled, Resend processes the email address and message needed to deliver the requested correspondence. Form records remain stored while we handle the request and maintain the relevant club relationship, or until they are removed after a deletion request. We do not promise automatic deletion after a fixed number of days.</p>
 <h2>Book covers, maps, and external links</h2>
 <p>The app refreshes its public directory from the Bookish website. Book covers load from Open Library, which receives a normal image request, including technical information such as your IP address and the requested cover. Maps and links you choose to open are handled by Apple Maps or the destination website under their own privacy policies. Bookish does not send your saved books, reading preferences, or device location with these requests.</p>

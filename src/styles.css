@@ -132,7 +132,7 @@ hr.rule{border:0;border-top:1px dashed var(--line-dark);margin:44px 0}
 .press-notes p{max-width:65ch;color:var(--ink-2)}
 .listing-intro{padding-bottom:0;padding-top:0;max-width:760px}
 .listing-intro h2{text-transform:none}
-#waitlist{scroll-margin-top:20px}
+#bring-your-club{scroll-margin-top:20px}
 @media (min-width:900px){
  .club-lander .wrap{grid-template-areas:"sheet art";grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:56px;align-items:center}
  .club-lander .l-art{min-height:460px}

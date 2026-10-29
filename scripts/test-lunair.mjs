@@ -32,9 +32,10 @@ test('shop build produces an accessible page with configured checkout states and
   assert.match(document.body.textContent, /30 wallpapers/);
   assert.match(document.body.textContent, /\$9/);
   assert.match(document.body.textContent, /\$19/);
+  const base = new URL(document.querySelector('link[rel="canonical"]').href).pathname.replace(/\/lunair\/$/, '');
   for (const element of document.querySelectorAll('img[src],script[src],link[rel="stylesheet"]')) {
     const asset = element.getAttribute('src') || element.getAttribute('href');
-    assert.ok(fs.existsSync(new URL('dist' + asset, root)), asset);
+    assert.ok(fs.existsSync(new URL('dist' + asset.slice(base.length), root)), asset);
     if (element.tagName === 'IMG') assert.ok(element.alt.trim());
   }
 });

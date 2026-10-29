@@ -7,6 +7,8 @@
     "ref": "node scripts/build-ref.mjs",
     "merge": "node scripts/merge.mjs",
     "build": "node scripts/build.mjs",
-    "seed": "node scripts/sources/library-other.mjs; node scripts/sources/bookstores.mjs; node scripts/merge.mjs"
+    "seed": "node scripts/sources/library-other.mjs; node scripts/sources/bookstores.mjs; node scripts/merge.mjs",
+    "build:web": "npm run build && node scripts/build-web.mjs",
+    "test:web": "node --test scripts/test-site.mjs scripts/test-lunair.mjs scripts/test-web.mjs"
   }
 }

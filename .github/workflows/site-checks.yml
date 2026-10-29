@@ -56,8 +56,20 @@ jobs:
       - name: Install app test dependencies
         run: npm ci
         working-directory: app
+      - name: Build deployable web app
+        run: node scripts/build-web.mjs
+        env:
+          SITE_URL: https://meetbookish.com
       - name: Check landing, navigation, assets, and existing site contracts
-        run: node --test scripts/test-site.mjs scripts/test-lunair.mjs
+        run: npm run test:web
+      - name: Build and test the GitHub Pages project prefix
+        run: |
+          npm run build:web
+          npm run test:web
+        env:
+          SITE_URL: https://example.com/bookish-club
+          BOOKISH_VERIFIED_FILE: ${{ runner.temp }}/bookish-verified.json
+          BOOKISH_COMMUNITY_FILE: ${{ runner.temp }}/bookish-community.json
       - name: Run app unit tests
         run: npm test
         working-directory: app

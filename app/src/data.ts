@@ -1,9 +1,10 @@
+import { appAsset } from './paths.ts';
 import { validateFeed, emptyCommunity } from './domain.ts';
 import type { Club, Book, Community } from './domain.ts';
 import { readStore, writeStore, remoteJSON } from './native.ts';
 export const data: {clubs:Club[];books:Book[];community:Community;updated:string|null} = {clubs:[],books:[],community:emptyCommunity(),updated:null};
 export async function loadData() {
-  const [clubs,books,community] = await Promise.all(['clubs','books','community'].map(async key => (await fetch(`/data/${key}.json`)).json()));
+  const [clubs,books,community] = await Promise.all(['clubs','books','community'].map(async key => (await fetch(appAsset(`data/${key}.json`))).json()));
   data.clubs = validateFeed('clubs',clubs); data.books = validateFeed('books',books); data.community = validateFeed('community',community);
   const cached = await readStore<{clubs?:unknown;books?:unknown;community?:unknown;updated?:string}>('feed',{});
   try { if (cached.clubs) data.clubs = validateFeed('clubs',cached.clubs); } catch { /* retain bundled copy */ }

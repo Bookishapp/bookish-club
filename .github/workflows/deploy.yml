@@ -24,7 +24,9 @@ jobs:
           node-version: 24
       # SITE_URL / CUSTOM_DOMAIN come from repo variables so switching to
       # bookishclub.com is a settings change, not a code change.
-      - run: node scripts/build.mjs
+      - run: npm ci
+        working-directory: app
+      - run: npm run build:web
         env:
           SITE_URL: ${{ vars.SITE_URL || 'https://fictora.github.io/bookish-club' }}
           CUSTOM_DOMAIN: ${{ vars.CUSTOM_DOMAIN }}
