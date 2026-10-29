@@ -7,3 +7,10 @@ supabase/.temp/
 
 # Raw source records include venue/branch names: never publish them.
 data/raw/*.json
+
+# Backend credentials stay in the secret store.
+.env
+.env.*
+!.env.example
+!supabase/.env.bookish.example
+supabase/.env

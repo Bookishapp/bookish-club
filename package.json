@@ -7,6 +7,14 @@
     "ref": "node scripts/build-ref.mjs",
     "merge": "node scripts/merge.mjs",
     "build": "node scripts/build.mjs",
-    "seed": "node scripts/sources/library-other.mjs; node scripts/sources/bookstores.mjs; node scripts/merge.mjs"
+    "seed": "node scripts/sources/library-other.mjs; node scripts/sources/bookstores.mjs; node scripts/merge.mjs",
+    "test": "node --test tests/backend/*.test.mjs",
+    "check:edge": "deno check --no-config supabase/functions/bookish-delete-account/index.ts supabase/functions/bookish-house-rules/index.ts"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.3.16"
+  },
+  "engines": {
+    "node": ">=24"
   }
 }
