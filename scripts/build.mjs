@@ -19,6 +19,8 @@ const GENRES = Object.fromEntries(GENRES_LIST);
 const KEEP_CASE = new Set(["spanish-language", "lgbtq"]);
 const lc = (g) => KEEP_CASE.has(g) ? GENRES[g] : GENRES[g].toLowerCase();
 const clubs = JSON.parse(fs.readFileSync(path.join(ROOT, "data/clubs.json"), "utf8"));
+// Keep imported source facts while removing launch-style terminology from the public copy.
+for (const club of clubs) if (club.vibe) club.vibe = club.vibe.replace(/\bwaitlist\b/gi, "reservation queue");
 
 // ---------- verified vs unclaimed ----------
 // VERIFIED ("On Bookish"): a host claimed or started the club and confirmed
@@ -469,7 +471,7 @@ ${withSearch ? `<details><summary>Search by city, ZIP, or genre</summary>${searc
 const clubIntro = ({ press = false } = {}) => `<section class="lander club-lander"><div class="wrap">
 <div class="l-sheet"><p class="l-tag">${press ? "Meet Bookish" : "Bring the club you already have"}</p>
 <div class="hsheet"><h1>${press ? "The group chat for book clubs." : "Your book club, just more fun."}</h1>
-<p class="sub">Bookish lives in your club's group chat: RSVPs, book votes, anonymous hot takes, and where-is-everyone-at check-ins, right inside iMessage.</p>
+<p class="sub">Preview the shared club experience: RSVPs, book votes, anonymous hot takes, and reading check-ins in iMessage. These features are not available in the current guest app.</p>
 <p class="launch-note">Find your people, or bring the club you already have.</p>
 <a class="btn" href="${url("/start/")}">Add your club ${ARROW}</a>
 </div>${prop("prop-sun-240.webp", 240, 243, "l-sun", true)}</div>

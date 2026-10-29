@@ -137,7 +137,7 @@ root.addEventListener('submit',async e=>{
         const link=document.createElement('a');link.href=url;link.download='bookish-meeting.ics';link.click();
         setTimeout(()=>URL.revokeObjectURL(url),1000);
         saved[c.id]=c;await persist();
-        status.textContent='Calendar file downloaded. Open it in your calendar to add the meeting and reminder.';
+        status.textContent='Calendar file ready. Open it in your calendar to add the meeting and reminder.';
         return;
       }
       if((await Notifications.requestPermissions()).display!=='granted')throw new Error('Enable Bookish notifications in Settings, then save your reminder here.');

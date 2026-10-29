@@ -67,7 +67,7 @@ assert.ok(!w.document.querySelector('#join'));
 const maps=w.document.querySelector('#detail a[href^="https://maps.apple.com/"]');assert.ok(maps);
 input(w,'#remind input[name=meeting]','2030-01-01T18:00');
 w.document.querySelector('#remind').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));
-await until(()=>w.document.querySelector('#remind .form-message').textContent.includes('Calendar file downloaded'));
+await until(()=>w.document.querySelector('#remind .form-message').textContent.includes('Calendar file ready'));
 assert.equal(downloads.at(-1).name,'bookish-meeting.ics');
 assert.ok((await calendars.at(-1).text()).includes('DTSTART:20300101T180000Z'), 'download uses the selected meeting instant in UTC');
 assert.equal(w.document.querySelector('#remind .primary').textContent,'Download calendar reminder');

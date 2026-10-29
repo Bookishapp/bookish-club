@@ -24,8 +24,19 @@ test('deployed web app has its own bundle and all local assets resolve under its
   assert.ok(base.endsWith('/app/'));
   for (const el of doc.querySelectorAll('script[src],link[href]')) {
     const asset = el.getAttribute('src') || el.getAttribute('href');
-    if (!asset.startsWith(base)) continue;
+    if (/^https?:/.test(asset)) continue;
+    assert.ok(asset.startsWith(base), `local asset escapes app prefix: ${asset}`);
     assert.ok(fs.existsSync(new URL('app/' + asset.slice(base.length), root)), asset);
+  }
+  for (const file of fs.readdirSync(new URL('app/assets/', root))) {
+    if (!file.endsWith('.css')) continue;
+    const css = fs.readFileSync(new URL('app/assets/' + file, root), 'utf8');
+    for (const [, value] of css.matchAll(/url\(([^)]+)\)/g)) {
+      const asset = value.replace(/^['"]|['"]$/g, '');
+      if (asset.startsWith('data:') || /^https?:/.test(asset)) continue;
+      assert.ok(asset.startsWith(base), `CSS asset escapes app prefix: ${asset}`);
+      assert.ok(fs.existsSync(new URL('app/' + asset.slice(base.length), root)), asset);
+    }
   }
   for (const name of ['clubs', 'books', 'community']) {
     assert.ok(fs.existsSync(new URL(`app/data/${name}.json`, root)), name);
