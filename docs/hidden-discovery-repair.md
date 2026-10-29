@@ -2,7 +2,7 @@
 
 The backend previously treated `listed=true` as enough to discover a club or request membership. PR21 adds a separate visibility field, so a Hidden club could still appear through backend RPCs. Reapplying backend aggregate hardening after visibility also restored Hidden contributions to public aggregates.
 
-The repaired backend checks visibility when that field is present, preserves the pre-visibility behavior when it is absent, and excludes null or unknown visibility states. Valid invite redemption is unchanged. Aggregate hardening retains the three-member, fourteen-day, and disjoint-club qualifications.
+The repaired backend checks visibility when that field is present, preserves the pre-visibility behavior when it is absent, and excludes null or unknown visibility states. Valid invite redemption is unchanged. Only publicly contributing Open and Private clubs enter the overlap qualification. A Hidden club does not contribute, so it does not disqualify a visible club that shares its members. Aggregate hardening retains the three-member, fourteen-day, and disjoint-club qualifications.
 
 `tests/backend/fixtures/visibility-009.sql` is an exact, test-only copy of PR21's 009 at 94a152b108121383d2a91d122660d7070d0f3949. It is installed only in disposable in-memory PGlite. The regression exercises both installation orders, Hidden discovery and guessed-ID join denial, valid Hidden invites, unlisting, and Hidden aggregate exclusion.
 
