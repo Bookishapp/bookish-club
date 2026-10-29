@@ -6,7 +6,8 @@ create or replace view public.bookish_active_clubs as
  with qualified as (
   select c.id,c.city,c.state
   from public.bookish_clubs c
-  where (select count(distinct m.user_id) from public.bookish_members m
+  where (not (to_jsonb(c) ? 'visibility') or to_jsonb(c)->>'visibility' in ('open','private'))
+    and (select count(distinct m.user_id) from public.bookish_members m
          where m.club_id=c.id and m.joined_at<=now()-interval '14 days')>=3
     and exists(select 1 from public.bookish_club_books b where b.club_id=c.id and b.status='finished')
  )

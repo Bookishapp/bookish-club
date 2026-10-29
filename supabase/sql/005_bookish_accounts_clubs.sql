@@ -176,7 +176,7 @@ end $$;
 create or replace function public.bookish_set_listing(p_club uuid,p_listed boolean) returns void language plpgsql security definer set search_path='' as $$
 begin perform bookish_private.require_host(p_club); update public.bookish_clubs set listed=p_listed where id=p_club; end $$;
 create or replace function public.bookish_discover_clubs(p_city text,p_state text) returns table(id uuid,club_ref text,name text,city text,state text) language sql stable security definer set search_path='' as $$
- select c.id,c.club_ref,c.name,c.city,c.state from public.bookish_clubs c where bookish_private.active_user() and c.listed and c.city=p_city and c.state=p_state order by c.name,c.id limit 100
+ select c.id,c.club_ref,c.name,c.city,c.state from public.bookish_clubs c where bookish_private.active_user() and c.listed and (not (to_jsonb(c) ? 'visibility') or to_jsonb(c)->>'visibility' in ('open','private')) and c.city=p_city and c.state=p_state order by c.name,c.id limit 100
 $$;
 create or replace function public.bookish_create_invite(p_club uuid,p_max_uses int default 20,p_days int default 7) returns text language plpgsql security definer set search_path='' as $$
 declare code_value text;
@@ -204,7 +204,7 @@ create or replace function public.bookish_request_join(p_club uuid,p_note text d
 declare rid uuid;
 begin
  perform bookish_private.require_terms();
- if not exists(select 1 from public.bookish_clubs where id=p_club and listed) or exists(select 1 from bookish_private.club_removals where club_id=p_club and user_id=auth.uid()) then raise exception 'Your host can help you join.'; end if;
+ if not exists(select 1 from public.bookish_clubs c where c.id=p_club and c.listed and (not (to_jsonb(c) ? 'visibility') or to_jsonb(c)->>'visibility' in ('open','private'))) or exists(select 1 from bookish_private.club_removals where club_id=p_club and user_id=auth.uid()) then raise exception 'Your host can help you join.'; end if;
  insert into public.bookish_join_requests(club_id,user_id,club_ref,email,first_name,note)
  select p_club,auth.uid(),p_club::text,u.email,p.display_name,p_note from auth.users u join public.bookish_profiles p on p.id=u.id where u.id=auth.uid()
  on conflict(club_id,user_id) where status='pending' and user_id is not null do update set note=excluded.note returning id into rid;
