@@ -1,3 +1,5 @@
+Visibility rollout: see [the club visibility review and deployment guide](docs/club-visibility.md). The SQL package requires Ted review and application before release.
+
 # Bookish: Book Club Night
 
 *Your book club, just more fun.* (Repo name: bookish-club.)

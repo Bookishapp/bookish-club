@@ -38,13 +38,10 @@ test('public-calendar clubs always retain a safe original-listing action after r
   assert.equal(clubs[1].source_url, 'https://www.mysapl.org/Events-News/Events-Calendar?trumbaEmbed=view%3Devent%26eventid%3D183243992');
   assert.equal(clubs[2].verified, true, 'Hosted clubs can use their in-app join action without an external calendar');
 });
-test('bundled public-calendar clubs have usable HTTPS listing links before the first refresh', () => {
+test('bundled discovery contains no club facts before a live refresh', () => {
   const clubs = JSON.parse(fs.readFileSync(new URL('../public/data/clubs.json', import.meta.url), 'utf8'));
-  assert.ok(clubs.length > 2000, 'Keep the nationwide directory available offline');
-  for (const c of clubs) {
-    if (!c.verified) assert.equal(new URL(c.source_url).protocol, 'https:', c.id);
-  }
-  assert.equal(validateFeed('clubs', clubs).length, clubs.length, 'The bundle should not lose clubs when validated');
+  assert.deepEqual(clubs, [], 'Offline snapshots cannot reveal a club that has become Hidden');
+  assert.deepEqual(validateFeed('clubs', clubs), []);
 });
 test('read-next preserves sequel preference, author diversity, and excludes loved book', () => {
   const books = JSON.parse(fs.readFileSync(new URL('../public/data/books.json', import.meta.url), 'utf8'));
@@ -56,4 +53,9 @@ test('read-next preserves sequel preference, author diversity, and excludes love
   assert.equal(chosen[0].b.id, 'iron-flame');
   assert.equal(new Set(chosen.map(r => r.b.a)).size, 3);
   assert.ok(chosen.filter(r => r.sequel).length <= 1);
+});
+
+test('empty discovery and hidden records cannot revive clubs in the app', () => {
+  assert.deepEqual(validateFeed('clubs', []), []);
+  assert.deepEqual(validateFeed('clubs', [{id:'secret',name:'Secret Canary',city:'Austin',state:'TX',visibility:'hidden'}]), []);
 });

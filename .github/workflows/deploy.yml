@@ -3,10 +3,6 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
-  # Hourly rebuild so newly verified clubs (confirmed claims / starts) move
-  # to "On Bookish" without a code change.
-  schedule:
-    - cron: "17 * * * *"
 permissions:
   contents: read
   pages: write
@@ -26,7 +22,7 @@ jobs:
       # bookishclub.com is a settings change, not a code change.
       - run: node scripts/build.mjs
         env:
-          SITE_URL: ${{ vars.SITE_URL || 'https://fictora.github.io/bookish-club' }}
+          SITE_URL: ${{ vars.SITE_URL || 'https://meetbookish.com' }}
           CUSTOM_DOMAIN: ${{ vars.CUSTOM_DOMAIN }}
       - uses: actions/upload-pages-artifact@v3
         with:
