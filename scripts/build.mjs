@@ -70,7 +70,7 @@ const page = (p, prio = 0.6) => sitemap.push({ loc: abs(p), prio });
 const WORDMARK = (eager) => `<img src="${url("/img/wordmark-160.webp")}" srcset="${url("/img/wordmark-160.webp")} 1x, ${url("/img/wordmark-320.webp")} 2x, ${url("/img/wordmark-480.webp")} 3x" width="160" height="62" alt="Bookish"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`;
 const CSS = (fs.readFileSync(path.join(ROOT, "src/theme.css"), "utf8") + fs.readFileSync(path.join(ROOT, "src/styles.css"), "utf8")).replaceAll("__BASE__", BASE).replace(/\n\s*/g, "\n");
 
-function layout({ title, desc, path: p, body, jsonld = [], noindex = false, landing = false }) {
+function layout({ title, desc, path: p, body, jsonld = [], noindex = false, landing = false, referrerPolicy = "no-referrer" }) {
   const canonical = abs(p);
   const landingCSS = landing ? fs.readFileSync(path.join(ROOT, "src/landing.css"), "utf8").replaceAll("__BASE__", BASE) : "";
   return `<!doctype html>
@@ -82,7 +82,7 @@ function layout({ title, desc, path: p, body, jsonld = [], noindex = false, land
 <meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${canonical}">
 ${noindex ? '<meta name="robots" content="noindex">' : ""}
-<meta name="referrer" content="no-referrer">
+<meta name="referrer" content="${esc(referrerPolicy)}">
 <meta name="theme-color" content="#4a1420">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Bookish: Book Club Night">
@@ -326,6 +326,10 @@ write("join/index.html", layout({
 </form></section></div>
 `,
 }));
+write("join/confirm/index.html",layout({
+ title:"Confirm request | Bookish",desc:"Confirm your response to a Bookish join request.",path:"/join/confirm/",noindex:true,referrerPolicy:"strict-origin",
+ body:`<div class="wrap"><header class="page-head"><p class="eyebrow">Join requests</p><h1 id="decision-title">Open your request link.</h1><p class="lede" id="decision-status" role="status">Open the original link from your email to continue.</p></header><section><form id="join-decision" method="post" hidden><input type="hidden" name="token"><input type="hidden" name="action"><input type="hidden" name="confirm" value="yes"><button class="btn" type="submit" disabled>Confirm response</button></form><noscript><p>Enable JavaScript to confirm your response.</p></noscript></section></div><script src="${url('/join-respond.js')}" defer></script>`,
+}));
 write("join/done/index.html", layout({
   title: "Request update | Bookish", desc: "Join request update.", path: "/join/done/", noindex: true,
   body: `<div class="wrap"><header class="page-head" style="padding-top:60px"><p class="eyebrow">Join requests</p><h1 id="jd-h">Done.</h1><p class="lede" id="jd-p">Your response was saved.</p><a class="btn" href="${url("/")}">Back to Bookish</a></header></div>
@@ -546,7 +550,7 @@ fs.rmSync(path.join(OUT, "lunair/checkout.json"), { force: true });
 write("data/cities.json", "[]");
 write("data/clubs.json", "[]");
 write("data/clubs.geojson", JSON.stringify({type:"FeatureCollection",features:[]}));
-for (const file of ["site.js","discovery.js","club-settings.js","read-next.js","map.js"]) {
+for (const file of ["site.js","discovery.js","club-settings.js","join-respond.js","read-next.js","map.js"]) {
  let source=fs.readFileSync(path.join(ROOT,`src/${file}`),"utf8");
  if(file==='discovery.js'){
   const marker='/* __SOURCE_URL_UPGRADES__ */ []';

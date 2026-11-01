@@ -1,0 +1,28 @@
+{
+  "fixture_only": true,
+  "decisions": [
+    {
+      "token": "12345678-1234-4234-8234-123456789abc",
+      "approve": true
+    },
+    {
+      "token": "12345678-1234-4234-8234-123456789abc",
+      "approve": false
+    }
+  ],
+  "posts": [
+    {
+      "origin": "null",
+      "status": 403
+    },
+    {
+      "origin": "http://localhost:4347",
+      "status": 303
+    },
+    {
+      "origin": "http://localhost:4347",
+      "status": 303
+    }
+  ],
+  "gets": 3
+}

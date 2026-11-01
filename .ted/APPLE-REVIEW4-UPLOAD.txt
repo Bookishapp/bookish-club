@@ -1,0 +1,18 @@
+Running altool at path '/Applications/Xcode.app/Contents/SharedFrameworks/ContentDelivery.framework/Resources/altool'...
+
+2026-11-01 12:42:14.837  INFO: [ContentDelivery.Uploader.7888C59340]
+==========================================
+UPLOAD SUCCEEDED with no errors
+Delivery UUID: 96b6c2fb-1800-4d26-8079-48ef0b71ab1c
+Transferred 7763038 bytes in 3.514 seconds (2.2MB/s, 17.673Mbps)
+==========================================
+{
+  "details" : {
+    "delivery-uuid" : "96b6c2fb-1800-4d26-8079-48ef0b71ab1c",
+    "transferred" : "7763038 bytes in 3.514 seconds (2.2MB/s, 17.673Mbps)"
+  },
+  "os-version" : "Version 27.0 (Build 26A425)",
+  "success-message" : "No errors uploading archive at '/Users/vahallo/ted-ops/logs/bookish-review4-1101/export/App.ipa'.",
+  "tool-path" : "/Applications/Xcode.app/Contents/SharedFrameworks/ContentDelivery.framework/Resources",
+  "tool-version" : "27.0.5 (2.1)"
+}

@@ -1,0 +1,21 @@
+{
+  "ipa": "/Users/vahallo/ted-ops/logs/bookish-review4-1101/export/App.ipa",
+  "sha256": "d9151fbb4f1c0af11fa09424e367f98ec196c7fd876fd7e8f97c90b05d6f727f",
+  "version": "1.1",
+  "build": "6",
+  "shipped_extensions": [
+    "BookishStickers.appex"
+  ],
+  "privacy_categories": 8,
+  "testflight_internal_only": false,
+  "no_bundled_clubs": true,
+  "web_bundle_matches_final_build": true,
+  "supabase_project": "tkrsrnlasinmlftkcufi",
+  "old_project_absent": true,
+  "signature_verification": {
+    "status": "pass",
+    "code_bundle_count": 10,
+    "signature_identifiers_match": true,
+    "strict_signature_verification": true
+  }
+}

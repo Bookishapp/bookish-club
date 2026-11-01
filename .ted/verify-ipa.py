@@ -7,8 +7,8 @@ subprocess.run(['ditto','-xk',str(ipa),str(tree)],check=True,capture_output=True
 app=tree/'Payload/App.app'
 info=plistlib.loads((app/'Info.plist').read_bytes())
 assert info['CFBundleIdentifier']=='com.meetbookish.app'
-assert info.get('TFInternalTestingOnly') is True
-assert info['CFBundleShortVersionString']=='1.1' and info['CFBundleVersion']=='5'
+assert info.get('TFInternalTestingOnly',False) is False
+assert info['CFBundleShortVersionString']=='1.1' and info['CFBundleVersion']=='6'
 assert sorted(p.name for p in (app/'PlugIns').iterdir())==['BookishStickers.appex']
 manifest=plistlib.loads((app/'PrivacyInfo.xcprivacy').read_bytes())
 assert manifest['NSPrivacyTracking'] is False
@@ -30,12 +30,12 @@ for file in public.glob('assets/*.js'):
  source=Path('app/dist/assets')/file.name
  assert source.exists() and source.read_bytes()==file.read_bytes()
 for bundle in [app,app/'PlugIns/BookishStickers.appex']:
- bi=plistlib.loads((bundle/'Info.plist').read_bytes());assert bi['CFBundleVersion']=='5' and bi['CFBundleShortVersionString']=='1.1'
+ bi=plistlib.loads((bundle/'Info.plist').read_bytes());assert bi['CFBundleVersion']=='6' and bi['CFBundleShortVersionString']=='1.1'
  profile=plistlib.loads(subprocess.check_output(['security','cms','-D','-i',str(bundle/'embedded.mobileprovision')],stderr=subprocess.DEVNULL))
  assert profile['Entitlements']['application-identifier']=='L8YGD7ATLL.'+bi['CFBundleIdentifier']
  ent=plistlib.loads(subprocess.check_output(['codesign','-d','--entitlements',':-',str(bundle)],stderr=subprocess.DEVNULL))
  assert ent['application-identifier']=='L8YGD7ATLL.'+bi['CFBundleIdentifier'] and not ent.get('get-task-allow',False)
 result=subprocess.check_output(['python3','/Users/vahallo/ted-ops/ted-board/jobs/card-c-bookish-submit-1023/verify_bundle_signature_identifiers.py',str(app)],text=True)
-record={'ipa':str(ipa),'sha256':hashlib.sha256(ipa.read_bytes()).hexdigest(),'version':'1.1','build':'5','shipped_extensions':['BookishStickers.appex'],'privacy_categories':8,'testflight_internal_only':True,'no_bundled_clubs':True,'web_bundle_matches_final_build':True,'supabase_project':new_ref,'old_project_absent':True,'signature_verification':json.loads(result)}
-Path('.ted/IPA-DEDICATED-VERIFICATION.json').write_text(json.dumps(record,indent=2)+'\n')
+record={'ipa':str(ipa),'sha256':hashlib.sha256(ipa.read_bytes()).hexdigest(),'version':'1.1','build':'6','shipped_extensions':['BookishStickers.appex'],'privacy_categories':8,'testflight_internal_only':False,'no_bundled_clubs':True,'web_bundle_matches_final_build':True,'supabase_project':new_ref,'old_project_absent':True,'signature_verification':json.loads(result)}
+Path('.ted/IPA-REVIEW4-VERIFICATION.json').write_text(json.dumps(record,indent=2)+'\n')
 print(json.dumps(record,indent=2))

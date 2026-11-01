@@ -20,10 +20,10 @@ async function auth(path: string, body: unknown, token = key) {
   if (!r.ok) throw Error("Auth unavailable");
   return r.status === 204 ? null : await r.json();
 }
-Deno.serve(async (req) =>
+Deno.serve((req) =>
   bookishAuthHandler(req, {
     publicKey,
-    configured: !!(await readBookishSecret("BOOKISH_EMAIL_FROM")) &&
+    configured: async () => !!(await readBookishSecret("BOOKISH_EMAIL_FROM")) &&
       !!(await readBookishSecret("RESEND_API_KEY")),
     throttle: async (email, ip, action) => {
       const { data, error } = await sb.rpc("bookish_auth_throttle", {

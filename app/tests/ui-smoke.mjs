@@ -195,6 +195,15 @@ assert.equal(passwordAPI.calls.filter(c=>c.url.endsWith('bookish_schedule_meetin
 click(p,'[data-room-tab=votes]');assert.equal(p.document.querySelectorAll('[data-winner]').length,2,'All-zero votes expose both host winner choices');click(p,'[data-winner]');await until(()=>!p.document.querySelector('[data-ballot]'));
 assert.ok(passwordAPI.calls.some(c=>c.url.endsWith('bookish_close_vote')&&c.body.p_winner===ids.one));
 await new Promise(r=>setTimeout(r,40));passwordDom.window.close();
+const noMailAPI=createFixtureAPI();
+const originalRespond=noMailAPI.respond;
+noMailAPI.respond=async(url,body,method)=>url.endsWith('/bookish-auth')&&body.action==='start'?{$status:503,ok:false,message:'Email codes are not available right now. Try again soon.'}:originalRespond(url,body,method);
+const noMail=await launch(true,false,false,noMailAPI),m=noMail.window;
+click(m,'[data-tab=me]');click(m,'#sign-in');await until(()=>m.document.querySelector('#account-email'));
+input(m,'#account-email [name=email]','reader@example.test');submit(m,'#account-email');
+await until(()=>m.document.querySelector('#account-email .form-message').textContent);
+assert.equal(m.document.querySelector('#account-email .form-message').textContent,'Email codes are not available right now. Try again soon.');
+assert.ok(!m.document.querySelector('#account-code'));noMail.window.close();
 const native=await launch(true,true),n=native.window;
 locationAllowed=false;click(n,'#locate');await until(()=>n.document.querySelector('#toast').textContent.includes('Pick a city'));
 assert.ok(n.document.querySelector('#city'));

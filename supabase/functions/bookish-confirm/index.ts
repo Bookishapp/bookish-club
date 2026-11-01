@@ -22,7 +22,7 @@ Deno.serve(async (req) => {
       .eq("confirm_token", token).neq("status", "spam")
       .select("id, club_ref, kind");
     ok = !error && (data?.length ?? 0) > 0;
-    if (ok && data?.[0]?.kind !== "waitlist") clubRef = data?.[0]?.club_ref || "";
+    if (ok && data?.[0]?.kind === "start") clubRef = data?.[0]?.club_ref || "";
   }
   return new Response(null, {
     status: 302,

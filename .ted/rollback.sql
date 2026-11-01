@@ -26,8 +26,15 @@ do $disable$ declare r record;begin
  end loop;
 end $disable$;
 revoke execute on function public.bookish_visibility_join(text,text,text,text,text,text),public.bookish_visibility_host(uuid,text,text,text,uuid,boolean),public.bookish_visibility_decide(uuid,boolean) from service_role;
+-- Keep the safety alert reader unavailable while this release is locked down.
+-- Dynamic lookup also permits rollback on installations that stop at chunk 19.
+do $alerts$ begin
+ if to_regprocedure('public.bookish_content_report_queue(uuid)') is not null then
+  revoke execute on function public.bookish_content_report_queue(uuid) from service_role;
+ end if;
+end $alerts$;
 -- Deletion must remain available for existing trusted Bookish identities through
 -- the verified bookish-delete-account edge. Its Auth cascades still operate.
 -- The service-only Vault RPC stays available for Apple revocation during deletion.
--- Reapply the full packet or every ordered chunk to restore member access.
+-- Reapply chunks 01 through 20, in order, to restore all access and hardening.
 commit;

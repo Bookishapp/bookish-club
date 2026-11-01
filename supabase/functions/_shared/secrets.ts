@@ -15,6 +15,7 @@ export const BOOKISH_SECRET_NAMES = [
   "BOOKISH_TERMS_URL",
   "BOOKISH_PRIVACY_URL",
   "BOOKISH_MODERATION_EMAIL",
+  "BOOKISH_REPORT_WORKER_KEY",
 ] as const;
 
 export function createSecretReader({ env, fetcher = fetch }: ReaderOptions) {

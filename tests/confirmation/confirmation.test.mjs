@@ -196,3 +196,10 @@ for (const [label, token, status] of [
   assert.deepEqual(app.rows, before);
   assert.equal(app.emails.length, 0);
 });
+
+test('a confirmed claim stays outside the host desk until service review', async () => {
+  const app = edge('bookish-confirm', {rows:[{id:'claim',confirm_token:TOKEN,status:'pending',kind:'claim',club_ref:'directory-ref'}]});
+  const response=await app.handler(confirmation(TOKEN));
+  assert.equal(app.rows[0].status,'confirmed');
+  assert.equal(response.headers.get('location'),'https://meetbookish.com/confirmed/');
+});

@@ -117,11 +117,13 @@ if(process.argv[1]===fileURLToPath(import.meta.url)){
  const packet=buildPacket(),out=path.join(root,'.ted');
  if(process.argv.includes('--check')){
   for(const [name,sql] of Object.entries(packet.files))if(read(`.ted/${name}`)!==sql)throw new Error(`Regenerate .ted/${name}`);
-  const actual=fs.readdirSync(out).filter(n=>/^apply-\d\d\.sql$/.test(n));
+  // Chunk 20 is the hand-authored post-deployment hardening migration.
+  const actual=fs.readdirSync(out).filter(n=>/^apply-\d\d\.sql$/.test(n)&&n!=='apply-20.sql');
   if(actual.length!==Object.keys(packet.files).length-1)throw new Error('Unexpected stale SQL chunk');
   console.log('Dedicated SQL generation is reproducible.');
  }else{
-  for(const name of fs.readdirSync(out).filter(n=>/^apply-\d\d\.sql$/.test(n)))fs.unlinkSync(path.join(out,name));
+  // Never erase the hand-authored hardening chunk when regenerating the base.
+  for(const name of Object.keys(packet.files))if(fs.existsSync(path.join(out,name)))fs.unlinkSync(path.join(out,name));
   for(const [name,sql] of Object.entries(packet.files))fs.writeFileSync(path.join(out,name),sql);
   console.log(`Prepared full SQL plus ${Object.keys(packet.files).length-1} chunks, ${packet.centers} city centers, and ${packet.clubs} calendars. No database connection was made.`);
  }

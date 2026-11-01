@@ -66,3 +66,13 @@ test('Vault preserves multiline Apple keys verbatim', async () => {
   const read = reader(platform, async () => Response.json(pem));
   assert.equal(await read('BOOKISH_APPLE_PRIVATE_KEY'), pem);
 });
+
+test('report worker key uses the same lazy environment and scoped Vault reader', async()=>{
+ const envRead=reader({BOOKISH_REPORT_WORKER_KEY:'worker-env'},()=>assert.fail('No Vault call for an environment key'));
+ assert.equal(await envRead('BOOKISH_REPORT_WORKER_KEY'),'worker-env');
+ const vaultRead=reader(platform,async(_url,options)=>{
+  assert.deepEqual(JSON.parse(options.body),{p_name:'BOOKISH_REPORT_WORKER_KEY'});
+  return Response.json('worker-vault');
+ });
+ assert.equal(await vaultRead('BOOKISH_REPORT_WORKER_KEY'),'worker-vault');
+});

@@ -79,3 +79,26 @@ test('account policy and support describe Bookish deletion and private shared da
   assert.match(support, /No social sign-in or password is required/);
   assert.match(terms, /harassment, threats, hateful abuse/);
 });
+
+test('website decision page prepares a POST without acting on load or exposing tokens in its URL',()=>{
+ const page=fs.readFileSync(new URL('join/confirm/index.html',root),'utf8');
+ const script=fs.readFileSync(new URL('join-respond.js',root),'utf8');
+ const token='12345678-1234-4234-8234-123456789abc';
+ for(const action of ['approve','decline']){
+  const dom=new JSDOM(page,{url:`https://meetbookish.com/join/confirm/#token=${token}&action=${action}`,runScripts:'outside-only'}),w=dom.window;
+  w.fetch=()=>assert.fail('No decision is sent on page load');
+  w.HTMLFormElement.prototype.submit=()=>assert.fail('No automatic form submission');
+  w.HTMLFormElement.prototype.requestSubmit=()=>assert.fail('No automatic form submission');
+  w.eval(script);
+  const form=w.document.querySelector('#join-decision');
+  assert.equal(form.hidden,false);assert.equal(form.method,'post');
+  assert.equal(form.action,'https://tkrsrnlasinmlftkcufi.supabase.co/functions/v1/bookish-join-respond');
+  assert.equal(form.elements.token.value,token);assert.equal(form.elements.action.value,action);assert.equal(form.elements.confirm.value,'yes');
+  assert.equal(form.querySelector('button').disabled,false);
+  assert.equal(w.location.hash,'');assert.equal(w.document.querySelector('meta[name=referrer]').content,'strict-origin');
+  assert.equal(w.document.querySelector('h1').textContent,action==='approve'?'Welcome this reader?':'Decline this request?');
+  w.close();
+ }
+ const invalid=new JSDOM(page,{url:'https://meetbookish.com/join/confirm/#token=bad&action=approve',runScripts:'outside-only'});
+ invalid.window.eval(script);assert.equal(invalid.window.document.querySelector('#join-decision').hidden,true);invalid.window.close();
+});

@@ -8,7 +8,7 @@ type Session = {
 };
 type Dependencies = {
   publicKey: string;
-  configured: boolean;
+  configured: () => Promise<boolean>;
   throttle: (email: string, ip: string, action: string) => Promise<boolean>;
   lookup: (email: string) => Promise<{ id: string; bookish: boolean } | null>;
   create: (email: string) => Promise<unknown>;
@@ -62,7 +62,7 @@ export async function bookishAuthHandler(
   }
   if (req.method === "OPTIONS") return reply(204, null);
   if (req.method !== "POST") return reply(405, { ok: false });
-  if (!deps.configured || !deps.publicKey) {
+  if (!deps.publicKey) {
     return reply(503, {
       ok: false,
       message: "Sign-in is unavailable. Please try again shortly.",
@@ -113,6 +113,7 @@ export async function bookishAuthHandler(
       });
     }
     if (action === "start") {
+      if (!await deps.configured()) throw Error("delivery configuration");
       const existing = await deps.lookup(email);
       // Unmarked shared identities must never be changed, signed in, or sent mail.
       if (existing && !existing.bookish) return reply(200, { ok: true });
@@ -175,7 +176,7 @@ export async function bookishAuthHandler(
     return reply(action === "start" ? 503 : 401, {
       ok: false,
       message: action === "start"
-        ? "Sign-in is unavailable. Please try again shortly."
+        ? "Email codes are not available right now. Try again soon."
         : "That code or session could not be verified. Sign in again.",
     });
   }
