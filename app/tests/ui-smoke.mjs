@@ -96,8 +96,20 @@ assert.ok(w.document.querySelector('a.cover[href^="https://openlibrary.org/works
 click(w,'[data-book-save]');await until(()=>w.document.querySelector('[data-book-save][aria-pressed=true]'));
 click(w,'[data-tab=saved]');await until(()=>w.document.querySelector('h1').textContent.includes('collection'));
 assert.equal(w.document.querySelectorAll('.book-card').length,1);
-click(w,'[data-tab=about]');assert.ok(w.document.querySelector('a[href="https://meetbookish.com/privacy/"]'));
+assert.deepEqual([...w.document.querySelectorAll('.tabs button')].map(b=>b.dataset.tab),['near','read','saved','me']);
+click(w,'[data-tab=me]');assert.ok(w.document.querySelector('a[href="https://meetbookish.com/privacy/"]'));
 assert.ok(w.document.querySelector('a[href="https://meetbookish.com/terms/"]'));
+assert.ok(w.document.querySelector('#refresh'));
+click(w,'#open-resources');assert.equal(w.document.querySelector('h1').textContent,'Resources');
+assert.equal(w.document.querySelector('.tabs [aria-current]').dataset.tab,'me');
+for(const suffix of ['','hosting-tips/','pairings/','printables/'])assert.ok(w.document.querySelector(`a[href="https://meetbookish.com/resources/${suffix}"]`));
+assert.ok(!w.document.querySelector('.tabs [data-tab=resources]'));
+click(w,'#back-to-me');assert.ok(w.document.querySelector('#open-resources'));
+assert.equal(w.document.activeElement.id,'main');
+click(w,'#open-resources');click(w,'[data-tab=near]');click(w,'[data-tab=me]');
+assert.ok(w.document.querySelector('#open-resources'),'Returning to Me opens its home');
+click(w,'#refresh');await until(()=>!w.document.querySelector('#refresh').disabled);
+assert.ok(w.document.querySelector('a[href="https://meetbookish.com/about/"]'));
 offline.window.close();
 
 const online=await launch(true,false,true),v=online.window;
