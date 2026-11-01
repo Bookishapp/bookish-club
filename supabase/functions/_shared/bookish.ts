@@ -1,5 +1,7 @@
 // Shared helpers for the Bookish edge functions.
-import { createClient } from "npm:@supabase/supabase-js@2";
+import type {RpcClient,DirectoryClub} from "./types.ts";
+import { createClient } from "@supabase/supabase-js";
+import { readBookishSecret } from "./secrets.ts";
 
 export const ALLOWED_ORIGINS = [
   "https://meetbookish.com",
@@ -9,7 +11,7 @@ export const ALLOWED_ORIGINS = [
   "http://localhost:4321",
   "http://127.0.0.1:4321",
 ];
-export const SITE_URL = Deno.env.get("BOOKISH_SITE_URL") ?? "https://meetbookish.com";
+export const siteUrl = async () => await readBookishSecret("BOOKISH_SITE_URL") ?? "https://meetbookish.com";
 export const FN_URL = `${Deno.env.get("SUPABASE_URL")}/functions/v1`;
 
 export const sb = createClient(
@@ -46,8 +48,10 @@ export const ipOf = (req: Request) => (req.headers.get("x-forwarded-for") ?? "")
 // Verify DNS before setting BOOKISH_EMAIL_FROM; Resend enforces verification.
 // Without both settings it is a logged stub and returns false.
 export async function sendEmail(to: string, subject: string, text: string): Promise<boolean> {
-  const from = Deno.env.get("BOOKISH_EMAIL_FROM");
-  const key = Deno.env.get("RESEND_API_KEY");
+  const [from, key] = await Promise.all([
+    readBookishSecret("BOOKISH_EMAIL_FROM"),
+    readBookishSecret("RESEND_API_KEY"),
+  ]);
   if (!from || !key) {
     console.log(`[email stub] not sent (no BOOKISH_EMAIL_FROM): subject="${subject}"`);
     return false;
@@ -57,46 +61,16 @@ export async function sendEmail(to: string, subject: string, text: string): Prom
     headers: { authorization: `Bearer ${key}`, "content-type": "application/json" },
     body: JSON.stringify({ from, to: [to], subject, text }),
   });
-  if (!res.ok) console.error("email failed", res.status, await res.text());
+  if (!res.ok) console.error("email failed", res.status);
   return res.ok;
 }
 
-// ---------- verified clubs ----------
-// A club is VERIFIED ("On Bookish") when a host's claim or start submission
-// for it is confirmed (double opt-in). Everything else in the directory is
-// UNCLAIMED: listed from public library / bookstore calendars, and nobody
-// can request to join it on Bookish.
-// deno-lint-ignore no-explicit-any
-export async function isVerified(client: any, club_ref: string): Promise<boolean> {
-  const { count } = await client.from("bookish_submissions").select("id", { count: "exact", head: true })
-    .eq("club_ref", club_ref).in("kind", ["claim", "start"]).eq("status", "confirmed");
-  return (count ?? 0) > 0;
+// Fresh, visibility-aware discovery, shared with legacy callers.
+export async function listVerified(client: RpcClient): Promise<DirectoryClub[]> {
+  const {data,error}=await client.rpc("bookish_visibility_directory");
+  if(error)throw new Error("Discovery unavailable");
+  return (Array.isArray(data)?data:[]).filter((c:DirectoryClub)=>c.verified && ["open","private"].includes(c.visibility)).map((c:DirectoryClub)=>({...c,listed:true,kind:"start"}));
 }
-
-export type VerifiedClub = {
-  id: string; kind: "claim" | "start"; listed: boolean;
-  name?: string; city?: string; state?: string; genre?: string; cadence?: string; format?: string;
-};
-// deno-lint-ignore no-explicit-any
-export async function listVerified(client: any): Promise<VerifiedClub[]> {
-  const { data, error } = await client.from("bookish_submissions")
-    .select("kind, club_ref, payload, confirmed_at")
-    .in("kind", ["claim", "start"]).eq("status", "confirmed").not("club_ref", "is", null)
-    .order("confirmed_at", { ascending: false }).limit(5000);
-  if (error) throw new Error(error.message);
-  const out = new Map<string, VerifiedClub>();
-  for (const r of data ?? []) {
-    if (out.has(r.club_ref)) continue; // newest confirmed submission wins
-    const p = (r.payload ?? {}) as Record<string, string>;
-    const listed = p.list_in_city !== "no";
-    const v: VerifiedClub = { id: r.club_ref, kind: r.kind, listed };
-    if (r.kind === "start" && listed) {
-      Object.assign(v, {
-        name: (p.club_name ?? "").slice(0, 140), city: (p.city ?? "").slice(0, 80), state: (p.state ?? "").toUpperCase().slice(0, 2),
-        genre: p.genre || undefined, cadence: p.cadence || undefined, format: p.format || undefined,
-      });
-    }
-    out.set(r.club_ref, v);
-  }
-  return [...out.values()];
+export async function isVerified(client:RpcClient,ref:string):Promise<boolean>{
+  return (await listVerified(client)).some(c=>c.id===ref);
 }

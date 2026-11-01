@@ -54,7 +54,7 @@ jobs:
           xcrun simctl install "$UDID" ios/App/build/Build/Products/Debug-iphonesimulator/App.app
           DISPLAY_NAME=$(/usr/libexec/PlistBuddy -c "Print :CFBundleDisplayName" ios/App/build/Build/Products/Debug-iphonesimulator/App.app/Info.plist)
           test "$DISPLAY_NAME" = "Bookish"
-          for tab in near read saved about; do
+          for tab in near read saved me; do
             xcrun simctl terminate "$UDID" com.meetbookish.app || true
             SIMCTL_CHILD_BOOKISH_QA_TAB=$tab xcrun simctl launch "$UDID" com.meetbookish.app
             sleep 10

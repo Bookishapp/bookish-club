@@ -11,6 +11,7 @@ export const FROM = "Bookish <hello@meetbookish.com>";
 export function edge(name, options = {}) {
   const rows = structuredClone(options.rows ?? []);
   const emails = [];
+  const vaultReads = [];
   const env = {
     SUPABASE_URL: "https://database.example.test",
     SUPABASE_SERVICE_ROLE_KEY: "offline-database-placeholder",
@@ -19,6 +20,11 @@ export function edge(name, options = {}) {
     ...options.env,
   };
   const sb = {
+    async rpc(name, args) {
+      assert.equal(name, "bookish_visibility_location");
+      assert.deepEqual(JSON.parse(JSON.stringify(args)), { p_city: "Austin", p_state: "TX" });
+      return { data: options.validCity ?? true, error: null };
+    },
     from(table) {
       assert.equal(table, "bookish_submissions");
       let operation = "select", values, count = false, single = false;
@@ -56,11 +62,20 @@ export function edge(name, options = {}) {
   };
   let handler;
   const context = vm.createContext({
-    Request, Response, Headers, URL, crypto, TextEncoder, Uint8Array, Date,
+    Request, Response, Headers, URL, crypto, TextEncoder, Uint8Array, Date, AbortSignal,
     console: { log() {}, error() {} },
     createClient: () => sb,
     Deno: { env: { get: key => env[key] }, serve: fn => { handler = fn; } },
     fetch: async (url, init) => {
+      if (url === "https://database.example.test/rest/v1/rpc/bookish_get_secret") {
+        assert.equal(init.method, "POST");
+        assert.equal(init.headers.apikey, "offline-database-placeholder");
+        assert.equal(init.headers.authorization, "Bearer offline-database-placeholder");
+        const { p_name } = JSON.parse(init.body);
+        vaultReads.push(p_name);
+        if (options.vaultThrows) throw Error("private Vault error details");
+        return Response.json(options.vault?.[p_name] ?? null, { status: options.vaultStatus ?? 200 });
+      }
       assert.equal(url, "https://api.resend.com/emails", "unexpected external destination");
       assert.equal(init.method, "POST");
       assert.equal(init.headers.authorization, "Bearer offline-mail-placeholder");
@@ -71,18 +86,25 @@ export function edge(name, options = {}) {
   });
   const file = new URL(`../../supabase/functions/${name}/index.ts`, import.meta.url);
   const source = fs.readFileSync(file, "utf8");
-  const dependency = 'import { createClient } from "npm:@supabase/supabase-js@2";';
+  const dependency = 'import { createClient } from "@supabase/supabase-js";';
   assert.equal(source.split(dependency).length, 2, "expected one Supabase transport import");
-  vm.runInContext(stripTypeScriptTypes(source.replace(dependency, "")), context, { filename: file.pathname });
+  const helperFile = new URL("../../supabase/functions/_shared/secrets.ts", import.meta.url);
+  // Execute the real secret reader in the same isolated context. Only its
+  // external fetch transport and the SDK transport above are replaced.
+  const helper = fs.readFileSync(helperFile, "utf8").replace(/^export /gm, "");
+  vm.runInContext(stripTypeScriptTypes(helper), context, { filename: helperFile.pathname });
+  const configImport = 'import { readBookishSecret } from "../_shared/secrets.ts";';
+  assert.equal(source.split(configImport).length, 2, "expected one shared configuration import");
+  vm.runInContext(stripTypeScriptTypes(source.replace(dependency, "").replace(configImport, "")), context, { filename: file.pathname });
   assert.equal(typeof handler, "function");
-  return { handler, rows, emails };
+  return { handler, rows, emails, vaultReads };
 }
 
 export function submission(overrides = {}, origin = "https://meetbookish.com") {
   return new Request("https://database.example.test/functions/v1/bookish-submit", {
     method: "POST", headers: { "content-type": "application/json", origin, "x-forwarded-for": "192.0.2.1" },
     body: JSON.stringify({ kind: "claim", club_name: "Reading Together", club_id: "club-1",
-      email: " Reader@Example.test ", first_name: "Ada", consent: true, elapsed_ms: 3000, ...overrides }),
+      email: " Reader@Example.test ", first_name: "Ada", visibility: "private", consent: true, elapsed_ms: 3000, ...overrides }),
   });
 }
 

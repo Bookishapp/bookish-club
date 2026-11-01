@@ -1,0 +1,19 @@
+name: Club visibility privacy checks
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  privacy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci
+      - run: npm ci --prefix app
+      - run: npm run snapshot --prefix app
+      - run: npm run build:web
+      - run: npm run test:visibility

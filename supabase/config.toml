@@ -1,0 +1,29 @@
+# Dedicated Bookish project: tkrsrnlasinmlftkcufi. Deploy reviewed functions individually.
+# Use the reviewed .ted SQL packet, not db push. Never change Fictora Auth.
+[functions.bookish-directory]
+verify_jwt = false
+[functions.bookish-club-settings]
+verify_jwt = false
+[functions.bookish-verified]
+verify_jwt = false
+[functions.bookish-join]
+verify_jwt = false
+[functions.bookish-join-respond]
+verify_jwt = false
+[functions.bookish-submit]
+verify_jwt = false
+[functions.bookish-confirm]
+verify_jwt = false
+[functions.bookish-community]
+verify_jwt = false
+[functions.bookish-auth]
+verify_jwt = false
+[functions.bookish-account-join]
+verify_jwt = false
+[functions.bookish-delete-account]
+verify_jwt = false
+[functions.bookish-house-rules]
+verify_jwt = false
+
+[functions.bookish-report-alerts]
+verify_jwt = false # Handler requires the separate Bookish report worker key.

@@ -1,3 +1,5 @@
+Visibility rollout: see [the club visibility review and deployment guide](docs/club-visibility.md). The SQL package requires Ted review and application before release.
+
 # Bookish: Book Club Night
 
 *Your book club, just more fun.* (Repo name: bookish-club.)
@@ -89,8 +91,10 @@ The repo is public because GitHub Pages for private repos needs a paid plan.
 
 ## Forms backend
 
+Bookish uses its dedicated Supabase project, `tkrsrnlasinmlftkcufi`, at `https://tkrsrnlasinmlftkcufi.supabase.co`. Native and web account requests use the project publishable key through the `apikey` header, with the signed-in reader's JWT separately in `Authorization`. The app includes the publishable key by default; `VITE_BOOKISH_PUBLISHABLE_KEY` can override it at build time. `VITE_BOOKISH_ANON_KEY` remains a compatibility override. Never supply service credentials to either variable. See [.ted/DEPLOY.md](.ted/DEPLOY.md) for the complete dedicated-project deployment packet.
+
 - Tables `public.bookish_submissions` (`supabase/sql/001_bookish_submissions.sql`), `public.bookish_join_requests` and `public.bookish_invites` (`002_bookish_join.sql`). RLS is on with no policies, so only the service role can read or write them.
-  - Apply it as raw SQL, **not** with `supabase db push`, so it stays out of the shared project's migration history.
+  - Apply the reviewed dedicated-project packet in [.ted/DEPLOY.md](.ted/DEPLOY.md) as raw SQL, **not** with `supabase db push`.
 - `bookish-submit` (POST, public) validates input and applies spam protection:
   - a honeypot field and a minimum fill time
   - no links allowed in free text
@@ -110,11 +114,11 @@ The repo is public because GitHub Pages for private repos needs a paid plan.
 Deploy the functions:
 
 ```sh
-supabase functions deploy bookish-submit --project-ref wqnrortftkffmbeugjky --no-verify-jwt --use-api
-supabase functions deploy bookish-confirm --project-ref wqnrortftkffmbeugjky --no-verify-jwt --use-api
-supabase functions deploy bookish-join --project-ref wqnrortftkffmbeugjky --no-verify-jwt --use-api
-supabase functions deploy bookish-join-respond --project-ref wqnrortftkffmbeugjky --no-verify-jwt --use-api
-supabase functions deploy bookish-verified --project-ref wqnrortftkffmbeugjky --no-verify-jwt --use-api
+supabase functions deploy bookish-submit --project-ref tkrsrnlasinmlftkcufi --no-verify-jwt --use-api
+supabase functions deploy bookish-confirm --project-ref tkrsrnlasinmlftkcufi --no-verify-jwt --use-api
+supabase functions deploy bookish-join --project-ref tkrsrnlasinmlftkcufi --no-verify-jwt --use-api
+supabase functions deploy bookish-join-respond --project-ref tkrsrnlasinmlftkcufi --no-verify-jwt --use-api
+supabase functions deploy bookish-verified --project-ref tkrsrnlasinmlftkcufi --no-verify-jwt --use-api
 ```
 
 Read submissions with SQL as the service role, for example `select kind, email, payload, status, created_at from bookish_submissions order by created_at desc;`.
@@ -125,11 +129,11 @@ Read submissions with SQL as the service role, for example `select kind, email, 
 
 - **Catalog:** `data/books.seed.json` (hand-picked titles + mood tags) -> `node scripts/catalog.mjs` -> `data/books.json` + `supabase/sql/004_bookish_books_seed.sql`. Open Library is called once per book at catalog time, never at build or runtime. See SOURCES.md.
 - **Covers:** Open Library Covers API by cover id, medium size, whole and unaltered, linked to the book. Never cropped, overlaid or used in marketing. No cover -> typographic cover.
-- **Community stats** ("Clubs in Chicago loved", "After Fourth Wing, clubs read", pours, % finish): `supabase/sql/003_bookish_read_next.sql` adds the reading tables and aggregate views. **Privacy floor:** `bookish_privacy_floor()` in 003 is the one constant (3 clubs at launch; raise to 5 later). Every view drops rows below it, and only active clubs (2+ members, 1+ finished book) count. The public `bookish-community` function returns only those views; the build writes them to `/data/community.json` (a failed fetch builds with no community rows). `BOOKISH_COMMUNITY_FILE=path.json` previews with fixture data.
+- **Community stats** ("Clubs in Chicago loved", "After Fourth Wing, clubs read", pours, % finish): `supabase/sql/003_bookish_read_next.sql` adds the reading tables and aggregate views. **Privacy floor:** `bookish_privacy_floor()` in 003 is the one constant (3 clubs at launch; raise to 5 later). Every view drops rows below it, and only independent clubs with three members joined for at least 14 days and a finished book count. The public `bookish-community` function returns only those views; the build writes them to `/data/community.json` (a failed fetch builds with no community rows). `BOOKISH_COMMUNITY_FILE=path.json` previews with fixture data.
 - Not built yet (needs the app's club/member model): the book-finished card, host vote builder, member vote and iMessage card (frames 01, 04-06).
 
 ```sh
-supabase functions deploy bookish-community --project-ref wqnrortftkffmbeugjky --no-verify-jwt --use-api
+supabase functions deploy bookish-community --project-ref tkrsrnlasinmlftkcufi --no-verify-jwt --use-api
 ```
 
 ## Theme
@@ -167,3 +171,14 @@ Current theme (locked 2026-10-14): palette 05 **Oxblood Reading Room** on a goua
 - `lunair-wave`, `lunair-peek`, `lunair-shrug`: start page, empty states, 404.
 
 Re-run it with `python3 scripts/stickers.py`. It needs Pillow installed.
+
+## v1.1 club backend (local, unapplied)
+
+See [RESULT.md](RESULT.md) for the upgrade order, schema, iOS API contract,
+auth configuration, moderation operations, verification, and release decisions.
+The SQL upgrades are `supabase/sql/005_*` through `008_*`; they extend PR #12.
+Bookish targets its dedicated project `tkrsrnlasinmlftkcufi`. Apply the complete reviewed packet in `.ted/` to initialize that project; the historical upgrade files are not an empty-project deployment guide.
+
+Run `npm ci` and `npm test` with Node 24+. Use `npm run check:edge` with Deno
+for the new edge functions. Their provider settings and secrets are examples
+only; never place a service key in the native app.

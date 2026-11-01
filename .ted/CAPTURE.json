@@ -1,0 +1,23 @@
+{
+  "browser": "Google Chrome",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "source": "local Vite build; all Supabase requests intercepted by app/tests/fixtures.mjs; no production writes",
+  "frames": [
+    "01-guest-map",
+    "02-club-page",
+    "03-sign-up",
+    "04-request-to-join",
+    "05-request-sent",
+    "06-me",
+    "07-club-home",
+    "08-host-approval",
+    "09-votes",
+    "10-delete-account"
+  ],
+  "errors": [],
+  "source_commit": "5067611eaf6b371cb7c80da036c8bba36d479048",
+  "visual_review": "All ten final frames inspected, including map, art, Me, forms, votes, and deletion."
+}

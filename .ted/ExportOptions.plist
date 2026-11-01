@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>destination</key>
+	<string>export</string>
+	<key>manageAppVersionAndBuildNumber</key>
+	<false/>
+	<key>method</key>
+	<string>app-store-connect</string>
+	<key>provisioningProfiles</key>
+	<dict>
+		<key>com.meetbookish.app</key>
+		<string>b7a96991-cc7e-463d-b47a-3acedcd573a9</string>
+		<key>com.meetbookish.app.BookishStickers</key>
+		<string>b85356b2-8061-4f27-a096-5dce69f00a66</string>
+	</dict>
+	<key>signingCertificate</key>
+	<string>812CBF48A631AD07E8910640E923745BCCDF9A57</string>
+	<key>signingStyle</key>
+	<string>manual</string>
+	<key>stripSwiftSymbols</key>
+	<true/>
+	<key>teamID</key>
+	<string>L8YGD7ATLL</string>
+	<key>testFlightInternalTestingOnly</key>
+	<false/>
+	<key>uploadSymbols</key>
+	<true/>
+</dict>
+</plist>

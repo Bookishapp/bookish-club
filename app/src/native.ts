@@ -35,9 +35,16 @@ export async function shareClub(title:string,url:string) {
 export async function remoteJSON(url:string, body?:unknown) {
   if (isNative) {
     // Native HTTP avoids browser CORS without broadening the edge functions' origin allow-list.
-    const response = await CapacitorHttp.request({url,method:body?'POST':'GET',headers:{'Content-Type':'application/json','Accept':'application/json'},...(body?{data:body}:{}),responseType:'json',connectTimeout:12000,readTimeout:15000});
+    const response = await CapacitorHttp.request({url,method:body?'POST':'GET',headers:{'Content-Type':'application/json','Accept':'application/json','Cache-Control':'no-cache'},...(body?{data:body}:{}),responseType:'json',connectTimeout:12000,readTimeout:15000});
     return {ok:response.status>=200 && response.status<300,data:response.data};
   }
-  const r = await fetch(url,{method:body?'POST':'GET',...(body?{body:JSON.stringify(body),headers:{'Content-Type':'application/json'}}:{}),signal:AbortSignal.timeout(15000)});
+  const r = await fetch(url,{cache:'no-store',method:body?'POST':'GET',...(body?{body:JSON.stringify(body),headers:{'Content-Type':'application/json'}}:{}),signal:AbortSignal.timeout(15000)});
   return {ok:r.ok,data:await r.json()};
+}
+
+export async function requestJSON(url:string,options:{method:string;body?:unknown;headers:Record<string,string>}) {
+ const headers={'Content-Type':'application/json','Accept':'application/json',...options.headers};
+ if(isNative){const r=await CapacitorHttp.request({url,method:options.method,headers,...(options.body===undefined?{}:{data:options.body}),responseType:'json',connectTimeout:12000,readTimeout:15000});return {ok:r.status>=200&&r.status<300,status:r.status,data:r.data};}
+ const r=await fetch(url,{method:options.method,headers,cache:'no-store',...(options.body===undefined?{}:{body:JSON.stringify(options.body)}),signal:AbortSignal.timeout(15000)});
+ const raw=await r.text();return {ok:r.ok,status:r.status,data:raw?JSON.parse(raw):null};
 }

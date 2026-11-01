@@ -6,7 +6,8 @@
 // rate limits, strict validation and size caps.
 // Double opt-in: if BOOKISH_EMAIL_FROM + RESEND_API_KEY are set, a confirm
 // link is emailed; otherwise rows stay `pending` until email is switched on.
-import { createClient } from "npm:@supabase/supabase-js@2";
+import { createClient } from "@supabase/supabase-js";
+import { readBookishSecret } from "../_shared/secrets.ts";
 
 const ALLOWED_ORIGINS = [
   "https://meetbookish.com",
@@ -55,8 +56,8 @@ async function sha256(s: string) {
 }
 
 const FIELDS: Record<string, Record<string, number>> = {
-  claim: { club_name: 160, club_city: 80, role: 40, first_name: 60, message: 1000, club_url: 300, meets_at: 20, show_on_map: 5 },
-  start: { club_name: 160, city: 80, state: 2, zip: 10, genre: 40, cadence: 80, format: 20, first_name: 60, about: 1000, meets_at: 20, show_on_map: 5 },
+  claim: { visibility: 10, club_name: 160, club_city: 80, role: 40, first_name: 60, message: 1000, club_url: 300, meets_at: 20, show_on_map: 5 },
+  start: { visibility: 10, club_name: 160, city: 80, state: 2, zip: 10, genre: 40, cadence: 80, format: 20, first_name: 60, about: 1000, meets_at: 20, show_on_map: 5 },
   waitlist: { first_name: 60, city: 80, is_host: 5, features: 200, club_size: 20 },
 };
 
@@ -94,6 +95,12 @@ Deno.serve(async (req) => {
   }
   if (kind === "claim" && !payload.club_name) return json({ ok: false, error: "club_name" }, 400, origin);
   if (kind === "start" && (!payload.club_name || !payload.city)) return json({ ok: false, error: "club_details" }, 400, origin);
+  if (kind !== "waitlist" && !["open", "private", "hidden"].includes(payload.visibility)) return json({ ok: false, error: "visibility" }, 400, origin);
+  if (kind === "start") {
+    const { data: validCity, error: cityError } = await sb.rpc("bookish_visibility_location", { p_city: payload.city, p_state: payload.state });
+    if (cityError) return json({ ok: false, error: "server" }, 503, origin);
+    if (!validCity) return json({ ok: false, error: "city" }, 400, origin);
+  }
   // Links in free text are the most common spam tell.
   if (URLISH.test(`${payload.message ?? ""} ${payload.about ?? ""} ${payload.club_name ?? ""}`)) {
     return json({ ok: false, error: "links_not_allowed" }, 400, origin);
@@ -118,7 +125,7 @@ Deno.serve(async (req) => {
   // "List my club in <city>": the public directory/map is city-level only;
   // no address, venue or neighborhood is ever published. Home-based clubs
   // default to not listed (the form sends false unless the host opts in).
-  if (kind !== "waitlist") payload.list_in_city = body.show_on_map === true ? "yes" : "no";
+  if (kind !== "waitlist") payload.list_in_city = payload.visibility === "hidden" ? "no" : "yes";
   delete payload.show_on_map;
   const clubRef = kind === "claim" ? str(body.club_id, 80) || null
     : kind === "start" ? `new-${crypto.randomUUID().slice(0, 8)}` : null;
@@ -133,8 +140,10 @@ Deno.serve(async (req) => {
 
   // Secret-presence gate only. Verify the sender domain before setting FROM;
   // Resend, not this handler, rejects sends from an unverified domain.
-  const from = Deno.env.get("BOOKISH_EMAIL_FROM");
-  const resendKey = Deno.env.get("RESEND_API_KEY");
+  const [from, resendKey] = await Promise.all([
+    readBookishSecret("BOOKISH_EMAIL_FROM"),
+    readBookishSecret("RESEND_API_KEY"),
+  ]);
   let confirmSent = false;
   if (from && resendKey) {
     const confirmUrl = `${Deno.env.get("SUPABASE_URL")}/functions/v1/bookish-confirm?token=${data.confirm_token}`;

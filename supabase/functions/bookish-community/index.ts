@@ -7,7 +7,7 @@ import { sb } from "../_shared/bookish.ts";
 
 const LIMIT = 40;
 Deno.serve(async (req) => {
-  const headers = { "content-type": "application/json", "access-control-allow-origin": "*", "cache-control": "public, max-age=600" };
+  const headers = { "content-type": "application/json", "access-control-allow-origin": "*", "cache-control": "no-store, max-age=0" };
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: { ...headers, "access-control-allow-methods": "GET, OPTIONS" } });
   if (req.method !== "GET") return new Response(JSON.stringify({ ok: false, error: "method" }), { status: 405, headers });
   try {
@@ -23,8 +23,8 @@ Deno.serve(async (req) => {
       q("bookish_book_next", "from_book,to_book,clubs", "clubs"),
     ]);
     return new Response(JSON.stringify({ ok: true, generated_at: new Date().toISOString(), city, state, national: national.slice(0, LIMIT), next }), { status: 200, headers });
-  } catch (e) {
-    console.error("community stats failed", (e as Error).message);
+  } catch {
+    console.error("community stats unavailable");
     return new Response(JSON.stringify({ ok: false, error: "server" }), { status: 500, headers });
   }
 });
