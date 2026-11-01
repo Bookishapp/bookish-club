@@ -2,6 +2,51 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { edge, submission, confirmation, TOKEN, FROM } from "./harness.mjs";
 
+test("submission sends through Vault credentials when runtime overrides are absent", async () => {
+  const app = edge("bookish-submit", {
+    env: { BOOKISH_EMAIL_FROM: undefined, RESEND_API_KEY: undefined },
+    vault: { BOOKISH_EMAIL_FROM: FROM, RESEND_API_KEY: "offline-mail-placeholder" },
+  });
+  const response = await app.handler(submission());
+  assert.deepEqual(await response.json(), { ok: true, confirm_sent: true });
+  assert.equal(app.emails.length, 1);
+  assert.equal(app.emails[0].from, FROM);
+  assert.deepEqual(app.vaultReads.sort(), ["BOOKISH_EMAIL_FROM", "RESEND_API_KEY"]);
+  assert.ok(app.rows[0].email_sent_at);
+});
+
+test("runtime email settings override different Vault values without a secret RPC", async () => {
+  const app = edge("bookish-submit", {
+    vault: { BOOKISH_EMAIL_FROM: "Wrong <wrong@example.test>", RESEND_API_KEY: "wrong-key" },
+  });
+  const response = await app.handler(submission());
+  assert.deepEqual(await response.json(), { ok: true, confirm_sent: true });
+  assert.equal(app.emails[0].from, FROM);
+  assert.deepEqual(app.vaultReads, []);
+});
+
+test("confirmation redirect uses the dedicated Vault site configuration", async () => {
+  const app = edge("bookish-confirm", {
+    rows: [{ id: "match", confirm_token: TOKEN, status: "pending" }],
+    vault: { BOOKISH_SITE_URL: "https://bookish.example.test" },
+  });
+  const response = await app.handler(confirmation(TOKEN));
+  assert.equal(response.headers.get("location"), "https://bookish.example.test/confirmed/");
+  assert.equal(app.rows[0].status, "confirmed");
+  assert.deepEqual(app.vaultReads, ["BOOKISH_SITE_URL"]);
+});
+
+test("a denied Vault lookup preserves intake without sending or returning database details", async () => {
+  const app = edge("bookish-submit", {
+    env: { BOOKISH_EMAIL_FROM: undefined, RESEND_API_KEY: undefined },
+    vaultStatus: 403,
+  });
+  const response = await app.handler(submission());
+  assert.deepEqual(await response.json(), { ok: true, confirm_sent: false });
+  assert.equal(app.rows.length, 1);
+  assert.equal(app.emails.length, 0);
+});
+
 // Regressions caught: a missing credential must never enable delivery.
 for (const [label, env] of [
   ["sender", { BOOKISH_EMAIL_FROM: undefined }],

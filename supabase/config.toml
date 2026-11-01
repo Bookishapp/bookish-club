@@ -1,4 +1,5 @@
-# Deploy reviewed functions individually. Do not run db push or change shared Auth.
+# Dedicated Bookish project: tkrsrnlasinmlftkcufi. Deploy reviewed functions individually.
+# Use the reviewed .ted SQL packet, not db push. Never change Fictora Auth.
 [functions.bookish-directory]
 verify_jwt = false
 [functions.bookish-club-settings]

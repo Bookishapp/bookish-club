@@ -1,6 +1,6 @@
-# SEPARATE BOOKISH PROJECT ONLY. NEVER apply this file to the shared Supabase project wqnrortftkffmbeugjky.
+# DEDICATED BOOKISH PROJECT ONLY: tkrsrnlasinmlftkcufi. Never apply to Fictora.
 # Reviewed configuration fragment, NOT an active config.toml.
-# Merge into an isolated local/staging project; do not replace shared production settings.
+# Review and merge into the dedicated Bookish project; do not replace Fictora settings.
 [api]
 schemas = ["public"] # Never expose bookish_private in PostgREST.
 

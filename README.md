@@ -91,8 +91,10 @@ The repo is public because GitHub Pages for private repos needs a paid plan.
 
 ## Forms backend
 
+Bookish uses its dedicated Supabase project, `tkrsrnlasinmlftkcufi`, at `https://tkrsrnlasinmlftkcufi.supabase.co`. Native and web account requests use the project publishable key through the `apikey` header, with the signed-in reader's JWT separately in `Authorization`. The app includes the publishable key by default; `VITE_BOOKISH_PUBLISHABLE_KEY` can override it at build time. `VITE_BOOKISH_ANON_KEY` remains a compatibility override. Never supply service credentials to either variable. See [.ted/DEPLOY.md](.ted/DEPLOY.md) for the complete dedicated-project deployment packet.
+
 - Tables `public.bookish_submissions` (`supabase/sql/001_bookish_submissions.sql`), `public.bookish_join_requests` and `public.bookish_invites` (`002_bookish_join.sql`). RLS is on with no policies, so only the service role can read or write them.
-  - Apply it as raw SQL, **not** with `supabase db push`, so it stays out of the shared project's migration history.
+  - Apply the reviewed dedicated-project packet in [.ted/DEPLOY.md](.ted/DEPLOY.md) as raw SQL, **not** with `supabase db push`.
 - `bookish-submit` (POST, public) validates input and applies spam protection:
   - a honeypot field and a minimum fill time
   - no links allowed in free text
@@ -112,11 +114,11 @@ The repo is public because GitHub Pages for private repos needs a paid plan.
 Deploy the functions:
 
 ```sh
-supabase functions deploy bookish-submit --project-ref wqnrortftkffmbeugjky --no-verify-jwt --use-api
-supabase functions deploy bookish-confirm --project-ref wqnrortftkffmbeugjky --no-verify-jwt --use-api
-supabase functions deploy bookish-join --project-ref wqnrortftkffmbeugjky --no-verify-jwt --use-api
-supabase functions deploy bookish-join-respond --project-ref wqnrortftkffmbeugjky --no-verify-jwt --use-api
-supabase functions deploy bookish-verified --project-ref wqnrortftkffmbeugjky --no-verify-jwt --use-api
+supabase functions deploy bookish-submit --project-ref tkrsrnlasinmlftkcufi --no-verify-jwt --use-api
+supabase functions deploy bookish-confirm --project-ref tkrsrnlasinmlftkcufi --no-verify-jwt --use-api
+supabase functions deploy bookish-join --project-ref tkrsrnlasinmlftkcufi --no-verify-jwt --use-api
+supabase functions deploy bookish-join-respond --project-ref tkrsrnlasinmlftkcufi --no-verify-jwt --use-api
+supabase functions deploy bookish-verified --project-ref tkrsrnlasinmlftkcufi --no-verify-jwt --use-api
 ```
 
 Read submissions with SQL as the service role, for example `select kind, email, payload, status, created_at from bookish_submissions order by created_at desc;`.
@@ -131,7 +133,7 @@ Read submissions with SQL as the service role, for example `select kind, email, 
 - Not built yet (needs the app's club/member model): the book-finished card, host vote builder, member vote and iMessage card (frames 01, 04-06).
 
 ```sh
-supabase functions deploy bookish-community --project-ref wqnrortftkffmbeugjky --no-verify-jwt --use-api
+supabase functions deploy bookish-community --project-ref tkrsrnlasinmlftkcufi --no-verify-jwt --use-api
 ```
 
 ## Theme
@@ -175,7 +177,7 @@ Re-run it with `python3 scripts/stickers.py`. It needs Pillow installed.
 See [RESULT.md](RESULT.md) for the upgrade order, schema, iOS API contract,
 auth configuration, moderation operations, verification, and release decisions.
 The SQL upgrades are `supabase/sql/005_*` through `008_*`; they extend PR #12.
-Nothing in this change applies them to the shared project automatically.
+Bookish targets its dedicated project `tkrsrnlasinmlftkcufi`. Apply the complete reviewed packet in `.ted/` to initialize that project; the historical upgrade files are not an empty-project deployment guide.
 
 Run `npm ci` and `npm test` with Node 24+. Use `npm run check:edge` with Deno
 for the new edge functions. Their provider settings and secrets are examples

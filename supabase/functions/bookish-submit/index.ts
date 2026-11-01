@@ -7,6 +7,7 @@
 // Double opt-in: if BOOKISH_EMAIL_FROM + RESEND_API_KEY are set, a confirm
 // link is emailed; otherwise rows stay `pending` until email is switched on.
 import { createClient } from "@supabase/supabase-js";
+import { readBookishSecret } from "../_shared/secrets.ts";
 
 const ALLOWED_ORIGINS = [
   "https://meetbookish.com",
@@ -139,8 +140,10 @@ Deno.serve(async (req) => {
 
   // Secret-presence gate only. Verify the sender domain before setting FROM;
   // Resend, not this handler, rejects sends from an unverified domain.
-  const from = Deno.env.get("BOOKISH_EMAIL_FROM");
-  const resendKey = Deno.env.get("RESEND_API_KEY");
+  const [from, resendKey] = await Promise.all([
+    readBookishSecret("BOOKISH_EMAIL_FROM"),
+    readBookishSecret("RESEND_API_KEY"),
+  ]);
   let confirmSent = false;
   if (from && resendKey) {
     const confirmUrl = `${Deno.env.get("SUPABASE_URL")}/functions/v1/bookish-confirm?token=${data.confirm_token}`;

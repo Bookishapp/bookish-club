@@ -1,8 +1,10 @@
 # Bookish v1.1 backend
 
+Historical PR #15 review record. As of November 1, 2026, Bookish targets the dedicated project `tkrsrnlasinmlftkcufi`. The shared-project references, deployment restrictions, and verification counts below describe the earlier review state. Current setup and release evidence live in `.ted/DEPLOY.md` and `.ted/REPORT.md`.
+
 SQL upgrade files, two edge functions, auth configuration examples, and executable tests for PR #15. Reviewed in an isolated worktree, with the earlier uncommitted Review 1 fixes preserved in their original worktree and included here. No Supabase migrations, data changes, Auth changes, function deployments, or merges were performed. `app/` was untouched.
 
-The existing project is `wqnrortftkffmbeugjky` (README and existing edge URLs). Its migration history is shared: keep using reviewed raw SQL in `supabase/sql/`, **not `supabase db push`**.
+At the time of this review, the existing project was `wqnrortftkffmbeugjky`, shared with Fictora. The review required raw SQL to avoid changing its shared migration history. Bookish no longer targets that project; use the dedicated-project packet in `.ted/` for current deployment.
 
 PR #12 is already merged in this checkout (`9049b5b`, feature commit `6f5887f`). It supplied the catalog, clubs/members, club books, pours, taste, suggestion events, community views, and `bookish-community`. Those are extended and reused. The existing three-club floor remains the single constant in `bookish_privacy_floor()`; no duplicate recommendation engine or community endpoint was added.
 

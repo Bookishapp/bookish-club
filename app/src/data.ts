@@ -15,7 +15,7 @@ export async function refreshData() {
  const current=++generation;data.clubs=[];data.community=emptyCommunity();data.discovery='loading';
  let success=0,loadedClubs=false;
  await Promise.allSettled((['clubs','community'] as const).map(async key=>{
-  const url=`https://wqnrortftkffmbeugjky.supabase.co/functions/v1/${key==='clubs'?'bookish-directory':'bookish-community'}?fresh=${Date.now()}`;
+  const url=`https://tkrsrnlasinmlftkcufi.supabase.co/functions/v1/${key==='clubs'?'bookish-directory':'bookish-community'}?fresh=${Date.now()}`;
   const r=await remoteJSON(url);if(current!==generation||!r.ok)throw new Error('refresh');
   if(key==='clubs'){data.clubs=validateFeed('clubs',r.data.clubs);loadedClubs=true;}
   else data.community=validateFeed('community',r.data);

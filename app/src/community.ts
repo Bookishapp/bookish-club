@@ -5,8 +5,8 @@ import { requestJSON, shareClub } from './native.ts';
 import { data } from './data.ts';
 import { loadAnonymousVote } from './votes.ts';
 import type { AnonymousVote } from './votes.ts';
-const base='https://wqnrortftkffmbeugjky.supabase.co';
-let publicKey=import.meta.env.VITE_BOOKISH_ANON_KEY||'';
+const base='https://tkrsrnlasinmlftkcufi.supabase.co';
+let publicKey=import.meta.env.VITE_BOOKISH_PUBLISHABLE_KEY||import.meta.env.VITE_BOOKISH_ANON_KEY||'sb_publishable_F-QcIZM0MFy5ovyrn_rIVg_fwe-7mTd';
 const client=new AccountClient(async(path,body,token,method='POST')=>{
  const response=await requestJSON(base+path,{method,body,headers:{...(token?{Authorization:`Bearer ${token}`} :{}),...(publicKey?{apikey:publicKey}:{})}});
  if(response.data?.public_key)publicKey=response.data.public_key;

@@ -1,8 +1,9 @@
 import { houseRulesResponse } from "../_shared/house-rules.ts";
-Deno.serve((req) =>
+import { readBookishSecret } from "../_shared/secrets.ts";
+Deno.serve(async (req) =>
   houseRulesResponse(req, {
-    termsUrl: Deno.env.get("BOOKISH_TERMS_URL") ?? "",
-    privacyUrl: Deno.env.get("BOOKISH_PRIVACY_URL") ?? "",
-    contactEmail: Deno.env.get("BOOKISH_MODERATION_EMAIL") ?? "",
+    termsUrl: await readBookishSecret("BOOKISH_TERMS_URL") ?? "",
+    privacyUrl: await readBookishSecret("BOOKISH_PRIVACY_URL") ?? "",
+    contactEmail: await readBookishSecret("BOOKISH_MODERATION_EMAIL") ?? "",
   })
 );

@@ -1,6 +1,7 @@
 import { bookishAuthHandler } from "../_shared/bookish-auth.ts";
 import { sb, sendEmail } from "../_shared/bookish.ts";
 import { authAdmin } from "../_shared/auth-admin.ts";
+import { readBookishSecret } from "../_shared/secrets.ts";
 const url = Deno.env.get("SUPABASE_URL")!;
 const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const publicKey = Deno.env.get("SUPABASE_ANON_KEY") || "";
@@ -19,11 +20,11 @@ async function auth(path: string, body: unknown, token = key) {
   if (!r.ok) throw Error("Auth unavailable");
   return r.status === 204 ? null : await r.json();
 }
-Deno.serve((req) =>
+Deno.serve(async (req) =>
   bookishAuthHandler(req, {
     publicKey,
-    configured: !!Deno.env.get("BOOKISH_EMAIL_FROM") &&
-      !!Deno.env.get("RESEND_API_KEY"),
+    configured: !!(await readBookishSecret("BOOKISH_EMAIL_FROM")) &&
+      !!(await readBookishSecret("RESEND_API_KEY")),
     throttle: async (email, ip, action) => {
       const { data, error } = await sb.rpc("bookish_auth_throttle", {
         p_email: email,

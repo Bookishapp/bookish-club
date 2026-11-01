@@ -22,7 +22,7 @@
   let BOOKS = [], BY = new Map(), COMM = { city: [], state: [], national: [], next: [] };
   const ready = Promise.all([
     fetch(`${BASE}/data/books.json`).then((r) => r.json()),
-    fetch("https://wqnrortftkffmbeugjky.supabase.co/functions/v1/bookish-community",{cache:"no-store"}).then((r) => r.ok ? r.json() : COMM).catch(() => COMM),
+    fetch("https://tkrsrnlasinmlftkcufi.supabase.co/functions/v1/bookish-community",{cache:"no-store"}).then((r) => r.ok ? r.json() : COMM).catch(() => COMM),
   ]).then(([b, c]) => { BOOKS = b; BY = new Map(b.map((x) => [x.id, x])); COMM = c; });
 
   // ---------- covers ----------

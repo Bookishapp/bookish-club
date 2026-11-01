@@ -1,0 +1,400 @@
+
+> test:release
+> npm run snapshot --prefix app && npm run build:web && npm test && npm run test:visibility && npm run test:web && npm test --prefix app && npm run test:ui --prefix app && npm run lint && npm run check:edge
+
+
+> bookish-ios@0.1.0 snapshot
+> node scripts/snapshot.mjs
+
+Bundled book catalog and artwork. Club discovery requires a fresh server response.
+
+> build:web
+> npm run build && node scripts/build-web.mjs
+
+
+> build
+> node scripts/build.mjs
+
+read next: 66 books, community rows city 0 / state 0 / national 0 / next 0
+built 926 geographic and resource pages; club discovery is live and never bundled.
+
+> bookish-ios@0.1.0 build
+> tsc --noEmit && vite build --base /app/ --outDir web-dist
+
+vite v8.0.10 building client environment for production...
+[2K
+transforming...✓ 17 modules transformed.
+rendering chunks...
+computing gzip size...
+web-dist/index.html                  0.81 kB │ gzip:  0.42 kB
+web-dist/assets/index-DAPaFtbN.css  14.78 kB │ gzip:  4.26 kB
+web-dist/assets/index-DglS4CE7.js   76.99 kB │ gzip: 24.71 kB
+
+✓ built in 45ms
+Packaged Bookish web app at /app/
+
+> test
+> npm run test:backend && npm run test:confirmation && npm run test:server
+
+
+> test:backend
+> node --test tests/backend/*.test.mjs
+
+✔ deletion derives identity from verified session, never the supplied user ID (12.961792ms)
+✔ missing and invalid sessions cannot delete accounts (0.371333ms)
+✔ linked Apple accounts require a fresh grant and failed revocation preserves the account (0.634833ms)
+✔ Apple revocation is bound to verified identity and precedes hard deletion (0.387417ms)
+✔ failed hard deletion returns a retryable error and non-POST requests are rejected (0.264791ms)
+✔ Apple token exchange validates the subject before token revocation (11.163958ms)
+✔ Apple grant exchange and revocation use the same client and fresh returned token (1.596208ms)
+✔ shared Fictora identity is refused before Apple revocation or Auth deletion (0.262125ms)
+✔ deletion permits native origins, revokes sessions before deletion, and preserves account if revocation fails (0.349333ms)
+✔ account join verifies trusted token, joins with user credentials, and keeps host email private (12.813791ms)
+✔ account join rejects foreign identities and unavailable join without sending mail (0.424375ms)
+✔ trusted signup provisions only absent identities and sends code without exposing secrets (15.425084ms)
+✔ existing foreign identity is never promoted, mailed, or changed and has same public response (5.425291ms)
+✔ verified email session includes safe public key, syncs ownership, and rejects foreign identities (2.702167ms)
+✔ rate bounds and missing email configuration fail closed before provisioning (1.996875ms)
+✔ refresh validates trusted identity, and logout verifies bearer before revoking (1.442125ms)
+✔ oversized input, invalid origin, unknown action, and malformed codes are rejected (0.389917ms)
+✔ reviewer password authenticates an existing trusted account and rejects foreign email before password exchange (1.196042ms)
+✔ members see only their clubs and cannot elevate their role (1258.952791ms)
+✔ all public and private application tables have RLS (1.105375ms)
+✔ invite is bounded, retry-safe and cannot be replayed by another user (3.642125ms)
+✔ Tea hides anonymous identity, sealed text and cross-club content (16.515959ms)
+✔ Tea moderation blocks member references, threats and missing terms but allows book swearing (7.608875ms)
+✔ report hides immediately, host can dismiss without identity, block works for anonymous authors (12.212166ms)
+✔ chapter spoilers, inherited reply seals, signed posts and shield opt-out stay server-side (14.033208ms)
+✔ meetings, RSVPs, bring claims, progress and votes are isolated by club (14.341667ms)
+✔ host approval, verified directory linking and selected club are authorized (7.668709ms)
+✔ directory ownership requires a confirmed Auth email, not just a matching address (8.374459ms)
+✔ every club table rejects reads from outsiders, and anonymous API execution is closed (8.04425ms)
+✔ shared reading exposes no rank or streak and never reorders readers by progress (10.340792ms)
+✔ reading log retries are idempotent and shared progress honors opt-out (3.991625ms)
+✔ votes enforce option ownership, ties, expiry and frozen closed ballots (7.032ms)
+✔ terms, role, author and moderation fields cannot be forged by API roles (6.14425ms)
+✔ community floor requires three old members in each of three disjoint clubs (23.454208ms)
+✔ host removal rejects stale sessions and invite re-entry (3.580708ms)
+✔ safety queue access is scoped, author access is audited, and bans stop existing tokens (8.246292ms)
+✔ lone-host deletion cascades a closed vote, meetings, claims, preferences and private held drafts (10.527167ms)
+✔ account removal deletes owned content and records while preserving other members (4.491083ms)
+✔ deleting a host passes the ribbon to the longest-standing member (3.087584ms)
+✔ unmarked shared Auth users receive no profile or Bookish RPC access (1.373334ms)
+✔ a block on an anonymous take leaves the same author’s other takes visible (7.39375ms)
+✔ ballot identities are hidden and a member receives option counts only (4.041542ms)
+✔ Auth trigger failures are logged and cannot break a Bookish or Fictora signup (2.20625ms)
+✔ Auth updates survive link errors, while Bookish deletion failures preserve identity for retry (5.178666ms)
+✔ Fictora deletion leaves Bookish legacy records with the same email alone (1.031917ms)
+✔ full display names match, while short names and stopwords do not hold Tea (15.115ms)
+✔ club pour hides small counts and honors each member’s ratings consent (6.377792ms)
+✔ migration files 005 through 008 can be rerun without changing data (25.679916ms)
+✔ new public tables retain service CRUD without inherited Data API grants (1220.343417ms)
+✔ dedicated preflight runs before any Bookish relation exists and rejects a wrong target (1183.352833ms)
+✔ fresh full packet guards the dedicated target and exposes only allowlisted service-role Vault lookups (1321.782459ms)
+✔ ordered chunks fit 200KB, refuse missing predecessors, and reapply without erasing host changes (1036.744625ms)
+✔ house rules require working configuration before presenting terms (11.46475ms)
+✔ Supabase auth adapter verifies the bearer token and hard-deletes only the supplied verified ID (0.770833ms)
+✔ Supabase auth adapter fails closed for rejected sessions and failed admin operations (0.366167ms)
+✔ auth configuration example is named and headed for the dedicated Bookish project only (8.906916ms)
+✔ integrated private approval grants membership, while open joins immediately and hidden only accepts a fresh invite (1334.5425ms)
+✔ public directory contains city-center coordinates, no hidden clubs, and no meeting addresses (5.645791ms)
+✔ content reports and blocks cover meetings, member profiles, clubs, and future anonymous author posts (20.977042ms)
+✔ unverified and foreign users cannot use Bookish RPCs, and auth throttle functions are service-only (1.963375ms)
+✔ all ten SQL files can rerun without changing memberships or identities (40.364833ms)
+✔ confirmed claims cannot capture an account-hosted club and legacy invite rotation remains native-redeemable (11.787834ms)
+✔ account deletion also removes legacy join-attempt emails and hashed auth traces without touching a foreign identity (6.974542ms)
+✔ deleting a legacy host clears its submission without deleting the transferred club (6.700167ms)
+✔ reported request notes and blocked request authors stay absent from a refreshed host queue (9.354125ms)
+✔ host city corrections validate supported areas and reject nonhosts (6.13475ms)
+✔ blocked member profiles, reported meetings, and hidden clubs are filtered on direct Data API reads too (7.100084ms)
+✔ host notices are atomically claimed, failed sends retry after five minutes, and successful sends stay acknowledged (6.066083ms)
+✔ service moderation resolves generic reports with an audit and removes unsafe public content for everyone (5.191167ms)
+✔ configured environment wins without contacting Vault (0.488208ms)
+✔ missing environment falls back to the scoped RPC using the injected service role (11.131208ms)
+✔ empty environment falls back and Vault updates are read on the next call (0.252959ms)
+✔ missing platform credentials and non-Bookish names never attempt a Vault request (0.07625ms)
+✔ absent, denied, malformed, and unavailable Vault reads fail closed without exposing details (0.547958ms)
+✔ Vault preserves multiline Apple keys verbatim (0.45225ms)
+✔ Hidden excludes discovery and guessed-ID join after visibility then backend (1330.571584ms)
+✔ Hidden excludes discovery and guessed-ID join after backend then visibility (576.8415ms)
+✔ backend aggregate hardening retains Hidden exclusion after visibility runs first (501.733666ms)
+ℹ tests 78
+ℹ suites 0
+ℹ pass 78
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3628.091166
+
+> test:confirmation
+> node --test tests/confirmation/*.test.mjs
+
+(node:42825) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ submission sends through Vault credentials when runtime overrides are absent (30.093375ms)
+✔ runtime email settings override different Vault values without a secret RPC (1.6635ms)
+✔ confirmation redirect uses the dedicated Vault site configuration (1.175208ms)
+✔ a denied Vault lookup preserves intake without sending or returning database details (1.712208ms)
+✔ missing sender saves a pending submission without sending (1.310666ms)
+✔ missing API key saves a pending submission without sending (1.072459ms)
+✔ missing both credentials saves a pending submission without sending (0.983166ms)
+✔ claim emails only the normalized submitter and remains pending until confirmation (0.961084ms)
+✔ start emails only the normalized submitter and remains pending until confirmation (1.00675ms)
+✔ waitlist emails only the normalized submitter and remains pending until confirmation (0.897875ms)
+✔ Resend 403 for a meetbookish.com sender keeps the saved row pending (1.350333ms)
+✔ a thrown Resend fetch returns success for the saved row without marking email sent (1.286667ms)
+✔ failed persistence sends nothing and returns a generic server error (0.889292ms)
+✔ missing consent cannot persist or trigger email (0.704583ms)
+✔ invalid email cannot persist or trigger email (0.6275ms)
+✔ untrusted origin cannot persist or trigger email (0.634459ms)
+✔ honeypot silently stops before persistence and email (0.727083ms)
+✔ fast fill silently stops before persistence and email (0.580833ms)
+✔ daily email limit rejects another submission without sending (1.201125ms)
+✔ hourly IP limit rejects another submission without sending (1.03775ms)
+✔ a valid confirmation token confirms only its matching submission (0.713375ms)
+✔ missing confirmation token cannot confirm a submission (0.553666ms)
+✔ malformed confirmation token cannot confirm a submission (0.422584ms)
+✔ unknown confirmation token cannot confirm a submission (0.426959ms)
+✔ spam confirmation token cannot confirm a submission (0.383291ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 94.979667
+
+> test:server
+> node --test tests/visibility/database.test.mjs tests/visibility/http.test.mjs
+
+✔ visibility column defaults to private and rejects unknown values (656.531792ms)
+✔ confirmed host creation requires a visibility and does not publish hidden facts (6.830875ms)
+✔ anon and authenticated cannot read raw hidden clubs, invite codes, or requests (2.125625ms)
+✔ hidden joins are indistinguishable from missing clubs without a valid invite (2.241625ms)
+✔ host rotation invalidates old codes, permits hidden joins, and enforces use limits (3.631875ms)
+✔ open joins immediately, private waits for the host, and hiding cancels pending requests (5.975875ms)
+✔ a later confirmed claim cannot steal the current host capability (0.882167ms)
+✔ rate limiting includes invalid hidden invite attempts (1.635583ms)
+✔ RLS itself hides raw rows even if a client SELECT grant is accidentally added (2.147292ms)
+✔ hiding removes clubs from every public community aggregate before the privacy floor is computed (9.906ms)
+✔ a hidden invite code works by itself without exposing a club reference first (1.84775ms)
+✔ a valid invite promotes an existing private request exactly once (2.3765ms)
+✔ every public discovery projection excludes hidden facts and has no-store headers (684.294208ms)
+✔ private listing projects only public fields and never arbitrary payload fields (0.824125ms)
+✔ hidden invalid joins and nonexistent joins have identical HTTP responses (8.554375ms)
+✔ host settings reject foreign token and apply visibility immediately to discovery (20.398459ms)
+✔ public endpoints fail closed on database errors and reject writes or oversized bodies (0.334333ms)
+✔ successful invite joins keep internal email notices and host contact out of the public response (2.890708ms)
+✔ an unclaimed public calendar club cannot be joined through the hosted-club endpoint (1.252084ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 777.084917
+
+> test:visibility
+> node --experimental-vm-modules --test tests/visibility/*.test.mjs
+
+✔ discovery renders fresh server results and clears cards when refresh fails (123.265084ms)
+✔ creation has a required explicit visibility with Private selected (93.062875ms)
+✔ host capability leaves URL history, stays off disk, and settings save and rotate work (71.889125ms)
+✔ live public calendar discovery repairs verified legacy sources and excludes unusable sources (28.507416ms)
+✔ visibility column defaults to private and rejects unknown values (801.605459ms)
+✔ confirmed host creation requires a visibility and does not publish hidden facts (7.039333ms)
+✔ anon and authenticated cannot read raw hidden clubs, invite codes, or requests (2.329125ms)
+✔ hidden joins are indistinguishable from missing clubs without a valid invite (2.255209ms)
+✔ host rotation invalidates old codes, permits hidden joins, and enforces use limits (3.80675ms)
+✔ open joins immediately, private waits for the host, and hiding cancels pending requests (6.032458ms)
+✔ a later confirmed claim cannot steal the current host capability (0.89525ms)
+✔ rate limiting includes invalid hidden invite attempts (1.748375ms)
+✔ RLS itself hides raw rows even if a client SELECT grant is accidentally added (4.473208ms)
+✔ hiding removes clubs from every public community aggregate before the privacy floor is computed (10.104459ms)
+✔ a hidden invite code works by itself without exposing a club reference first (1.636875ms)
+✔ a valid invite promotes an existing private request exactly once (2.263958ms)
+(node:42894) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:42894) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+✔ all actual public entrypoints reject hidden lookup and leak no hidden facts or private notices (869.477208ms)
+✔ every public discovery projection excludes hidden facts and has no-store headers (820.497541ms)
+✔ private listing projects only public fields and never arbitrary payload fields (1.24675ms)
+✔ hidden invalid joins and nonexistent joins have identical HTTP responses (9.997ms)
+✔ host settings reject foreign token and apply visibility immediately to discovery (15.25425ms)
+✔ public endpoints fail closed on database errors and reject writes or oversized bodies (0.330333ms)
+✔ successful invite joins keep internal email notices and host contact out of the public response (3.100375ms)
+✔ an unclaimed public calendar club cannot be joined through the hosted-club endpoint (1.334959ms)
+✔ deployed website and iOS bundles contain no club snapshots, ids, or static club facts (88.100916ms)
+✔ full reviewed apply preserves public listings, backup, and rollback without production access (1267.235917ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1330.175292
+
+> test:web
+> node --test scripts/test-site.mjs scripts/test-lunair.mjs scripts/test-web.mjs
+
+✔ release builds an accessible artwork showcase without prices or checkout (43.489542ms)
+✔ empty checkout renders two distinctly named unavailable buttons (7.760041ms)
+✔ one live product does not appear under a shop-opening-soon notice (12.170958ms)
+✔ two offers cannot silently sell the same checkout product (0.360792ms)
+✔ mixed-case UTM keys override defaults without duplicating campaign dimensions (8.03225ms)
+✔ configured checkout opens the correct products without requiring JavaScript (5.172333ms)
+✔ unsafe or malformed checkout URLs fail the build instead of shipping a payment link (0.317416ms)
+✔ Fictora receives default bio attribution with JavaScript disabled (4.60425ms)
+✔ inbound UTMs survive forwarding, with missing defaults filled and unrelated parameters excluded (5.7955ms)
+✔ shop and assets support the existing GitHub Pages project base path (13.683333ms)
+✔ Midnight redirect preserves the exact query and fragment (3.716375ms)
+✔ approved landing has a single semantic hero and all four product sections (4.026375ms)
+✔ landing links, fragments, and artwork resolve without placeholder actions (94.990667ms)
+✔ existing search contract, directory, app routes, and forms remain available (43.630917ms)
+✔ account policy and support describe Bookish deletion and private shared data (30.432708ms)
+✔ every generated Bookish page offers working routes without launch placeholders (170.449458ms)
+✔ deployed web app has its own bundle and all local assets resolve under its prefix (26.4435ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 531.6825
+
+> bookish-ios@0.1.0 test
+> node --experimental-strip-types --test tests/*.test.ts
+
+✔ email verification creates an in-memory session and authorizes RPCs (0.410625ms)
+✔ expired sessions refresh once before concurrent private reads (0.095584ms)
+✔ failed refresh clears identity and never sends the private request (0.142ms)
+✔ logout clears local identity even if server is unavailable (0.067708ms)
+✔ password access uses the scoped auth action and never signs up an identity (0.07175ms)
+✔ signing out during refresh cannot restore the session (0.09325ms)
+✔ a revoked authenticated request clears identity (0.155834ms)
+✔ calendar export preserves the meeting instant, reminder, and text as a single safe event (2.334875ms)
+✔ calendar export rejects invalid meeting dates and unsupported reminder offsets (0.114292ms)
+✔ location uses city centers and correctly orders nearby cities (0.417917ms)
+✔ reminders reject past or invalid meeting dates and times already passed (0.782875ms)
+✔ feed rejects malformed data and strips fields outside the public city-level schema (0.292833ms)
+✔ public-calendar clubs always retain a safe original-listing action after refresh (0.388958ms)
+✔ bundled discovery contains no club facts before a live refresh (0.168833ms)
+✔ read-next preserves sequel preference, author diversity, and excludes loved book (0.815125ms)
+✔ empty discovery and hidden records cannot revive clubs in the app (0.055542ms)
+✔ requests only aggregate and caller-scoped RPCs, and projects no identity fields (35.072417ms)
+✔ zero totals and no own vote never invent participation (0.124542ms)
+✔ rejects raw ballots, malformed totals, duplicate options, and foreign own choices (0.437458ms)
+✔ rejects bad vote IDs before transport and never reflects sensitive backend errors (0.10325ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 262.003334
+
+> bookish-ios@0.1.0 test:ui
+> npm run build && node tests/ui-smoke.mjs
+
+
+> bookish-ios@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v8.0.10 building client environment for production...
+[2K
+transforming...✓ 17 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  0.78 kB │ gzip:  0.42 kB
+dist/assets/index-DW1Pah5L.css  14.75 kB │ gzip:  4.26 kB
+dist/assets/index-_AriaL7I.js   76.98 kB │ gzip: 24.71 kB
+
+✓ built in 39ms
+UI smoke passed: fail-closed offline discovery; guest clubs, city map, saves, book recommendations, Resources, and calendar download; email OTP, terms and age gate, private join, member-only club home, anonymous voting, zero-ballot host winner selection, approvals, club creation/city correction/visibility/book/meeting editing, member and Saved-club blocking, 401 join-note and meeting-draft recovery, typed account deletion, and invite hash intent through signup; mocked native permission recovery, MapKit, sharing, and notifications. All account writes used local fixtures.
+
+> lint
+> node scripts/check-source.mjs && deno lint --config supabase/functions/deno.json supabase/functions && app/node_modules/.bin/tsc --noEmit --project app/tsconfig.json
+
+JavaScript syntax checked: 46 files.
+Checked 22 files
+
+> check:edge
+> deno check --config supabase/functions/deno.json supabase/functions/bookish-*/index.ts
+
+
+Supplemental Python tests:
+...................
+----------------------------------------------------------------------
+Ran 19 tests in 0.125s
+
+OK
+
+Preserved Messages model tests:
+PASS pending selected draft preserves the last committed snapshot
+PASS a cold pending draft removes only the local unsent response
+PASS a committed selected card merges latest known member responses
+PASS all card types round trip without invented members
+PASS responses replace only their own participant and normalize names
+PASS two and three candidate votes accept only a current candidate
+PASS bookmark shelf stays alphabetical regardless of page progress
+PASS merge preserves known members and uses latest response timestamps
+PASS different cards and changed metadata cannot merge responses
+PASS transport rejects malformed routes and payloads
+PASS transport rejects future versions and hostile state fields
+PASS member limit rejects a new response without losing existing members
+PASS encoding rejects valid member data that exceeds the message URL capacity
+PASS merge at the member limit retains known readers and still updates their responses
+PASS candidate count and identifiers are validated before producing a message URL
+PASS response fields and display name limits are checked before mutation
+16/16 model tests passed
+
+Native release prerequisites:
+
+> bookish-ios@0.1.0 check:release
+> node scripts/check-release.mjs
+
+Release prerequisites present: Capacitor 7 dependencies, selected opaque app icons, npm lockfile.
+
+Capacitor sync:
+✔ Copying web assets from dist to ios/App/App/public in 6.62ms
+✔ Creating capacitor.config.json in ios/App/App in 253.83μs
+✔ copy ios in 14.88ms
+✔ Updating iOS plugins in 512.83μs
+✔ Updating iOS native dependencies with pod install in 2.45s
+[info] Found 5 Capacitor plugins for ios:
+       @capacitor/app@7.1.2
+       @capacitor/geolocation@7.1.8
+       @capacitor/local-notifications@7.0.7
+       @capacitor/preferences@7.0.4
+       @capacitor/share@7.0.4
+✔ update ios in 2.46s
+[info] Sync finished in 2.498s
+
+Local IPA verification:
+{
+  "ipa": "/Users/vahallo/ted-ops/logs/bookish-dedicated-1101/export/App.ipa",
+  "sha256": "ad5d9aa7d0fbc05644c9220dda22b96eae0c923c56f04b18d4def4911195a747",
+  "version": "1.1",
+  "build": "5",
+  "shipped_extensions": [
+    "BookishStickers.appex"
+  ],
+  "privacy_categories": 8,
+  "testflight_internal_only": true,
+  "no_bundled_clubs": true,
+  "web_bundle_matches_final_build": true,
+  "supabase_project": "tkrsrnlasinmlftkcufi",
+  "old_project_absent": true,
+  "signature_verification": {
+    "status": "pass",
+    "code_bundle_count": 10,
+    "signature_identifiers_match": true,
+    "strict_signature_verification": true
+  }
+}

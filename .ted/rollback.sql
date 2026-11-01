@@ -1,9 +1,12 @@
--- Fail-closed operational rollback. Retain all Bookish accounts, data, and backups.
--- This does not restore public snapshots or erase traffic accepted after apply.
+-- Fail-closed operational rollback for dedicated project tkrsrnlasinmlftkcufi.
+-- Retain all Bookish accounts and data. No schema or Vault secrets are deleted.
+-- Confirm the Dashboard target, then prefix this session with:
+-- set bookish.target_ref='tkrsrnlasinmlftkcufi';
+-- This disables normal access and preserves traffic accepted after apply.
 -- Ted must disable Bookish intake and serve a maintenance app before execution.
 begin;
 do $guard$ begin
- if current_setting('bookish.target_ref',true) is distinct from 'wqnrortftkffmbeugjky' then raise exception 'Confirm the Bookish shared project and set bookish.target_ref first.';end if;
+ if current_setting('bookish.target_ref',true) is distinct from 'tkrsrnlasinmlftkcufi' then raise exception 'Confirm the Bookish dedicated project tkrsrnlasinmlftkcufi and set bookish.target_ref first.';end if;
  if to_regclass('bookish_release_20261101.state') is null then raise exception 'Bookish release was not applied here.';end if;
 end $guard$;
 create or replace function public.bookish_auth_throttle(p_email text,p_ip text,p_action text) returns boolean language sql as $$select false$$;
@@ -25,5 +28,6 @@ end $disable$;
 revoke execute on function public.bookish_visibility_join(text,text,text,text,text,text),public.bookish_visibility_host(uuid,text,text,text,uuid,boolean),public.bookish_visibility_decide(uuid,boolean) from service_role;
 -- Deletion must remain available for existing trusted Bookish identities through
 -- the verified bookish-delete-account edge. Its Auth cascades still operate.
--- Reapply the reviewed packet to recover service grants and member access.
+-- The service-only Vault RPC stays available for Apple revocation during deletion.
+-- Reapply the full packet or every ordered chunk to restore member access.
 commit;

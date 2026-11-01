@@ -1,6 +1,7 @@
 // Shared helpers for the Bookish edge functions.
 import type {RpcClient,DirectoryClub} from "./types.ts";
 import { createClient } from "@supabase/supabase-js";
+import { readBookishSecret } from "./secrets.ts";
 
 export const ALLOWED_ORIGINS = [
   "https://meetbookish.com",
@@ -10,7 +11,7 @@ export const ALLOWED_ORIGINS = [
   "http://localhost:4321",
   "http://127.0.0.1:4321",
 ];
-export const SITE_URL = Deno.env.get("BOOKISH_SITE_URL") ?? "https://meetbookish.com";
+export const siteUrl = async () => await readBookishSecret("BOOKISH_SITE_URL") ?? "https://meetbookish.com";
 export const FN_URL = `${Deno.env.get("SUPABASE_URL")}/functions/v1`;
 
 export const sb = createClient(
@@ -47,8 +48,10 @@ export const ipOf = (req: Request) => (req.headers.get("x-forwarded-for") ?? "")
 // Verify DNS before setting BOOKISH_EMAIL_FROM; Resend enforces verification.
 // Without both settings it is a logged stub and returns false.
 export async function sendEmail(to: string, subject: string, text: string): Promise<boolean> {
-  const from = Deno.env.get("BOOKISH_EMAIL_FROM");
-  const key = Deno.env.get("RESEND_API_KEY");
+  const [from, key] = await Promise.all([
+    readBookishSecret("BOOKISH_EMAIL_FROM"),
+    readBookishSecret("RESEND_API_KEY"),
+  ]);
   if (!from || !key) {
     console.log(`[email stub] not sent (no BOOKISH_EMAIL_FROM): subject="${subject}"`);
     return false;

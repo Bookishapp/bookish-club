@@ -10,9 +10,9 @@ import { renderLunair } from "./build-lunair.mjs";
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
 const SITE_URL = (process.env.SITE_URL || "https://meetbookish.com").replace(/\/$/, "");
 const BASE = new URL(SITE_URL).pathname.replace(/\/$/, "");
-const API = process.env.BOOKISH_API || "https://wqnrortftkffmbeugjky.supabase.co/functions/v1/bookish-submit";
+const API = process.env.BOOKISH_API || "https://tkrsrnlasinmlftkcufi.supabase.co/functions/v1/bookish-submit";
 const OUT = path.join(ROOT, "dist");
-const JOIN_API = process.env.BOOKISH_JOIN_API || "https://wqnrortftkffmbeugjky.supabase.co/functions/v1/bookish-join";
+const JOIN_API = process.env.BOOKISH_JOIN_API || "https://tkrsrnlasinmlftkcufi.supabase.co/functions/v1/bookish-join";
 const TODAY = new Date().toISOString().slice(0, 10);
 
 const GENRES = Object.fromEntries(GENRES_LIST);
@@ -26,8 +26,8 @@ for(const c of JSON.parse(fs.readFileSync(path.join(ROOT,"data/clubs.json"),"utf
  for(const g of c.genres||[]){const counts=routeMap.get(key).genres;counts[g]=(counts[g]||0)+1;}
 }
 const geographicRoutes=[...routeMap.values()];
-const VERIFIED_API = "https://wqnrortftkffmbeugjky.supabase.co/functions/v1/bookish-verified";
-const DIRECTORY_API = process.env.BOOKISH_DIRECTORY_API || "https://wqnrortftkffmbeugjky.supabase.co/functions/v1/bookish-directory";
+const VERIFIED_API = "https://tkrsrnlasinmlftkcufi.supabase.co/functions/v1/bookish-verified";
+const DIRECTORY_API = process.env.BOOKISH_DIRECTORY_API || "https://tkrsrnlasinmlftkcufi.supabase.co/functions/v1/bookish-directory";
 
 // ---------- helpers ----------
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -417,7 +417,7 @@ write("404.html", layout({ title: "Page not found | Bookish", desc: "This page h
 // rows that pass the privacy floor (bookish_privacy_floor() in sql/003).
 // A failed fetch builds with no community rows, so nothing un-floored can
 // ever show. BOOKISH_COMMUNITY_FILE points at a local JSON file (previews).
-const COMMUNITY_API = process.env.BOOKISH_COMMUNITY_API || "https://wqnrortftkffmbeugjky.supabase.co/functions/v1/bookish-community";
+const COMMUNITY_API = process.env.BOOKISH_COMMUNITY_API || "https://tkrsrnlasinmlftkcufi.supabase.co/functions/v1/bookish-community";
 async function loadCommunity() { return {city:[],state:[],national:[],next:[]}; }
 
 {

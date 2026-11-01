@@ -1,8 +1,8 @@
 // Bookish Club double opt-in: GET ?token=<uuid> marks the submission confirmed
 // and redirects to the site's /confirmed/ page.
 import { createClient } from "@supabase/supabase-js";
+import { readBookishSecret } from "../_shared/secrets.ts";
 
-const SITE_URL = Deno.env.get("BOOKISH_SITE_URL") ?? "https://meetbookish.com";
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 const sb = createClient(
@@ -12,6 +12,7 @@ const sb = createClient(
 );
 
 Deno.serve(async (req) => {
+  const SITE_URL = await readBookishSecret("BOOKISH_SITE_URL") ?? "https://meetbookish.com";
   const token = new URL(req.url).searchParams.get("token") ?? "";
   let ok = false;
   let clubRef = "";
