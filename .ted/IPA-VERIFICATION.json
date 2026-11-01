@@ -1,0 +1,19 @@
+{
+  "ipa": "/Users/vahallo/ted-ops/logs/bookish-full-1101/export/App.ipa",
+  "sha256": "285b2c155419d07be6a0b7397a5d4d7748dcb6b13cd9f7f54e9a46ac4705be22",
+  "version": "1.1",
+  "build": "4",
+  "shipped_extensions": [
+    "BookishStickers.appex"
+  ],
+  "privacy_categories": 8,
+  "no_bundled_clubs": true,
+  "web_bundle_matches_final_build": true,
+  "signature_verification": {
+    "status": "pass",
+    "code_bundle_count": 10,
+    "signature_identifiers_match": true,
+    "strict_signature_verification": true
+  },
+  "testflight_internal_only": true
+}

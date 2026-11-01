@@ -7,9 +7,18 @@ type User = {
 type Dependencies = {
   getUser: (token: string) => Promise<User | null>;
   deleteUser: (id: string) => Promise<void>;
+  revokeSessions?: (token: string) => Promise<void>;
   revokeApple: (code: string, subject: string) => Promise<void>;
 };
-const origins = ["https://meetbookish.com", "https://www.meetbookish.com"];
+const origins = [
+  "https://meetbookish.com",
+  "https://www.meetbookish.com",
+  "capacitor://localhost",
+  "https://localhost",
+  "http://localhost",
+  "http://localhost:4321",
+  "http://127.0.0.1:4321",
+];
 export function responseHeaders(req: Request) {
   const origin = req.headers.get("origin");
   return {
@@ -111,6 +120,7 @@ export async function handleAccountDeletion(
     }
   }
   try {
+    await deps.revokeSessions?.(token);
     // Hard deletion: auth FK cascades and Bookish triggers remove all personal rows.
     await deps.deleteUser(user.id);
     return reply(200, {

@@ -6,10 +6,11 @@ const root = new URL('../dist/', import.meta.url);
 
 test('every generated Bookish page offers working routes without launch placeholders', () => {
   for (const entry of fs.readdirSync(root, { recursive: true })) {
-    if (!entry.endsWith('.html') || entry.startsWith('lunair/')) continue;
+    if (!entry.endsWith('.html')) continue;
     const body = fs.readFileSync(new URL(entry, root), 'utf8');
     const content = body.replace(/<(style|script)\b[^>]*>[\s\S]*?<\/\1>/gi, '');
     assert.equal(content.match(/coming soon|waitlist/i)?.[0] ?? null, null, entry);
+    assert.doesNotMatch(content, /\$\d|data-checkout|stripe\.com|buy\.stripe/i, entry);
   }
   const doc = new JSDOM(fs.readFileSync(new URL('index.html', root), 'utf8')).window.document;
   assert.ok(doc.querySelector('a[href$="/app/"]'), 'landing must open the functional web app');
@@ -21,7 +22,8 @@ test('deployed web app has its own bundle and all local assets resolve under its
   assert.ok(fs.existsSync(file), 'web app must be deployed');
   const doc = new JSDOM(fs.readFileSync(file, 'utf8')).window.document;
   const base = doc.querySelector('meta[name="bookish-base"]').content;
-  assert.ok(base.endsWith('/app/'));
+  const site = new JSDOM(fs.readFileSync(new URL('index.html', root), 'utf8')).window.document;
+  assert.equal(base, site.documentElement.dataset.base + '/app/', 'app assets must use the deployed site prefix');
   for (const el of doc.querySelectorAll('script[src],link[href]')) {
     const asset = el.getAttribute('src') || el.getAttribute('href');
     if (/^https?:/.test(asset)) continue;

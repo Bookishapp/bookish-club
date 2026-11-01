@@ -23,7 +23,7 @@ Deno.serve(async (req) => {
       q("bookish_book_next", "from_book,to_book,clubs", "clubs"),
     ]);
     return new Response(JSON.stringify({ ok: true, generated_at: new Date().toISOString(), city, state, national: national.slice(0, LIMIT), next }), { status: 200, headers });
-  } catch (e) {
+  } catch {
     console.error("community stats unavailable");
     return new Response(JSON.stringify({ ok: false, error: "server" }), { status: 500, headers });
   }

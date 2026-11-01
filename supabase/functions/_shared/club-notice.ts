@@ -1,6 +1,7 @@
 // Runtime delivery only. Tests inject a local callback and never send email.
+import type {ClubNotice} from './types.ts';
 import {sendEmail,FN_URL,SITE_URL} from './bookish.ts';
-export async function clubNotice(n:any):Promise<boolean>{
+export function clubNotice(n:ClubNotice):Promise<boolean>{
  if(n.kind==='request')return sendEmail(n.to,`Someone would like to join ${n.club}`,
   `${n.name||'A reader'} asked to join ${n.club}.\n\n${n.note||''}\n\nApprove: ${FN_URL}/bookish-join-respond?token=${n.decision_token}&action=approve\nDecline: ${FN_URL}/bookish-join-respond?token=${n.decision_token}&action=decline\n\nBookish`);
  return sendEmail(n.to,n.approved?`You're in: ${n.club}`:`About your request to join ${n.club}`,

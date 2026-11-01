@@ -1,13 +1,10 @@
 {
   "version": "5",
   "specifiers": {
-    "npm:@electric-sql/pglite@0.5.10": "0.5.10",
-    "npm:@supabase/supabase-js@2": "2.118.0"
+    "npm:@supabase/supabase-js@2": "2.118.0",
+    "npm:@supabase/supabase-js@2.118.0": "2.118.0"
   },
   "npm": {
-    "@electric-sql/pglite@0.5.10": {
-      "integrity": "sha512-tXc/25U3ulOkiRQuTFdwIv+JhBqtMdAF7Gvo6CfZZWtSB4+hgC4Wr2vwK5ngvvN5PJfAAEGIsfyCVy1JhCOBYw=="
-    },
     "@supabase/auth-js@2.118.0": {
       "integrity": "sha512-xWfPXyhS2KDSfAneMtI6p/tBnbdiz/5vaRKXEqUfzfC9WCniKr2Ds5o5G7RIGig0bom4z6wUY9zaV07WDVTfnQ==",
       "dependencies": [
@@ -61,10 +58,8 @@
     }
   },
   "workspace": {
-    "packageJson": {
-      "dependencies": [
-        "npm:@electric-sql/pglite@0.5.10"
-      ]
-    }
+    "dependencies": [
+      "npm:@supabase/supabase-js@2.118.0"
+    ]
   }
 }

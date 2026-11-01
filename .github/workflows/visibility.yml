@@ -14,4 +14,6 @@ jobs:
           node-version: 24
       - run: npm ci
       - run: npm ci --prefix app
-      - run: npm test
+      - run: npm run snapshot --prefix app
+      - run: npm run build:web
+      - run: npm run test:visibility

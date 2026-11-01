@@ -15,3 +15,11 @@ verify_jwt = false
 verify_jwt = false
 [functions.bookish-community]
 verify_jwt = false
+[functions.bookish-auth]
+verify_jwt = false
+[functions.bookish-account-join]
+verify_jwt = false
+[functions.bookish-delete-account]
+verify_jwt = false
+[functions.bookish-house-rules]
+verify_jwt = false

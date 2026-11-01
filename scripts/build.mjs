@@ -186,7 +186,7 @@ const clubHost = () => `<section class="club-story" aria-labelledby="club-host">
 
 const clubRules = () => `<section class="club-story" aria-labelledby="club-rules"><div class="wrap">
 <h2 id="club-rules">Your club, your rules.</h2><p class="lede">A full table or a few familiar faces. Choose how people find and join your club.</p>
-<p class="small">Planned club settings for the iMessage launch:</p>
+<p class="small">Choose how readers find your club:</p>
 <div class="rules-grid"><div><h3>Open</h3><p>On the map. Anyone can join. Pull up another chair.</p></div><div><h3>Private</h3><p>On the map. The host approves requests to join.</p></div><div><h3>Hidden</h3><p>Off the map. Invite code only. Just your people.</p></div></div>
 <p class="small">The map shows your city, never your meeting address.</p></div></section>`;
 
@@ -270,7 +270,7 @@ write("start/index.html", layout({
   body: `<div class="wrap">${crumbs([["Home", "/"], ["List your club", null]])}
 <header class="page-head with-art">${lunair("lunair-wave", 360, 153, 720, 301, "Bookish host waving hello", "head-art", true)}<p class="eyebrow">Your people, your club</p><h1>Already have a club? <em>Bring your people.</em></h1>
 <p class="lede">Keep the group chat and the people you love reading with. Add your club to Bookish, or claim its existing listing.</p></header>
-<section class="listing-intro"><h2>Want new readers at the table, too?</h2><p>This optional form adds a listing to the web finder after you confirm your email. It doesn't sign you up for the iMessage launch. Choose who can find and join your club below.</p></section>
+<section class="listing-intro"><h2>Want new readers at the table, too?</h2><p>This form adds a listing to the web finder after you confirm your email. Choose who can find and join your club below, or open Bookish to manage an account-based club.</p></section>
 <section><form class="form" data-kind="start" novalidate>
 <label>Club name<input name="club_name" required maxlength="160" placeholder="The Tuesday Night Mystery Society"></label>
 <div class="row two"><label>City<input name="city" required maxlength="80" autocomplete="address-level2"></label><label>State<select name="state" required><option value="">Choose…</option>${stateOptions}</select></label></div>
@@ -343,7 +343,7 @@ const prose = (p, title, desc, h, html) => { write(`${p.slice(1)}index.html`, la
 prose("/about/", "About Bookish and Our Sources", "More fun for the book club you already have, plus the sources behind the Bookish club finder.", "About Bookish", `
 <p>Your book club, just more fun. Bookish is bringing anonymous hot takes, the DNF confessional, spoiler-safe conversations, post-meeting superlatives, and Club Wrapped to the club you already have, right inside iMessage.</p>
 <p>For the host, that means RSVPs, reminders, book votes, the bring-list, and the next meeting in the thread. The social club screens are feature previews. <a href="${url("/app/")}">Open Bookish on the web</a> for the club finder, reading suggestions, and saved favorites.</p>
-<h2>Your club, your rules</h2><p>For the iMessage launch, we're planning three club settings: Open is on the map and anyone can join, Private is on the map and the host approves requests, and Hidden is off the map and invite code only.</p>
+<h2>Your club, your rules</h2><p>Club listings have three visibility settings: Open is on the map and anyone can join, Private is on the map and the host approves requests, and Hidden is off the map and requires an invite code or link.</p>
 <h2>Looking for a club?</h2><p>The <a href="${url("/book-clubs/")}">web finder</a> is already here, with book clubs across the United States gathered from public library and bookstore calendars.</p>
 <h2>Where listings come from</h2>
 <p>Listings come from the public event pages of libraries and independent bookstores. We read those pages slowly and politely, follow each site's robots.txt and terms, and store only the basics: the club's name, city, genre, and meeting rhythm as published, plus a link to the source and the date we last saw it. We don't collect anyone's personal email address or phone number, and we never show a venue or address: our pages and map are city-level only. Exact place and time are shared only with members a host approves.</p>
@@ -351,40 +351,61 @@ prose("/about/", "About Bookish and Our Sources", "More fun for the book club yo
 <h2>Fix or remove a listing</h2>
 <p>If you host a club, <a href="${url("/claim/")}">claim it</a> and we'll update it with you. If you'd like a listing removed, use the same form and say so in the message. We'll take it down.</p>`);
 prose("/privacy/", "Privacy | Bookish", "What Bookish collects and why.", "Privacy", `
-<p>Updated October 23, 2026. This policy covers the Bookish website and iOS app.</p>
+<p>Updated November 1, 2026. This policy covers the Bookish website, web app, and iOS app, including account and shared club features when available in your version.</p>
 <h2>Browse without an account</h2>
 <p>You can browse Bookish without creating an account. We do not sell personal data, use advertising or analytics SDKs in the app, or track you across other companies' apps and websites. This site sets no tracking cookies.</p>
-<h2>Directory listings</h2>
-<p>We list clubs from public pages and store club-level details: name, city, genre, meeting rhythm, source link, and date seen. We do not publish a venue, neighborhood, home address, or personal contact details. Our club map shows city centers only. Public-calendar listings link to their original source, where a host may publish more information.</p>
-<p><b>Club visibility.</b> Open clubs appear in discovery and welcome anyone. Private clubs appear with their name, area, and current book, and the host approves requests. Hidden clubs stay out of discovery and require a current invite code or link. Hosts can change this in club settings.</p>
+<h2>Directory listings and club visibility</h2>
+<p>We list clubs from public pages and store club-level details: name, city, genre, meeting rhythm, source link, and date seen. Public-calendar listings link to the original organizer. Our public pages and map show approximate city areas, never a home address or exact meeting location.</p>
+<p>Open clubs appear in discovery and welcome anyone. Private clubs appear with their name, city area, and current book, and the host approves requests. Hidden clubs stay out of discovery and require a current invite code or link. Hosts control visibility. Treat invite codes and host settings links as private.</p>
+<h2>Accounts and profiles</h2>
+<p>When you create a Bookish account, we store your email address, account identifier, display name, optional home city, and acceptance of the club rules and age confirmation. Sign-in uses a one-time code sent by email, with an optional password route for existing Bookish accounts. Supabase Auth verifies passwords; Bookish does not save them in device preferences or application tables. We use account and session information to sign you in, maintain your session, secure the service, and connect you to your clubs. Bookish does not offer social sign-in.</p>
+<h2>Shared club information</h2>
+<p>We store club descriptions, visibility, memberships, roles, invites, join requests, and the name, email, and note supplied with a request. Hosts can review requests and manage members. Your display name and membership are visible to your fellow club members; a request's details are available to the host handling it.</p>
+<p>When you use shared club tools, we store the information needed for your club's books, reading progress and ratings, meetings, RSVPs, bring-list claims, book nominations, and votes. A meeting's title, time, and location text are available to club members, rather than the public map. Do not put home addresses, contact information, or other sensitive information in public club names or descriptions. Share private meeting information only with people you trust.</p>
+<p>Book votes are anonymous to other members: the club sees vote totals, not a list of who chose each book. Bookish retains the connection between a ballot and your account to enforce one ballot per reader. If your version offers anonymous club comments, other readers do not see the author name, but Bookish keeps a private author connection for safety, blocking, and deletion. Anonymous does not mean unlinked to your account on our servers.</p>
+<h2>Safety and moderation</h2>
+<p>We store reports, the content and reason reported, moderation decisions, hidden-content choices, and blocks to help protect readers and enforce the club rules. Reports are not public. Authorized service reviewers, and hosts where the relevant review tool permits, can review the information needed to handle a report. Blocking can hide a reader's content for you; it does not remove that content for everyone. Content checks and moderation may limit or remove harmful submissions. For urgent safety concerns, contact <a href="mailto:hello@meetbookish.com">hello@meetbookish.com</a>.</p>
 <h2>What stays on your device</h2>
-<p>Your saved clubs, saved books, reading preferences, selected city, and meeting reminders stay in storage on your device. Bookish does not upload this information to its servers. The website uses browser storage, and the iOS app uses app storage. A local notification uses the meeting date and club name you chose, and does not require a push-notification server.</p>
-<p>If you choose Use my location, the app requests location permission and uses the coordinates on your device to sort nearby cities. Bookish does not send these coordinates to its servers or save them after the app closes. You can choose a city instead, and you can change location and notification permissions in iOS Settings.</p>
-<h2>Optional forms and join requests</h2>
-<p>If you request to join a club, claim or add a club, send a host interest form, or contact support, we receive the information you submit. This may include your first name, email address, selected club, note, invite code, and club details. We use this information to handle your request, verify listings, reply to you, and protect the service.</p>
-<p>A join request shares your first name and note with the verified host so they can decide whether to approve it. The host's reply-to email is shared with you after approval. Public-calendar clubs cannot be joined through Bookish. We store a one-way hash of the request's IP address with form records to detect spam and enforce rate limits. Website claim, start, and past host interest forms also store browser user-agent information. These records are not anonymous when stored alongside your email address.</p>
-<p>Form records are stored in Supabase. If email delivery is enabled, Resend processes the email address and message needed to deliver the requested correspondence. Form records remain stored while we handle the request and maintain the relevant club relationship, or until they are removed after a deletion request. We do not promise automatic deletion after a fixed number of days.</p>
+<p>Your saved clubs, saved books, recommendation preferences, selected browsing city, and local meeting reminders stay in storage on your device, including when you sign in. These local favorites and preferences do not sync between devices. The website uses browser storage, and the iOS app uses app storage. A local reminder does not require a push-notification server. Account session credentials also remain on the device until sign-out or expiration.</p>
+<p>If you choose Use my location, the app requests location permission and uses the coordinates on your device to sort nearby cities. Bookish does not upload or persist those device coordinates. This differs from an optional profile home city or a club city that you choose to submit, which is stored with your account or club. You can choose a browsing city instead, and change location and notification permissions in iOS Settings.</p>
+<h2>Forms, service providers, and security</h2>
+<p>If you claim or add a club, request to join through a website form, or contact support, we receive the information you submit, such as your first name, email, selected club, note, invite code, and club details. Website join forms share the supplied name, email, and note with the host. We use submissions to handle the request, verify listings, reply, and protect the service.</p>
+<p>Supabase stores Bookish account and club records. Resend processes email addresses and message contents for sign-in codes and requested correspondence. We store one-way IP hashes with website form records for spam prevention and rate limits. Claim, start, and past host interest forms also store browser user-agent information. Account sign-in abuse controls store hashed email and IP values, with records older than 30 days pruned when that control runs. A hash stored beside an email or account record is not anonymous. Service providers also receive ordinary connection information needed to handle requests.</p>
+<p>Account and club information remains stored while needed to provide the service, maintain the club relationship, or handle safety matters, unless removed through the deletion paths below. We do not promise automatic deletion of all records after a fixed number of days.</p>
 <h2>Book covers, maps, and external links</h2>
-<p>The app refreshes its public directory from the Bookish website. Book covers load from Open Library, which receives a normal image request, including technical information such as your IP address and the requested cover. Maps and links you choose to open are handled by Apple Maps or the destination website under their own privacy policies. Bookish does not send your saved books, reading preferences, or device location with these requests.</p>
+<p>Bookish requests its directory and club data from Bookish services. Book covers load from Open Library, which receives normal image-request information, such as your IP address and requested cover. Maps and links you choose to open are handled by Apple Maps or the destination website under their own policies. Bookish does not attach your saved books, recommendation preferences, or device coordinates to cover requests.</p>
 <h2>Messages</h2>
-<p>When you choose to send a Bookish sticker in Messages, the sticker is visible to the conversation's participants. Apple handles message delivery. Bookish does not read your conversation transcript or upload your conversation to Bookish servers.</p>
+<p>When you send a Bookish sticker in Messages, the sticker is visible to the conversation's participants. Apple handles delivery. Bookish does not read your conversation transcript or upload your conversation to Bookish servers. Illustrations of interactive iMessage club features on our website are previews, and are not part of the current sticker extension.</p>
 <h2>Your choices and deletion</h2>
-<p>You can remove saved clubs, saved books, and reminders in the app. Deleting the app removes its local storage; clear the site's browser data to remove website preferences. Bookish does not currently create user accounts.</p>
-<p>To request access to, correction of, or deletion of information you submitted, or to withdraw consent for optional emails, email <a href="mailto:hello@meetbookish.com">hello@meetbookish.com</a> from the address used for the request. Tell us which club or request it concerns. Do not include passwords or sensitive identity documents. You can also use the <a href="${url("/claim/")}">club claim form</a> to request correction or removal of a club listing. Visit <a href="${url("/support/")}">Bookish support</a> for help.</p>`);
-prose("/support/", "Bookish Support", "Get help with Bookish, saved clubs, reminders, privacy, and directory listings.", "Bookish support", `
-<p>A good book club starts with a little help. For app questions, a bug report, or a privacy request, email <a href="mailto:hello@meetbookish.com">hello@meetbookish.com</a>.</p>
-<p>For a bug report, include your iPhone model, iOS version, Bookish version, and what happened. A screenshot can help, but please remove private information first. We never need your password.</p>
+<p>In an account-enabled version, open Me, choose Account settings, and choose Delete my account. Read the confirmation, type DELETE, and confirm. This removes your Bookish account, profile, memberships, join requests, ballots, authored comments, and related personal club records. Blocks and reports attached to your account are removed. If you own a club, hosting passes to a remaining member when possible; a club with no remaining members is removed. Shared club records that continue for other members may remain. Bookish deletion affects only Bookish data and a Bookish-marked sign-in identity. It does not delete a Fictora account or another service's data.</p>
+<p>Remove local saved clubs, saved books, and reminders in the app. Deleting an installed app removes its local storage; clear the site's browser data to remove website preferences. Removing an app alone does not delete a server account. Copies already shared or retained by other people are outside Bookish's control.</p>
+<p>For access, correction, deletion of older website submissions, or withdrawal from optional emails, contact <a href="mailto:hello@meetbookish.com">hello@meetbookish.com</a> from the address used. Include the club or request concerned. Never send sign-in codes, session credentials, or sensitive identity documents. Use the <a href="${url("/claim/")}">claim form</a> to request correction or removal of a public listing. See <a href="${url("/support/")}">support</a> for help.</p>`);
+prose("/support/", "Bookish Support", "Get help with Bookish accounts, clubs, privacy, and directory listings.", "Bookish support", `
+<p>For app help, a bug report, a content concern, or a privacy request, email <a href="mailto:hello@meetbookish.com">hello@meetbookish.com</a>. Include your device, operating system, Bookish version, and what happened. Remove private information from screenshots. We never need your sign-in code.</p>
 <h2>Find a club</h2>
-<p>Choose a city in Near me, or use your location to sort nearby cities. Location is optional. Club pins show city centers. Open the original listing to check current meeting details before you go. Public-calendar clubs are not yet on Bookish, so contact their original organizer rather than sending a join request in the app.</p>
-<h2>Saved clubs and meeting reminders</h2>
-<p>Tap a heart to save a club or book on this device. In a club's details, enter the meeting date your host shared and choose when to be reminded. If a reminder does not appear, check Bookish's notification permission in iOS Settings. Your device's time zone is used for meeting dates.</p>
-<p>You can remove a reminder in Saved, and tap a saved heart again to remove the club or book. Saved items and preferences do not sync between devices. Deleting the app removes its local data, so save any meeting details you need elsewhere first.</p>
-<h2>Refresh the directory</h2>
-<p>Club discovery needs an internet connection. Connect to the internet and choose Refresh directory in About to check for newer listings. Book recommendations remain available offline. Book covers and external websites need an internet connection.</p>
-<h2>Correct a listing or request deletion</h2>
-<p>If you organize a club, use the <a href="${url("/claim/")}">claim form</a> to request a correction or removal. For personal data you submitted through a form or join request, email us from the same address and identify the request. You do not need an account to browse Bookish, and the app does not currently create user accounts. Our <a href="${url("/privacy/")}">privacy policy</a> explains what stays on your device and what a form sends to us.</p>`);
+<p>Choose a city in Near me, or use your location to sort nearby cities. Location is optional. Map pins show approximate city areas. For a public-calendar listing, check the original organizer's page for current details. Clubs on Bookish use Open, Private, or Hidden visibility. A Private club's host approves requests; Hidden clubs require a current invite from the host.</p>
+<h2>Sign in and join</h2>
+<p>Account-enabled versions use your email and a one-time code. Check your inbox and spam folder, then enter the latest code in Bookish. Use the same email to return to your Bookish account. No social sign-in or password is required. Browse as a guest whenever you prefer. Account and shared club features require their service to be available.</p>
+<p>Once signed in, join an Open club, request a place in a Private club, or enter a host's invite code. A pending request is waiting for the host's decision. Hosts manage requests and members from their club. If an invite expires, ask your host for a fresh one. Meeting details are shared with club members.</p>
+<h2>Reports and blocks</h2>
+<p>Use the Report or Block controls beside club content or a reader's profile when available in your version. Give a short reason without adding unnecessary personal details. A block hides that reader's content for you. For a concern you cannot report in the app, email support with the club name and a description. Do not send private meeting addresses unless needed to explain the issue.</p>
+<h2>Saved items and reminders</h2>
+<p>Saved clubs, books, recommendation preferences, and local reminders stay on this device, including after sign-in. They do not sync. Tap a saved heart again to remove an item. Remove reminders in Saved. If reminders do not appear, check notification permission in iOS Settings. Your device's time zone is used for meeting dates.</p>
+<h2>Delete your Bookish account</h2>
+<p>Open Me, then Account settings, then Delete my account. Type DELETE at the confirmation and confirm. This removes your Bookish account and related personal records. A club may continue with another member as host. The process does not delete a Fictora account. If sign-in or deletion is unavailable, email support from your account email. Removing the installed app alone does not delete your account.</p>
+<h2>Directory and website requests</h2>
+<p>Club discovery and shared club tools need an internet connection. Book recommendations remain available offline; covers and external websites need a connection. Use the <a href="${url("/claim/")}">claim form</a> for a public listing correction or removal. For personal information sent through an older website form, email from the same address and identify the request. Our <a href="${url("/privacy/")}">privacy policy</a> explains the data involved.</p>`);
 prose("/terms/", "Terms | Bookish", "Terms of use for Bookish.", "Terms", `
-<p>Bookish is a free directory. Listings are gathered from public sources and may be out of date; check the linked source before attending. Clubs are run by their hosts and venues, not by Bookish. Don't submit anything that isn't yours to share, and be kind at meetings.</p>`);
+<p>Updated November 1, 2026. Use Bookish respectfully and follow these terms and the club rules presented when you create an account.</p>
+<h2>Accounts and clubs</h2>
+<p>Browse as a guest, or use the account features available in your version. Supply accurate account information, keep sign-in codes and private invites secure, and use only an identity you are entitled to use. Account features require the age confirmation shown during registration. Hosts control club membership and visibility. Bookish may restrict access or remove content that violates these rules.</p>
+<h2>Content and conduct</h2>
+<p>Share only content you have the right to share. You keep rights to your content and allow Bookish to store, display, and process it as needed to provide your club and safety features. Do not post harassment, threats, hateful abuse, sexual content directed at another person, spam, or another person's private information. Do not publish home addresses or exact meeting locations in public club descriptions. Anonymous comments and ballots remain associated with an account for service integrity and safety.</p>
+<p>Use reporting and blocking controls for content concerns, or contact <a href="mailto:hello@meetbookish.com">hello@meetbookish.com</a>. Hosts and service reviewers may review relevant reports, remove harmful content, or restrict participation. A block controls what you see and does not guarantee that another person cannot see your public content.</p>
+<h2>Listings and meetings</h2>
+<p>Public-source listings can become out of date. Check the original source and confirm plans with the host before attending. Clubs and meetings are run by their hosts and venues. Use your judgment when meeting people, and share private meeting details only with people you trust. Public map pins show an approximate city area.</p>
+<h2>Privacy, deletion, and availability</h2>
+<p>Our <a href="${url("/privacy/")}">privacy policy</a> explains account, club, and device data. You can delete a Bookish account in Me under Account settings. Local favorites stay on the device until removed. Features and availability may change, and website illustrations may show clearly labelled previews. This release has no Bookish payments or subscriptions.</p>`);
 
 write("404.html", layout({ title: "Page not found | Bookish", desc: "This page has wandered off the shelf.", path: "/404.html", noindex: true,
   body: `<div class="wrap"><header class="page-head" style="padding-top:60px"><p class="eyebrow">404</p>${lunair("lunair-shrug", 260, 279, 520, 553, "Bookish host shrugging", "shrug", true)}<h1>This page has wandered <em>off the shelf</em>.</h1><p class="lede">Try searching for your city instead.</p>${searchBox()}</header></div>` }));
@@ -429,7 +450,7 @@ async function loadCommunity() { return {city:[],state:[],national:[],next:[]}; 
 </div></div>`;
   write("read-next/index.html", layout({
     title: "Stuck on What to Read Next? Book Club Picks in Three Taps | Bookish",
-    desc: "Tell Lunair the mood, the length and one book you loved. Get three books to read next, picked for book clubs, plus what clubs on Bookish are reading.",
+    desc: "Tell Lunair the mood, the length, and one book you loved. Get three books to read next, picked for book clubs, plus what clubs on Bookish are reading.",
     path: "/read-next/", body,
   }));
   page("/read-next/", 0.7);
@@ -453,7 +474,7 @@ ${R.categories.map(([id, name, intro]) => {
   }).join("")}
 <p class="small">Some links on this page may earn Bookish a small commission in future. If they do, we'll say so on the card. Picks are never paid for unless they're labelled "Sponsored".</p>
 </div>${hostCallout()}`;
-  write("resources/index.html", layout({ title: "Book Club Resources: Discussion Guides, Printables & Hosting Tips | Bookish", desc: "Free discussion guides, where to get the book, library apps, printable bookmarks and RSVP cards, hosting tips and snack pairings for your book club.", path: "/resources/", body }));
+  write("resources/index.html", layout({ title: "Book Club Resources: Discussion Guides, Printables & Hosting Tips | Bookish", desc: "Free discussion guides, where to get the book, library apps, printable bookmarks and RSVP cards, hosting tips, and snack pairings for your book club.", path: "/resources/", body }));
   page("/resources/", 0.7);
   write("data/resources.json", JSON.stringify({ categories: R.categories, entries: live }));
 
@@ -462,7 +483,7 @@ ${R.categories.map(([id, name, intro]) => {
     write(`${p.slice(1)}index.html`, layout({ title, desc, path: p, jsonld: [crumbsLd(cr)], body: `<div class="wrap">${crumbs(cr)}<header class="page-head"><p class="eyebrow">Resources</p><h1>${h}</h1></header><section class="prose">${html}<p><a href="${url("/resources/")}">← All resources</a></p></section></div>${hostCallout()}` }));
     page(p, 0.6);
   };
-  article("/resources/hosting-tips/", "How to Host a Book Club That Lasts | Bookish", "Practical tips for hosting a book club: picking books, setting a rhythm, running the discussion and welcoming new members.", "How to host a book club <em>that lasts</em>", `
+  article("/resources/hosting-tips/", "How to Host a Book Club That Lasts | Bookish", "Practical tips for hosting a book club: picking books, setting a rhythm, running the discussion, and welcoming new members.", "How to host a book club <em>that lasts</em>", `
 <p class="lede">Most book clubs don't end because people stop reading. They end because nobody's sure when the next one is. A few habits fix most of that.</p>
 <h2>Set a rhythm and keep it</h2>
 <p>"Second Tuesday, 7pm" beats a new poll every month. A fixed slot lets people plan around it, and the club survives the months when you're busy.</p>
@@ -481,15 +502,15 @@ ${R.categories.map(([id, name, intro]) => {
 <h2>Mystery &amp; thriller</h2>
 <p>A cheese board with one "suspicious" cheese nobody can identify. Pour a dry red such as Chianti, or offer black coffee for the late-night crowd.</p>
 <h2>Romance</h2>
-<p>Strawberries, dark chocolate and something pink and sparkling. Non-drinkers get a hibiscus spritzer with lime.</p>
+<p>Strawberries, dark chocolate, and something pink and sparkling. Non-drinkers get a hibiscus spritzer with lime.</p>
 <h2>Fantasy</h2>
-<p>A tavern spread: crusty bread, honey, roasted nuts and a hard cheese. Cider or mead if you can find it, spiced apple juice if not.</p>
+<p>A tavern spread: crusty bread, honey, roasted nuts, and a hard cheese. Cider or mead if you can find it, spiced apple juice if not.</p>
 <h2>Historical fiction</h2>
 <p>Cook something from the book's time and place, even something simple: shortbread for Scotland, madeleines for France. Tea service never hurts.</p>
 <h2>Literary fiction &amp; classics</h2>
-<p>Olives, good bread and a crisp white wine such as Sauvignon Blanc. Keep it quiet and grown-up, like the book.</p>
+<p>Olives, good bread, and a crisp white wine such as Sauvignon Blanc. Keep it quiet and grown-up, like the book.</p>
 <h2>Horror</h2>
-<p>Blood-orange anything, black licorice and a deep red. Turn the lights down.</p>
+<p>Blood-orange anything, black licorice, and a deep red. Turn the lights down.</p>
 <h2>Nonfiction &amp; memoir</h2>
 <p>Whatever the author would eat. If the book is set somewhere specific, order from a restaurant from that region.</p>
 <p class="small">Always have a good non-alcoholic option, and drink responsibly.</p>`);
@@ -514,14 +535,14 @@ ${R.categories.map(([id, name, intro]) => {
 }
 
 // ---------- data, assets, sitemap ----------
-const lunairCheckout = JSON.parse(fs.readFileSync(path.join(ROOT, "public/lunair/checkout.json"), "utf8"));
-const lunairShop = renderLunair({ siteUrl: SITE_URL, checkout: lunairCheckout });
+const lunairShop = renderLunair({ siteUrl: SITE_URL, checkout: {}, showcaseOnly: true });
 write("lunair/index.html", lunairShop.html);
 write("midnight/index.html", lunairShop.redirect);
 write("lunair.css", fs.readFileSync(path.join(ROOT, "src/lunair.css"), "utf8").replaceAll("__BASE__", BASE));
 write("lunair.js", fs.readFileSync(path.join(ROOT, "src/lunair.js"), "utf8"));
 page("/lunair/", 0.7);
 copyDir(path.join(ROOT, "public"), OUT);
+fs.rmSync(path.join(OUT, "lunair/checkout.json"), { force: true });
 write("data/cities.json", "[]");
 write("data/clubs.json", "[]");
 write("data/clubs.geojson", JSON.stringify({type:"FeatureCollection",features:[]}));

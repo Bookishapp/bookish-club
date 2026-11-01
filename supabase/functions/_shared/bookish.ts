@@ -1,5 +1,6 @@
 // Shared helpers for the Bookish edge functions.
-import { createClient } from "npm:@supabase/supabase-js@2";
+import type {RpcClient,DirectoryClub} from "./types.ts";
+import { createClient } from "@supabase/supabase-js";
 
 export const ALLOWED_ORIGINS = [
   "https://meetbookish.com",
@@ -62,11 +63,11 @@ export async function sendEmail(to: string, subject: string, text: string): Prom
 }
 
 // Fresh, visibility-aware discovery, shared with legacy callers.
-export async function listVerified(client: any): Promise<any[]> {
+export async function listVerified(client: RpcClient): Promise<DirectoryClub[]> {
   const {data,error}=await client.rpc("bookish_visibility_directory");
   if(error)throw new Error("Discovery unavailable");
-  return (data??[]).filter((c:any)=>c.verified && ["open","private"].includes(c.visibility)).map((c:any)=>({...c,listed:true,kind:"start"}));
+  return (Array.isArray(data)?data:[]).filter((c:DirectoryClub)=>c.verified && ["open","private"].includes(c.visibility)).map((c:DirectoryClub)=>({...c,listed:true,kind:"start"}));
 }
-export async function isVerified(client:any,ref:string):Promise<boolean>{
-  return (await listVerified(client)).some((c:any)=>c.id===ref);
+export async function isVerified(client:RpcClient,ref:string):Promise<boolean>{
+  return (await listVerified(client)).some(c=>c.id===ref);
 }

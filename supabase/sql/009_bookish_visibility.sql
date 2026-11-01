@@ -1,41 +1,41 @@
 -- REVIEW ONLY. Requires 001-004 on the shared project. Never run db push.
 -- See the job's apply.sql for the required backup and directory seed.
 begin;
-alter table public.bookish_clubs add column visibility text not null default 'private'
+alter table public.bookish_clubs add column if not exists visibility text not null default 'private'
   check (visibility in ('open','private','hidden'));
-alter table public.bookish_clubs add column public_data jsonb not null default '{}';
-alter table public.bookish_clubs add column owner_submission_id uuid references public.bookish_submissions(id);
-create unique index bookish_visibility_ref on public.bookish_clubs(club_ref) where club_ref is not null;
+alter table public.bookish_clubs add column if not exists public_data jsonb not null default '{}';
+alter table public.bookish_clubs add column if not exists owner_submission_id uuid references public.bookish_submissions(id);
+create unique index if not exists bookish_visibility_ref on public.bookish_clubs(club_ref) where club_ref is not null;
 -- Pre-existing app clubs with no public listing remain Private.
 -- Public directory seed and confirmed legacy submissions are backfilled separately.
-create table public.bookish_city_centers (
+create table if not exists public.bookish_city_centers (
  city text not null,state text not null,lat double precision not null,lng double precision not null,
  primary key(city,state),check(lat between -90 and 90),check(lng between -180 and 180)
 );
 grant select,insert,update,delete on table public.bookish_city_centers to service_role;
 alter table public.bookish_city_centers enable row level security;
 revoke all on table public.bookish_city_centers from public,anon,authenticated;
-create function public.bookish_visibility_location(p_city text,p_state text) returns boolean
+create or replace function public.bookish_visibility_location(p_city text,p_state text) returns boolean
 language sql stable security definer set search_path='' as $$
  select exists(select 1 from public.bookish_city_centers where lower(city)=lower(trim(p_city)) and state=upper(trim(p_state)))
 $$;
 revoke all on function public.bookish_visibility_location(text,text) from public,anon,authenticated;
 grant execute on function public.bookish_visibility_location(text,text) to service_role;
 
-create table public.bookish_join_attempts (
+create table if not exists public.bookish_join_attempts (
   id uuid primary key default gen_random_uuid(), ip_hash text not null,
   email text not null, created_at timestamptz not null default now()
 );
 grant select,insert,update,delete on table public.bookish_join_attempts to service_role;
 alter table public.bookish_join_attempts enable row level security;
 revoke all on table public.bookish_join_attempts from public,anon,authenticated;
-create index bookish_join_attempts_ip on public.bookish_join_attempts(ip_hash,created_at);
-create index bookish_join_attempts_email on public.bookish_join_attempts(email,created_at);
+create index if not exists bookish_join_attempts_ip on public.bookish_join_attempts(ip_hash,created_at);
+create index if not exists bookish_join_attempts_email on public.bookish_join_attempts(email,created_at);
 -- No raw access: even the owner capability goes through a scoped server function.
 revoke all on public.bookish_clubs,public.bookish_submissions,public.bookish_join_requests,public.bookish_invites from public,anon,authenticated;
 grant select,insert,update,delete on public.bookish_clubs,public.bookish_submissions,public.bookish_join_requests,public.bookish_invites to service_role;
 
-create function public.bookish_visibility_directory() returns jsonb
+create or replace function public.bookish_visibility_directory() returns jsonb
 language sql stable security definer set search_path='' as $$
  select coalesce(jsonb_agg(jsonb_build_object(
   'id',c.club_ref,'name',c.name,'city',c.city,'state',c.state,
@@ -56,7 +56,7 @@ $$;
 
 -- Confirmed submissions are the existing host identity. The first owner wins;
 -- confirming another email claim can never take over an existing club.
-create function public.bookish_visibility_confirm() returns trigger
+create or replace function public.bookish_visibility_confirm() returns trigger
 language plpgsql security definer set search_path='' as $$
 declare chosen text; geo public.bookish_city_centers;
 begin
@@ -76,10 +76,11 @@ begin
  where bookish_clubs.owner_submission_id is null;
  return new;
 end $$;
+drop trigger if exists bookish_visibility_confirm on public.bookish_submissions;
 create trigger bookish_visibility_confirm after insert or update of status on public.bookish_submissions
  for each row execute function public.bookish_visibility_confirm();
 
-create function public.bookish_visibility_decide(p_token uuid,p_approve boolean) returns jsonb
+create or replace function public.bookish_visibility_decide(p_token uuid,p_approve boolean) returns jsonb
 language plpgsql security definer set search_path='' as $$
 declare r public.bookish_join_requests; c public.bookish_clubs;
 begin
@@ -93,7 +94,7 @@ begin
  return jsonb_build_object('ok',true,'status',r.status,'notice',jsonb_build_object('kind','decision','to',r.email,'name',r.first_name,'club',c.name,'approved',p_approve,'host_email',case when p_approve then (select email from public.bookish_submissions where id=c.owner_submission_id) end));
 end $$;
 
-create function public.bookish_visibility_host(p_token uuid,p_action text,p_ref text,p_visibility text default null,p_request uuid default null,p_approve boolean default null) returns jsonb
+create or replace function public.bookish_visibility_host(p_token uuid,p_action text,p_ref text,p_visibility text default null,p_request uuid default null,p_approve boolean default null) returns jsonb
 language plpgsql security definer set search_path='' as $$
 declare c public.bookish_clubs; code_value text; i int; decision jsonb;
 begin
@@ -125,7 +126,7 @@ begin
  'notice',decision->'notice','requests',(select coalesce(jsonb_agg(jsonb_build_object('id',id,'first_name',first_name,'email',email,'note',note) order by created_at),'[]'::jsonb) from public.bookish_join_requests where club_ref=c.club_ref and status='pending'));
 end $$;
 
-create function public.bookish_visibility_join(p_ref text,p_email text,p_name text,p_note text,p_code text,p_ip text) returns jsonb
+create or replace function public.bookish_visibility_join(p_ref text,p_email text,p_name text,p_note text,p_code text,p_ip text) returns jsonb
 language plpgsql security definer set search_path='' as $$
 declare c public.bookish_clubs; inv public.bookish_invites; joined boolean:=false; decision uuid; resolved_ref text; prior public.bookish_join_requests;
 begin

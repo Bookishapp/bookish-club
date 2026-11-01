@@ -17,6 +17,14 @@ export function authAdmin(
       const user = await result.json();
       return typeof user.id === "string" && user.id ? user : null;
     },
+    async revokeSessions(token: string) {
+      const result = await fetcher(`${base}/logout?scope=global`, {
+        method: "POST",
+        headers: { apikey: serviceKey, authorization: `Bearer ${token}` },
+        signal: AbortSignal.timeout(10000),
+      });
+      if (!result.ok) throw Error("Session revocation incomplete");
+    },
     async deleteUser(id: string) {
       const result = await fetcher(
         `${base}/admin/users/${encodeURIComponent(id)}`,

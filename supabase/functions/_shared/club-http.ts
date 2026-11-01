@@ -1,5 +1,6 @@
 // These handlers are also exercised against local PostgreSQL in tests.
-type Client = { rpc(name: string, args?: Record<string, unknown>): PromiseLike<{data: any; error: any}> };
+import type {RpcClient as Client,ClubNotice,ClubResult} from './types.ts';
+type CityGroup={n:string;s:string;u:string;c:number;v:number;g:Record<string,number>;vg:Record<string,number>;gp:unknown[];la:number|null;lo:number|null;top:string[];topv:string[]};
 const origins = ['https://meetbookish.com','https://www.meetbookish.com','https://bookishapp.github.io','https://fictora.github.io','http://localhost:4321','http://127.0.0.1:4321','capacitor://localhost','https://localhost'];
 const uuid = /^[a-f\d]{8}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{12}$/i;
 const clean = (value: unknown, max: number) => typeof value === 'string' ? value.trim().slice(0,max) : '';
@@ -30,21 +31,21 @@ export function directoryHandler(client:Client, defaultFormat='clubs') {
   const clubs=data.filter(c=>c.visibility==='open'||c.visibility==='private').filter(c=>!q||`${c.name} ${c.city} ${c.state} ${(c.genres||[]).join(' ')}`.toLowerCase().includes(q));
   if(format==='clubs')return response(req,{ok:true,clubs});
   if(format==='verified')return response(req,{ok:true,clubs:clubs.filter(c=>c.verified).map(c=>({...c,listed:true,kind:'start'}))});
-  const groups=new Map<string,any>();
+  const groups=new Map<string,CityGroup>();
   for(const c of clubs){
    if(!c.city||!c.state)continue;
    const u=`${slug(c.city)}-${c.state.toLowerCase()}`;
    if(!groups.has(u))groups.set(u,{n:c.city,s:c.state,u,c:0,v:0,g:{},vg:{},gp:[],la:c.lat,lo:c.lng,top:[],topv:[]});
-   const city=groups.get(u);city.c++;if(c.verified)city.v++;
+   const city=groups.get(u)!;city.c++;if(c.verified)city.v++;
    (c.verified?city.topv:city.top).push(c.name);
    for(const genre of c.genres||[]){city.g[genre]=(city.g[genre]||0)+1;if(c.verified)city.vg[genre]=(city.vg[genre]||0)+1;}
   }
   const cities=[...groups.values()];
-  if(format==='cities')return response(req,cities.map(({top,topv,...c})=>c));
+  if(format==='cities')return response(req,cities.map(({top:_top,topv:_topv,...c})=>c));
   return response(req,{type:'FeatureCollection',features:cities.filter(c=>c.la!=null&&c.lo!=null).map(c=>({type:'Feature',geometry:{type:'Point',coordinates:[c.lo,c.la]},properties:{n:c.c,v:c.v,c:`${c.n}, ${c.s}`,u:c.u,top:c.top.slice(0,5).join('\u001f'),topv:c.topv.slice(0,5).join('\u001f')}}))});
  };
 }
-export function hostHandler(client:Client, notify?:(notice:any)=>Promise<boolean>){
+export function hostHandler(client:Client, notify?:(notice:ClubNotice)=>Promise<boolean>){
  return async(req:Request)=>{
   const rejected=guard(req,'POST');if(rejected)return rejected;
   const token=(req.headers.get('authorization')||'').replace(/^Bearer /,'');
@@ -56,12 +57,12 @@ export function hostHandler(client:Client, notify?:(notice:any)=>Promise<boolean
   if(action==='decide'&&(!uuid.test(b.request_id)||typeof b.approve!=='boolean'))return response(req,{ok:false,error:'request'},400);
   const {data,error}=await client.rpc('bookish_visibility_host',{p_token:token,p_action:action,p_ref:ref,p_visibility:b.visibility??null,p_request:b.request_id??null,p_approve:b.approve??null});
   if(error||!data)return response(req,{ok:false,error:'host_link'},403);
-  const {notice,...publicResult}=data;
+  const {notice,...publicResult}=data as ClubResult;
   if(notice&&notify)try{await notify(notice);}catch{/* decision is already saved */}
   return response(req,publicResult);
  };
 }
-export function joinHandler(client:Client, notify?:(notice:any)=>Promise<boolean>){
+export function joinHandler(client:Client, notify?:(notice:ClubNotice)=>Promise<boolean>){
  return async(req:Request)=>{
   const rejected=guard(req,'POST');if(rejected)return rejected;
   let b;try{b=await body(req);}catch(e){return badBody(req,e);}
@@ -75,8 +76,8 @@ export function joinHandler(client:Client, notify?:(notice:any)=>Promise<boolean
   const ipHash=[...new Uint8Array(hash)].map(b=>b.toString(16).padStart(2,'0')).join('');
   const {data,error}=await client.rpc('bookish_visibility_join',{p_ref:clean(b.club_id,80),p_email:email,p_name:clean(b.first_name,60),p_note:note,p_code:clean(b.invite_code,12).toUpperCase(),p_ip:ipHash});
   if(error||!data)return response(req,{ok:false,error:'unavailable'},503);
-  const {notice,...publicResult}=data;
+  const {notice,...publicResult}=data as ClubResult;
   if(notice&&notify)try{publicResult[notice.kind==='request'?'host_notified':'member_notified']=await notify(notice);}catch{publicResult[notice.kind==='request'?'host_notified':'member_notified']=false;}
-  return response(req,publicResult,data.ok?200:data.error==='rate_limited'?429:404);
+  return response(req,publicResult,publicResult.ok?200:publicResult.error==='rate_limited'?429:404);
  };
 }

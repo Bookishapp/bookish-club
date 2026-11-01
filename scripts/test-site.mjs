@@ -63,3 +63,19 @@ test('existing search contract, directory, app routes, and forms remain availabl
     assert.equal(choices.find(input => input.checked)?.value, 'private');
   }
 });
+
+
+test('account policy and support describe Bookish deletion and private shared data', () => {
+  const privacy = new JSDOM(fs.readFileSync(new URL('privacy/index.html', root), 'utf8')).window.document.body.textContent;
+  const support = new JSDOM(fs.readFileSync(new URL('support/index.html', root), 'utf8')).window.document.body.textContent;
+  const terms = new JSDOM(fs.readFileSync(new URL('terms/index.html', root), 'utf8')).window.document.body.textContent;
+  for (const text of [privacy, support, terms]) {
+    assert.doesNotMatch(text, /does not currently create user accounts|no user accounts|\u2014/);
+    assert.match(text, /Account settings/);
+  }
+  for (const term of ['one-time code', 'home city', 'ballot', 'reports', 'blocks', 'DELETE', 'Fictora', 'city areas', 'Resend']) assert.ok(privacy.includes(term), term);
+  assert.match(privacy, /does not delete a Fictora account/);
+  assert.match(privacy, /Anonymous does not mean unlinked/);
+  assert.match(support, /No social sign-in or password is required/);
+  assert.match(terms, /harassment, threats, hateful abuse/);
+});

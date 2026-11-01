@@ -21,8 +21,8 @@ function transport(db){
 async function edge(name,sb){
  let handler;const context=vm.createContext({Request,Response,Headers,URL,URLSearchParams,crypto,TextEncoder,Uint8Array,Date,console:{log(){},error(){}},fetch(){throw new Error('External network is forbidden in tests');},Deno:{env:{get:k=>k==='BOOKISH_SITE_URL'?'https://meetbookish.com':k==='SUPABASE_URL'?'https://local.test':undefined},serve:fn=>{handler=fn;}}});
  const cache=new Map();
- async function load(file){if(cache.has(file))return cache.get(file);if(file==='npm:@supabase/supabase-js@2'){const m=new vm.SyntheticModule(['createClient'],function(){this.setExport('createClient',()=>sb);},{context});cache.set(file,m);return m;}
- const m=new vm.SourceTextModule(stripTypeScriptTypes(fs.readFileSync(file,'utf8')),{context,identifier:file});cache.set(file,m);await m.link((specifier,parent)=>load(specifier.startsWith('npm:')?specifier:path.resolve(path.dirname(parent.identifier),specifier)));return m;}
+ async function load(file){if(cache.has(file))return cache.get(file);if(file==='@supabase/supabase-js'){const m=new vm.SyntheticModule(['createClient'],function(){this.setExport('createClient',()=>sb);},{context});cache.set(file,m);return m;}
+ const m=new vm.SourceTextModule(stripTypeScriptTypes(fs.readFileSync(file,'utf8')),{context,identifier:file});cache.set(file,m);await m.link((specifier,parent)=>load(specifier==='@supabase/supabase-js'?specifier:path.resolve(path.dirname(parent.identifier),specifier)));return m;}
  const mod=await load(path.join(root,`supabase/functions/${name}/index.ts`));await mod.evaluate();assert.equal(typeof handler,'function');return handler;
 }
 test('all actual public entrypoints reject hidden lookup and leak no hidden facts or private notices',async()=>{

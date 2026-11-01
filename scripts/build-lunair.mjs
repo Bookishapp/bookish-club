@@ -1,7 +1,7 @@
 // The shop uses provider-hosted checkout and delivery. Empty URLs stay unavailable.
 const esc = value => String(value).replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
 
-export function renderLunair({ siteUrl, checkout }) {
+export function renderLunair({ siteUrl, checkout, showcaseOnly = false }) {
   const base = new URL(siteUrl).pathname.replace(/\/$/, '');
   const asset = pathname => `${base}${pathname}`;
   const canonical = `${siteUrl.replace(/\/$/, '')}/lunair/`;
@@ -16,8 +16,8 @@ export function renderLunair({ siteUrl, checkout }) {
     destinations.add(destination.href);
     return `<a class="buy" data-checkout="${key}" href="${esc(destination.href)}">${label}</a>`;
   }
-  const packButton = buy('vol1', 'Get Vol. 1 for $9', 'Spells for Grown-Ups, Vol. 1');
-  const vaultButton = buy('grimoire', 'Get The Grimoire for $19', 'The Grimoire');
+  const packButton = showcaseOnly ? '' : buy('vol1', 'Get Vol. 1 for $9', 'Spells for Grown-Ups, Vol. 1');
+  const vaultButton = showcaseOnly ? '' : buy('grimoire', 'Get The Grimoire for $19', 'The Grimoire');
   const unavailable = !checkout.vol1 && !checkout.grimoire;
   const html = `<!doctype html>
 <html lang="en">
@@ -44,7 +44,7 @@ export function renderLunair({ siteUrl, checkout }) {
 <script src="${asset('/lunair.js')}" defer></script>
 </head>
 <body>
-<a class="skip" href="#shop">Skip to the shop</a>
+<a class="skip" href="#shop">Skip to the artwork</a>
 <main class="hub">
   <header class="intro">
     <div class="hello">
@@ -65,8 +65,9 @@ export function renderLunair({ siteUrl, checkout }) {
 
   <section id="shop" aria-labelledby="shop-heading">
     <h2 class="section-title" id="shop-heading">Keep a little magic close.</h2>
-    ${unavailable ? '<p class="opening-note">The wallpaper shop is opening soon. Have a look around while Midnight supervises.</p>' : ''}
-    <div class="products">
+    ${showcaseOnly ? '<p class="opening-note">A few illustrations from Lunair and Midnight. Keep a little magic close.</p>' : ''}
+    ${!showcaseOnly && unavailable ? '<p class="opening-note">The wallpaper shop is opening soon. Have a look around while Midnight supervises.</p>' : ''}
+    ${showcaseOnly ? '<p><a class="buy" href="' + asset('/app/') + '">Open Bookish</a></p>' : `<div class="products">
       <article class="product pack">
         <div class="product-top"><p class="edition">The wallpaper collection</p><p class="price">$9</p></div>
         <h3>Spells for<br>Grown-Ups</h3>
@@ -87,7 +88,7 @@ export function renderLunair({ siteUrl, checkout }) {
     <article class="merch">
       <div><h3>Off the screen,<br>into your everyday.</h3><p>Tees, prints, and other little comforts.</p></div>
       <span class="soon">Merch coming soon</span>
-    </article>
+    </article>`}
   </section>
 
   <nav class="elsewhere" aria-label="More from Lunair and Midnight">

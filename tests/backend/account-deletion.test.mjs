@@ -78,3 +78,9 @@ test('shared Fictora identity is refused before Apple revocation or Auth deletio
  assert.equal(r.status,403);
  assert.deepEqual(d.calls,[]);
 });
+test('deletion permits native origins, revokes sessions before deletion, and preserves account if revocation fails',async()=>{
+ const d=deps();d.revokeSessions=async()=>{d.calls.push('sessions-revoked');};
+ const req=request();req.headers.set('origin','capacitor://localhost');const r=await handleAccountDeletion(req,d);
+ assert.equal(r.headers.get('access-control-allow-origin'),'capacitor://localhost');assert.deepEqual(d.calls,['sessions-revoked','reader-id']);
+ const failing=deps();failing.revokeSessions=async()=>{throw Error('unavailable');};assert.equal((await handleAccountDeletion(request(),failing)).status,503);assert.deepEqual(failing.calls,[]);
+});

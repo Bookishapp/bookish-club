@@ -13,25 +13,16 @@ async function render(options = {}) {
   return (await import(file)).renderLunair({ siteUrl: 'https://meetbookish.com', checkout, ...options });
 }
 
-test('shop build produces an accessible page with configured checkout states and real local assets', () => {
+test('release builds an accessible artwork showcase without prices or checkout', () => {
   assert.ok(fs.existsSync(pageFile), 'build emits /lunair/index.html');
   const document = new JSDOM(fs.readFileSync(pageFile, 'utf8')).window.document;
   assert.equal(document.querySelectorAll('h1').length, 1);
   assert.match(document.querySelector('h1').textContent, /Lunair.*Midnight/s);
-  const configured = JSON.parse(fs.readFileSync(new URL('public/lunair/checkout.json', root), 'utf8'));
-  for (const key of ['vol1', 'grimoire']) {
-    const button = document.querySelector(`[data-checkout="${key}"]`);
-    if (configured[key]) {
-      assert.equal(button.tagName, 'A');
-      assert.equal(button.href, new URL(configured[key]).href);
-    } else {
-      assert.equal(button.tagName, 'BUTTON');
-      assert.equal(button.disabled, true);
-    }
-  }
-  assert.match(document.body.textContent, /30 wallpapers/);
-  assert.match(document.body.textContent, /\$9/);
-  assert.match(document.body.textContent, /\$19/);
+  assert.equal(document.querySelector('[data-checkout]'), null);
+  assert.equal(document.querySelector('.price'), null);
+  assert.doesNotMatch(document.body.textContent, /\$\d|payment|lifetime access|coming soon/i);
+  assert.ok(document.querySelector('a[href$="/app/"]'));
+  assert.equal(document.querySelectorAll('.posters img').length, 3, 'approved artwork remains');
   const base = new URL(document.querySelector('link[rel="canonical"]').href).pathname.replace(/\/lunair\/$/, '');
   for (const element of document.querySelectorAll('img[src],script[src],link[rel="stylesheet"]')) {
     const asset = element.getAttribute('src') || element.getAttribute('href');

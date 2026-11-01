@@ -76,7 +76,7 @@ export function edge(name, options = {}) {
   });
   const file = new URL(`../../supabase/functions/${name}/index.ts`, import.meta.url);
   const source = fs.readFileSync(file, "utf8");
-  const dependency = 'import { createClient } from "npm:@supabase/supabase-js@2";';
+  const dependency = 'import { createClient } from "@supabase/supabase-js";';
   assert.equal(source.split(dependency).length, 2, "expected one Supabase transport import");
   vm.runInContext(stripTypeScriptTypes(source.replace(dependency, "")), context, { filename: file.pathname });
   assert.equal(typeof handler, "function");

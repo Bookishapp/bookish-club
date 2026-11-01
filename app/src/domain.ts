@@ -1,7 +1,7 @@
 import { sourceURLUpgrades } from './source-urls.ts';
 
 export interface Club {
-  visibility?: 'open'|'private'; current_book?: {title:string;authors:string[]}|null; id: string; name: string; city: string; state: string; genres: string[];
+  club_id?: string; visibility?: 'open'|'private'; current_book?: {title:string;authors:string[]}|null; id: string; name: string; city: string; state: string; genres: string[];
   vibe: string | null; cadence: string | null; format: string | null;
   source_name: string | null; source_url: string | null; last_seen: string;
   lat: number | null; lng: number | null; verified: boolean; city_path?: string;
@@ -64,7 +64,7 @@ export function validateFeed(kind: string, value: unknown): Club[] | Book[] | Co
     }
     if (!str(v.name) || !str(v.city) || !/^[A-Z]{2}$/.test(v.state)) throw new Error('clubs schema');
     // Only city-level public facts cross into the app; never retain arbitrary remote fields.
-    return { id: str(v.id, 80), name: str(v.name, 160), city: str(v.city, 80), state: v.state,
+    return { id: str(v.id, 80), club_id: typeof v.club_id==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v.club_id)?v.club_id:undefined, name: str(v.name, 160), city: str(v.city, 80), state: v.state,
       genres: strings(v.genres), vibe: optional(v.vibe), cadence: optional(v.cadence), format: optional(v.format),
       source_name: optional(v.source_name), source_url: safeURL(sourceURLUpgrades.get(v.source_url) || v.source_url), last_seen: str(v.last_seen, 10),
       lat: coord(v.lat, 90), lng: coord(v.lng, 180), verified: v.verified === true, visibility: v.visibility === 'private' ? 'private' : 'open', current_book: v.current_book && typeof v.current_book.title==='string' ? {title:str(v.current_book.title,200),authors:strings(v.current_book.authors)} : null,

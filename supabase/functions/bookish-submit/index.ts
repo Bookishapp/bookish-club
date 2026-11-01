@@ -6,7 +6,7 @@
 // rate limits, strict validation and size caps.
 // Double opt-in: if BOOKISH_EMAIL_FROM + RESEND_API_KEY are set, a confirm
 // link is emailed; otherwise rows stay `pending` until email is switched on.
-import { createClient } from "npm:@supabase/supabase-js@2";
+import { createClient } from "@supabase/supabase-js";
 
 const ALLOWED_ORIGINS = [
   "https://meetbookish.com",
