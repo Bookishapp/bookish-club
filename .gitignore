@@ -9,3 +9,9 @@ supabase/.temp/
 data/raw/*.json
 
 app/web-dist/
+# Backend credentials stay in the secret store.
+.env
+.env.*
+!.env.example
+!supabase/.env.bookish.example
+supabase/.env

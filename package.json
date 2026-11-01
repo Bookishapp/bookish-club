@@ -9,6 +9,14 @@
     "build": "node scripts/build.mjs",
     "seed": "node scripts/sources/library-other.mjs; node scripts/sources/bookstores.mjs; node scripts/merge.mjs",
     "build:web": "npm run build && node scripts/build-web.mjs",
-    "test:web": "node --test scripts/test-site.mjs scripts/test-lunair.mjs scripts/test-web.mjs"
+    "test:web": "node --test scripts/test-site.mjs scripts/test-lunair.mjs scripts/test-web.mjs",
+    "test": "node --test tests/backend/*.test.mjs",
+    "check:edge": "deno check --no-config supabase/functions/bookish-delete-account/index.ts supabase/functions/bookish-house-rules/index.ts"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.3.16"
+  },
+  "engines": {
+    "node": ">=24"
   }
 }
