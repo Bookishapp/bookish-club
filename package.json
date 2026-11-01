@@ -11,10 +11,13 @@
     "build:web": "npm run build && node scripts/build-web.mjs",
     "test:web": "node --test scripts/test-site.mjs scripts/test-lunair.mjs scripts/test-web.mjs",
     "test": "node --test tests/backend/*.test.mjs",
-    "check:edge": "deno check --no-config supabase/functions/bookish-delete-account/index.ts supabase/functions/bookish-house-rules/index.ts"
+    "check:edge": "deno check --no-config supabase/functions/bookish-delete-account/index.ts supabase/functions/bookish-house-rules/index.ts",
+    "test:backend": "node --test tests/backend/*.test.mjs",
+    "test:visibility": "node --experimental-vm-modules --test tests/visibility/*.test.mjs",
+    "test:server": "node --test tests/visibility/database.test.mjs tests/visibility/http.test.mjs"
   },
   "devDependencies": {
-    "@electric-sql/pglite": "0.3.16"
+    "@electric-sql/pglite": "0.5.10"
   },
   "engines": {
     "node": ">=24"

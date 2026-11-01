@@ -35,9 +35,9 @@ export async function shareClub(title:string,url:string) {
 export async function remoteJSON(url:string, body?:unknown) {
   if (isNative) {
     // Native HTTP avoids browser CORS without broadening the edge functions' origin allow-list.
-    const response = await CapacitorHttp.request({url,method:body?'POST':'GET',headers:{'Content-Type':'application/json','Accept':'application/json'},...(body?{data:body}:{}),responseType:'json',connectTimeout:12000,readTimeout:15000});
+    const response = await CapacitorHttp.request({url,method:body?'POST':'GET',headers:{'Content-Type':'application/json','Accept':'application/json','Cache-Control':'no-cache'},...(body?{data:body}:{}),responseType:'json',connectTimeout:12000,readTimeout:15000});
     return {ok:response.status>=200 && response.status<300,data:response.data};
   }
-  const r = await fetch(url,{method:body?'POST':'GET',...(body?{body:JSON.stringify(body),headers:{'Content-Type':'application/json'}}:{}),signal:AbortSignal.timeout(15000)});
+  const r = await fetch(url,{cache:'no-store',method:body?'POST':'GET',...(body?{body:JSON.stringify(body),headers:{'Content-Type':'application/json'}}:{}),signal:AbortSignal.timeout(15000)});
   return {ok:r.ok,data:await r.json()};
 }

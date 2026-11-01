@@ -1,7 +1,7 @@
 // "Stuck on what to read next?" Cold-start taps + deterministic picks. No dependencies.
 // Ranking is fixed rules over data/books.json (no per-request calls). Community
-// numbers come only from data/community.json, which the build fills from the
-// bookish-community function: every row there already passed the privacy floor.
+// numbers come from a fresh bookish-community response that already passed
+// the privacy floor and excludes Hidden clubs.
 // Taps and saved books live in localStorage on this device only.
 (() => {
   const root = document.getElementById("rn");
@@ -22,7 +22,7 @@
   let BOOKS = [], BY = new Map(), COMM = { city: [], state: [], national: [], next: [] };
   const ready = Promise.all([
     fetch(`${BASE}/data/books.json`).then((r) => r.json()),
-    fetch(`${BASE}/data/community.json`).then((r) => r.ok ? r.json() : COMM).catch(() => COMM),
+    fetch("https://wqnrortftkffmbeugjky.supabase.co/functions/v1/bookish-community",{cache:"no-store"}).then((r) => r.ok ? r.json() : COMM).catch(() => COMM),
   ]).then(([b, c]) => { BOOKS = b; BY = new Map(b.map((x) => [x.id, x])); COMM = c; });
 
   // ---------- covers ----------
@@ -199,7 +199,7 @@
     const slug = store.get("bk_city", null); // set by site.js on the last city page this reader opened
     let place = null;
     if (slug && (COMM.city.length || COMM.state.length)) {
-      const cities = await fetch(`${BASE}/data/cities.json`).then((r) => r.json()).catch(() => []);
+      const cities = await window.bookishDiscovery("cities").catch(() => []);
       const c = cities.find((x) => x.u === slug);
       if (c) place = c;
     }

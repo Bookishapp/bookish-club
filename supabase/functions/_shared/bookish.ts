@@ -57,46 +57,16 @@ export async function sendEmail(to: string, subject: string, text: string): Prom
     headers: { authorization: `Bearer ${key}`, "content-type": "application/json" },
     body: JSON.stringify({ from, to: [to], subject, text }),
   });
-  if (!res.ok) console.error("email failed", res.status, await res.text());
+  if (!res.ok) console.error("email failed", res.status);
   return res.ok;
 }
 
-// ---------- verified clubs ----------
-// A club is VERIFIED ("On Bookish") when a host's claim or start submission
-// for it is confirmed (double opt-in). Everything else in the directory is
-// UNCLAIMED: listed from public library / bookstore calendars, and nobody
-// can request to join it on Bookish.
-// deno-lint-ignore no-explicit-any
-export async function isVerified(client: any, club_ref: string): Promise<boolean> {
-  const { count } = await client.from("bookish_submissions").select("id", { count: "exact", head: true })
-    .eq("club_ref", club_ref).in("kind", ["claim", "start"]).eq("status", "confirmed");
-  return (count ?? 0) > 0;
+// Fresh, visibility-aware discovery, shared with legacy callers.
+export async function listVerified(client: any): Promise<any[]> {
+  const {data,error}=await client.rpc("bookish_visibility_directory");
+  if(error)throw new Error("Discovery unavailable");
+  return (data??[]).filter((c:any)=>c.verified && ["open","private"].includes(c.visibility)).map((c:any)=>({...c,listed:true,kind:"start"}));
 }
-
-export type VerifiedClub = {
-  id: string; kind: "claim" | "start"; listed: boolean;
-  name?: string; city?: string; state?: string; genre?: string; cadence?: string; format?: string;
-};
-// deno-lint-ignore no-explicit-any
-export async function listVerified(client: any): Promise<VerifiedClub[]> {
-  const { data, error } = await client.from("bookish_submissions")
-    .select("kind, club_ref, payload, confirmed_at")
-    .in("kind", ["claim", "start"]).eq("status", "confirmed").not("club_ref", "is", null)
-    .order("confirmed_at", { ascending: false }).limit(5000);
-  if (error) throw new Error(error.message);
-  const out = new Map<string, VerifiedClub>();
-  for (const r of data ?? []) {
-    if (out.has(r.club_ref)) continue; // newest confirmed submission wins
-    const p = (r.payload ?? {}) as Record<string, string>;
-    const listed = p.list_in_city !== "no";
-    const v: VerifiedClub = { id: r.club_ref, kind: r.kind, listed };
-    if (r.kind === "start" && listed) {
-      Object.assign(v, {
-        name: (p.club_name ?? "").slice(0, 140), city: (p.city ?? "").slice(0, 80), state: (p.state ?? "").toUpperCase().slice(0, 2),
-        genre: p.genre || undefined, cadence: p.cadence || undefined, format: p.format || undefined,
-      });
-    }
-    out.set(r.club_ref, v);
-  }
-  return [...out.values()];
+export async function isVerified(client:any,ref:string):Promise<boolean>{
+  return (await listVerified(client)).some((c:any)=>c.id===ref);
 }

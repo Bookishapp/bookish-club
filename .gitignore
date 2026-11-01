@@ -15,3 +15,6 @@ app/web-dist/
 !.env.example
 !supabase/.env.bookish.example
 supabase/.env
+# Python migration guard caches
+__pycache__/
+*.pyc
