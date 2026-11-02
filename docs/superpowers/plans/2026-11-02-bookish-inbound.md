@@ -61,7 +61,7 @@
 - [x] Run `npm run test:release`, inspect failures by name, and verify `git diff --check`.
 - [x] Request an independent whole-change review, and address material findings with reproducing tests.
 - [x] Write a short report with validation and Ted's remaining setup work.
-- [ ] Commit, push `feat/inbound-forward`, create the PR with `gh pr create`, and verify it remains open and unmerged.
+- [x] Commit, push `feat/inbound-forward`, create the PR with `gh pr create`, and verify it remains open and unmerged.
 
 ## Progress
 
@@ -76,3 +76,5 @@
 - Review: no remaining material findings. Operator limitations for unsupported attachments and unresolved sends are documented.
 - Final `npm run test:release` passed: backend 131, confirmation 26, server 19, operations 5, visibility 26, website 18, app unit 20, UI smoke, builds, lint, and all 14 Deno entrypoints.
 - Existing hash manifest included a stale auth entry from committed fix #34; verified no auth source changes and refreshed that hash with the inbound additions.
+
+- Implementation committed as `d7665ca`, pushed to `feat/inbound-forward`, and opened as [PR #35](https://github.com/Bookishapp/bookish-club/pull/35) against `main`. No merge or deployment.
