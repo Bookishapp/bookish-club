@@ -225,12 +225,11 @@ test('paginates attachment metadata and includes files from every page', async (
 });
 
 test('unavailable attachments and malformed upstream mail stay retryable without forwarding partial content', async () => {
-  for (const mode of ['missing-download', 'invalid-size', 'invalid-page', 'repeated-cursor', 'insecure-download', 'wrong-id', 'invalid-sender']) {
+  for (const mode of ['missing-download', 'invalid-size', 'invalid-page', 'repeated-cursor', 'insecure-download', 'wrong-id']) {
     const base = fixture();
     const normal = base.deps.fetcher;
     base.deps.fetcher = async (url, options) => {
       if (String(url).includes('?html_format') && mode === 'wrong-id') return Response.json({ ...email, id: 'wrong' });
-      if (String(url).includes('?html_format') && mode === 'invalid-sender') return Response.json({ ...email, from: 'reader@example.test\r\nInjected' });
       if (String(url).includes('/attachments?')) {
         if (mode === 'invalid-page') return Response.json({ data: [], has_more: true });
         return Response.json({ data: [{ id: 'first', filename: 'one.txt', size: mode === 'invalid-size' ? -1 : 1, download_url: `${mode === 'insecure-download' ? 'http' : 'https'}://download.test/one` }], has_more: mode === 'repeated-cursor' });
@@ -295,13 +294,14 @@ test('deployed entrypoint reads allowed inbound secrets and wires service RPCs t
     readBookishSecret: reader,
     sb: { rpc: async (name, args) => {
       rpc.push({ name, args });
-      return { data: name === 'bookish_inbound_begin' ? 'send' : null, error: null };
+      return { data: name === 'bookish_inbound_status' ? 'new' : name === 'bookish_inbound_begin' ? 'send' : null, error: null };
     } },
     Deno: { serve: callback => { handler = callback; } },
   });
   assert.equal((await handler(request())).status, 200);
   assert.deepEqual(reads.sort(), ['BOOKISH_INBOX_FORWARD_TO', 'RESEND_API_KEY', 'RESEND_INBOUND_WEBHOOK_SECRET']);
   assert.deepEqual(JSON.parse(JSON.stringify(rpc)), [
+    { name: 'bookish_inbound_status', args: { p_email_id: id } },
     { name: 'bookish_inbound_begin', args: { p_email_id: id } },
     { name: 'bookish_inbound_complete', args: { p_email_id: id } },
   ]);

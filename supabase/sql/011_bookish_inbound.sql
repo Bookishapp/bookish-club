@@ -29,6 +29,18 @@ create table if not exists bookish_private.inbound_emails(
 alter table bookish_private.inbound_emails enable row level security;
 revoke all on bookish_private.inbound_emails from public,anon,authenticated,service_role;
 
+create or replace function public.bookish_inbound_status(p_email_id uuid) returns text
+language plpgsql security definer set search_path='' as $$
+declare attempt bookish_private.inbound_emails;
+begin
+ if p_email_id is null then raise exception 'An inbound email identifier is required.' using errcode='22023';end if;
+ select * into attempt from bookish_private.inbound_emails where email_id=p_email_id;
+ if not found then return 'new';end if;
+ if attempt.sent_at is not null then return 'done';end if;
+ if attempt.first_attempt_at<=clock_timestamp()-interval '23 hours' then return 'expired';end if;
+ return 'send';
+end $$;
+
 create or replace function public.bookish_inbound_begin(p_email_id uuid) returns text
 language plpgsql security definer set search_path='' as $$
 declare attempt bookish_private.inbound_emails;
@@ -48,8 +60,8 @@ begin
  update bookish_private.inbound_emails set sent_at=coalesce(sent_at,clock_timestamp()) where email_id=p_email_id;
  if not found then raise exception 'Inbound email attempt is missing.' using errcode='22023';end if;
 end $$;
-revoke all on function public.bookish_inbound_begin(uuid),public.bookish_inbound_complete(uuid) from public,anon,authenticated,service_role;
-grant execute on function public.bookish_inbound_begin(uuid),public.bookish_inbound_complete(uuid) to service_role;
+revoke all on function public.bookish_inbound_status(uuid),public.bookish_inbound_begin(uuid),public.bookish_inbound_complete(uuid) from public,anon,authenticated,service_role;
+grant execute on function public.bookish_inbound_status(uuid),public.bookish_inbound_begin(uuid),public.bookish_inbound_complete(uuid) to service_role;
 
 -- Preserve the chunk 20 allowlist and add only the inbound configuration names.
 create or replace function public.bookish_get_secret(p_name text) returns text

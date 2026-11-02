@@ -3,10 +3,12 @@ type InboundDependencies = {
   secret: Secret;
   apiKey: Secret;
   forwardTo: Secret;
+  status?: (id: string) => Promise<"new" | "send" | "done" | "expired">;
   begin: (id: string) => Promise<"send" | "done" | "expired">;
   complete: (id: string) => Promise<void>;
   fetcher?: typeof fetch;
   now?: () => number;
+  logError?: (message: string) => void;
 };
 type Attachment = {
   id: string;
@@ -22,6 +24,7 @@ type ForwardAttachment = {
   content_type?: string;
   content_id?: string;
 };
+class DeliveryReviewRequired extends Error {}
 const API = "https://api.resend.com";
 const MAX_ATTACHMENTS = 10 * 1024 * 1024;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -44,9 +47,16 @@ const escapeHtml = (value: string) =>
 function mailbox(value: string): string | undefined {
   if (/[\r\n]/.test(value)) return;
   const address = (value.match(/^[^<>]*<([^<>]+)>\s*$/)?.[1] ?? value).trim();
-  return /^[^\s@<>()",;:]+@[a-z0-9.-]+\.[a-z]{2,}$/i.test(address)
-    ? address.toLowerCase()
-    : undefined;
+  const domain = address.match(/^[^\s@<>()",;:]+@([^@]+)$/)?.[1];
+  if (!domain || domain.length > 253) return;
+  const labels = domain.split(".");
+  if (
+    labels.length < 2 ||
+    !labels.every((label) =>
+      /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/i.test(label)
+    )
+  ) return;
+  return address.toLowerCase();
 }
 
 // Svix signs the original bytes, with a five-minute replay tolerance.
@@ -195,6 +205,12 @@ async function loadAttachments(
 
 export function inboundHandler(deps: InboundDependencies) {
   const fetcher = deps.fetcher ?? fetch;
+  const expired = (emailId: string) => {
+    (deps.logError ?? console.error)(
+      `Inbound email ${emailId} expired unsent after 23 hours; operator review required.`,
+    );
+    return reply(503, "Inbound delivery requires operator review.");
+  };
   return async (req: Request): Promise<Response> => {
     if (req.method !== "POST") return reply(405, "POST required.");
     try {
@@ -230,6 +246,10 @@ export function inboundHandler(deps: InboundDependencies) {
       ]);
       const to = target ? mailbox(target) : undefined;
       if (!key || !to) return reply(503, "Inbound mail is not configured.");
+      // Inspect existing attempts without starting the clock for a new send.
+      const existing = await deps.status?.(emailId);
+      if (existing === "done") return reply(200, "Already forwarded.");
+      if (existing === "expired") return expired(emailId);
       const api = async (path: string): Promise<unknown> => {
         const response = await fetcher(`${API}${path}`, {
           headers: { authorization: `Bearer ${key}` },
@@ -257,19 +277,20 @@ export function inboundHandler(deps: InboundDependencies) {
           const address = typeof value === "string"
             ? mailbox(value)
             : undefined;
-          if (!address) throw Error("Invalid recipient");
+          if (!address) continue;
           if (address.endsWith("@meetbookish.com")) recipients.add(address);
         }
       }
       if (!recipients.size) return reply(200, "Recipient ignored.");
       const sender = mailbox(email.from);
-      if (!sender) throw Error("Invalid sender");
-      const domain = sender.split("@")[1];
-      if (
-        domain === "meetbookish.com" || domain.endsWith(".meetbookish.com") ||
-        sender === to
-      ) {
-        return reply(200, "Loop ignored.");
+      if (sender) {
+        const domain = sender.split("@")[1];
+        if (
+          domain === "meetbookish.com" || domain.endsWith(".meetbookish.com") ||
+          sender === to
+        ) {
+          return reply(200, "Loop ignored.");
+        }
       }
       const { files, omitted } = await loadAttachments(emailId, api, fetcher);
       const header = `From: ${email.from} To: ${[...recipients].join(", ")}`;
@@ -279,7 +300,7 @@ export function inboundHandler(deps: InboundDependencies) {
       const payload = {
         from: "Bookish Inbox <inbox@meetbookish.com>",
         to: [to],
-        reply_to: sender,
+        ...(sender ? { reply_to: sender } : {}),
         subject: `[Bookish] ${email.subject || "(no subject)"}`,
         text: `${header}\n\n${email.text ?? ""}${note}`,
         ...(email.html
@@ -295,26 +316,90 @@ export function inboundHandler(deps: InboundDependencies) {
       const state = await deps.begin(emailId);
       if (state === "done") return reply(200, "Already forwarded.");
       if (state !== "send") {
-        return reply(503, "Inbound delivery requires operator review.");
+        return expired(emailId);
       }
-      const sent = await fetcher(`${API}/emails`, {
-        method: "POST",
-        headers: {
-          authorization: `Bearer ${key}`,
-          "content-type": "application/json",
-          "Idempotency-Key": `bookish-inbound/${emailId}`,
-        },
-        body: JSON.stringify(payload),
-        signal: AbortSignal.timeout(20000),
-      });
-      if (!sent.ok) throw Error("Forward unavailable");
-      const result: unknown = await sent.json();
-      if (!record(result) || typeof result.id !== "string" || !result.id) {
-        throw Error("Invalid send receipt");
+      const send = async (
+        message: Record<string, unknown>,
+        variant = "",
+      ): Promise<boolean> => {
+        const sent = await fetcher(`${API}/emails`, {
+          method: "POST",
+          headers: {
+            authorization: `Bearer ${key}`,
+            "content-type": "application/json",
+            "Idempotency-Key": `bookish-inbound/${emailId}${variant}`,
+          },
+          body: JSON.stringify(message),
+          signal: AbortSignal.timeout(20000),
+        });
+        if (!sent.ok) {
+          if (sent.status === 409) {
+            const error: unknown = await sent.json().catch(() => null);
+            if (
+              record(error) && error.name === "concurrent_idempotent_requests"
+            ) throw Error("Concurrent forward pending");
+            if (
+              record(error) && error.name === "invalid_idempotent_request"
+            ) {
+              (deps.logError ?? console.error)(
+                `Inbound email ${emailId} has an idempotency payload conflict; operator review required.`,
+              );
+              throw new DeliveryReviewRequired();
+            }
+          }
+          if (sent.status >= 400 && sent.status < 500 && sent.status !== 429) {
+            return false;
+          }
+          throw Error("Forward unavailable");
+        }
+        const result: unknown = await sent.json();
+        if (!record(result) || typeof result.id !== "string" || !result.id) {
+          throw Error("Invalid send receipt");
+        }
+        return true;
+      };
+      if (!await send(payload)) {
+        const fallbackNote = files.length
+          ? `\n\nAttachments omitted (forward rejected):\n${
+            files.map((file) => file.filename).join("\n")
+          }`
+          : "";
+        const withoutAttachments = {
+          ...payload,
+          attachments: undefined,
+          text: `${payload.text}${fallbackNote}`,
+          ...(payload.html && fallbackNote
+            ? {
+              html: `${payload.html}<pre>${
+                escapeHtml(fallbackNote.trim())
+              }</pre>`,
+            }
+            : {}),
+        };
+        if (!await send(withoutAttachments, "/without-attachments")) {
+          const notice = {
+            from: payload.from,
+            to: payload.to,
+            subject: "[Bookish] Inbound delivery notice",
+            text:
+              `Bookish could not forward the original email.\n\n${header}\nSubject: ${
+                email.subject || "(no subject)"
+              }\n\n${email.text ?? ""}${note}${fallbackNote}`,
+          };
+          if (!await send(notice, "/notice")) {
+            (deps.logError ?? console.error)(
+              `Inbound email ${emailId} permanently rejected, including its plain-text notice; operator review required.`,
+            );
+            return reply(200, "Inbound delivery requires operator review.");
+          }
+        }
       }
       await deps.complete(emailId);
       return reply(200, "Forwarded.");
-    } catch {
+    } catch (error) {
+      if (error instanceof DeliveryReviewRequired) {
+        return reply(200, "Inbound delivery requires operator review.");
+      }
       // Never include provider bodies, email content, addresses, or secret values.
       return reply(503, "Inbound delivery is unavailable. Please retry.");
     }

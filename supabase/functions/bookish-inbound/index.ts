@@ -6,6 +6,15 @@ Deno.serve(inboundHandler({
   secret: () => readBookishSecret("RESEND_INBOUND_WEBHOOK_SECRET"),
   apiKey: () => readBookishSecret("RESEND_API_KEY"),
   forwardTo: () => readBookishSecret("BOOKISH_INBOX_FORWARD_TO"),
+  status: async (id) => {
+    const { data, error } = await sb.rpc("bookish_inbound_status", {
+      p_email_id: id,
+    });
+    if (error || !["new", "send", "done", "expired"].includes(data)) {
+      throw Error("Inbound state unavailable");
+    }
+    return data as "new" | "send" | "done" | "expired";
+  },
   begin: async (id) => {
     const { data, error } = await sb.rpc("bookish_inbound_begin", {
       p_email_id: id,

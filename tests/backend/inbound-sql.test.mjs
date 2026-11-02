@@ -10,6 +10,7 @@ async function role(name,sql,args=[]){
  try{return await q(sql,args);}finally{await db.exec('reset role');}
 }
 const begin=async id=>(await role('service_role','select public.bookish_inbound_begin($1) v',[id]))[0].v;
+const status=async id=>(await role('service_role','select public.bookish_inbound_status($1) v',[id]))[0].v;
 const complete=id=>role('service_role','select public.bookish_inbound_complete($1)',[id]);
 
 before(async()=>{
@@ -34,6 +35,41 @@ before(async()=>{
  if(patch)await db.exec(patch);
 });
 after(()=>db?.close());
+
+test('inbound status distinguishes absent, pending, expired, and completed deliveries without writes',async()=>{
+ const absent=crypto.randomUUID(),pending=crypto.randomUUID(),expired=crypto.randomUUID(),done=crypto.randomUUID();
+ await q(`insert into bookish_private.inbound_emails(email_id,first_attempt_at,sent_at) values
+  ($1,clock_timestamp()-interval '22 hours 59 minutes',null),
+  ($2,clock_timestamp()-interval '23 hours',null),
+  ($3,clock_timestamp()-interval '2 years',clock_timestamp()-interval '1 year')`,[pending,expired,done]);
+ const before=await q('select * from bookish_private.inbound_emails order by email_id');
+ await db.exec('begin transaction read only');
+ try{
+  await db.exec('set local role service_role');
+  for(const [id,want] of [[absent,'new'],[pending,'send'],[expired,'expired'],[done,'done']]){
+   assert.equal((await q('select public.bookish_inbound_status($1) v',[id]))[0].v,want);
+  }
+ }finally{await db.exec('rollback');}
+ assert.deepEqual(await q('select * from bookish_private.inbound_emails order by email_id'),before);
+ assert.equal((await q('select count(*)::int n from bookish_private.inbound_emails where email_id=$1',[absent]))[0].n,0);
+});
+
+test('inbound status measures retry expiry with wall-clock time within a transaction',async()=>{
+ const id=crypto.randomUUID();
+ await db.exec('begin');
+ try{
+  await q("insert into bookish_private.inbound_emails(email_id,first_attempt_at) values($1,transaction_timestamp()-interval '23 hours'+interval '30 milliseconds')",[id]);
+  await new Promise(resolve=>setTimeout(resolve,60));
+  await db.exec('set local role service_role');
+  assert.equal((await q('select public.bookish_inbound_status($1) v',[id]))[0].v,'expired');
+ }finally{await db.exec('rollback');}
+});
+
+test('inbound status rejects a null identifier without creating delivery state',async()=>{
+ const before=await q('select * from bookish_private.inbound_emails order by email_id');
+ await assert.rejects(status(null),{code:'22023'});
+ assert.deepEqual(await q('select * from bookish_private.inbound_emails order by email_id'),before);
+});
 
 test('inbound begin preserves one first-attempt time across provider retries',async()=>{
  const id=crypto.randomUUID();
@@ -76,6 +112,7 @@ test('completion requires a recorded attempt and null identifiers cannot create 
 test('only service-role RPCs can access inbound state and every RPC has a fixed empty search path',async()=>{
  const id=crypto.randomUUID();await begin(id);
  for(const r of ['anon','authenticated']){
+  await assert.rejects(role(r,'select public.bookish_inbound_status($1)',[id]),/permission denied/i);
   await assert.rejects(role(r,'select public.bookish_inbound_begin($1)',[id]),/permission denied/i);
   await assert.rejects(role(r,'select public.bookish_inbound_complete($1)',[id]),/permission denied/i);
  }
@@ -86,7 +123,7 @@ test('only service-role RPCs can access inbound state and every RPC has a fixed 
   await assert.rejects(role(r,'delete from bookish_private.inbound_emails where email_id=$1',[id]),/permission denied/i);
  }
  assert.equal((await q("select relrowsecurity from pg_class where oid='bookish_private.inbound_emails'::regclass"))[0].relrowsecurity,true);
- for(const name of ['bookish_inbound_begin(uuid)','bookish_inbound_complete(uuid)','bookish_get_secret(text)']){
+ for(const name of ['bookish_inbound_status(uuid)','bookish_inbound_begin(uuid)','bookish_inbound_complete(uuid)','bookish_get_secret(text)']){
   assert.deepEqual((await q('select prosecdef,proconfig from pg_proc where oid=$1::regprocedure',[`public.${name}`]))[0],{prosecdef:true,proconfig:['search_path=""']});
  }
 });
@@ -127,12 +164,15 @@ test('reapplying inbound SQL preserves sent and unsent rows while restoring rest
  const sent=crypto.randomUUID(),pending=crypto.randomUUID();
  await begin(sent);await complete(sent);await begin(pending);
  const before=await q('select * from bookish_private.inbound_emails where email_id=any($1::uuid[]) order by email_id',[[sent,pending]]);
- await db.exec('grant all on bookish_private.inbound_emails to public,anon,authenticated,service_role;grant execute on function public.bookish_inbound_begin(uuid),public.bookish_inbound_complete(uuid),public.bookish_get_secret(text) to public,anon,authenticated');
+ await db.exec('grant all on bookish_private.inbound_emails to public,anon,authenticated,service_role;grant execute on function public.bookish_inbound_status(uuid),public.bookish_inbound_begin(uuid),public.bookish_inbound_complete(uuid),public.bookish_get_secret(text) to public,anon,authenticated');
  await db.exec(patch);await db.exec(patch);
  assert.deepEqual(await q('select * from bookish_private.inbound_emails where email_id=any($1::uuid[]) order by email_id',[[sent,pending]]),before);
+ assert.equal(await status(sent),'done');assert.equal(await status(pending),'send');
+ assert.equal(await status(crypto.randomUUID()),'new');
  assert.equal(await begin(sent),'done');assert.equal(await begin(pending),'send');
  for(const r of ['anon','authenticated','service_role'])await assert.rejects(role(r,'select * from bookish_private.inbound_emails'),/permission denied/i);
  for(const r of ['anon','authenticated']){
+  await assert.rejects(role(r,'select public.bookish_inbound_status($1)',[sent]),/permission denied/i);
   await assert.rejects(role(r,'select public.bookish_inbound_begin($1)',[sent]),/permission denied/i);
   await assert.rejects(role(r,'select public.bookish_inbound_complete($1)',[sent]),/permission denied/i);
   await assert.rejects(role(r,"select public.bookish_get_secret('RESEND_API_KEY')"),/permission denied/i);
