@@ -10,7 +10,9 @@ async function auth(path: string, body: unknown, token = key) {
   const r = await fetch(`${url}/auth/v1/${path}`, {
     method: "POST",
     headers: {
-      apikey: publicKey || key,
+      // Service calls need the secret key as apikey too: the hosted gateway
+      // rejects a publishable apikey paired with a secret bearer (403).
+      apikey: token === key ? key : publicKey || key,
       authorization: `Bearer ${token}`,
       "content-type": "application/json",
     },
