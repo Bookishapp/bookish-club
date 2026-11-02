@@ -2,13 +2,15 @@
 
 Target `tkrsrnlasinmlftkcufi`, URL `https://tkrsrnlasinmlftkcufi.supabase.co`, region `us-east-1`. This packet is prepared for Ted's deployment tooling. This session does not apply hosted SQL or deploy functions. All Bookish clients and functions must use the dedicated project. Do not import shared-project Auth identities, reuse another project's backend, deploy unrelated functions, or use pruning.
 
+For the inbound-mail ticket only, use the `bookish-inbound` section below and `.ted/INBOUND.md`. The existing app-release instructions remain context for the preceding release.
+
 ## Database and configuration order
 
 1. Confirm the actual project in the Dashboard, run `.ted/preflight.sql` read-only, and preserve any existing dedicated-project data and deployed Bookish bundles before a repeat release.
 2. Set `bookish.target_ref` to `tkrsrnlasinmlftkcufi` in every SQL session. The guard is an operator assertion, so confirm the connection independently.
-3. Apply the numbered `.ted/apply-NN.sql` chunks in ascending filename order, with stop-on-error enabled. Each chunk is at most 200 KB and includes its own transaction, target guard, and predecessor check. `.ted/apply.sql` contains the original base transaction (01 through 19). Always apply chunk 20 after that base file, or use all 20 ordered chunks. Reapplication preserves existing host privacy choices.
+3. Apply the numbered `.ted/apply-NN.sql` chunks in ascending filename order, with stop-on-error enabled. Each chunk is at most 200 KB and includes its own transaction, target guard, and predecessor check. `.ted/apply.sql` contains the original base transaction (01 through 19). Always apply chunk 20 after that base file, or use all 20 ordered chunks. For inbound mail, then apply `supabase/sql/011_bookish_inbound.sql` in the same confirmed dedicated project. Reapplication preserves existing host privacy choices. Reapply 011 after any base/chunk-20 reapplication so the two new Vault names remain allowed.
 4. Populate the dedicated project's Vault names using `.ted/SECRETS.md`. Owner-supplied values are still needed where that file says UNKNOWN. Platform-injected credentials remain in the edge runtime.
-5. Deploy all thirteen Bookish functions using the exact file manifests below, then complete the hosted checks before enabling traffic.
+5. Deploy the required Bookish functions using the exact file manifests below, then complete the hosted checks before enabling traffic. The inbound ticket adds a fourteenth function; it does not require redeploying the other thirteen functions.
 
 Example operator guard:
 
@@ -228,3 +230,25 @@ Provision the same new worker key in this project's environment or Vault and the
 Publish the generated website, including `/join/confirm/` and `/join-respond.js`, before redeploying `bookish-join-respond`. GET redirects to that website confirmation because the Supabase project gateway does not serve GET HTML. Only the page's native POST acts. It sends an origin-only referrer, requires the exact configured website Origin, and removes the capability fragment from the address bar on load. No third-party cookies or paid custom domain are needed.
 
 Before release, verify password sign-in without email secrets, deliberate POST approval, a real caller ballot, pending claim review, host-desk email privacy, and the first report card on the deployed dedicated project. No hosted deployment or job installation occurred in this follow-up.
+
+### bookish-inbound
+
+Prepared only, not deployed. Apply `supabase/sql/011_bookish_inbound.sql` after the existing chunk 20, with `bookish.target_ref='tkrsrnlasinmlftkcufi'` set in the independently confirmed dedicated project. The migration creates private durable delivery markers, service-role-only RPCs, and the two new Vault allowlist entries. Do not use `supabase db push` or replay the old release packet just to install this addition.
+
+Entrypoint: `supabase/functions/bookish-inbound/index.ts`. `verify_jwt: false`. The handler requires a valid Resend signature before fetching message content. Complete deployment manifest:
+
+```text
+supabase/functions/bookish-inbound/index.ts
+supabase/functions/_shared/inbound.ts
+supabase/functions/_shared/bookish.ts
+supabase/functions/_shared/secrets.ts
+supabase/functions/_shared/types.ts
+supabase/functions/deno.json
+supabase/functions/deno.lock
+```
+
+Set `RESEND_INBOUND_WEBHOOK_SECRET`, `BOOKISH_INBOX_FORWARD_TO` (`hello@getkres.com`), and an appropriate Bookish `RESEND_API_KEY` with receiving-read and sending access, through runtime environment secrets or Vault. The fixed verified sender is `Bookish Inbox <inbox@meetbookish.com>`; this function does not use `BOOKISH_EMAIL_FROM`. No other function needs redeployment for this ticket.
+
+Follow the documentation-only Resend domain, webhook, and DNS handoff in `.ted/INBOUND.md`. Create the webhook after the endpoint is deployed, securely capture its signing secret, and configure that secret before enabling receiving traffic. All setup calls and hosted delivery checks remain Ted-owned. No API call in that handoff has been run.
+
+Completed email-ID markers must be retained indefinitely. Uncompleted attempts become blocked after 23 hours to prevent duplicate sends beyond Resend's 24-hour idempotency window. An operator must reconcile blocked attempts against Resend's accepted-send records before deciding any further action. Do not delete or reset a marker simply to force a replay. A send accepted by Resend is not proof of final mailbox delivery.

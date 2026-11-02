@@ -27,3 +27,6 @@ verify_jwt = false
 
 [functions.bookish-report-alerts]
 verify_jwt = false # Handler requires the separate Bookish report worker key.
+
+[functions.bookish-inbound]
+verify_jwt = false # Handler verifies the Resend webhook signature.
