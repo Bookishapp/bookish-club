@@ -7,7 +7,7 @@ Spec: `.ted/BRIEF5.md`. Work stays on `feat/inbound-forward` for PR #35.
 - [x] Reproduce permanent send failures, add attachment-free and plain-text notice fallbacks, preserve stable keys per payload, and log expired received IDs.
 - [x] Reproduce address failures, skip unparseable addresses, accept valid DNS labels, and retain loop protection.
 - [x] Restore `.ted/BRIEF.md` and `.ted/REPORT.md` from `origin/main`, run the repository checks, and obtain an independent review.
-- [ ] Commit, push the same branch, and verify PR #35 remains open and unmerged. Do not deploy.
+- [x] Commit, push the same branch, and verify PR #35 remains open and unmerged. Do not deploy.
 
 ## Decisions
 
@@ -32,5 +32,6 @@ Spec: `.ted/BRIEF5.md`. Work stays on `feat/inbound-forward` for PR #35.
 ## Delivery
 
 - Existing PR: https://github.com/Bookishapp/bookish-club/pull/35.
-- Commit and push: pending.
+- Implementation commit: `a963452da199fd7a9ea04a1c68bf4c4f988b613f`, pushed to `origin/feat/inbound-forward`.
+- Verified PR #35 points to that commit on `feat/inbound-forward`, remains open, and is unmerged. This delivery note is recorded in a following documentation commit.
 - No merge, deployment, hosted SQL execution, Resend account API call, or DNS change occurred. The updated 011 migration and new edge function remain prepared for Ted's later setup work.
