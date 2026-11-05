@@ -6,6 +6,13 @@ type Session = {
   expires_in?: number;
   user: User;
 };
+type ShortCode = {
+  email_hash: string;
+  salt: string;
+  code_hash: string;
+  expires_at: string;
+  attempts: number;
+};
 type Dependencies = {
   publicKey: string;
   configured: () => Promise<boolean>;
@@ -20,6 +27,15 @@ type Dependencies = {
   getUser: (token: string) => Promise<User | null>;
   logout: (token: string) => Promise<void>;
   sync: (token: string) => Promise<void>;
+  codes: {
+    put: (code: ShortCode) => Promise<void>;
+    get: (emailHash: string) => Promise<ShortCode | null>;
+    finish: (
+      emailHash: string,
+      salt: string,
+      matched: boolean,
+    ) => Promise<boolean>;
+  };
 };
 const origins = [
   "https://meetbookish.com",
@@ -36,6 +52,19 @@ const hash = async (s: string) =>
       await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s)),
     ),
   ].map((b) => b.toString(16).padStart(2, "0")).join("");
+function shortCode(): string {
+  const random = new Uint32Array(1);
+  // Reject the partial bucket so every four-digit value is equally likely.
+  do crypto.getRandomValues(random); while (random[0] >= 4294960000);
+  return (random[0] % 10000).toString().padStart(4, "0");
+}
+function constantTimeEqual(a: string, b: string): boolean {
+  let difference = a.length ^ b.length;
+  for (let i = 0; i < 64; i++) {
+    difference |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return difference === 0;
+}
 export async function bookishAuthHandler(
   req: Request,
   deps: Dependencies,
@@ -90,7 +119,7 @@ export async function bookishAuthHandler(
   ) return reply(400, { ok: false, message: "Enter your email address." });
   if (
     action === "verify" &&
-    (typeof b.token !== "string" || !/^\d{6,10}$/.test(b.token))
+    (typeof b.token !== "string" || !/^(?:\d{4}|\d{6,10})$/.test(b.token))
   ) {
     return reply(400, {
       ok: false,
@@ -100,9 +129,10 @@ export async function bookishAuthHandler(
   const ip = (req.headers.get("x-forwarded-for") || "unknown").split(",")[0]
     .trim();
   try {
+    const emailHash = await hash(`bookish:${email}`);
     if (
       !await deps.throttle(
-        await hash(`bookish:${email}`),
+        emailHash,
         await hash(`bookish:${ip}`),
         String(action),
       )
@@ -126,9 +156,29 @@ export async function bookishAuthHandler(
           if (!raced?.bookish) return reply(200, { ok: true });
         }
       }
-      const code = await deps.generate(email);
-      if (!/^\d{6,10}$/.test(code) || !await deps.send(email, code)) {
-        throw Error("delivery");
+      let code: string;
+      let salt: string | undefined;
+      if (b.short === true) {
+        code = shortCode();
+        salt = [...crypto.getRandomValues(new Uint8Array(16))]
+          .map((value) => value.toString(16).padStart(2, "0")).join("");
+        await deps.codes.put({
+          email_hash: emailHash,
+          salt,
+          code_hash: await hash(`bookish-code:${emailHash}:${salt}:${code}`),
+          expires_at: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
+          attempts: 0,
+        });
+      } else {
+        code = await deps.generate(email);
+        if (!/^\d{6,10}$/.test(code)) throw Error("code generation");
+      }
+      try {
+        if (!await deps.send(email, code)) throw Error("delivery");
+      } catch (error) {
+        // Consume only this undelivered code, preserving any newer replacement.
+        if (salt) await deps.codes.finish(emailHash, salt, true);
+        throw error;
       }
       return reply(200, { ok: true });
     }
@@ -152,8 +202,26 @@ export async function bookishAuthHandler(
         (typeof b.password !== "string" || b.password.length < 8 ||
           b.password.length > 1024)
       ) return reply(401, { ok: false, message: "Sign in again to continue." });
+      let token = b.token as string;
+      if (action === "verify" && token.length === 4) {
+        const stored = await deps.codes.get(emailHash);
+        if (
+          !stored || stored.attempts >= 5 ||
+          Date.parse(stored.expires_at) <= Date.now()
+        ) throw Error("code unavailable");
+        const matched = constantTimeEqual(
+          await hash(`bookish-code:${emailHash}:${stored.salt}:${token}`),
+          stored.code_hash,
+        );
+        // The database checks the salt, expiry, and budget again under a row lock.
+        if (!await deps.codes.finish(emailHash, stored.salt, matched)) {
+          throw Error("code unavailable");
+        }
+        token = await deps.generate(email);
+        if (!/^\d{6,10}$/.test(token)) throw Error("code generation");
+      }
       const session = action === "verify"
-        ? await deps.verify(email, b.token as string)
+        ? await deps.verify(email, token)
         : action === "password"
         ? await deps.password(email, b.password as string)
         : await deps.refresh(b.refresh_token as string);

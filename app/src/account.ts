@@ -12,7 +12,7 @@ export class AccountClient {
  constructor(transport:Transport,now=()=>Date.now()){this.transport=transport;this.now=now;}
  get user(){return this.session?.user??null;}
  private accept(value:any){const s=value?.session;if(!s?.access_token||!s?.refresh_token||!s?.user?.id||!Number.isFinite(s.expires_in))throw Error('Your code could not be verified. Request a fresh code and try again.');this.session=s;this.expires=this.now()+s.expires_in*1000;}
- async start(email:string){await this.transport('/functions/v1/bookish-auth',{action:'start',email});}
+ async start(email:string){await this.transport('/functions/v1/bookish-auth',{action:'start',email,short:true});}
  async password(email:string,password:string){this.accept(await this.transport('/functions/v1/bookish-auth',{action:'password',email,password}));}
  async verify(email:string,token:string){this.accept(await this.transport('/functions/v1/bookish-auth',{action:'verify',email,token}));}
  private async access(){
