@@ -10,6 +10,7 @@ trap 'rm -rf "$build_dir"' EXIT HUP INT TERM
   "$test_dir/../App/BookishMessages/MessageState.swift" \
   "$test_dir/../App/BookishMessages/ServerMessageCard.swift" \
   "$test_dir/../App/BookishMessages/ClubDataStore.swift" \
+  "$test_dir/../App/BookishWidgets/WidgetSnapshot.swift" \
   "$test_dir/main.swift" \
   -o "$build_dir/model-tests"
 "$build_dir/model-tests"
