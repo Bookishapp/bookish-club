@@ -59,4 +59,6 @@
 - [x] Capture approved and actual existing screens at 390 by 844. Cover empty, error, and loading states, and document screens represented by existing combined flows.
 - [x] Produce a linked comparison page per screen and an index with source provenance and honest limitations.
 - [x] Run repo lint, typecheck, tests, web/app builds, native simulator builds, and appropriate native tests.
-- [ ] Review the complete branch, fix material issues, commit with the requested trailers, push the task branch, and open a DRAFT PR against main.
+- [x] Review the complete branch, fix material issues, commit with the requested trailers, push the task branch, and open a DRAFT PR against main.
+
+Draft PR: https://github.com/Bookishapp/bookish-club/pull/40
