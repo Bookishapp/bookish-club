@@ -14,7 +14,16 @@ test('every generated Bookish page offers working routes without launch placehol
   }
   const doc = new JSDOM(fs.readFileSync(new URL('index.html', root), 'utf8')).window.document;
   assert.ok(doc.querySelector('a[href$="/app/"]'), 'landing must open the functional web app');
-  assert.equal(doc.querySelector('a[href*="apps.apple.com"]'), null, 'do not advertise an unreleased app');
+  const storeLinks = [...doc.querySelectorAll('a[href*="apps.apple.com"]')];
+  assert.equal(storeLinks.length, 2, 'offer the released iOS app in the hero and footer');
+  for (const link of storeLinks) {
+    assert.equal(link.href, 'https://apps.apple.com/us/app/bookish-book-club-night/id6823470101');
+    assert.equal(link.querySelector('img')?.alt, 'Download on the App Store');
+  }
+  assert.ok(storeLinks[0].closest('.hero-actions'), 'download belongs next to the main action');
+  assert.ok(storeLinks[1].closest('footer'), 'download is also available in the footer');
+  assert.equal(doc.querySelector('meta[name="apple-itunes-app"]')?.content, 'app-id=6823470101');
+  assert.equal(doc.querySelector('a[href*="play.google.com"]'), null, 'no Android app is available');
 });
 
 test('deployed web app has its own bundle and all local assets resolve under its prefix', () => {
