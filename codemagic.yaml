@@ -1,5 +1,5 @@
-# DRAFT: manual workflow only. See app/CODEMAGIC.md before enabling.
-# Mirrors Fictora's CLI-managed signing and TestFlight publication.
+# iOS remains manual. Android tags build signed artifacts for internal testing.
+# See app/CODEMAGIC.md and app/ANDROID.md before enabling publication.
 workflows:
   bookish-ios-testflight:
     name: Bookish iOS TestFlight (draft)

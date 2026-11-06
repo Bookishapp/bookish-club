@@ -42,7 +42,7 @@ The native activity applies system-bar, cutout, and IME insets once, in native p
 
 Android Back lets the system dismiss the keyboard first, then closes dialogs or returns through club pages, Resources, Read Next, and the main tabs. At the root it backgrounds the app. Incoming HTTPS links to `meetbookish.com/app/#invite=...` and `/book-clubs/.../#club-id` become local app state. Incoming intent supersedes an earlier sign-in destination, and club links survive a concurrent resume refresh. Untrusted hosts, credentials in URLs, malformed fragments, and unrelated routes are ignored.
 
-The manifest requests location only for optional on-device city sorting, and notifications for local reminders. Android backup and transfer rules exclude app data. The code field stays a text field with numeric input and one-time-code autocomplete. This branch does not change its current length validation or auth protocol, keeping the four-digit-code work independent.
+Approximate-only Android location grants are sufficient for on-device city sorting. The manifest requests location only for optional on-device city sorting, and notifications for local reminders. Android backup and transfer rules exclude app data. The code field stays a text field with numeric input and one-time-code autocomplete. This branch does not change its current length validation or auth protocol, keeping the four-digit-code work independent.
 
 ## Verified HTTPS app links
 

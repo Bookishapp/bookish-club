@@ -48,9 +48,9 @@
 
 ### Task 4: Review and delivery
 
-- [ ] Run final validation and independent review, fix material findings, and inspect the diff for secrets.
-- [ ] Commit with the requested trailers, push, and open a draft PR against main.
-- [ ] Write the full result and any uncompleted external prerequisites to the requested oneshot result file.
+- [x] Run final validation and independent review, fix material findings, and inspect the diff for secrets.
+- [x] Commit with the requested trailers, push, and open a draft PR against main.
+- [x] Write the full result and any uncompleted external prerequisites to the requested oneshot result file.
 
 ## Execution record
 
@@ -62,3 +62,5 @@
 - Ruling: iOS listing copy is adapted to omit Messages-only stickers and the stale offline-directory claim. This prevents unsupported Android claims.
 - Ruling: CI publishes no release while Play enrollment and credentials remain unavailable. The prepared publisher is internal-only and draft-only, with review submission disabled.
 - Deferred minor: native lint reports launcher-shape, monochrome-icon, and generated unused-resource warnings. There are no lint errors. Physical Android hardware, TalkBack, and an API-36 emulator were not exercised. The API-36 system-image download failed, while the API-35 emulator completed the requested walkthrough.
+
+- Final permission review: the installed Android plugin exposes approximate-only permission through `coarseLocation`; the app now accepts it for on-device city sorting. The shipped Android fixture reproduced the denial before the fix and passes afterward.

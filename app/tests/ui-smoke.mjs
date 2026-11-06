@@ -16,7 +16,7 @@ const errors=[],posts=[],calendars=[],downloads=[];
 const virtualConsole = new VirtualConsole();
 virtualConsole.on('jsdomError',e=>errors.push(e.message));
 const nativeCalls=[],nativeStore=new Map();
-let locationAllowed=true,notificationAllowed=true;
+let locationAllowed=true,coarseLocationAllowed=false,notificationAllowed=true;
 async function launch(online=true,native=false,verified=false,api=null,hash='',platform='ios') {
   const dom = new JSDOM('<!doctype html><html><body><div id="app"></div><div id="toast"></div></body></html>',{url:`https://localhost/${hash}`,runScripts:'outside-only',virtualConsole,pretendToBeVisual:true});
   const w=dom.window;
@@ -38,7 +38,7 @@ async function launch(online=true,native=false,verified=false,api=null,hash='',p
     w.Capacitor={PluginHeaders:Object.entries(methods).map(([name,methods])=>({name,methods:methods.map(name=>({name,rtype:name==='addListener'?'callback':'promise'}))})),nativeCallback:(plugin,method,options,callback)=>{w.nativeEvents[`${plugin}.${options.eventName}`]=callback;return 'listener';},nativePromise:async(plugin,method,options={})=>{
       nativeCalls.push({plugin,method,options});
       if(plugin==='Preferences'){if(method==='get')return{value:nativeStore.get(options.key)??null};nativeStore.set(options.key,options.value);return{};}
-      if(plugin==='Geolocation')return method==='requestPermissions'?{location:locationAllowed?'granted':'denied'}:{coords:{latitude:41.88,longitude:-87.63}};
+      if(plugin==='Geolocation')return method==='requestPermissions'?{location:locationAllowed?'granted':'denied',coarseLocation:coarseLocationAllowed?'granted':'denied'}:{coords:{latitude:41.88,longitude:-87.63}};
       if(plugin==='LocalNotifications'){if(method==='requestPermissions')return{display:notificationAllowed?'granted':'denied'};if(method==='getPending')return{notifications:[]};return{};}
       if(plugin==='BookishMap')return{cityKey:'Chicago, IL'};
       if(plugin==='CapacitorHttp'){if(api&&String(options.url).includes('supabase.co')){const result=await api.respond(options.url,options.data||{},options.method||'GET');return{status:result?.$status||200,data:result};}return{status:online?200:503,data:remoteValue(options.url)};}
@@ -236,6 +236,11 @@ console.log('UI smoke passed: fail-closed offline discovery; guest clubs, city m
 
 // Android must never invoke the iOS-only map plugin, and Back must navigate the UI.
 const android=await launch(true,true,false,null,'','android'),a=android.window;
+locationAllowed=false;coarseLocationAllowed=true;
+click(a,'#locate');await until(()=>a.document.querySelector('#toast.visible'));
+assert.equal(a.document.querySelector('#city').value,'','Approximate Android location can sort nearby cities');
+assert.match(a.document.querySelector('#city option').textContent,/Closest cities first/);
+locationAllowed=true;coarseLocationAllowed=false;
 click(a,'[data-view=map]');
 assert.ok(!a.document.querySelector('#native-map'),'Android uses the shared city map');
 assert.ok(a.document.querySelector('.city-map'));

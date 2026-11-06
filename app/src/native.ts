@@ -7,7 +7,7 @@ export const isAndroid = Capacitor.getPlatform() === 'android';
 // Typed native proxies. Plugins are installed by cap sync from package.json.
 // Browser previews deliberately use local equivalents and never pretend to schedule iOS reminders.
 const Preferences = registerPlugin<{ get(o: {key:string}):Promise<{value:string|null}>; set(o:{key:string;value:string}):Promise<void>; remove(o:{key:string}):Promise<void> }>('Preferences');
-const Geolocation = registerPlugin<{ requestPermissions():Promise<{location:string}>; getCurrentPosition(o:object):Promise<{coords:{latitude:number;longitude:number}}> }>('Geolocation');
+const Geolocation = registerPlugin<{ requestPermissions():Promise<{location:string;coarseLocation?:string}>; getCurrentPosition(o:object):Promise<{coords:{latitude:number;longitude:number}}> }>('Geolocation');
 const Share = registerPlugin<{ share(o:{title:string;text:string;url:string;dialogTitle:string}):Promise<void> }>('Share');
 export const Notifications = registerPlugin<LocalNotificationsPlugin>('LocalNotifications');
 export const NativeApp = registerPlugin<AppPlugin>('App');
@@ -23,7 +23,7 @@ export async function writeStore(key:string, value:unknown) {
 export async function locate() {
   if (isNative) {
     const p = await Geolocation.requestPermissions();
-    if (p.location !== 'granted') throw new Error('Pick a city below to find your next book club. Location can be enabled in Settings.');
+    if (p.location !== 'granted' && !(isAndroid && p.coarseLocation === 'granted')) throw new Error('Pick a city below to find your next book club. Location can be enabled in Settings.');
     const { coords } = await Geolocation.getCurrentPosition({enableHighAccuracy:false,timeout:12000,maximumAge:300000});
     return {lat:coords.latitude,lng:coords.longitude};
   }
