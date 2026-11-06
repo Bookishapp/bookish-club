@@ -40,16 +40,16 @@ test('rating take safety actions stay scoped and support moderation without expo
  await assert.rejects(f.rpc(outside,'bookish_rating_action',[tid,'block',null]),/join|club|member/i);
  await f.rpc(host,'bookish_rating_action',[tid,'report','Please review this take']);
  assert.equal((await library(host)).books.find(b=>b.book.id==='fourth-wing').favorite_take,null);
- let report;await f.db.exec('set role service_role');try{report=(await f.q("select * from public.bookish_content_report_queue() where kind='rating' and target_id=$1",[tid]))[0];}finally{await f.db.exec('reset role');}
+ let report;await f.db.exec('set role service_role');try{report=(await f.q("select * from public.bookish_content_report_queue() where kind='rating'",[]))[0];}finally{await f.db.exec('reset role');}
  assert.ok(report);assert.ok(!JSON.stringify(report).includes(reader));
  await f.service('bookish_review_content',[report.id,'hide','Safety reviewer','Reviewed the reported shelf take.']);
  assert.equal((await library(other)).books.find(b=>b.book.id==='fourth-wing').favorite_take,null);
  // Updating a moderated take preserves its identity and cannot escape removal.
  await rate(reader,4,'An edited shelf thought',true);assert.equal((await library(other)).books.find(b=>b.book.id==='fourth-wing').favorite_take,null);
- await f.q("delete from bookish_private.content_removals where kind='rating' and target_id=$1",[tid]);
- await f.q("delete from bookish_private.content_hides where kind='rating' and target_id=$1",[tid]);
+ await f.q("delete from bookish_private.content_removals where kind='rating'",[]);
+ await f.q("delete from bookish_private.content_hides where kind='rating'",[]);
  await f.rpc(host,'bookish_rating_action',[tid,'block',null]);
- await rate(reader,5,'A later thought',false);assert.equal((await library(host)).books.find(b=>b.book.id==='fourth-wing').favorite_take,null);
+ await rate(reader,5,'A later thought',true);assert.equal((await library(host)).books.find(b=>b.book.id==='fourth-wing').favorite_take,null);
  await f.q('delete from bookish_private.actor_blocks');await f.q("delete from bookish_private.content_hides where kind='rating'");
 });
 test('recommendations are honestly empty without established independent rating cohorts',async()=>{
@@ -79,4 +79,50 @@ test('recommendations use opted-in ratings from three independent established cl
 });
 test('profile deletion cascades rating text and attribution data',async()=>{
  await f.q('delete from auth.users where id=$1',[reader]);assert.equal((await f.q('select count(*)::int n from bookish_private.book_ratings where user_id=$1',[reader]))[0].n,0);
+});
+test('blocking an anonymous rating cannot identify its author through named roster changes',async()=>{
+ const g=await fixture();try{
+  await g.rpc(host,'bookish_finish_book',[g.club,'fourth-wing']);
+  const rating=await g.rpc(reader,'bookish_rate_book',[g.club,'fourth-wing',4,'An opaque thought',true]);
+  await g.rpc(host,'bookish_set_current_book',[g.club,'iron-flame']);await g.rpc(host,'bookish_finish_book',[g.club,'iron-flame']);
+  await g.rpc(reader,'bookish_rate_book',[g.club,'iron-flame',4,'A signed shelf thought',false]);
+  const signedBefore=(await g.rpc(host,'bookish_library',[g.club])).books.find(b=>b.book.id==='iron-flame').favorite_take;
+  const before=(await g.rpc(host,'bookish_club_home',[g.club])).members;
+  await g.rpc(host,'bookish_rating_action',[rating.favorite_take.id,'block',null]);
+  assert.deepEqual((await g.rpc(host,'bookish_club_home',[g.club])).members,before);
+  assert.equal((await g.q('select count(*)::int n from bookish_private.actor_blocks'))[0].n,0);
+  assert.deepEqual((await g.rpc(host,'bookish_library',[g.club])).books.find(b=>b.book.id==='iron-flame').favorite_take,signedBefore);
+  await g.rpc(host,'bookish_set_current_book',[g.club,'yellowface']);await g.rpc(host,'bookish_finish_book',[g.club,'yellowface']);
+  await g.rpc(reader,'bookish_rate_book',[g.club,'yellowface',5,'Another anonymous thought',true]);
+  assert.ok((await g.rpc(host,'bookish_library',[g.club])).books.filter(b=>b.book.id!=='iron-flame').every(b=>b.favorite_take===null));
+  assert.deepEqual((await g.rpc(host,'bookish_club_home',[g.club])).members,before);
+ }finally{await g.db.close();}
+});
+test('attribution switches rotate the public take identifier while moderation continues to apply',async()=>{
+ const g=await fixture();try{
+  await g.rpc(host,'bookish_finish_book',[g.club,'fourth-wing']);
+  const named=await g.rpc(reader,'bookish_rate_book',[g.club,'fourth-wing',4,'A signed thought',false]);
+  const anon=await g.rpc(reader,'bookish_rate_book',[g.club,'fourth-wing',4,'An anonymous thought',true]);
+  assert.notEqual(named.favorite_take.id,anon.favorite_take.id);
+  assert.equal((await g.rpc(host,'bookish_library',[g.club])).books[0].favorite_take.id,anon.favorite_take.id);
+  await assert.rejects(g.rpc(host,'bookish_rating_action',[named.favorite_take.id,'report','Old identifier']),/join|club|unavailable/i);
+  await g.rpc(host,'bookish_rating_action',[anon.favorite_take.id,'report','Review this thought']);
+  const internal=(await g.q('select id from bookish_private.content_reports where kind=$1',['rating']))[0].id;
+  await g.service('bookish_review_content',[internal,'hide','Safety reviewer','Reviewed the reported shelf take.']);
+  await g.rpc(reader,'bookish_rate_book',[g.club,'fourth-wing',4,'A signed edit',false]);
+  assert.equal((await g.rpc(other,'bookish_library',[g.club])).books[0].favorite_take,null);
+ }finally{await g.db.close();}
+});
+test('only the scoped service queue can inspect reported rating text, without author mappings',async()=>{
+ const g=await fixture();try{
+  await g.rpc(host,'bookish_finish_book',[g.club,'fourth-wing']);
+  const rating=await g.rpc(reader,'bookish_rate_book',[g.club,'fourth-wing',4,'A reportable book thought',true]);
+  await g.rpc(host,'bookish_rating_action',[rating.favorite_take.id,'report','Review this text']);
+  await assert.rejects(g.rpc(host,'bookish_rating_report_queue',[]),/permission/i);
+  const reports=await g.service('bookish_rating_report_queue',[]);assert.equal(reports.length,1);assert.equal(reports[0].body,'A reportable book thought');assert.equal(reports[0].book.id,'fourth-wing');
+  const serialized=JSON.stringify(reports);for(const key of ['author_id','user_id','signed_name','display_name','anonymous'])assert.ok(!serialized.includes(`"${key}"`));assert.ok(!serialized.includes(reader));
+  await g.service('bookish_review_content',[reports[0].report_id,'hide','Safety reviewer','Reviewed the reported shelf take.']);
+  assert.equal((await g.rpc(other,'bookish_library',[g.club])).books[0].favorite_take,null);
+  assert.deepEqual(await g.service('bookish_rating_report_queue',[]),[]);
+ }finally{await g.db.close();}
 });
