@@ -1,0 +1,2417 @@
+{
+  "generatedAt": "2026-11-06T01:47:46.942Z",
+  "browser": "156.0.8078.80",
+  "channel": "chrome",
+  "host": "Teds-Mac-mini.local",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016",
+  "appBuild": [
+    {
+      "file": "index.html",
+      "sha256": "d98577d2b55431df5f796449286f7d2640a9c6c740d744e4f583453889bf0977"
+    },
+    {
+      "file": "assets/index-BYU-qS9B.js",
+      "sha256": "261b017a6feb947fab28944a3306678a8bffc9ba1dfa17877c6632b1f493f503"
+    },
+    {
+      "file": "assets/index-DgQEmGdi.css",
+      "sha256": "3c7c97eb5abd2249981f98f0a8ef3e25ecdac018aa4cfad6d7bdc45b923ed3a6"
+    }
+  ],
+  "captureComplete": true,
+  "captures": [
+    {
+      "id": "07-near-me-list",
+      "title": "Near me, list",
+      "approved": "07",
+      "note": "",
+      "image": "built/07-near-me-list.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 994,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": false,
+        "focus": "BODY"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    },
+    {
+      "id": "08-near-me-map",
+      "title": "Near me, map with private city centers",
+      "approved": "08",
+      "note": "",
+      "image": "built/08-near-me-map.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 1098,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": false,
+        "focus": "BODY"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    },
+    {
+      "id": "09-club-detail",
+      "title": "Verified club detail",
+      "approved": "09",
+      "note": "",
+      "image": "built/09-club-detail.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 1308,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "close-detail"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    },
+    {
+      "id": "06-reminder-explanation",
+      "title": "Existing reminder permission explanation",
+      "approved": "06",
+      "note": "No separate notification-prime page exists. This is the existing reminder explanation inside club detail.",
+      "image": "built/06-reminder-explanation.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 1308,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "close-detail"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    },
+    {
+      "id": "13-public-calendar",
+      "title": "Unclaimed public-calendar club",
+      "approved": "13",
+      "note": "",
+      "image": "built/13-public-calendar.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 1319,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "close-detail"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    },
+    {
+      "id": "01-welcome-equivalent",
+      "title": "Signed-out account entry",
+      "approved": "01",
+      "note": "No standalone welcome screen exists. The shipped signed-out Me entry is shown.",
+      "image": "built/01-welcome-equivalent.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 2396,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": false,
+        "focus": "main"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    },
+    {
+      "id": "resources",
+      "title": "Existing Resources page",
+      "approved": null,
+      "note": "Resources has no separate screen in the approved batch.",
+      "image": "built/resources.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 844,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": false,
+        "focus": "main"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    },
+    {
+      "id": "02-sign-in",
+      "title": "Email sign-in",
+      "approved": "02",
+      "note": "",
+      "image": "built/02-sign-in.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 844,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    },
+    {
+      "id": "02-password",
+      "title": "Existing password sign-in",
+      "approved": "02",
+      "note": "Working password sign-in is retained, although the approved art only shows email entry.",
+      "image": "built/02-password.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 844,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    },
+    {
+      "id": "02-sign-in-error",
+      "title": "Sign-in form error",
+      "approved": "02",
+      "note": "",
+      "image": "built/02-sign-in-error.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 844,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "INPUT"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "03-code-four",
+      "title": "Four-digit email code layout (UI support only)",
+      "approved": "03",
+      "note": "The frontend input and layout support four digits. Authentication is intercepted locally; deployed server acceptance is not established by this capture.",
+      "image": "built/03-code-four.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 844,
+        "codeLayout": "4",
+        "codeValid": true,
+        "dialog": true,
+        "focus": "email-code"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "03-code-six",
+      "title": "Six-digit email code layout",
+      "approved": "03",
+      "note": "",
+      "image": "built/03-code-six.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 844,
+        "codeLayout": "6",
+        "codeValid": true,
+        "dialog": true,
+        "focus": "email-code"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "03-code-error",
+      "title": "Email-code validation error",
+      "approved": "03",
+      "note": "",
+      "image": "built/03-code-error.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 844,
+        "codeLayout": "6",
+        "codeValid": true,
+        "dialog": true,
+        "focus": "email-code"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "04-house-rules",
+      "title": "House rules, legal fields, and age confirmation",
+      "approved": "04",
+      "note": "",
+      "image": "built/04-house-rules.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 1045,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "29-profile",
+      "title": "Account profile and clubs",
+      "approved": "29",
+      "note": "",
+      "image": "built/29-profile.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 2310,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": false,
+        "focus": "BODY"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "30-settings",
+      "title": "Settings and privacy",
+      "approved": "30",
+      "note": "",
+      "image": "built/30-settings.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 889,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "delete-account",
+      "title": "Account deletion confirmation",
+      "approved": "30",
+      "note": "Existing destructive-action confirmation is retained.",
+      "image": "built/delete-account.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 844,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "31-create-club",
+      "title": "Create club, including visibility and location fields",
+      "approved": "31",
+      "note": "",
+      "image": "built/31-create-club.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 844,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "27-redeem-invite",
+      "title": "Redeem an invitation",
+      "approved": "27",
+      "note": "The existing flow uses an invite-code form. Share invitation is captured separately.",
+      "image": "built/27-redeem-invite.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 844,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "10-join-request",
+      "title": "Private-club join request",
+      "approved": "10",
+      "note": "",
+      "image": "built/10-join-request.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 844,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "11-join-sent",
+      "title": "Join request sent",
+      "approved": "11",
+      "note": "",
+      "image": "built/11-join-sent.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 844,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "17-club-home",
+      "title": "Existing club home",
+      "approved": "17",
+      "note": "The app combines its current book, meeting details, and safety controls in club home. No Tea feed has been added.",
+      "image": "built/17-club-home.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 1044,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "20-current-book",
+      "title": "Current book in existing club home",
+      "approved": "20",
+      "note": "The app has a shared current-book section. Reading-progress tracking is absent.",
+      "image": "built/20-current-book.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 1044,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "24-meeting",
+      "title": "Member-only meeting details",
+      "approved": "24",
+      "note": "Existing app has meeting details, with calendar reminders in public detail. It has no in-app RSVP action.",
+      "image": "built/24-meeting.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 1044,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "26-members",
+      "title": "Club members",
+      "approved": "26",
+      "note": "",
+      "image": "built/26-members.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 844,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "safety",
+      "title": "Report or block a reader",
+      "approved": "26",
+      "note": "Existing safety form, with no new content model.",
+      "image": "built/safety.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 844,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "22-vote",
+      "title": "Anonymous book vote",
+      "approved": "22",
+      "note": "",
+      "image": "built/22-vote.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 888,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "22-vote-selected",
+      "title": "Anonymous vote, selected choice",
+      "approved": "22",
+      "note": "",
+      "image": "built/22-vote-selected.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 890,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "23-vote-winner",
+      "title": "Closed vote and winning book",
+      "approved": "23",
+      "note": "The existing closed-vote panel remains inside Votes, and the winning book updates club home.",
+      "image": "built/23-vote-winner.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 1497,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "22-open-vote",
+      "title": "Host anonymous vote form",
+      "approved": "22",
+      "note": "Existing host form opens after the previous vote closes.",
+      "image": "built/22-open-vote.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 1497,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "host-desk",
+      "title": "Host desk and pending join request",
+      "approved": "26",
+      "note": "Host controls and pending reader approvals share the existing Host desk.",
+      "image": "built/host-desk.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 1893,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "27-share-invite",
+      "title": "Share invitation from Host desk",
+      "approved": "27",
+      "note": "The real browser share action is not triggered; it would hand off to the operating system.",
+      "image": "built/27-share-invite.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 2058,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "25-schedule-meeting",
+      "title": "Host meeting scheduling form",
+      "approved": "25",
+      "note": "Meeting scheduling stays inside Host desk.",
+      "image": "built/25-schedule-meeting.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 2058,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      ]
+    },
+    {
+      "id": "25-schedule-error",
+      "title": "Meeting form save error",
+      "approved": "25",
+      "note": "A fixture rejects the save, and the real form retains the draft.",
+      "image": "built/25-schedule-error.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 2135,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "INPUT"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+      ]
+    },
+    {
+      "id": "05-taste-mood",
+      "title": "Taste, mood selection",
+      "approved": "05",
+      "note": "",
+      "image": "built/05-taste-mood.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 905,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": false,
+        "focus": "main"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+      ]
+    },
+    {
+      "id": "05-taste-length",
+      "title": "Taste, reading length",
+      "approved": "05",
+      "note": "",
+      "image": "built/05-taste-length.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 844,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": false,
+        "focus": "BODY"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+      ]
+    },
+    {
+      "id": "05-taste-book",
+      "title": "Taste, favorite book search",
+      "approved": "05",
+      "note": "",
+      "image": "built/05-taste-book.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 844,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": false,
+        "focus": "book-search"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+      ]
+    },
+    {
+      "id": "14-read-next",
+      "title": "Read next recommendations",
+      "approved": "14",
+      "note": "",
+      "image": "built/14-read-next.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 1969,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": false,
+        "focus": "BODY"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+      ]
+    },
+    {
+      "id": "15-book-equivalent",
+      "title": "Existing book card and Open Library link",
+      "approved": "15",
+      "note": "No in-app book-detail route exists. The real book card links to Open Library.",
+      "image": "built/15-book-equivalent.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 1969,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": false,
+        "focus": "BODY"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+      ]
+    },
+    {
+      "id": "16-saved",
+      "title": "Saved clubs and books",
+      "approved": "16",
+      "note": "",
+      "image": "built/16-saved.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 964,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": false,
+        "focus": "main"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+      ]
+    },
+    {
+      "id": "34-empty-near",
+      "title": "Empty club directory",
+      "approved": "34",
+      "note": "",
+      "image": "built/34-empty-near.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 1060,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": false,
+        "focus": "BODY"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    },
+    {
+      "id": "34-empty-near-card",
+      "title": "Empty directory action",
+      "approved": "34",
+      "note": "Scrolled to the actual empty state and retry action.",
+      "image": "built/34-empty-near-card.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 1060,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": false,
+        "focus": "BODY"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    },
+    {
+      "id": "35-empty-saved",
+      "title": "Empty Saved",
+      "approved": "35",
+      "note": "",
+      "image": "built/35-empty-saved.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 1198,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": false,
+        "focus": "main"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    },
+    {
+      "id": "directory-error",
+      "title": "Directory network error and retry",
+      "approved": "34",
+      "note": "Scrolled to the actual network error and retry action.",
+      "image": "built/directory-error.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 1043,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": false,
+        "focus": "BODY"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": [
+        "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+      ]
+    },
+    {
+      "id": "loading",
+      "title": "App loading state",
+      "approved": null,
+      "note": "The actual launch screen is held by delaying the local directory fixture.",
+      "image": "built/loading.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 844,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": false,
+        "focus": "BODY"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    },
+    {
+      "id": "37-no-club",
+      "title": "Signed-in account without a club",
+      "approved": "37",
+      "note": "",
+      "image": "built/37-no-club.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 2288,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": false,
+        "focus": "BODY"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    },
+    {
+      "id": "12-join-approved",
+      "title": "Joined club after redeeming invitation",
+      "approved": "12",
+      "note": "No standalone join-approved page exists. A successful join opens the actual club home.",
+      "image": "built/12-join-approved.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 971,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    },
+    {
+      "id": "33-empty-club",
+      "title": "Club home without a book or meeting",
+      "approved": "33",
+      "note": "No Tea feed exists. This is the actual empty current-book and calendar state.",
+      "image": "built/33-empty-club.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 971,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    },
+    {
+      "id": "empty-votes",
+      "title": "No active book votes",
+      "approved": "22",
+      "note": "",
+      "image": "built/empty-votes.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 1223,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    },
+    {
+      "id": "member-club-home",
+      "title": "Member club view without host controls",
+      "approved": "17",
+      "note": "The member fixture has no Host desk controls.",
+      "image": "built/member-club-home.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 1044,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    },
+    {
+      "id": "32-club-started",
+      "title": "Created club opens its working club home",
+      "approved": "32",
+      "note": "No standalone club-started screen exists. The actual create flow opens club home.",
+      "image": "built/32-club-started.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 1044,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    },
+    {
+      "id": "long-club-name",
+      "title": "Long club name on iPhone width",
+      "approved": "09",
+      "note": "Long fixture data exercises the existing app layout.",
+      "image": "built/long-club-name.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 1161,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    },
+    {
+      "id": "narrow-long-club-name",
+      "title": "Long club name at 320 pixels",
+      "approved": "09",
+      "note": "Additional narrow-device stress capture; this one intentionally uses a 320 by 844 viewport.",
+      "image": "built/narrow-long-club-name.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 320,
+        "height": 844,
+        "innerWidth": 320,
+        "viewportMatches": true,
+        "bodyWidth": 320,
+        "documentWidth": 320,
+        "scrollHeight": 1250,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": true,
+        "focus": "detail-title"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    },
+    {
+      "id": "29-profile-long-email",
+      "title": "Account profile with a long email",
+      "approved": "29",
+      "note": "A valid 64-character email local part exercises the account greeting beside approved art.",
+      "image": "built/29-profile-long-email.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 390,
+        "viewportMatches": true,
+        "bodyWidth": 390,
+        "documentWidth": 390,
+        "scrollHeight": 2346,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": false,
+        "focus": "BODY"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    },
+    {
+      "id": "29-profile-long-email-narrow",
+      "title": "Account profile with a long email at 320 pixels",
+      "approved": "29",
+      "note": "Additional narrow-device stress capture at 320 by 844.",
+      "image": "built/29-profile-long-email-narrow.jpg",
+      "checks": {
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 320,
+        "height": 844,
+        "innerWidth": 320,
+        "viewportMatches": true,
+        "bodyWidth": 320,
+        "documentWidth": 320,
+        "scrollHeight": 2710,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": false,
+        "focus": "BODY"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    }
+  ],
+  "checks": [],
+  "limitations": [
+    "Four-digit code evidence establishes frontend input and layout support only. Authentication uses intercepted fixtures. The current server accepts six to ten digits; four-digit backend delivery and acceptance are pending separate PR 36.",
+    "390 by 844 is a CSS viewport in Google Chrome on the Mac mini, not a native iPhone simulator or a system keyboard capture.",
+    "The bundle is served unchanged from app/dist. Fixture identities, intercepted RPC responses, and local cover mirrors exist only in this Node capture process.",
+    "Book covers found in the approved source are served as local mirrors. Unmapped covers receive a one-pixel response and exercise the existing typographic-cover fallback.",
+    "Welcome, notification prime, book detail, join approved, club started, meeting RSVP, and invite share sheet are combined flows or lack a separate existing app screen. Captures disclose the actual equivalent; they do not establish exact screen parity.",
+    "Tea composer, Tea thread, page logging, notification inbox, and widgets do not exist in this app and were not added. Reading scores and races are prohibited.",
+    "Native Messages evidence is separate from these Chrome captures. Browser evidence cannot establish Messages transport or accessibility behavior."
+  ],
+  "blockedExternal": [],
+  "approved": [
+    {
+      "id": "01",
+      "title": "welcome",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/01-welcome.html",
+      "image": "approved/01.jpg",
+      "override": false,
+      "receipt": null,
+      "superseded": false,
+      "status": "Partial: existing combined flow"
+    },
+    {
+      "id": "02",
+      "title": "Sign in",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/02-sign-in.html",
+      "image": "approved/02.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 111,
+        "screen": "02",
+        "title": "Sign in",
+        "batch": "bookish full app",
+        "mockupID": "0b7a3571-6c95-47bc-ba68-db257a5b8b0c"
+      },
+      "superseded": false,
+      "status": "Existing surface: visual adaptation"
+    },
+    {
+      "id": "03",
+      "title": "Email code",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/03-email-code.html",
+      "image": "approved/03.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 112,
+        "screen": "03",
+        "title": "Email code",
+        "batch": "bookish full app",
+        "mockupID": "cb63696a-c589-4754-8b68-b2abafa9057d"
+      },
+      "superseded": false,
+      "status": "Existing surface: visual adaptation"
+    },
+    {
+      "id": "04",
+      "title": "House rules",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/04-house-rules.html",
+      "image": "approved/04-v2.webp",
+      "override": true,
+      "receipt": {
+        "decision": 180,
+        "screen": "04",
+        "title": "House rules",
+        "batch": "bookish full app: house rules art v2",
+        "mockupID": "97e9e5b6-e941-423b-a33a-a20960ecbcbc"
+      },
+      "superseded": false,
+      "status": "Existing surface: visual adaptation"
+    },
+    {
+      "id": "05",
+      "title": "Taste picker",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/05-taste.html",
+      "image": "approved/05.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 113,
+        "screen": "05",
+        "title": "Taste picker",
+        "batch": "bookish full app",
+        "mockupID": "5e9a5f32-76b2-4171-aa38-c9e5be79ec1a"
+      },
+      "superseded": false,
+      "status": "Partial: existing combined flow"
+    },
+    {
+      "id": "06",
+      "title": "Reminders permission",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/06-notifications-prime.html",
+      "image": "approved/06.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 114,
+        "screen": "06",
+        "title": "Reminders permission",
+        "batch": "bookish full app",
+        "mockupID": "410fe085-b69f-41ef-a965-bdcc8f91897c"
+      },
+      "superseded": false,
+      "status": "Partial: existing combined flow"
+    },
+    {
+      "id": "07",
+      "title": "Near me: list",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/07-near-me-list.html",
+      "image": "approved/07.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 115,
+        "screen": "07",
+        "title": "Near me: list",
+        "batch": "bookish full app",
+        "mockupID": "85e7c809-cb7f-4be1-8f37-f278efcafd21"
+      },
+      "superseded": false,
+      "status": "Existing surface: visual adaptation"
+    },
+    {
+      "id": "08",
+      "title": "Near me: map",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/08-near-me-map.html",
+      "image": "approved/08.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 116,
+        "screen": "08",
+        "title": "Near me: map",
+        "batch": "bookish full app",
+        "mockupID": "66ffda18-4abd-4f64-b35a-9d3b73671a83"
+      },
+      "superseded": false,
+      "status": "Existing surface: visual adaptation"
+    },
+    {
+      "id": "09",
+      "title": "Club detail",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/09-club-detail.html",
+      "image": "approved/09.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 117,
+        "screen": "09",
+        "title": "Club detail",
+        "batch": "bookish full app",
+        "mockupID": "45e92202-3b17-41d9-9cc9-974711c6eb59"
+      },
+      "superseded": false,
+      "status": "Existing surface: visual adaptation"
+    },
+    {
+      "id": "10",
+      "title": "Join: request sheet",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/10-join-request.html",
+      "image": "approved/10.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 118,
+        "screen": "10",
+        "title": "Join: request sheet",
+        "batch": "bookish full app",
+        "mockupID": "30987cac-ec00-4163-932d-cf042c766ba8"
+      },
+      "superseded": false,
+      "status": "Existing surface: visual adaptation"
+    },
+    {
+      "id": "11",
+      "title": "Join: request sent",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/11-join-sent.html",
+      "image": "approved/11-v2.webp",
+      "override": true,
+      "receipt": {
+        "decision": 181,
+        "screen": "11",
+        "title": "Join: request sent",
+        "batch": "bookish full app: join sent copy v2",
+        "mockupID": "4d16706c-0fb0-4d3e-81ef-fc693e24eb50"
+      },
+      "superseded": false,
+      "status": "Existing surface: visual adaptation"
+    },
+    {
+      "id": "12",
+      "title": "Join: approved",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/12-join-approved.html",
+      "image": "approved/12.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 119,
+        "screen": "12",
+        "title": "Join: approved",
+        "batch": "bookish full app",
+        "mockupID": "8ca5aa90-87bb-4b0f-8850-6b7d32eadea8"
+      },
+      "superseded": false,
+      "status": "Partial: existing combined flow"
+    },
+    {
+      "id": "13",
+      "title": "Unclaimed club",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/13-unclaimed-club.html",
+      "image": "approved/13.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 120,
+        "screen": "13",
+        "title": "Unclaimed club",
+        "batch": "bookish full app",
+        "mockupID": "17555c9e-43ef-4083-82c9-37c5fa5fc201"
+      },
+      "superseded": false,
+      "status": "Existing surface: visual adaptation"
+    },
+    {
+      "id": "14",
+      "title": "Read next",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/14-read-next.html",
+      "image": "approved/14.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 121,
+        "screen": "14",
+        "title": "Read next",
+        "batch": "bookish full app",
+        "mockupID": "23d6f86a-31a5-46bd-b10f-ff3b91b21d6e"
+      },
+      "superseded": false,
+      "status": "Existing surface: visual adaptation"
+    },
+    {
+      "id": "15",
+      "title": "Book detail",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/15-book-detail.html",
+      "image": "approved/15.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 122,
+        "screen": "15",
+        "title": "Book detail",
+        "batch": "bookish full app",
+        "mockupID": "f9b839af-1eab-4814-8bf1-d1a5f26a57f0"
+      },
+      "superseded": false,
+      "status": "Partial: existing combined flow"
+    },
+    {
+      "id": "16",
+      "title": "Saved",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/16-saved.html",
+      "image": "approved/16.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 123,
+        "screen": "16",
+        "title": "Saved",
+        "batch": "bookish full app",
+        "mockupID": "cef9fbd7-fffd-4c2a-9efb-abcabb8b6ab8"
+      },
+      "superseded": false,
+      "status": "Existing surface: visual adaptation"
+    },
+    {
+      "id": "17",
+      "title": "The Tea: club home",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/17-the-tea.html",
+      "image": "approved/17-v2.webp",
+      "override": true,
+      "receipt": {
+        "decision": 174,
+        "screen": "17",
+        "title": "The Tea: club home",
+        "batch": "bookish full app: no race v2",
+        "mockupID": "de28115a-a436-4b5b-b396-ed89ca0e3ed2"
+      },
+      "superseded": false,
+      "status": "Partial: existing combined flow"
+    },
+    {
+      "id": "18",
+      "title": "Take composer",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/18-take-composer.html",
+      "image": "approved/18.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 124,
+        "screen": "18",
+        "title": "Take composer",
+        "batch": "bookish full app",
+        "mockupID": "22c90058-d7af-409c-b786-7a18d1f8629c"
+      },
+      "superseded": false,
+      "status": "Absent"
+    },
+    {
+      "id": "19",
+      "title": "Take thread, reactions, and report",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/19-take-thread.html",
+      "image": "approved/19.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 125,
+        "screen": "19",
+        "title": "Take thread, reactions, and report",
+        "batch": "bookish full app",
+        "mockupID": "f4eba529-e377-41ab-a186-a6de76d7d82c"
+      },
+      "superseded": false,
+      "status": "Absent"
+    },
+    {
+      "id": "20",
+      "title": "Current book and reading together (v2)",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/20-book-and-race.html",
+      "image": "approved/20-v2.webp",
+      "override": true,
+      "receipt": {
+        "decision": 175,
+        "screen": "20",
+        "title": "Current book and reading together",
+        "batch": "bookish full app: no race v2",
+        "mockupID": "5349d0d2-c210-47ad-8146-f98b6a6c69b2"
+      },
+      "superseded": false,
+      "status": "Partial: existing combined flow"
+    },
+    {
+      "id": "21",
+      "title": "Log my page",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/21-log-page.html",
+      "image": "approved/21.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 176,
+        "screen": "21",
+        "title": "Log my page",
+        "batch": "bookish full app: no race v2",
+        "mockupID": "e4ba9d05-d3ef-4f3d-a1a4-6635954bc1cd"
+      },
+      "superseded": true,
+      "status": "Absent"
+    },
+    {
+      "id": "22",
+      "title": "Vote: pick the next book",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/22-vote.html",
+      "image": "approved/22.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 126,
+        "screen": "22",
+        "title": "Vote: pick the next book",
+        "batch": "bookish full app",
+        "mockupID": "8e1e922f-bf20-43ca-933c-3e964253d5c5"
+      },
+      "superseded": false,
+      "status": "Existing surface: visual adaptation"
+    },
+    {
+      "id": "23",
+      "title": "Vote: winner",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/23-vote-winner.html",
+      "image": "approved/23.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 127,
+        "screen": "23",
+        "title": "Vote: winner",
+        "batch": "bookish full app",
+        "mockupID": "9c06f8d9-5174-406a-b506-6cb57a74ea6c"
+      },
+      "superseded": false,
+      "status": "Partial: existing combined flow"
+    },
+    {
+      "id": "24",
+      "title": "meeting rsvp",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/24-meeting-rsvp.html",
+      "image": "approved/24.jpg",
+      "override": false,
+      "receipt": null,
+      "superseded": false,
+      "status": "Partial: existing combined flow"
+    },
+    {
+      "id": "25",
+      "title": "Schedule a meeting (host)",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/25-schedule-meeting.html",
+      "image": "approved/25.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 128,
+        "screen": "25",
+        "title": "Schedule a meeting (host)",
+        "batch": "bookish full app",
+        "mockupID": "deb643f7-8ce2-48f2-b32e-4e0764b3fe95"
+      },
+      "superseded": false,
+      "status": "Partial: existing combined flow"
+    },
+    {
+      "id": "26",
+      "title": "Member list",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/26-members.html",
+      "image": "approved/26-v2.webp",
+      "override": true,
+      "receipt": {
+        "decision": 177,
+        "screen": "26",
+        "title": "Member list",
+        "batch": "bookish full app: no race v2",
+        "mockupID": "cf742dd3-9841-4c92-9bec-0214ad0c0c5a"
+      },
+      "superseded": false,
+      "status": "Existing surface: visual adaptation"
+    },
+    {
+      "id": "27",
+      "title": "Invite: native share sheet",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/27-invite-share-sheet.html",
+      "image": "approved/27.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 129,
+        "screen": "27",
+        "title": "Invite: native share sheet",
+        "batch": "bookish full app",
+        "mockupID": "adf3d035-3a33-474d-8a36-ed392ec0315d"
+      },
+      "superseded": false,
+      "status": "Partial: existing combined flow"
+    },
+    {
+      "id": "28",
+      "title": "Notifications",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/28-notifications.html",
+      "image": "approved/28.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 178,
+        "screen": "28",
+        "title": "Notifications",
+        "batch": "bookish full app: no race v2",
+        "mockupID": "1d3ed44e-11f9-4844-9af5-6e6f1f33cd34"
+      },
+      "superseded": true,
+      "status": "Absent"
+    },
+    {
+      "id": "29",
+      "title": "Profile",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/29-profile.html",
+      "image": "approved/29.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 130,
+        "screen": "29",
+        "title": "Profile",
+        "batch": "bookish full app",
+        "mockupID": "f603611c-d7b8-4870-b997-bc0068c4b080"
+      },
+      "superseded": false,
+      "status": "Partial: existing combined flow"
+    },
+    {
+      "id": "30",
+      "title": "Settings and privacy",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/30-settings.html",
+      "image": "approved/30-v2.webp",
+      "override": true,
+      "receipt": {
+        "decision": 179,
+        "screen": "30",
+        "title": "Settings and privacy",
+        "batch": "bookish full app: no race v2",
+        "mockupID": "f7d1ea3e-fa7b-4de5-b5ef-6bd2d7b206c5"
+      },
+      "superseded": false,
+      "status": "Existing surface: visual adaptation"
+    },
+    {
+      "id": "31",
+      "title": "Start a club",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/31-start-a-club.html",
+      "image": "approved/31.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 131,
+        "screen": "31",
+        "title": "Start a club",
+        "batch": "bookish full app",
+        "mockupID": "bb06f060-9a69-45c5-a40c-19b65c4a9af9"
+      },
+      "superseded": false,
+      "status": "Existing surface: visual adaptation"
+    },
+    {
+      "id": "32",
+      "title": "Club started",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/32-club-started.html",
+      "image": "approved/32.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 132,
+        "screen": "32",
+        "title": "Club started",
+        "batch": "bookish full app",
+        "mockupID": "0cc0d975-1f2e-4aa3-a9c7-07efe546e15d"
+      },
+      "superseded": false,
+      "status": "Partial: existing combined flow"
+    },
+    {
+      "id": "33",
+      "title": "Empty: The Tea",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/33-empty-the-tea.html",
+      "image": "approved/33.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 133,
+        "screen": "33",
+        "title": "Empty: The Tea",
+        "batch": "bookish full app",
+        "mockupID": "bc2b5bb8-0db6-4f5b-8dce-93f73805bddf"
+      },
+      "superseded": false,
+      "status": "Partial: existing combined flow"
+    },
+    {
+      "id": "34",
+      "title": "Empty: no clubs nearby",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/34-empty-near-me.html",
+      "image": "approved/34.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 134,
+        "screen": "34",
+        "title": "Empty: no clubs nearby",
+        "batch": "bookish full app",
+        "mockupID": "3be7c1d8-1f91-4fa5-a9eb-260768ba85b5"
+      },
+      "superseded": false,
+      "status": "Existing surface: visual adaptation"
+    },
+    {
+      "id": "35",
+      "title": "Empty: Saved",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/35-empty-saved.html",
+      "image": "approved/35.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 135,
+        "screen": "35",
+        "title": "Empty: Saved",
+        "batch": "bookish full app",
+        "mockupID": "421a901c-3bfd-4207-8de4-283f6973a1c7"
+      },
+      "superseded": false,
+      "status": "Existing surface: visual adaptation"
+    },
+    {
+      "id": "36",
+      "title": "Empty: notifications",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/36-empty-notifications.html",
+      "image": "approved/36.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 136,
+        "screen": "36",
+        "title": "Empty: notifications",
+        "batch": "bookish full app",
+        "mockupID": "88a836f5-690d-4457-9958-b2904418f659"
+      },
+      "superseded": false,
+      "status": "Absent"
+    },
+    {
+      "id": "37",
+      "title": "Empty: not in a club yet",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/37-empty-no-club.html",
+      "image": "approved/37.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 137,
+        "screen": "37",
+        "title": "Empty: not in a club yet",
+        "batch": "bookish full app",
+        "mockupID": "3f78e578-04a4-4741-ae7b-b5d7ed83c174"
+      },
+      "superseded": false,
+      "status": "Partial: existing combined flow"
+    },
+    {
+      "id": "38",
+      "title": "iMessage: app drawer (+ menu)",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/38-imessage-app-drawer.html",
+      "image": "approved/38.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 138,
+        "screen": "38",
+        "title": "iMessage: app drawer (+ menu)",
+        "batch": "bookish full app",
+        "mockupID": "9ae45c4c-4018-4b2f-9e6f-62d5cffe2331"
+      },
+      "superseded": false,
+      "status": "Partial: native UIKit review host"
+    },
+    {
+      "id": "39",
+      "title": "imessage sticker pack",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/39-imessage-sticker-pack.html",
+      "image": "approved/39.jpg",
+      "override": false,
+      "receipt": null,
+      "superseded": false,
+      "status": "Partial: native UIKit review host"
+    },
+    {
+      "id": "40",
+      "title": "imessage extension send vote",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/40-imessage-extension-send-vote.html",
+      "image": "approved/40.jpg",
+      "override": false,
+      "receipt": null,
+      "superseded": false,
+      "status": "Partial: native UIKit review host"
+    },
+    {
+      "id": "41",
+      "title": "iMessage: live vote bubble",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/41-imessage-live-vote.html",
+      "image": "approved/41.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 139,
+        "screen": "41",
+        "title": "iMessage: live vote bubble",
+        "batch": "bookish full app",
+        "mockupID": "014563f3-8f69-456f-8d7f-54d335f373fd"
+      },
+      "superseded": false,
+      "status": "Partial: native UIKit review host"
+    },
+    {
+      "id": "42",
+      "title": "iMessage: meeting RSVP bubble",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/42-imessage-rsvp.html",
+      "image": "approved/42.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 140,
+        "screen": "42",
+        "title": "iMessage: meeting RSVP bubble",
+        "batch": "bookish full app",
+        "mockupID": "77457c84-a610-4823-aa6a-ed3e99f5c349"
+      },
+      "superseded": false,
+      "status": "Partial: native UIKit review host"
+    },
+    {
+      "id": "43",
+      "title": "Reading together (v2)",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/43-imessage-reading-race.html",
+      "image": "approved/20-v2.webp",
+      "override": true,
+      "receipt": null,
+      "superseded": false,
+      "status": "Partial: native UIKit review host"
+    },
+    {
+      "id": "44",
+      "title": "iMessage: take bubble with spoiler blur",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/44-imessage-tea-spoiler.html",
+      "image": "approved/44.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 141,
+        "screen": "44",
+        "title": "iMessage: take bubble with spoiler blur",
+        "batch": "bookish full app",
+        "mockupID": "ffebf221-6ed4-4251-9079-63b8d2d9d95b"
+      },
+      "superseded": false,
+      "status": "Absent native behavior"
+    },
+    {
+      "id": "45",
+      "title": "iMessage: invite link preview",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/45-imessage-invite-link.html",
+      "image": "approved/45.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 142,
+        "screen": "45",
+        "title": "iMessage: invite link preview",
+        "batch": "bookish full app",
+        "mockupID": "fa86a03a-e4dd-4ce5-9e2e-7c8599e43a27"
+      },
+      "superseded": false,
+      "status": "Absent native behavior"
+    },
+    {
+      "id": "46",
+      "title": "widgets home screen",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/46-widgets-home-screen.html",
+      "image": "approved/46.jpg",
+      "override": false,
+      "receipt": null,
+      "superseded": false,
+      "status": "Absent"
+    },
+    {
+      "id": "47",
+      "title": "Widgets: lock screen",
+      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/47-widgets-lock-screen.html",
+      "image": "approved/47.jpg",
+      "override": false,
+      "receipt": {
+        "decision": 143,
+        "screen": "47",
+        "title": "Widgets: lock screen",
+        "batch": "bookish full app",
+        "mockupID": "6e14ea6c-7fdd-40cd-8606-6610a94175f2"
+      },
+      "superseded": false,
+      "status": "Absent"
+    }
+  ],
+  "validation": {
+    "complete": true,
+    "unexpectedExternalRequests": 0,
+    "failedCaptures": []
+  },
+  "nativeEvidence": [
+    {
+      "reference": "38",
+      "images": [
+        "native/actual/drawer-icon.png"
+      ],
+      "note": "Bundled icon preview in an isolated native review host. Apple’s Messages drawer is not captured."
+    },
+    {
+      "reference": "39",
+      "images": [
+        "native/actual/stickers.png"
+      ],
+      "note": "Actual native sticker browser in an isolated UIKit review host. The existing fourteen sticker identifiers are retained."
+    },
+    {
+      "reference": "40",
+      "images": [
+        "native/actual/editor-vote.png",
+        "native/actual/editor-vote-scrolled.png",
+        "native/actual/editor-vote-error-scrolled.png",
+        "native/actual/editor-vote-large-type.png",
+        "native/actual/editor-vote-large-type-scrolled.png"
+      ],
+      "note": "Actual production vote editor in a standalone simulator host, including error and large-text states. Apple’s conversation, keyboard, and transport are not captured."
+    },
+    {
+      "reference": "41",
+      "images": [
+        "native/actual/transcript-vote.png"
+      ],
+      "note": "Actual CardRenderer output hosted in UIKit. Apple’s Messages transcript chrome and transport are not captured."
+    },
+    {
+      "reference": "42",
+      "images": [
+        "native/actual/transcript-rsvp.png",
+        "native/actual/editor-rsvp.png",
+        "native/actual/transcript-rsvp-long.png"
+      ],
+      "note": "Actual RSVP card and editor in the native review host. Apple’s host, incoming delivery, and send transport require device validation."
+    },
+    {
+      "reference": "43",
+      "images": [
+        "native/actual/transcript-bookmarks.png",
+        "native/actual/editor-bookmarks.png",
+        "native/actual/transcript-bookmarks-empty.png"
+      ],
+      "note": "Actual communal bookmarks card and editor follow the v2 reading-together reference. Member order is preserved, with no ranked reading view."
+    }
+  ],
+  "nativeCapture": {
+    "manifest": "native/capture-manifest.json",
+    "capturedAt": "2026-11-06T01:46:57.756249+00:00",
+    "device": "iPhone 13 Pro",
+    "runtime": "iOS 26.5 (23F77)",
+    "screenSizePoints": [
+      390,
+      844
+    ],
+    "host": "Review-only standalone UIKit host, compiled from production native source files",
+    "limitations": [
+      "Not captured inside Apple Messages chrome",
+      "No live conversation, send, cancel, sticker peeling, or delivery validation",
+      "Drawer image is a bundled resource preview",
+      "No native invite or Tea card exists"
+    ],
+    "simulatorScreenshots": 14,
+    "exactCardImages": 5
+  }
+}

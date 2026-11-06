@@ -1,0 +1,134 @@
+{
+  "capturedAt": "2026-11-06T01:46:57.756249+00:00",
+  "device": "iPhone 13 Pro",
+  "runtime": "iOS 26.5 (23F77)",
+  "xcode": "27.1 (27A9275)",
+  "screenSizePoints": [
+    390,
+    844
+  ],
+  "captureMethod": "simctl screenshot, normalized from 3x to 1x using sips",
+  "host": "Review-only standalone UIKit host, compiled from production native source files",
+  "limitations": [
+    "Not captured inside Apple Messages chrome",
+    "No live conversation, send, cancel, sticker peeling, or delivery validation",
+    "Drawer image is a bundled resource preview",
+    "No native invite or Tea card exists"
+  ],
+  "screenshots": [
+    {
+      "path": "actual/drawer-icon.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "b78a0f1d963d0b0fd7bd0a72ff3a05d2d74a7f0c527e850c9c601a585234a22c"
+    },
+    {
+      "path": "actual/editor-bookmarks.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "92989e4db4791655af549a0092693c30a13e4d367ab43fe771b6f6bf97ae817a"
+    },
+    {
+      "path": "actual/editor-rsvp.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "c96ac9fc14d1b96e52d6fe121808d19f7b25a4422e40a3fdd2c8e9650271cf0f"
+    },
+    {
+      "path": "actual/editor-vote-error-scrolled.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "4dc7afe78ee9b3ef15006f9562a78deb6d222c1aef8964f2bc858fe79a68622a"
+    },
+    {
+      "path": "actual/editor-vote-large-type-scrolled.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "5d00d148c0cad3b1a6836efac0fe81f7213ce2b41e9217742d41fd500006167e"
+    },
+    {
+      "path": "actual/editor-vote-large-type.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "033898565d61c11164d82809e2d499e0481069d947bdb3cd848b7b240ffe58b6"
+    },
+    {
+      "path": "actual/editor-vote-scrolled.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "dc22af7d3f4ce44b32d37a6da63b8e1b8c1206882fab1fbd80a91dd64e05038b"
+    },
+    {
+      "path": "actual/editor-vote.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "11a05f5fc6819988907a71907ea09615bc92a46e14b4220a34bb8bc5afbbaacb"
+    },
+    {
+      "path": "actual/stickers.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "c222a56b69533bbe03ec918bd4071c339161c15fd86fd730da2d873df3400e68"
+    },
+    {
+      "path": "actual/transcript-bookmarks-empty.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "4127f5180c376210ec5dfb290b0ac105d6ccc5ccbb0deac9124d7d07a87aeee6"
+    },
+    {
+      "path": "actual/transcript-bookmarks.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "d3642c3a2e25b25a0d9f99b6dfcfa1245ab92a1ebcd097f17e57aadc1250a3fb"
+    },
+    {
+      "path": "actual/transcript-rsvp-long.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "57887ae99ed785ed3a3c8cb53f42c9025dae978a151b683916b79e99981e9ffc"
+    },
+    {
+      "path": "actual/transcript-rsvp.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "03bd48117ef9d5e75e3e429652eadad390c6224bbc47ade9e9060489a1678079"
+    },
+    {
+      "path": "actual/transcript-vote.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "d0b5fa5cee1dfc2022dfef7429452bb90a30156abcc30c133c6a6e051c5483af"
+    },
+    {
+      "path": "cards/transcript-bookmarks-empty.png",
+      "width": 600,
+      "height": 520,
+      "sha256": "9b4cb83a6477cf5812442d23f0e9c318b20028bbd3a159e89bac47868f0ab282"
+    },
+    {
+      "path": "cards/transcript-bookmarks.png",
+      "width": 600,
+      "height": 520,
+      "sha256": "49a89d8f24edf427fc8430bcd92c6d7ee60ad297dfeeb5aa31e8a6059e66fe67"
+    },
+    {
+      "path": "cards/transcript-rsvp-long.png",
+      "width": 600,
+      "height": 520,
+      "sha256": "74f4130c170316066fcc87e5e6d4dd4b76d38c938cb22d33086703fe5b416429"
+    },
+    {
+      "path": "cards/transcript-rsvp.png",
+      "width": 600,
+      "height": 520,
+      "sha256": "68947beccbe580231208c5e4a49da796bec3bcfaa9f1b26dec9a940a121bc555"
+    },
+    {
+      "path": "cards/transcript-vote.png",
+      "width": 600,
+      "height": 570,
+      "sha256": "a8a6b740c8e8a6779ba2e868e7dfac585ed1ad3bba4bab206e88cb02510cc5b9"
+    }
+  ]
+}
