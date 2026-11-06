@@ -51,8 +51,8 @@
 - [x] Capture actual production UI with local intercepted fixtures in Google Chrome at 390 by 844, including empty and failure states.
 - [x] Save approved-left, built-right PNGs in the requested parity directory and inspect every image.
 - [x] Run lint, typecheck, all root and app tests, browser checks, both builds, and applicable native checks.
-- [ ] Request a fresh whole-change review, resolve material findings, commit, push, and open a draft PR against main.
-- [ ] Write the requested external RESULT.md with evidence, limitations, and the draft PR URL.
+- [x] Request a fresh whole-change review, resolve material findings, commit, push, and open a draft PR against main.
+- [x] Write the requested external RESULT.md with evidence, limitations, and the draft PR URL.
 
 ## Execution record
 
@@ -61,3 +61,5 @@
 - A fresh reviewer found and reproduced stale thread bodies, reply recovery loss, resource routing gaps, and asynchronous club/session races. Each material issue was fixed and verified with focused regressions. The final review reported no material blockers.
 - Privacy requirements take precedence over signed posting, multiple reaction categories, tap reveal, and unavailable aggregate fields in older art.
 - Final verification and release artifacts are recorded in `/Users/vahallo/ted-ops/oneshots/1106-bookish-newscreens/RESULT.md`.
+
+Draft PR: https://github.com/Bookishapp/bookish-club/pull/41. All release steps completed, with the external RESULT.md as the verification record.
