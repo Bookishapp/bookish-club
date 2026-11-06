@@ -2,7 +2,7 @@ import UIKit
 import Capacitor
 
 final class BookishViewController: CAPBridgeViewController {
-    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
+    override var preferredStatusBarStyle: UIStatusBarStyle { .darkContent }
     override func capacitorDidLoad() {
         bridge?.registerPluginInstance(BookishMapPlugin())
         #if DEBUG
