@@ -8,7 +8,7 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
     private var conversationKey: String?
     private var pending: (message: MSMessage, state: MessageState)?
     private var selectedRSVP: RSVPChoice = .yes
-    private var selectedVote: String?
+    private var selectedBooks = Set<String>()
     private var invalidSelection = false
     private var showingStickers = false
     private var serverResource: MessageResource?
@@ -18,6 +18,8 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
     private let content = UIStackView()
     private let choices = UIStackView()
     private let nameField = UITextField()
+    private let nameTitle = UILabel()
+    private let pollPrivacyLabel = UILabel()
     private let pageField = UITextField()
     private let statusLabel = UILabel()
     private let detailLabel = UILabel()
@@ -27,6 +29,7 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
     private let mode = UISegmentedControl(items: ["RSVP", "Book vote", "Bookmarks", "Stickers"])
     private let addButton = UIButton(type: .system)
     private let newButton = UIButton(type: .system)
+    private let voteInApp = UIButton(type: .system)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,7 +54,7 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         let wordmark = UIImageView(image: UIImage(named: "BookishWordmark"))
         wordmark.contentMode = .scaleAspectFit
         wordmark.accessibilityLabel = "Bookish"; wordmark.isAccessibilityElement = true
-        wordmark.widthAnchor.constraint(equalToConstant: 112).isActive = true
+        wordmark.widthAnchor.constraint(equalToConstant: 56).isActive = true
         wordmark.heightAnchor.constraint(equalToConstant: 18).isActive = true
         let menu = UIButton(type: .system)
         menu.setImage(UIImage(systemName: "ellipsis.circle.fill"), for: .normal)
@@ -61,7 +64,12 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         menu.menu = UIMenu(children: ["RSVP", "Book vote", "Bookmarks", "Stickers"].enumerated().map { index, title in
             UIAction(title: title) { [weak self] _ in self?.mode.selectedSegmentIndex = index; self?.changeKind() }
         })
-        let header = UIStackView(arrangedSubviews: [wordmark, UIView(), menu])
+        pollPrivacyLabel.text = "Send a poll. Votes stay in Bookish."
+        pollPrivacyLabel.font = BookishTheme.font(.caption).withSize(10)
+        pollPrivacyLabel.textColor = BookishTheme.card
+        pollPrivacyLabel.adjustsFontForContentSizeCategory = true
+        let header = UIStackView(arrangedSubviews: [wordmark, UIView(), pollPrivacyLabel, menu])
+        header.spacing = 6
         header.axis = .horizontal
         content.addArrangedSubview(header)
         mode.selectedSegmentIndex = 0; mode.selectedSegmentTintColor = BookishTheme.wine
@@ -97,7 +105,8 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         configure(pageField, placeholder: "Page number"); pageField.keyboardType = .numberPad
         nameField.autocapitalizationType = .words; nameField.returnKeyType = .done
         choices.axis = .vertical; choices.spacing = 0; content.addArrangedSubview(choices)
-        content.addArrangedSubview(label("Your name on the card", style: .caption))
+        configure(nameTitle, style: .caption); nameTitle.text = "Your name on the card"; nameTitle.textColor = BookishTheme.card
+        content.addArrangedSubview(nameTitle)
         content.addArrangedSubview(nameField)
         content.addArrangedSubview(summaryCard)
         style(addButton, primary: true); addButton.setTitle("Send to the chat", for: .normal)
@@ -107,6 +116,10 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         content.addArrangedSubview(statusLabel)
         style(newButton, primary: false); newButton.setTitle("Start a new card", for: .normal)
         newButton.addTarget(self, action: #selector(startNewCard), for: .touchUpInside)
+        style(voteInApp, primary: false)
+        voteInApp.setTitle("Open Bookish to vote", for: .normal)
+        voteInApp.addTarget(self, action: #selector(openVoting), for: .touchUpInside)
+        content.addArrangedSubview(voteInApp)
         content.addArrangedSubview(newButton)
         cardRows = Array(content.arrangedSubviews.dropFirst(2))
         serverPanel.axis = .vertical; serverPanel.spacing = 18
@@ -135,7 +148,7 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
             conversationKey = key; knownCards.removeAll(); session = nil; pending = nil
             serverResource = nil
             state = ClubDataStore.card(kind: .rsvp); invalidSelection = false; showingStickers = false
-            selectedRSVP = .yes; selectedVote = nil; pageField.text = nil
+            selectedRSVP = .yes; selectedBooks = Set(state.candidates.map { $0.id }); pageField.text = nil
         }
         if let message = conversation.selectedMessage {
             select(message, openServer: serverResource?.url != message.url)
@@ -198,9 +211,9 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         else { knownCards[state.cardID] = state }
         let formSnapshot = message.isPending ? decoded : state
         if let response = formSnapshot.responses.first(where: { $0.participantID == participant }) {
-            selectedRSVP = response.rsvp ?? .yes; selectedVote = response.voteID
+            selectedRSVP = response.rsvp ?? .yes; selectedBooks = Set(state.candidates.map { $0.id })
             pageField.text = response.page.map(String.init)
-        } else { selectedRSVP = .yes; selectedVote = nil; pageField.text = nil }
+        } else { selectedRSVP = .yes; selectedBooks = Set(state.candidates.map { $0.id }); pageField.text = nil }
         render()
     }
 
@@ -222,13 +235,13 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         if showingStickers && kind == state.kind { showingStickers = false; render(); return }
         showingStickers = false
         state = ClubDataStore.card(kind: kind)
-        session = nil; invalidSelection = false; selectedVote = nil; selectedRSVP = .yes; pageField.text = nil
+        session = nil; invalidSelection = false; selectedBooks = Set(state.candidates.map { $0.id }); selectedRSVP = .yes; pageField.text = nil
         render()
     }
 
     @objc private func startNewCard() {
         state = ClubDataStore.card(kind: state.kind); session = nil; pending = nil
-        invalidSelection = false; selectedRSVP = .yes; selectedVote = nil; pageField.text = nil; render()
+        invalidSelection = false; selectedRSVP = .yes; selectedBooks = Set(state.candidates.map { $0.id }); pageField.text = nil; render()
     }
 
     private func render() {
@@ -271,7 +284,11 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
             case .bookmarks: return "\(member.name): \(member.page.map { "page \($0)" } ?? "No bookmark yet")"
             }
         }
-        summaryLabel.text = ([CardRenderer.summary(state)] + memberLines).joined(separator: "\n")
+        summaryLabel.text = state.kind == .vote ? "Poll options only. Vote privately in Bookish." : ([CardRenderer.summary(state)] + memberLines).joined(separator: "\n")
+        pollPrivacyLabel.isHidden = showingStickers || state.kind != .vote
+        nameField.isHidden = state.kind == .vote
+        nameTitle.isHidden = state.kind == .vote
+        voteInApp.isHidden = state.kind != .vote
         summaryCard.backgroundColor = state.kind == .bookmarks ? BookishTheme.deepGreen : BookishTheme.card
         summaryLabel.textColor = state.kind == .bookmarks ? BookishTheme.mint : BookishTheme.muted
         choices.backgroundColor = state.kind == .vote ? BookishTheme.card : .clear
@@ -281,7 +298,7 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         choices.spacing = state.kind == .vote ? 8 : 10
         choices.axis = state.kind == .vote ? .horizontal : .vertical
         choices.distribution = state.kind == .vote ? .fillEqually : .fill
-        addButton.setTitle(state.kind == .vote ? "Send vote to the chat" : "Send to the chat", for: .normal)
+        addButton.setTitle(state.kind == .vote ? "Send poll to the chat" : "Send to the chat", for: .normal)
         summaryCard.isHidden = state.responses.isEmpty
         choices.arrangedSubviews.forEach { choices.removeArrangedSubview($0); $0.removeFromSuperview() }
         switch state.kind {
@@ -293,8 +310,15 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
             }
         case .vote:
             for book in state.candidates {
-                let button = bookChoice(book, selected: selectedVote == book.id)
-                button.addAction(UIAction { [weak self] _ in self?.selectedVote = book.id; self?.render() }, for: .touchUpInside)
+                let button = bookChoice(book, selected: selectedBooks.contains(book.id))
+                button.addAction(UIAction { [weak self] _ in
+                    guard let self = self else { return }
+                    if self.selectedBooks.contains(book.id) {
+                        guard self.selectedBooks.count > 2 else { self.setStatus("Choose at least two books for your poll."); return }
+                        self.selectedBooks.remove(book.id)
+                    } else { self.selectedBooks.insert(book.id) }
+                    self.render()
+                }, for: .touchUpInside)
                 choices.addArrangedSubview(button)
             }
         case .bookmarks:
@@ -307,8 +331,12 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         nameField.isEnabled = editing; pageField.isEnabled = editing; choices.isUserInteractionEnabled = editing
         statusLabel.textColor = BookishTheme.card
         statusLabel.text = invalidSelection ? "Start a new card to continue." : pending == nil
-            ? "Sample club details. Add your response, then tap Send in Messages."
+            ? (state.kind == .vote ? "Choose two or three poll options. Cast votes privately in Bookish." : "Sample club details. Add your response, then tap Send in Messages.")
             : "Ready in Messages. Tap Send to share, or remove the draft to keep editing."
+    }
+
+    @objc private func openVoting() {
+        extensionContext?.open(URL(string: "bookish://widget/read")!)
     }
 
     @objc private func prepareMessage() {
@@ -319,20 +347,21 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         let name = (nameField.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
         var outgoing = state
         do {
-            if state.kind == .vote && selectedVote == nil { setStatus("Choose a book first."); return }
+            if state.kind == .vote { outgoing = try state.pollSnapshot(candidateIDs: selectedBooks) }
             let page = state.kind == .bookmarks ? Int(pageField.text ?? "") : nil
             if state.kind == .bookmarks && page == nil { setStatus("Enter a whole page number."); return }
-            try outgoing.respond(participantID: conversation.localParticipantIdentifier.uuidString,
-                                 name: name.isEmpty ? "Reader" : name,
-                                 rsvp: state.kind == .rsvp ? selectedRSVP : nil,
-                                 voteID: state.kind == .vote ? selectedVote : nil, page: page)
-            let message = MSMessage(session: session ?? MSSession())
+            if state.kind != .vote {
+                try outgoing.respond(participantID: conversation.localParticipantIdentifier.uuidString,
+                                     name: name.isEmpty ? "Reader" : name,
+                                     rsvp: state.kind == .rsvp ? selectedRSVP : nil, page: page)
+            }
+            let message = MSMessage(session: state.kind == .vote ? MSSession() : session ?? MSSession())
             let layout = MSMessageTemplateLayout()
             layout.image = CardRenderer.image(for: outgoing)
             layout.caption = state.kind == .rsvp ? state.meetingTitle : BookishTheme.title(for: state.kind)
             layout.subcaption = CardRenderer.summary(outgoing)
             message.layout = layout; message.url = try outgoing.messageURL()
-            message.summaryText = "\(name.isEmpty ? "Reader" : name) updated \(BookishTheme.title(for: state.kind).lowercased())."
+            message.summaryText = state.kind == .vote ? "Book poll shared. Vote privately in Bookish." : "\(name.isEmpty ? "Reader" : name) updated \(BookishTheme.title(for: state.kind).lowercased())."
             message.accessibilityLabel = "\(layout.caption ?? "Bookish"). \(layout.subcaption ?? "")"
             pending = (message, outgoing); render()
             conversation.insert(message) { [weak self] error in

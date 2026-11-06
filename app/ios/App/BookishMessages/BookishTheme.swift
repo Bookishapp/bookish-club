@@ -124,8 +124,26 @@ enum BookishTheme {
                 hex(colors[book.id]!).setFill(); UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 100, height: 148), cornerRadius: 4).fill()
                 ink.withAlphaComponent(0.12).setFill(); UIBezierPath(rect: CGRect(x: 0, y: 0, width: 8, height: 148)).fill()
                 (book.title as NSString).draw(in: CGRect(x: 15, y: 9, width: 79, height: 76), withAttributes: [.font: font(.heading, scalable: false).withSize(book.id == "wuthering" ? 14 : 17), .foregroundColor: ink])
-                let symbol = book.id == "emma" ? "cup.and.saucer" : book.id == "wuthering" ? "sparkle" : "house"
-                UIImage(systemName: symbol)?.withTintColor(ink, renderingMode: .alwaysOriginal).draw(in: CGRect(x: 37, y: 109, width: 27, height: 27))
+                let icon = UIBezierPath()
+                if book.id == "emma" {
+                    icon.move(to: CGPoint(x: 37, y: 116)); icon.addLine(to: CGPoint(x: 61, y: 116))
+                    icon.addCurve(to: CGPoint(x: 49, y: 132), controlPoint1: CGPoint(x: 61, y: 128), controlPoint2: CGPoint(x: 57, y: 132))
+                    icon.addCurve(to: CGPoint(x: 37, y: 116), controlPoint1: CGPoint(x: 41, y: 132), controlPoint2: CGPoint(x: 37, y: 128))
+                    icon.move(to: CGPoint(x: 61, y: 118)); icon.addCurve(to: CGPoint(x: 61, y: 126), controlPoint1: CGPoint(x: 71, y: 115), controlPoint2: CGPoint(x: 71, y: 128))
+                    icon.move(to: CGPoint(x: 35, y: 136)); icon.addQuadCurve(to: CGPoint(x: 65, y: 136), controlPoint: CGPoint(x: 50, y: 140))
+                    for x in [43, 50, 57] { icon.move(to: CGPoint(x: x, y: 112)); icon.addCurve(to: CGPoint(x: x, y: 104), controlPoint1: CGPoint(x: x-3, y: 109), controlPoint2: CGPoint(x: x+3, y: 107)) }
+                } else if book.id == "wuthering" {
+                    icon.move(to: CGPoint(x: 50, y: 106)); icon.addQuadCurve(to: CGPoint(x: 64, y: 123), controlPoint: CGPoint(x: 52, y: 121))
+                    icon.addQuadCurve(to: CGPoint(x: 50, y: 140), controlPoint: CGPoint(x: 52, y: 125))
+                    icon.addQuadCurve(to: CGPoint(x: 36, y: 123), controlPoint: CGPoint(x: 48, y: 125))
+                    icon.addQuadCurve(to: CGPoint(x: 50, y: 106), controlPoint: CGPoint(x: 48, y: 121)); icon.close()
+                    butter.setFill(); icon.fill()
+                } else {
+                    icon.move(to: CGPoint(x: 35, y: 121)); icon.addLine(to: CGPoint(x: 50, y: 108)); icon.addLine(to: CGPoint(x: 65, y: 121))
+                    icon.move(to: CGPoint(x: 39, y: 118)); icon.addLine(to: CGPoint(x: 39, y: 138)); icon.addLine(to: CGPoint(x: 61, y: 138)); icon.addLine(to: CGPoint(x: 61, y: 118))
+                    icon.append(UIBezierPath(rect: CGRect(x: 47, y: 126, width: 7, height: 12)))
+                }
+                ink.setStroke(); icon.lineWidth = 1.5; icon.lineCapStyle = .round; icon.lineJoinStyle = .round; icon.stroke()
             }
         }
         let assets = ["pride": ("Pride and Prejudice", "Jane Austen"),

@@ -98,6 +98,18 @@ struct MessageState: Codable, Equatable {
         )
     }
 
+    /// Poll options are public. A native transcript must never transport a reader's ballot.
+    func pollSnapshot(candidateIDs: Set<String>) throws -> MessageState {
+        guard kind == .vote, (2...3).contains(candidateIDs.count),
+              candidateIDs.isSubset(of: Set(candidates.map { $0.id })) else { throw MessageStateError.invalidCandidates }
+        var poll = self
+        poll.cardID = UUID()
+        poll.candidates = candidates.filter { candidateIDs.contains($0.id) }
+        poll.responses = []
+        try poll.validate()
+        return poll
+    }
+
     func messageURL() throws -> URL {
         try validate()
         let encoder = JSONEncoder()

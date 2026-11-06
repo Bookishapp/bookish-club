@@ -40,6 +40,20 @@ let teaJSON = """
 """
 
 let tests: [(String, () throws -> Void)] = [
+    ("a shared native poll strips every named ballot", {
+        var state = MessageState.sample(kind: .vote)
+        try state.respond(participantID: "private-member", name: "Private reader", voteID: state.candidates[0].id, now: firstTime)
+        let poll = try state.pollSnapshot(candidateIDs: Set(state.candidates.prefix(2).map { $0.id }))
+        let transported = try MessageState.decode(url: poll.messageURL())
+        try expect(transported.responses.isEmpty, "Named ballots entered the shared poll")
+        try expect(transported.candidates.map { $0.id } == Array(state.candidates.prefix(2)).map { $0.id }, "Public poll options changed")
+        try expect(state.responses.count == 1, "Preparing a poll changed the local snapshot")
+    }),
+    ("native polls require two or three known options", {
+        let state = MessageState.sample(kind: .vote)
+        try expectThrows({ _ = try state.pollSnapshot(candidateIDs: [state.candidates[0].id]) }, "A one-book poll was accepted")
+        try expectThrows({ _ = try state.pollSnapshot(candidateIDs: [state.candidates[0].id, "unknown"]) }, "An unknown book entered a poll")
+    }),
     ("widget summaries retain display counts and strip private fields", {
         let raw = #"{"readingTitle":"Pride and Prejudice","page":212,"totalPages":432,"stopPage":247,"friendsReading":3,"meetingTitle":"7:30 at Jess's","meetingDetail":"Up to ch. 30","meetingDay":"Thursday","going":true,"newTakes":6,"sealedTakes":2,"chapter":34,"body":"PRIVATE","token":"SECRET"}"#
         let snapshot = try WidgetSnapshot.decode(Data(raw.utf8))

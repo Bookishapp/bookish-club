@@ -37,7 +37,6 @@ final class ReviewController: UIViewController {
                 let editor=MessagesViewController(); editor.loadViewIfNeeded()
                 let segmented = descendants(editor.view).compactMap{$0 as? UISegmentedControl}.first!
                 segmented.selectedSegmentIndex=1;segmented.sendActions(for:.valueChanged)
-                if let choice = descendants(editor.view).compactMap({ $0 as? UIButton }).first(where: { $0.accessibilityLabel?.hasPrefix("Emma,") == true }) { choice.sendActions(for: .touchUpInside) }
                 child=editor
             } else { child=StickerPickerViewController() }
             addChild(child);child.view.frame=CGRect(x:0,y:512,width:390,height:332);view.addSubview(child.view);child.didMove(toParent:self)

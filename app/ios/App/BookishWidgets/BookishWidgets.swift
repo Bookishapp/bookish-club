@@ -55,7 +55,7 @@ struct BookishWidgetView: View {
                 ZStack(alignment: .topLeading) {
                     Color(red: 0.95, green: 0.62, blue: 0.73)
                     Text(s.readingTitle).font(serif(9)).padding(5).foregroundStyle(.black)
-                    Text("♡").font(.system(size: 27)).offset(x: 18, y: 55).foregroundStyle(.black)
+                    BookishHeart().stroke(.black, style: StrokeStyle(lineWidth: 1, lineCap: .round, lineJoin: .round)).frame(width: 19, height: 19).offset(x: 17, y: 54).accessibilityHidden(true)
                 }.frame(width: 52, height: 78).clipShape(RoundedRectangle(cornerRadius: 5))
                 VStack(alignment: .leading, spacing: 1) {
                     Text("Reading together").font(sans(11))
@@ -76,7 +76,7 @@ struct BookishWidgetView: View {
                     }
                 }
             }.frame(height: 10)
-            Text("\(s.friendsReading) friends reading tonight").font(sans(11))
+            Text("\(s.friendsReading) friends sharing bookmarks").font(sans(11))
         }.foregroundStyle(paper).padding(16)
     }
     private func meeting(_ s: WidgetSnapshot) -> some View {
@@ -86,7 +86,7 @@ struct BookishWidgetView: View {
                 Text(s.meetingTitle ?? "Plan your next club night").font(serif(21)).lineLimit(3).minimumScaleFactor(0.65)
                 if let detail = s.meetingDetail { Text(detail).font(sans(11)).foregroundStyle(.black.opacity(0.65)) }
                 Spacer(minLength: 0)
-                if s.going { Label("Going", systemImage: "checkmark").font(sans(11)).padding(.horizontal, 10).padding(.vertical, 4).foregroundStyle(.white).background(green,in:Capsule()) }
+                if s.going { HStack(spacing: 5) { BookishTick().stroke(.white, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round)).frame(width: 12, height: 12).accessibilityHidden(true); Text("Going") }.font(sans(11)).padding(.horizontal, 10).padding(.vertical, 4).foregroundStyle(.white).background(green,in:Capsule()) }
             }.frame(maxWidth: .infinity, alignment: .leading).padding(14)
             Image("LunairRSVP").resizable().scaledToFit().frame(width: 100, height: 120).offset(x: 20,y: 37).accessibilityHidden(true)
         }
@@ -104,6 +104,22 @@ struct BookishWidgetView: View {
     }
 }
 
+struct BookishHeart: Shape {
+    func path(in rect: CGRect) -> Path {
+        var p = Path()
+        p.move(to: CGPoint(x: rect.midX, y: rect.height * 0.93))
+        p.addCurve(to: CGPoint(x: rect.midX, y: rect.height * 0.23), control1: CGPoint(x: -rect.width * 0.47, y: rect.height * 0.29), control2: CGPoint(x: rect.width * 0.06, y: -rect.height * 0.27))
+        p.addCurve(to: CGPoint(x: rect.midX, y: rect.height * 0.93), control1: CGPoint(x: rect.width * 0.94, y: -rect.height * 0.27), control2: CGPoint(x: rect.width * 1.47, y: rect.height * 0.29))
+        p.closeSubpath(); return p
+    }
+}
+struct BookishTick: Shape {
+    func path(in rect: CGRect) -> Path {
+        var p = Path(); p.move(to: CGPoint(x: rect.width * 0.08, y: rect.height * 0.52))
+        p.addLine(to: CGPoint(x: rect.width * 0.37, y: rect.height * 0.82)); p.addLine(to: CGPoint(x: rect.width * 0.94, y: rect.height * 0.12)); return p
+    }
+}
+
 struct BookishConfiguredWidget: Widget {
     let style: BookishWidgetStyle
     init() { style = .reading }
@@ -115,7 +131,7 @@ struct BookishConfiguredWidget: Widget {
             } else { BookishWidgetView(snapshot: entry.snapshot, style: style) }
         }
         .configurationDisplayName(style == .reading ? "Reading together" : style == .meeting ? "Club night" : "The Tea")
-        .description(style == .reading ? "Your page, your reading stop, and friends reading." : style == .meeting ? "Your next meeting and RSVP." : "Fresh take counts. Spoilers stay sealed.")
+        .description(style == .reading ? "Your page, your reading stop, and friends sharing bookmarks." : style == .meeting ? "Your next meeting and RSVP." : "Fresh take counts. Spoilers stay sealed.")
         .supportedFamilies(style == .reading ? [.systemMedium] : [.systemSmall])
         .contentMarginsDisabled()
     }

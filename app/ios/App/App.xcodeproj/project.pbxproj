@@ -43,7 +43,6 @@
 		D10000000000000000000007 /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D20000000000000000000007 /* Messages.framework */; };
 		D10000000000000000000008 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D20000000000000000000008 /* UIKit.framework */; };
 		D10000000000000000000009 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000009 /* Stickers.xcassets */; };
-		D1000000000000000000000A /* BookishStickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D2000000000000000000000B /* BookishStickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D1000000000000000000000C /* StickerPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000000E /* StickerPickerViewController.swift */; };
 		D1000000000000000000000F /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000000F /* Fonts */; };
 		D10000000000000000000100 /* lunair-sticker-01-hi-book-club.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000100 /* lunair-sticker-01-hi-book-club.png */; };
@@ -76,13 +75,6 @@
 			remoteGlobalIDString = D40000000000000000000001;
 			remoteInfo = BookishMessages;
 		};
-		D30000000000000000000001 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 504EC2FC1FED79650016851F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D40000000000000000000002;
-			remoteInfo = BookishStickers;
-		};
 		E5D802F31CEC3F0EC87DCA35 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 504EC2FC1FED79650016851F /* Project object */;
@@ -99,7 +91,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				D1000000000000000000000A /* BookishStickers.appex in Embed App Extensions */,
 				481A79C5778263945DDF2131 /* BookishWidgets.appex in Embed App Extensions */,
 				39A8E7D7A7738EBF47E5700C /* BookishMessages.appex in Embed App Extensions */,
 			);
@@ -365,7 +356,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				D70000000000000000000001 /* PBXTargetDependency */,
 				3C964DEDEF38D61306977435 /* PBXTargetDependency */,
 				BACF0D01C70BE33560F0450B /* PBXTargetDependency */,
 			);
@@ -606,11 +596,6 @@
 			name = BookishMessages;
 			target = D40000000000000000000001 /* BookishMessages */;
 			targetProxy = 8486001C37CBA870438F611D /* PBXContainerItemProxy */;
-		};
-		D70000000000000000000001 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D40000000000000000000002 /* BookishStickers */;
-			targetProxy = D30000000000000000000001 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

@@ -51,7 +51,7 @@ asset('LunairRSVP', outlined_pose('calendar'))
 asset('LunairVote', outlined_pose('point'))
 asset('LunairBookmarks', outlined_pose('peek'))
 asset('BookishOxblood', Image.open(root / 'app/public/img/bg-oxblood-m.webp'))
-asset('BookishPaper', Image.open(root / 'app/public/img/tx-paper-900.webp'))
+asset('BookishPaper', Image.open(root / 'app/public/img/tx-paper-900.webp').resize((600,804), Image.Resampling.LANCZOS))
 # Decorative cup is isolated from the approved Tea widget.
 widget = Image.open(source / 'app-24-21-widgets.png')
 asset('TeaCup', remove_background(widget.crop((574,757,674,864)), 24))

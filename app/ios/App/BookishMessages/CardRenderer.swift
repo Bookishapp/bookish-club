@@ -7,7 +7,7 @@ enum CardRenderer {
         switch state.kind {
         case .rsvp:
             return "\(state.responses.filter { $0.rsvp == .yes }.count) in, \(state.responses.filter { $0.rsvp == .maybe }.count) maybe"
-        case .vote: return "\(state.responses.filter { $0.voteID != nil }.count) votes shared"
+        case .vote: return "\(state.candidates.count) book options. Vote in Bookish."
         case .bookmarks: return "\(state.responses.filter { $0.page != nil }.count) readers sharing their page"
         }
     }
@@ -33,8 +33,8 @@ enum CardRenderer {
                 for (i, member) in members.prefix(3).enumerated() {
                     bookmark(member, x: CGFloat(58 + i * 105), color: [BookishTheme.hex(0xB8A2DA), BookishTheme.pink, BookishTheme.hex(0x9EC9B1)][i])
                 }
-                text(members.isEmpty ? "Log your page to find your people." : members.prefix(3).map { $0.name }.joined(separator: ", ") + " are reading", CGRect(x: 28, y: 329, width: 544, height: 38), size: 25, bold: true)
-                text("Only people who share their page show up.", CGRect(x: 28, y: 370, width: 544, height: 30), size: 20, color: BookishTheme.muted)
+                text(members.isEmpty ? "Log your page to find your people." : members.prefix(3).map { $0.name }.joined(separator: ", ") + " are reading", CGRect(x: 28, y: 343, width: 544, height: 34), size: 25, bold: true)
+                text("Only people who share their page show up.", CGRect(x: 28, y: 381, width: 544, height: 27), size: 20, color: BookishTheme.muted)
                 text("Log my page                         Open The Tea", CGRect(x: 28, y: 409, width: 544, height: 33), size: 23, bold: true, color: BookishTheme.green)
             case .vote:
                 for (i, book) in state.candidates.prefix(3).enumerated() {
@@ -70,7 +70,7 @@ enum CardRenderer {
         let p = UIBezierPath(); p.move(to: rect.origin); p.addLine(to: CGPoint(x: rect.maxX,y: rect.minY)); p.addLine(to: CGPoint(x:rect.maxX,y:rect.maxY)); p.addLine(to: CGPoint(x:rect.midX,y:rect.maxY-17)); p.addLine(to: CGPoint(x:rect.minX,y:rect.maxY)); p.close()
         color.setFill(); p.fill(); BookishTheme.ink.setStroke(); p.lineWidth = 3; p.stroke()
         text(String(member.name.prefix(1)), rect.insetBy(dx: 4, dy: 35), size: 24, bold: true, center: true)
-        text("p. \(member.page ?? 0)", CGRect(x:x-18,y:314,width:86,height:29), size:20, color:BookishTheme.muted, center:true)
+        text("p. \(member.page ?? 0)", CGRect(x:x-18,y:306,width:86,height:25), size:20, color:BookishTheme.muted, center:true)
     }
     private static func avatars(_ names: [String], y: CGFloat) {
         for (i, name) in names.prefix(4).enumerated() {
