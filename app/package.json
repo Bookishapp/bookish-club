@@ -8,11 +8,12 @@
     "snapshot": "node scripts/snapshot.mjs",
     "check:release": "node scripts/check-release.mjs",
     "build": "tsc --noEmit && vite build",
-    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "test": "node --experimental-strip-types --test tests/*.test.ts && npm run test:community",
     "test:ui": "npm run build && node tests/ui-smoke.mjs",
     "preview": "vite preview --host 127.0.0.1 --port 4321 --strictPort",
     "sync": "npm run build && cap sync ios",
-    "ios": "cap open ios"
+    "ios": "cap open ios",
+    "test:community": "node tests/community-art.mjs && node tests/community-layout.mjs && node tests/tea-hosting-ui.mjs"
   },
   "dependencies": {
     "@capacitor/app": "^7.0.0",

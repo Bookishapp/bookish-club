@@ -25,6 +25,7 @@ export class AccountClient {
  }
  private async authenticated(path:string,body?:unknown,method='POST'){try{return await this.transport(path,body,await this.access(),method);}catch(error){if((error as {status?:number}).status===401){this.clear();throw Error('Your session ended. Sign in again to continue.');}throw error;}}
  async rpc(name:string,args:Record<string,unknown>={}){return this.authenticated(`/rest/v1/rpc/${name}`,args);}
+ async calendar(meeting:string):Promise<string>{if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(meeting))throw Error('Choose a valid meeting.');const content=await this.authenticated(`/functions/v1/bookish-meeting-calendar?meeting=${encodeURIComponent(meeting)}`,undefined,'GET');if(typeof content!=='string'||!content.startsWith('BEGIN:VCALENDAR'))throw Error('The calendar file is unavailable. Try again.');return content;}
  async read(table:string,query:string){return this.authenticated(`/rest/v1/${table}?${query}`,undefined,'GET');}
  async update(table:string,query:string,value:Record<string,unknown>){return this.authenticated(`/rest/v1/${table}?${query}`,value,'PATCH');}
  async edge(name:string,body:Record<string,unknown>={}){return this.authenticated(`/functions/v1/${name}`,body);}

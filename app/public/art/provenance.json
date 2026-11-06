@@ -1,0 +1,212 @@
+[
+  {
+    "file": "envelope.webp",
+    "source": "cut/envelope.png",
+    "width": 396,
+    "height": 640,
+    "bytes": 63414
+  },
+  {
+    "file": "cry.webp",
+    "source": "cut/cry.png",
+    "width": 474,
+    "height": 640,
+    "bytes": 71442
+  },
+  {
+    "file": "laugh.webp",
+    "source": "cut/laugh.png",
+    "width": 594,
+    "height": 640,
+    "bytes": 77072
+  },
+  {
+    "file": "gasp.webp",
+    "source": "cut/gasp.png",
+    "width": 414,
+    "height": 640,
+    "bytes": 70190
+  },
+  {
+    "file": "map.webp",
+    "source": "cut/map.png",
+    "width": 436,
+    "height": 640,
+    "bytes": 71706
+  },
+  {
+    "file": "shh.webp",
+    "source": "cut/shh.png",
+    "width": 449,
+    "height": 640,
+    "bytes": 64354
+  },
+  {
+    "file": "point.webp",
+    "source": "cut/point.png",
+    "width": 539,
+    "height": 640,
+    "bytes": 74548
+  },
+  {
+    "file": "sleepy.webp",
+    "source": "cut/sleepy.png",
+    "width": 463,
+    "height": 640,
+    "bytes": 68000
+  },
+  {
+    "file": "wave.webp",
+    "source": "cut/wave.png",
+    "width": 374,
+    "height": 640,
+    "bytes": 58616
+  },
+  {
+    "file": "calendar.webp",
+    "source": "cut/calendar.png",
+    "width": 556,
+    "height": 640,
+    "bytes": 82654
+  },
+  {
+    "file": "cheer.webp",
+    "source": "cut/cheer.png",
+    "width": 541,
+    "height": 640,
+    "bytes": 79030
+  },
+  {
+    "file": "swoon.webp",
+    "source": "cut/swoon.png",
+    "width": 459,
+    "height": 640,
+    "bytes": 71102
+  },
+  {
+    "file": "peek.webp",
+    "source": "cut/peek.png",
+    "width": 330,
+    "height": 640,
+    "bytes": 51358
+  },
+  {
+    "file": "crown.webp",
+    "source": "cut/crown.png",
+    "width": 476,
+    "height": 640,
+    "bytes": 71684
+  },
+  {
+    "file": "tea.webp",
+    "source": "cut/tea.png",
+    "width": 412,
+    "height": 640,
+    "bytes": 71030
+  },
+  {
+    "file": "b-cry.webp",
+    "source": "assets/lunair/b-cry.png",
+    "width": 540,
+    "height": 432,
+    "bytes": 37962
+  },
+  {
+    "file": "b-crown.webp",
+    "source": "assets/lunair/b-crown.png",
+    "width": 473,
+    "height": 426,
+    "bytes": 37086
+  },
+  {
+    "file": "b-calendar.webp",
+    "source": "assets/lunair/b-calendar.png",
+    "width": 640,
+    "height": 429,
+    "bytes": 47310
+  },
+  {
+    "file": "b-peek.webp",
+    "source": "assets/lunair/b-peek.png",
+    "width": 388,
+    "height": 432,
+    "bytes": 31680
+  },
+  {
+    "file": "b-sleepy.webp",
+    "source": "assets/lunair/b-sleepy.png",
+    "width": 474,
+    "height": 432,
+    "bytes": 35256
+  },
+  {
+    "file": "b-swoon.webp",
+    "source": "assets/lunair/b-swoon.png",
+    "width": 479,
+    "height": 432,
+    "bytes": 36954
+  },
+  {
+    "file": "b-shh.webp",
+    "source": "assets/lunair/b-shh.png",
+    "width": 481,
+    "height": 432,
+    "bytes": 36380
+  },
+  {
+    "file": "b-cheer.webp",
+    "source": "assets/lunair/b-cheer.png",
+    "width": 628,
+    "height": 432,
+    "bytes": 46410
+  },
+  {
+    "file": "b-wave.webp",
+    "source": "assets/lunair/b-wave.png",
+    "width": 442,
+    "height": 432,
+    "bytes": 38570
+  },
+  {
+    "file": "b-map.webp",
+    "source": "assets/lunair/b-map.png",
+    "width": 497,
+    "height": 432,
+    "bytes": 37634
+  },
+  {
+    "file": "b-gasp.webp",
+    "source": "assets/lunair/b-gasp.png",
+    "width": 457,
+    "height": 432,
+    "bytes": 36810
+  },
+  {
+    "file": "b-envelope.webp",
+    "source": "assets/lunair/b-envelope.png",
+    "width": 459,
+    "height": 432,
+    "bytes": 36604
+  },
+  {
+    "file": "b-point.webp",
+    "source": "assets/lunair/b-point.png",
+    "width": 610,
+    "height": 432,
+    "bytes": 40894
+  },
+  {
+    "file": "b-laugh.webp",
+    "source": "assets/lunair/b-laugh.png",
+    "width": 501,
+    "height": 432,
+    "bytes": 34718
+  },
+  {
+    "file": "b-tea.webp",
+    "source": "assets/lunair/b-tea.png",
+    "width": 479,
+    "height": 432,
+    "bytes": 38102
+  }
+]

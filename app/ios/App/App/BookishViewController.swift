@@ -2,9 +2,10 @@ import UIKit
 import Capacitor
 
 final class BookishViewController: CAPBridgeViewController {
-    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
+    override var preferredStatusBarStyle: UIStatusBarStyle { .darkContent }
     override func capacitorDidLoad() {
         bridge?.registerPluginInstance(BookishMapPlugin())
+        bridge?.registerPluginInstance(BookishMessagesPlugin())
         #if DEBUG
         // Simulator QA only: `SIMCTL_CHILD_BOOKISH_QA_TAB=read xcrun simctl launch ...`
         // opens a tab so CI can screenshot every screen. Compiled out of Release builds.

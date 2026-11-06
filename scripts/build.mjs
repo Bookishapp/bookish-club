@@ -413,7 +413,7 @@ prose("/terms/", "Terms | Bookish", "Terms of use for Bookish.", "Terms", `
 <p>Our <a href="${url("/privacy/")}">privacy policy</a> explains account, club, and device data. You can delete a Bookish account in Me under Account settings. Local favorites stay on the device until removed. Features and availability may change, and website illustrations may show clearly labelled previews. This release has no Bookish payments or subscriptions.</p>`);
 
 write("404.html", layout({ title: "Page not found | Bookish", desc: "This page has wandered off the shelf.", path: "/404.html", noindex: true,
-  body: `<div class="wrap"><header class="page-head" style="padding-top:60px"><p class="eyebrow">404</p>${lunair("lunair-shrug", 260, 279, 520, 553, "Bookish host shrugging", "shrug", true)}<h1>This page has wandered <em>off the shelf</em>.</h1><p class="lede">Try searching for your city instead.</p>${searchBox()}</header></div>` }));
+  body: `<div class="wrap"><header class="page-head" style="padding-top:60px"><p class="eyebrow">404</p>${lunair("lunair-shrug", 260, 279, 520, 553, "Bookish host shrugging", "shrug", true)}<h1>This page has wandered <em>off the shelf</em>.</h1><p class="lede">Try searching for your city instead.</p>${searchBox()}</header></div><script src="${url('/message-route.js')}" defer></script>` }));
 
 // ---------- read next ("Stuck on what to read next?") ----------
 // Catalog: data/books.json (scripts/catalog.mjs, Open Library metadata +
@@ -551,7 +551,7 @@ fs.rmSync(path.join(OUT, "lunair/checkout.json"), { force: true });
 write("data/cities.json", "[]");
 write("data/clubs.json", "[]");
 write("data/clubs.geojson", JSON.stringify({type:"FeatureCollection",features:[]}));
-for (const file of ["site.js","discovery.js","club-settings.js","join-respond.js","read-next.js","map.js"]) {
+for (const file of ["site.js","message-route.js","discovery.js","club-settings.js","join-respond.js","read-next.js","map.js"]) {
  let source=fs.readFileSync(path.join(ROOT,`src/${file}`),"utf8");
  if(file==='discovery.js'){
   const marker='/* __SOURCE_URL_UPGRADES__ */ []';
