@@ -36,7 +36,7 @@ await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
 const origin=`http://127.0.0.1:${server.address().port}`;
 const browser=await playwright.chromium.launch({executablePath:chrome,headless:true});
 const git=(...args)=>execFileSync('git',args,{cwd:root,encoding:'utf8'}).trim();
-const manifest={generatedAt:new Date().toISOString(),host:os.hostname(),browser:'Google Chrome',browserVersion:await browser.version(),executablePath:chrome,viewport,deviceScaleFactor:1,origin,source,commit:git('rev-parse','HEAD'),workingTree:git('status','--short'),fixture:{file:'app/tests/v3-fixtures.mjs',sha256:await sha(path.join(root,'app/tests/v3-fixtures.mjs')),clock:'2026-10-21T16:41:00.000Z',user:'Nina',club:'Unhinged Annotators',book:'Pride and Prejudice',page:247},script:{file:'app/scripts/capture-v3.mjs',sha256:await sha(fileURLToPath(import.meta.url))},build:[],captures:[],failures:[],hostedRequests:[],unexpectedExternal:[],complete:false,limitations:['Screens capture the real local production web bundle with review fixture API responses, a fixed fixture clock, and real UI navigation. They do not establish deployed service behavior or native device behavior.','Approved source PNGs are preserved. Comparison composition resizes the approved reference to 390 by 844; the actual app screenshot is never altered.','Current-book rating aggregates use five raters because the checked library contract suppresses aggregates below five. Approved art shows four raters.','Vote fixtures retain aggregate totals and one private current-user choice. Approved art shows two choices and voter identities, which the current checked voting contract does not expose.','The Nina fixture account has a host role so host-only controls are exercised. Member display rows preserve Jess as host and Priya as cohost from the art.','No numerical visual parity score is assigned.']};
+const manifest={generatedAt:new Date().toISOString(),host:os.hostname(),browser:'Google Chrome',browserVersion:await browser.version(),executablePath:chrome,viewport,deviceScaleFactor:1,origin,source,commit:git('rev-parse','HEAD'),workingTree:git('status','--short'),fixture:{file:'app/tests/v3-fixtures.mjs',sha256:await sha(path.join(root,'app/tests/v3-fixtures.mjs')),clock:'2026-10-21T16:41:00.000Z',user:'Nina',club:'Unhinged Annotators',book:'Pride and Prejudice',page:247},script:{file:'app/scripts/capture-v3.mjs',sha256:await sha(fileURLToPath(import.meta.url))},build:[],captures:[],failures:[],hostedRequests:[],unexpectedExternal:[],complete:false,limitations:['Screens capture the real local production web bundle with review fixture API responses, a fixed fixture clock, and real UI navigation. They do not establish deployed service behavior or native device behavior.','Approved source PNGs are preserved. Comparison composition resizes the approved reference to 390 by 844; the actual app screenshot is never altered.','Current-book rating aggregates use five raters because the checked library contract suppresses aggregates below five. Approved art shows four raters.','Vote fixtures retain aggregate totals and one private current-user choice. Approved art shows two choices and voter identities, which the current checked voting contract does not expose.','The Nina fixture account has a host role so host-only controls are exercised. Member display rows preserve Jess as host and Priya as cohost from the art.','Discovery fixtures contain three listed clubs. The approved map caption shows twelve.','Google Chrome screenshots contain application content; iOS system status bars and the home indicator belong to the native host.','No numerical visual parity score is assigned.']};
 for(const name of buildFiles)manifest.build.push({file:name,sha256:await sha(path.join(dist,name))});
 const sessions=[];
 async function launch(options={}){
@@ -45,6 +45,7 @@ async function launch(options={}){
  const s={p,context,api:createV3FixtureAPI(options),steps:[],errors:[],missing:[]};sessions.push(s);
  await context.addInitScript(()=>{const NativeDate=Date,now=NativeDate.parse('2026-10-21T16:41:00.000Z');globalThis.Date=class extends NativeDate{constructor(...args){super(...(args.length?args:[now]));}static now(){return now;}};});
  p.on('pageerror',e=>s.errors.push(e.message));
+ p.on('console',m=>{if(m.type()==='error')s.errors.push(m.text());});
  await context.route('**/*',async route=>{
   const req=route.request(),url=new URL(req.url());
   try{
@@ -83,24 +84,26 @@ async function home(s){
  await auth(s);if(await s.p.locator('#welcome-find').isVisible())await dismissWelcome(s);
  if(!await s.p.locator('[data-community=home]').count()){
   const close=s.p.locator('#community-close');if(await close.isVisible())await click(s,'#community-close');
-  await click(s,'[data-tab=me]');await click(s,'[data-home]');
+  if(await s.p.locator('#finder-back').isVisible())await click(s,'#finder-back');
+  if(!await s.p.locator('[data-home]').first().isVisible())await click(s,'[data-tab=me]');await click(s,'[data-home]');
  }
  if(await s.p.locator('#moment-continue').isVisible())await click(s,'#moment-continue');
  await s.p.locator('[data-room-tab=tea]').first().waitFor();
 }
 async function tab(s,name){await click(s,`[data-room-tab=${name}]`);}
 async function openFeature(s,id){if(!await s.p.locator(id).first().isVisible()&&await s.p.locator('#open-menu').isVisible())await click(s,'#open-menu');await click(s,id);}
+async function browse(s){if(await s.p.locator('dialog[open]').count()){await openFeature(s,'#browse-clubs');return;}if(!await s.p.locator('.finder-top').isVisible())await click(s,'[data-tab=near]');}
 async function navigate(s,id){
  if(id==='01')return;
- if(id==='02'){await auth(s,{create:true});await s.p.locator('#account-create').waitFor();await fill(s,'#account-create [name=name]','Unhinged Annotators Society');return;}
+ if(id==='02'){await auth(s,{create:true});await s.p.locator('#account-create').waitFor();await fill(s,'#account-create [name=name]','Unhinged Annotators Society');for(const [name,value] of [['city','Austin'],['state','TX']])if(await s.p.locator(`#account-create [name=${name}]`).count())await fill(s,`#account-create [name=${name}]`,value);return;}
  if(id==='03'){await auth(s,{rules:true});return;}
- if(id==='18'){await dismissWelcome(s);await click(s,'[data-tab=near]');const city=s.p.locator('#city');if(await city.count()){s.steps.push({action:'select',selector:'#city',label:'Austin, TX'});await city.selectOption({label:'Austin, TX'});}return;}
+ if(id==='18'){await dismissWelcome(s);await browse(s);const city=s.p.locator('#city');if(await city.count()){if(!await city.isVisible())await click(s,'#finder-filters');s.steps.push({action:'select',selector:'#city',value:'Austin, TX'});await city.selectOption('Austin, TX');}return;}
  if(id==='17'){
-  await auth(s);await dismissWelcome(s);await click(s,'[data-tab=near]');await click(s,'.verified .club-open');await click(s,'#account-join-club');await s.p.locator('#account-join').waitFor();await fill(s,'#account-join [name=note]','Austen person, will bring cookies.');await submit(s,'#account-join');await s.p.getByText('Fingers crossed.',{exact:true}).waitFor();return;
+  await auth(s);await dismissWelcome(s);await browse(s);await click(s,'.verified .club-open');await click(s,'#account-join-club');await s.p.locator('#account-join').waitFor();await fill(s,'#account-join [name=note]','Austen person, will bring cookies.');await submit(s,'#account-join');await s.p.getByText('Fingers crossed.',{exact:true}).waitFor();return;
  }
  await home(s);
  if(id==='04'){await tab(s,'tea');return;}
- if(id==='05'){await tab(s,'tea');await click(s,'#new-take');await s.p.locator('#room-take').waitFor();await fill(s,'#room-take [name=body]','Lizzie reading that letter fourteen times is the most relatable thing in the book');const page=s.p.locator('#room-take [name=page]');if(await page.count())await fill(s,'#room-take [name=page]','288');return;}
+ if(id==='05'){await tab(s,'tea');await click(s,'#new-take');await s.p.locator('#room-take').waitFor();await fill(s,'#room-take [name=body]','Lizzie reading that letter fourteen times is the most relatable thing in the book');const page=s.p.locator('#room-take [name=page]');if(await page.count()){const edit='#room-take .spoiler-picker summary',hidden=!await page.isVisible();if(hidden)await click(s,edit);await fill(s,'#room-take [name=page]','288');if(hidden)await click(s,edit);}return;}
  if(id==='06'){await tab(s,'home');return;}
  if(id==='07'){await tab(s,'home');await click(s,'#log-page');return;}
  if(id==='08'){await tab(s,'meet');return;}
@@ -116,7 +119,7 @@ async function navigate(s,id){
  throw Error(`No UI navigation for screen ${id}`);
 }
 async function capture(s,def){
- const ready={'01':'#welcome-find','02':'#account-create','03':'#account-terms','04':'.tea-feed','05':'#room-take','06':'.reading-book','07':'#room-reading','08':'.meeting-card','09':'.room-votes','10':'#room-rating','11':'[data-community=shelf]','12':'[data-community=recommendations]','13':'.member-list','14':'#room-privacy','15':'.notification-list','16':'[data-community=settings]','17':'[data-community=pending]','18':'#city','19':'[data-community=menu]'};
+ const ready={'01':'#welcome-find','02':'#account-create','03':'#account-terms','04':'.tea-feed','05':'#room-take','06':'.reading-book','07':'#room-reading','08':'.meeting-card','09':'.room-votes','10':'#room-rating','11':'[data-community=shelf]','12':'[data-community=recommendations]','13':'.member-list','14':'#room-privacy','15':'.notification-list','16':'[data-community=settings]','17':'[data-community=pending]','18':'.finder-top','19':'[data-community=menu]'};
  await s.p.locator(ready[def.id]).first().waitFor();
  await s.p.locator('#toast.visible').waitFor({state:'hidden',timeout:8000});
  await s.p.evaluate(async()=>{await document.fonts.ready;for(const d of document.querySelectorAll('dialog[open]'))d.scrollTop=0;await Promise.all([...document.images].map(async i=>{i.loading='eager';await i.decode().catch(()=>{});}));if(document.activeElement instanceof HTMLElement)document.activeElement.blur();});
