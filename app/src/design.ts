@@ -70,6 +70,6 @@ const spots: Record<string,string> = {
 
 /** Decorative inline art. Put the accessible name on its containing control. */
 export function icon(name:string):string { return `<span class="drawn-icon" aria-hidden="true">${icons[name]||icons.book}</span>`; }
-export function spot(name:string,size=32):string { return `<span class="spot-art" aria-hidden="true" style="--art-size:${Math.min(120,Math.max(16,size))}px">${spots[name]||spots.openbook}</span>`; }
+export function spot(name:string,size=32):string { if(name==='tea')return `<span class="spot-art" aria-hidden="true" style="--art-size:${Math.min(120,Math.max(16,size))}px"><img src="${appAsset('v3/tea-cup.png')}" alt="" width="${size}" height="${size}"></span>`;return `<span class="spot-art" aria-hidden="true" style="--art-size:${Math.min(120,Math.max(16,size))}px">${spots[name]||spots.openbook}</span>`; }
 /** Approved cutout, decorative so it does not repeat the nearby heading. */
-export function art(name:string,className=''):string { return `<img class="lunair ${esc(className)}" src="${appAsset(`art/${encodeURIComponent(name)}.webp`)}" alt="" width="320" height="320">`; }
+export function art(name:string,className=''):string { if(name.startsWith('b-'))name=name.slice(2);if(name==='crown')name='wave';return `<img class="lunair ${esc(className)}" src="${appAsset(`art/${encodeURIComponent(name)}.webp`)}" alt="" width="320" height="320">`; }

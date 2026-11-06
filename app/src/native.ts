@@ -49,7 +49,7 @@ export async function requestJSON(url:string,options:{method:string;body?:unknow
  const raw=await r.text();return {ok:r.ok,status:r.status,data:raw?JSON.parse(raw):null};
 }
 
-export const MessageCards=registerPlugin<{share(o:{card:Record<string,unknown>}):Promise<void>;saveCalendar(o:{content:string;fileName:string}):Promise<void>}>('BookishMessages');
+export const MessageCards=registerPlugin<{share(o:{card:Record<string,unknown>}):Promise<void>;saveCalendar(o:{content:string;fileName:string}):Promise<void>;updateWidgets(o:{snapshot:Record<string,unknown>}):Promise<void>;clearWidgets():Promise<void>}>('BookishMessages');
 export async function requestText(url:string,headers:Record<string,string>){
  if(isNative){const r=await CapacitorHttp.request({url,method:'GET',headers,responseType:'text',connectTimeout:12000,readTimeout:15000});return {ok:r.status>=200&&r.status<300,status:r.status,data:r.data};}
  const r=await fetch(url,{method:'GET',headers,cache:'no-store',signal:AbortSignal.timeout(15000)});return{ok:r.ok,status:r.status,data:await r.text()};
@@ -57,4 +57,11 @@ export async function requestText(url:string,headers:Record<string,string>){
 export async function saveCalendarFile(content:string){
  if(isNative){await MessageCards.saveCalendar({content,fileName:'bookish-meeting.ics'});return;}
  const url=URL.createObjectURL(new Blob([content],{type:'text/calendar;charset=utf-8'}));const link=document.createElement('a');link.href=url;link.download='bookish-meeting.ics';link.click();setTimeout(()=>URL.revokeObjectURL(url),60000);
+}
+
+export async function shareBookSuggestion(title:string){
+ const url=`https://openlibrary.org/search?q=${encodeURIComponent(title)}`,text=`Would you read ${title} with us?`;
+ if(isNative)await Share.share({title:'A book for our club',text,url,dialogTitle:'Suggest a book'});
+ else if(navigator.share)await navigator.share({title,text,url});
+ else await navigator.clipboard.writeText(`${text} ${url}`);
 }

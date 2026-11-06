@@ -1,78 +1,37 @@
 # Bookish design system
 
-The source of truth is `src/tokens.css`. Components are in `src/styles.css`, discovery and book compositions are in `src/compositions.css`, account and club flow layouts are in `src/community.css`, and decorative art helpers are in `src/design.ts`. Future Tea and hosting screens should use these foundations.
+The app follows the approved October 21 batch, Bookish final: full app v3 (pin 295). The 24 screen references, Notes card, and review card live in `/Users/vahallo/biz/bookish/design/approved-v3-1021/`. Sebastian corrected the previous art reference on November 6. The October 16 and October 19 compositions are superseded.
 
-The implementation follows the approved October 16 art and October 19 overrides described in `/Users/vahallo/biz/bookish/design/APPROVED-ART.md`. The original generator is `full-app-1016/src/base.py`. Drawn SVG geometry comes from `base.py`, `art81.py`, and the house rules in `screens1.py`. Approval provenance and screen comparisons are in [the parity report](../docs/approved-art-parity/index.html).
+Working behavior and CANON.md govern fields, legal acceptance, access, privacy, and supported operations. The approved images govern composition, color, typography, artwork, and voice. The landing and the separate tagline sweep are outside this branch.
 
-## Color
+## Presentation
 
-| Token | Value | Purpose |
-| --- | --- | --- |
-| `--paper` | `#f5ead8` | App canvas |
-| `--card` | `#fffaf1` | Cards, fields, and light controls |
-| `--ink` | `#2a0f15` | Primary text |
-| `--mut` | `#6b4c46` | Supporting text |
-| `--faint` | `#9a8279` | Decorative detail, never essential text |
-| `--line` | `rgba(74,20,32,.12)` | Quiet dividers and borders |
-| `--wine`, `--wine2` | `#7a1a2a`, `#4a1420` | Primary actions, accents, and deep wine |
-| `--wineS` | `#f3d9d9` | Wine tint |
-| `--pink`, `--pinkS` | `#f4a6bf`, `#fbe1e8` | Playful highlights and selected surfaces |
-| `--mus`, `--musS` | `#ecb74e`, `#f9e6b8` | Mustard accent and tint |
-| `--brass` | `#c08a26` | Decorative gold |
-| `--green`, `--green2`, `--greenS` | `#1d5a46`, `#133b31`, `#dcebe1` | Membership, communal reading, and success |
+The canvas is painted oxblood paper. Cream paper cards carry dark text, green buttons carry primary actions, and white pills carry secondary actions. Never add a gradient. The palette is oxblood #571c2b, cream #f3dfab, ink #2d231b, green #1d5a46, pink #f4a6bf, and mustard #ecb74e.
 
-Compatibility aliases such as `--ink-2`, `--note`, `--sage`, and `--rule` map to the same system. Do not import the website's older `public/theme.css` into new app views. The snapshot script may refresh website assets without changing the app tokens.
+Georgia supplies the bold serif headings and editorial text visible in v3. Manrope supplies controls and supporting text. The app keeps its self-hosted fonts for native compatibility and existing secondary surfaces. Compact room navigation has four sections: The Tea, Book, Meet, and Vote. Secondary tools belong in the menu.
 
-## Type
+Use 16px mobile gutters, compact paper cards, and natural scrolling. Keep accessible labels, visible keyboard focus, and text that can expand. Do not paint simulated device bars into the app. Capture tooling uses a 390 by 844 viewport.
 
-All fonts are self-hosted and available offline. Their SIL Open Font License texts ship in `public/fonts/`.
-
-| Token | Family or size | Use |
-| --- | --- | --- |
-| `--title` | Young Serif, 400 | Warm editorial headings |
-| `--ui` | Manrope, 400 to 800 | Body, labels, controls, and navigation |
-| `--display` | Unbounded | Short numeric accents |
-| `--mono` | Courier Prime, 700 | Small stamps and labels |
-| `--font-title` | 34px | Page title |
-| `--font-heading` | 25px | Section title |
-| `--font-card` | 19px | Card title |
-| `--font-body`, `--font-small` | 14px, 12px | Body and supporting text |
-
-Use sentence case for copy, proper capitalization for names, the Oxford comma, and no em dash. Preserve legal text and privacy claims from the working app. Never add a feature promise merely because it appears in a mockup.
-
-## Paper, layout, and shape
-
-`--paper-texture` is the approved paper grain. `--paper-glow` layers a restrained pink glow at the top right and mustard at the bottom left. Wine textures are reserved for a surface whose approved reference uses wine.
-
-The spacing scale is `--space-1` through `--space-6`, then `--space-8` and `--space-10`: 4, 8, 12, 16, 20, 24, 32, and 40px. Page gutters are 20 to 22px on iPhone. Content stays fluid, scrollable, and bounded by `--content-width` (600px). Do not port the mockup's fixed absolute screen coordinates or simulated status bar into the app.
-
-`--radius-small` is 8px, `--radius-card` is 14px, `--radius-sheet` is 22px, and `--radius-pill` is 999px. `--shadow-card`, `--shadow-button`, and `--shadow-sheet` preserve the approved warm, soft shadows.
-
-## Components
-
-Screens follow their individual approved compositions. The wine welcome and celebration screens, compact discovery list, full map and bottom sheet, green taped club hero, cover shelves, centered profile, grouped settings, and centered empty states should not be replaced with a shared illustrated heading and form card.
-
-`src/book-cover.ts` supplies consistent real book covers for discovery, shelves, club books, and votes. The existing catalog's available identification thumbnails are bundled in `public/covers/`, with source URLs in `provenance.json`. Unknown covers retain the book's title; a different book's artwork is never substituted. New catalog entries can still use their Open Library cover ID. Cover rendering works when a directory record supplies a title without a catalog ID.
-
-- `.primary` is a full-width wine pill, 52px minimum height. `.secondary` is an outlined pill. `.light-button` uses the pink tint. `.text-button` is an underlined text action.
-- `.paper` and `.card` are cream cards with 14px corners and `--shadow-card`. A paper canvas is a background, not a card filled with another dark theme.
-- `.chip` and `.status` are compact pills. `.chip.on` uses wine, and `.chip.g` uses the green tint. Labels must communicate state without relying on color.
-- `.switch` and `.room-tabs` group existing views. Selection uses `aria-pressed`. `.tabs` uses `aria-current`, drawn icons, a cream background, and the small wine selection line.
-- `dialog#detail` is the shared sheet container. Community flow layouts use its `data-community` attribute for their page treatment. Content scrolls, and close controls remain available. Preserve draft restoration and modal focus behavior.
-- Inputs have cream backgrounds, quiet borders, 8px corners, 16px text, and visible focus rings. Labels are always real labels. Email code remains one accessible input for paste and autofill, with visual digit grouping that supports four and six digits, plus existing longer codes.
-- `#toast` uses deep green, cream text, a rounded card, and a live status region. Inline `.form-message` errors use a pink tint and retain the original error handling.
-- Empty and loading states use the same paper canvas, short warm copy, real retry actions, and a relevant approved cutout. Do not show an empty inventory when discovery is unavailable.
+`src/tokens.css` supplies compatible shared tokens. `src/v3.css` supplies v3 composition and surface rules. `src/v3-views.ts` contains the new menu, privacy, library, and widget presentation. `tea-views.ts` contains the Tea, reading, composer, log, and notification views. `community.ts` remains the existing account and club transport/controller.
 
 ## Art
 
-`icon(name)` returns approved outline SVG inside an `aria-hidden` wrapper. `spot(name, size)` returns the custom colored spot drawings. `art(name, className)` returns a decorative optimized Lunair cutout. Put accessible names on the containing control, not on duplicated decorative artwork. Use named helpers instead of emoji or platform symbol glyphs.
+Only existing approved Lunair cutouts shown in the v3 images are used. The full poses in `public/art/` match the v3 art; cropped Bible variants remain bundled for compatibility. `art()` resolves cropped variant names to those approved full poses. A CSS silhouette supplies the approved white cutout edge. No character artwork was generated.
 
-The 30 WebP cutouts in `public/art/` are bounded to 640px, retain alpha, and total about 1.6 MB. [Asset provenance](public/art/provenance.json) records each source, size, and byte count. Plain names come from the approved `cut/` set, derived from `gen/`; `b-` names are the approved Bible cutouts in `assets/lunair/`. Keep that distinction and use the Bible cutouts for Lunair. Do not generate a replacement character.
+The classics use the approved v3 typographic cover treatment. Other books keep their actual bundled or trusted catalog cover and title fallback. The fallback is hidden while an image is present, and restored when an image fails. Unknown books never borrow another book's cover.
 
-The native Messages theme mirrors the same palette, bundled typography, paper, and approved art in `ios/App/BookishMessages/BookishTheme.swift`. Native values cannot consume CSS, so changes to shared colors or typography must update both places and be checked in the simulator.
+Custom vector spot art and interface illustrations remain code-native. Use SVG or the existing art helpers, never emoji.
 
-## Product rules
+## Behavior and privacy
 
-Reading is communal. Show bookmarks in member order, never as ranks, speed comparisons, scores, streaks, or leaderboards. Votes may show anonymous book totals, but never reveal another reader's ballot. Meeting locations remain private to approved members. Discovery shows city centers only.
+Reading ribbons remain in the server's member order. They are bookmarks, with no ranks, speed comparisons, streaks, or finish line. Page sharing remains opt-in.
 
-No new Tea, bring list, reminder, or widget functionality belongs to this foundation. Existing local reminder fields and behavior remain available. Fixture identities, captures, and review data stay outside the production bundle.
+Tea stays anonymous. Sealed cards never include hidden take text in their DOM. Voting preserves one anonymous choice, even though the conceptual art shows two selections and voter initials. Only the caller's choice and aggregate totals are shown.
+
+Ratings use hearts for books. A reader deliberately chooses whether their optional take is named or anonymous. Club averages require five opted-in ratings. Recommendations require real shared-book evidence from independent established clubs. No evidence produces an honest empty state.
+
+Discovery shows city centers only. Open clubs can accept joins, Private clubs require host approval, and Hidden clubs stay off the map. Unclaimed public-calendar listings are distinct and do not accept Bookish join requests.
+
+Settings show actual supported controls. Spoiler sealing is always on, and cannot be disabled. The real meeting reminder timing remains the day before for Going or Maybe responses. Device reminders retain their existing Saved flow.
+
+Native Messages and WidgetKit mirror the same v3 palette and artwork. Widgets receive only an allowlisted local display summary, with no credentials, take bodies, private addresses, or member identities. Clear that summary on sign-out or lost authorization. Device provisioning must include the existing App Group entitlement before a physical-device release.
