@@ -1,14 +1,16 @@
 import { Capacitor, CapacitorHttp, registerPlugin } from '@capacitor/core';
-import type { PluginListenerHandle } from '@capacitor/core';
+import type { AppPlugin } from '@capacitor/app';
 import type { LocalNotificationsPlugin } from '@capacitor/local-notifications';
 export const isNative = Capacitor.isNativePlatform();
+export const isIOS = Capacitor.getPlatform() === 'ios';
+export const isAndroid = Capacitor.getPlatform() === 'android';
 // Typed native proxies. Plugins are installed by cap sync from package.json.
 // Browser previews deliberately use local equivalents and never pretend to schedule iOS reminders.
 const Preferences = registerPlugin<{ get(o: {key:string}):Promise<{value:string|null}>; set(o:{key:string;value:string}):Promise<void>; remove(o:{key:string}):Promise<void> }>('Preferences');
 const Geolocation = registerPlugin<{ requestPermissions():Promise<{location:string}>; getCurrentPosition(o:object):Promise<{coords:{latitude:number;longitude:number}}> }>('Geolocation');
 const Share = registerPlugin<{ share(o:{title:string;text:string;url:string;dialogTitle:string}):Promise<void> }>('Share');
 export const Notifications = registerPlugin<LocalNotificationsPlugin>('LocalNotifications');
-export const NativeApp = registerPlugin<{ addListener(event:string, cb:()=>void):Promise<PluginListenerHandle> }>('App');
+export const NativeApp = registerPlugin<AppPlugin>('App');
 export const CityMap = registerPlugin<{ present(o:{cities:{key:string;name:string;count:number;lat:number;lng:number}[];selected?:string}):Promise<{cityKey?:string}> }>('BookishMap');
 export async function readStore<T>(key:string, fallback:T):Promise<T> {
   try { const raw = isNative ? (await Preferences.get({key:`bookish.${key}`})).value : localStorage.getItem(`bookish.${key}`); return raw == null ? fallback : JSON.parse(raw); } catch { return fallback; }

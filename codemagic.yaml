@@ -65,3 +65,70 @@ workflows:
       app_store_connect:
         auth: integration
         submit_to_testflight: true
+
+  bookish-android-internal:
+    name: Bookish Android Internal Testing
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    environment:
+      node: 24
+      java: 21
+      groups:
+        - bookish_android
+      vars:
+        PACKAGE_NAME: com.meetbookish.app
+    triggering:
+      events:
+        - tag
+      tag_patterns:
+        - pattern: 'android-v*'
+          include: true
+    scripts:
+      - name: Install app dependencies
+        script: |
+          cd app
+          npm ci
+      - name: Generate the same public data as iOS and bundle it
+        script: |
+          SITE_URL=https://meetbookish.com node scripts/build.mjs
+          cd app
+          npm run snapshot
+      - name: Check app and build web bundle
+        script: |
+          cd app
+          npm test
+          npm run test:ui
+          npm run check:release
+      - name: Sync Capacitor Android
+        script: |
+          cd app
+          npx cap sync android
+      - name: Build signed Android App Bundle
+        script: |
+          set -eu
+          set +x
+          export BOOKISH_VERSION_CODE="$(($BUILD_NUMBER + 1))"
+          export BOOKISH_KEYSTORE_PATH="$(mktemp -d)/upload.keystore"
+          trap 'rm -f "$BOOKISH_KEYSTORE_PATH"; rmdir "$(dirname "$BOOKISH_KEYSTORE_PATH")"' EXIT
+          python3 - <<'PY'
+          import base64, os
+          payload = base64.b64decode(os.environ["BOOKISH_KEYSTORE_BASE64"], validate=True)
+          descriptor = os.open(os.environ["BOOKISH_KEYSTORE_PATH"], os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+          with os.fdopen(descriptor, "wb") as target:
+              target.write(payload)
+          PY
+          cd app/android
+          ./gradlew --no-daemon bundleRelease
+    artifacts:
+      - app/android/app/build/outputs/bundle/release/*.aab
+      - app/android/app/build/outputs/mapping/release/mapping.txt
+      - app/package-lock.json
+    # Enable after the first manual internal upload and the Bookish-only
+    # service-account credential and Play testing-release grant are configured.
+    # publishing:
+    #   google_play:
+    #     credentials: $BOOKISH_PLAY_SERVICE_ACCOUNT_CREDENTIALS
+    #     track: internal
+    #     # Draft is deliberate: never send this new app for review from CI.
+    #     submit_as_draft: true
+    #     changes_not_sent_for_review: true
