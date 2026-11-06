@@ -40,6 +40,24 @@ let teaJSON = """
 """
 
 let tests: [(String, () throws -> Void)] = [
+    ("widget cache survives a fresh file read and clears signed-out data", {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let cache = WidgetSnapshotCache(url: directory.appendingPathComponent("summary.json"))
+        let raw = #"{"readingTitle":"Pride","page":212,"totalPages":480,"friendsReading":3,"going":false,"newTakes":6,"sealedTakes":2}"#
+        let value = try WidgetSnapshot.decode(Data(raw.utf8))
+        try cache.save(value)
+        try expect(WidgetSnapshotCache(url: cache.url).read() == value, "A fresh widget process could not read the saved summary")
+        try cache.clear()
+        try expect(cache.read() == nil, "Signed-out widget data remained cached")
+    }),
+    ("widget cache rejects corrupted display files", {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: url) }
+        try Data("invalid json".utf8).write(to: url)
+        try expect(WidgetSnapshotCache(url: url).read() == nil, "Corrupted widget data was displayed")
+    }),
     ("a shared native poll strips every named ballot", {
         var state = MessageState.sample(kind: .vote)
         try state.respond(participantID: "private-member", name: "Private reader", voteID: state.candidates[0].id, now: firstTime)

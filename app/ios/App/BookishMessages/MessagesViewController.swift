@@ -17,6 +17,8 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
     private let stickerPicker = StickerPickerViewController()
     private let content = UIStackView()
     private let choices = UIStackView()
+    private let votePaper = UIImageView(image: UIImage(named: "BookishPaper"))
+    private let voteTape = UIImageView()
     private let nameField = UITextField()
     private let nameTitle = UILabel()
     private let pollPrivacyLabel = UILabel()
@@ -26,6 +28,7 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
     private let summaryLabel = UILabel()
     private let summaryCard = UIView()
     private let artView = UIImageView()
+    private let wordmark = UIImageView(image: UIImage(named: "BookishWordmark"))
     private let mode = UISegmentedControl(items: ["RSVP", "Book vote", "Bookmarks", "Stickers"])
     private let addButton = UIButton(type: .system)
     private let newButton = UIButton(type: .system)
@@ -51,7 +54,6 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
             content.bottomAnchor.constraint(equalTo: scroll.contentLayoutGuide.bottomAnchor, constant: -24),
             content.widthAnchor.constraint(equalTo: scroll.frameLayoutGuide.widthAnchor, constant: -40)
         ])
-        let wordmark = UIImageView(image: UIImage(named: "BookishWordmark"))
         wordmark.contentMode = .scaleAspectFit
         wordmark.accessibilityLabel = "Bookish"; wordmark.isAccessibilityElement = true
         wordmark.widthAnchor.constraint(equalToConstant: 56).isActive = true
@@ -80,7 +82,7 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         mode.addTarget(self, action: #selector(changeKind), for: .valueChanged)
         mode.isHidden = true; content.addArrangedSubview(mode)
         artView.contentMode = .scaleAspectFit; artView.isAccessibilityElement = false
-        artView.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        artView.widthAnchor.constraint(equalToConstant: 88).isActive = true
         artView.heightAnchor.constraint(equalToConstant: 52).isActive = true
         configure(detailLabel, style: .title)
         let hero = UIStackView(arrangedSubviews: [artView, detailLabel])
@@ -105,6 +107,17 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         configure(pageField, placeholder: "Page number"); pageField.keyboardType = .numberPad
         nameField.autocapitalizationType = .words; nameField.returnKeyType = .done
         choices.axis = .vertical; choices.spacing = 0; content.addArrangedSubview(choices)
+        votePaper.alpha = 0.3; votePaper.contentMode = .scaleAspectFill; votePaper.clipsToBounds = true
+        votePaper.isAccessibilityElement = false; votePaper.translatesAutoresizingMaskIntoConstraints = false
+        choices.insertSubview(votePaper, at: 0)
+        NSLayoutConstraint.activate([votePaper.leadingAnchor.constraint(equalTo: choices.leadingAnchor), votePaper.trailingAnchor.constraint(equalTo: choices.trailingAnchor), votePaper.topAnchor.constraint(equalTo: choices.topAnchor), votePaper.bottomAnchor.constraint(equalTo: choices.bottomAnchor)])
+        voteTape.image = UIGraphicsImageRenderer(size: CGSize(width: 68, height: 40)).image { _ in
+            let path = UIBezierPath(); path.move(to: CGPoint(x: -8, y: 18)); path.addLine(to: CGPoint(x: 56, y: -8)); path.addLine(to: CGPoint(x: 67, y: 10)); path.addLine(to: CGPoint(x: 2, y: 37)); path.close()
+            BookishTheme.pink.withAlphaComponent(0.85).setFill(); path.fill()
+        }
+        voteTape.frame = CGRect(x: 0, y: 0, width: 68, height: 40)
+        voteTape.isAccessibilityElement = false; voteTape.isUserInteractionEnabled = false
+        choices.insertSubview(voteTape, aboveSubview: votePaper)
         configure(nameTitle, style: .caption); nameTitle.text = "Your name on the card"; nameTitle.textColor = BookishTheme.card
         content.addArrangedSubview(nameTitle)
         content.addArrangedSubview(nameField)
@@ -264,14 +277,16 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         } else {
             content.removeArrangedSubview(stickerPicker.view); stickerPicker.view.removeFromSuperview()
         }
+        wordmark.transform = state.kind == .vote ? CGAffineTransform(translationX: 88, y: 0) : .identity
         artView.image = BookishTheme.editorArt(for: state.kind)
+        artView.transform = state.kind == .vote ? CGAffineTransform(translationX: -4, y: -10).scaledBy(x: 1.4, y: 1.4) : .identity
         let heading = state.kind == .rsvp ? state.meetingTitle
             : state.kind == .vote ? "Next book vote" : "Reading together"
         let detail = state.kind == .rsvp ? "\(state.meetingDetail)\n\(state.readingTitle)"
             : state.kind == .vote ? ""
             : "\(state.readingTitle)\nRead at your own pace."
         let heroText = NSMutableAttributedString(string: heading + (detail.isEmpty ? "" : "\n"), attributes: [
-            .font: BookishTheme.font(.title), .foregroundColor: BookishTheme.card])
+            .font: state.kind == .vote ? BookishTheme.font(.title).withSize(20) : BookishTheme.font(.title), .foregroundColor: BookishTheme.card])
         heroText.append(NSAttributedString(string: detail, attributes: [
             .font: BookishTheme.font(.caption), .foregroundColor: BookishTheme.cream]))
         detailLabel.attributedText = heroText
@@ -291,7 +306,9 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         voteInApp.isHidden = state.kind != .vote
         summaryCard.backgroundColor = state.kind == .bookmarks ? BookishTheme.deepGreen : BookishTheme.card
         summaryLabel.textColor = state.kind == .bookmarks ? BookishTheme.mint : BookishTheme.muted
-        choices.backgroundColor = state.kind == .vote ? BookishTheme.card : .clear
+        choices.backgroundColor = state.kind == .vote ? BookishTheme.hex(0xF5E3AD) : .clear
+        votePaper.isHidden = state.kind != .vote; voteTape.isHidden = state.kind != .vote
+        choices.clipsToBounds = true
         choices.layer.cornerRadius = 14
         choices.layer.borderWidth = state.kind == .vote ? 1 : 0
         choices.layer.borderColor = BookishTheme.line.cgColor
@@ -437,13 +454,13 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         let button = UIButton(type: .custom)
         button.backgroundColor = .clear
         let title = label(book.title, style: .button); title.textAlignment = .center
-        title.font = BookishTheme.font(.button).withSize(12)
+        title.font = BookishTheme.font(.button).withSize(13)
         title.numberOfLines = 2; title.adjustsFontSizeToFitWidth = true; title.minimumScaleFactor = 0.8
         title.heightAnchor.constraint(equalToConstant: 30).isActive = true
         let reason = label(book.reason, style: .caption); reason.textAlignment = .center
         reason.numberOfLines = 2; reason.adjustsFontSizeToFitWidth = true; reason.minimumScaleFactor = 0.8
         reason.heightAnchor.constraint(equalToConstant: 28).isActive = true
-        reason.font = BookishTheme.font(.caption).withSize(10); reason.textColor = BookishTheme.wine
+        reason.font = BookishTheme.font(.caption).withSize(11); reason.textColor = BookishTheme.wine
         let cover = UIImageView(image: BookishTheme.cover(for: book)); cover.contentMode = .scaleAspectFit
         cover.heightAnchor.constraint(equalToConstant: 70).isActive = true
         let check = UIImageView(image: UIImage(systemName: selected ? "checkmark.circle.fill" : "circle"))

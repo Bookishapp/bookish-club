@@ -9,7 +9,8 @@ struct BookishProvider: TimelineProvider {
     func placeholder(in context: Context) -> BookishEntry { BookishEntry(date: Date(), snapshot: nil) }
     func getSnapshot(in context: Context, completion: @escaping (BookishEntry) -> Void) { completion(BookishEntry(date: Date(), snapshot: WidgetSnapshotStore.read())) }
     func getTimeline(in context: Context, completion: @escaping (Timeline<BookishEntry>) -> Void) {
-        completion(Timeline(entries: [BookishEntry(date: Date(), snapshot: WidgetSnapshotStore.read())], policy: .after(Date().addingTimeInterval(900))))
+        let snapshot = WidgetSnapshotStore.read()
+        completion(Timeline(entries: [BookishEntry(date: Date(), snapshot: snapshot)], policy: .after(Date().addingTimeInterval(900))))
     }
 }
 
@@ -96,7 +97,7 @@ struct BookishWidgetView: View {
             VStack(alignment: .leading, spacing: 6) {
                 Text("The Tea").font(sans(11)).foregroundStyle(wine)
                 Text("\(s.newTakes) new takes" + (s.chapter.map { "\non ch. \($0)" } ?? "")).font(serif(20)).lineLimit(3).minimumScaleFactor(0.7)
-                Text("\(s.sealedTakes) sealed past your page").font(sans(10)).foregroundStyle(.black.opacity(0.65))
+                Text("\(s.sealedTakes) sealed\npast your page").font(sans(10)).lineLimit(2).foregroundStyle(.black.opacity(0.65))
                 Spacer(minLength: 0)
             }.frame(maxWidth:.infinity,alignment:.leading).padding(14)
             Image("TeaCup").resizable().scaledToFit().frame(width:53,height:53).padding(11).accessibilityHidden(true)

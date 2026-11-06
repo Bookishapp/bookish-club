@@ -33,9 +33,12 @@ enum CardRenderer {
                 for (i, member) in members.prefix(3).enumerated() {
                     bookmark(member, x: CGFloat(58 + i * 105), color: [BookishTheme.hex(0xB8A2DA), BookishTheme.pink, BookishTheme.hex(0x9EC9B1)][i])
                 }
-                text(members.isEmpty ? "Log your page to find your people." : members.prefix(3).map { $0.name }.joined(separator: ", ") + " are reading", CGRect(x: 28, y: 343, width: 544, height: 34), size: 25, bold: true)
-                text("Only people who share their page show up.", CGRect(x: 28, y: 381, width: 544, height: 27), size: 20, color: BookishTheme.muted)
-                text("Log my page                         Open The Tea", CGRect(x: 28, y: 409, width: 544, height: 33), size: 23, bold: true, color: BookishTheme.green)
+                text(members.isEmpty ? "Log your page to find your people." : ListFormatter.localizedString(byJoining: members.prefix(3).map { $0.name }) + " are reading", CGRect(x: 28, y: 319, width: 544, height: 34), size: 28, bold: true)
+                text("Only people who share their page show up.", CGRect(x: 28, y: 354, width: 544, height: 29), size: 23, color: BookishTheme.muted)
+                pill(CGRect(x: 28, y: 390, width: 248, height: 58), fill: BookishTheme.card, border: true)
+                pill(CGRect(x: 292, y: 390, width: 280, height: 58), fill: BookishTheme.mint)
+                text("Log my page", CGRect(x: 40, y: 398, width: 224, height: 42), size: 30, bold: true, color: BookishTheme.ink, center: true)
+                text("Open The Tea", CGRect(x: 304, y: 398, width: 256, height: 42), size: 30, bold: true, color: BookishTheme.green, center: true)
             case .vote:
                 for (i, book) in state.candidates.prefix(3).enumerated() {
                     let x = CGFloat(28 + i * 190)
@@ -60,17 +63,17 @@ enum CardRenderer {
         context.restoreGState()
         context.saveGState(); context.clip(to: CGRect(x: 0, y: 0, width: 600, height: 220))
         let art = BookishTheme.art(for: kind)
-        let width: CGFloat = 300
+        let width: CGFloat = kind == .bookmarks ? 230 : 300
         let height = width * art.size.height / max(1, art.size.width)
         art.draw(in: CGRect(x: 600 - width + 19, y: 21, width: width, height: height))
         context.restoreGState()
     }
     private static func bookmark(_ member: MemberResponse, x: CGFloat, color: UIColor) {
-        let rect = CGRect(x: x, y: 220, width: 50, height: 91)
+        let rect = CGRect(x: x, y: 220, width: 50, height: 61)
         let p = UIBezierPath(); p.move(to: rect.origin); p.addLine(to: CGPoint(x: rect.maxX,y: rect.minY)); p.addLine(to: CGPoint(x:rect.maxX,y:rect.maxY)); p.addLine(to: CGPoint(x:rect.midX,y:rect.maxY-17)); p.addLine(to: CGPoint(x:rect.minX,y:rect.maxY)); p.close()
         color.setFill(); p.fill(); BookishTheme.ink.setStroke(); p.lineWidth = 3; p.stroke()
-        text(String(member.name.prefix(1)), rect.insetBy(dx: 4, dy: 35), size: 24, bold: true, center: true)
-        text("p. \(member.page ?? 0)", CGRect(x:x-18,y:306,width:86,height:25), size:20, color:BookishTheme.muted, center:true)
+        text(String(member.name.prefix(1)), CGRect(x: x + 4, y: 231, width: 42, height: 34), size: 26, bold: true, center: true)
+        text("p. \(member.page ?? 0)", CGRect(x:x-18,y:281,width:86,height:32), size:25, color:BookishTheme.muted, center:true)
     }
     private static func avatars(_ names: [String], y: CGFloat) {
         for (i, name) in names.prefix(4).enumerated() {

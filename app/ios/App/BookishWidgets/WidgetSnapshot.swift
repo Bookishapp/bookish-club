@@ -33,13 +33,34 @@ struct WidgetSnapshot: Codable, Equatable {
 
 enum WidgetSnapshotStore {
     static let group = "group.com.meetbookish.app"
-    private static let key = "BookishWidgetDisplaySummary"
-    static func read() -> WidgetSnapshot? {
-        guard let data = UserDefaults(suiteName: group)?.data(forKey: key) else { return nil }
-        return try? WidgetSnapshot.decode(data)
+    private static var cache: WidgetSnapshotCache? {
+        FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: group)
+            .map { WidgetSnapshotCache(url: $0.appendingPathComponent("widget-display-summary.json")) }
     }
+    static func read() -> WidgetSnapshot? { cache?.read() }
     static func save(_ value: WidgetSnapshot) throws {
-        UserDefaults(suiteName: group)?.set(try JSONEncoder().encode(value), forKey: key)
+        guard let cache = cache else { throw CocoaError(.fileNoSuchFile) }
+        try cache.save(value)
     }
-    static func clear() { UserDefaults(suiteName: group)?.removeObject(forKey: key) }
+    static func clear() { try? cache?.clear() }
+}
+
+/// Atomic replacement makes a fresh widget process see a complete, validated summary.
+struct WidgetSnapshotCache {
+    let url: URL
+    func read() -> WidgetSnapshot? {
+        guard let bytes = try? Data(contentsOf: url) else { return nil }
+        return try? WidgetSnapshot.decode(bytes)
+    }
+    func save(_ value: WidgetSnapshot) throws {
+        let bytes = try JSONEncoder().encode(value)
+        #if os(iOS)
+        try bytes.write(to: url, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+        #else
+        try bytes.write(to: url, options: .atomic)
+        #endif
+    }
+    func clear() throws {
+        if FileManager.default.fileExists(atPath: url.path) { try FileManager.default.removeItem(at: url) }
+    }
 }
