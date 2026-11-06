@@ -8,7 +8,7 @@ const Preferences = registerPlugin<{ get(o: {key:string}):Promise<{value:string|
 const Geolocation = registerPlugin<{ requestPermissions():Promise<{location:string}>; getCurrentPosition(o:object):Promise<{coords:{latitude:number;longitude:number}}> }>('Geolocation');
 const Share = registerPlugin<{ share(o:{title:string;text:string;url:string;dialogTitle:string}):Promise<void> }>('Share');
 export const Notifications = registerPlugin<LocalNotificationsPlugin>('LocalNotifications');
-export const NativeApp = registerPlugin<{ addListener(event:string, cb:()=>void):Promise<PluginListenerHandle> }>('App');
+export const NativeApp = registerPlugin<{ addListener(event:string, cb:(event:any)=>void):Promise<PluginListenerHandle>; getLaunchUrl():Promise<{url?:string}> }>('App');
 export const CityMap = registerPlugin<{ present(o:{cities:{key:string;name:string;count:number;lat:number;lng:number}[];selected?:string}):Promise<{cityKey?:string}> }>('BookishMap');
 export async function readStore<T>(key:string, fallback:T):Promise<T> {
   try { const raw = isNative ? (await Preferences.get({key:`bookish.${key}`})).value : localStorage.getItem(`bookish.${key}`); return raw == null ? fallback : JSON.parse(raw); } catch { return fallback; }
@@ -47,4 +47,14 @@ export async function requestJSON(url:string,options:{method:string;body?:unknow
  if(isNative){const r=await CapacitorHttp.request({url,method:options.method,headers,...(options.body===undefined?{}:{data:options.body}),responseType:'json',connectTimeout:12000,readTimeout:15000});return {ok:r.status>=200&&r.status<300,status:r.status,data:r.data};}
  const r=await fetch(url,{method:options.method,headers,cache:'no-store',...(options.body===undefined?{}:{body:JSON.stringify(options.body)}),signal:AbortSignal.timeout(15000)});
  const raw=await r.text();return {ok:r.ok,status:r.status,data:raw?JSON.parse(raw):null};
+}
+
+export const MessageCards=registerPlugin<{share(o:{card:Record<string,unknown>}):Promise<void>;saveCalendar(o:{content:string;fileName:string}):Promise<void>}>('BookishMessages');
+export async function requestText(url:string,headers:Record<string,string>){
+ if(isNative){const r=await CapacitorHttp.request({url,method:'GET',headers,responseType:'text',connectTimeout:12000,readTimeout:15000});return {ok:r.status>=200&&r.status<300,status:r.status,data:r.data};}
+ const r=await fetch(url,{method:'GET',headers,cache:'no-store',signal:AbortSignal.timeout(15000)});return{ok:r.ok,status:r.status,data:await r.text()};
+}
+export async function saveCalendarFile(content:string){
+ if(isNative){await MessageCards.saveCalendar({content,fileName:'bookish-meeting.ics'});return;}
+ const url=URL.createObjectURL(new Blob([content],{type:'text/calendar;charset=utf-8'}));const link=document.createElement('a');link.href=url;link.download='bookish-meeting.ics';link.click();setTimeout(()=>URL.revokeObjectURL(url),60000);
 }

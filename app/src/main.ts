@@ -13,7 +13,7 @@ import { isNative, readStore, writeStore, locate, shareClub, remoteJSON, Notific
 
 type Tab = 'club'|'near'|'read'|'saved'|'me';
 let welcomeShown=false, remindersPrimed=false, savedSection:'clubs'|'books'='clubs', bookDetailId:string|null=null;
-const inviteOnLaunch=/^#invite=/i.test(location.hash);
+const inviteOnLaunch=/^#(?:invite|message)=/i.test(location.hash);
 let resolvePrime:((enabled:boolean)=>void)|null=null;
 let mePage:'home'|'resources'='home';
 const root = document.querySelector<HTMLDivElement>('#app')!;
@@ -207,7 +207,7 @@ async function start(){
   welcomeShown=!inviteOnLaunch&&!await readStore('welcomeSeen',false);
   remindersPrimed=await readStore('remindersPrimed',false);
   render();
-  if(isNative){await Notifications.addListener('localNotificationActionPerformed',event=>{const id=event.notification.extra?.clubId;if(id&&(saved[id]||data.clubs.some(c=>c.id===id))){tab='saved';clubId=id;render();}});await NativeApp.addListener('resume',()=>{void refresh();});}
+  if(isNative){await NativeApp.addListener('appUrlOpen',event=>{if(event.url)void community.openMessage(event.url);});const launch=await NativeApp.getLaunchUrl();if(launch?.url)await community.openMessage(launch.url);await Notifications.addListener('localNotificationActionPerformed',event=>{const id=event.notification.extra?.clubId;if(id&&(saved[id]||data.clubs.some(c=>c.id===id))){tab='saved';clubId=id;render();}});await NativeApp.addListener('resume',()=>{void refresh();});}
   window.addEventListener('focus',()=>{void refresh();});
   document.addEventListener('visibilitychange',()=>{if(document.hidden){clearDiscovery();saved={};clubId=null;render();}else void refresh();});
 }

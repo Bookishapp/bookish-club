@@ -46,6 +46,11 @@
 		D1000000000000000000010C /* lunair-sticker-13-on-my-way.png in Resources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000010C /* lunair-sticker-13-on-my-way.png */; };
 		D1000000000000000000010D /* lunair-sticker-14-no-peeking.png in Resources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000010D /* lunair-sticker-14-no-peeking.png */; };
 		BD0000000000000000000001 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = BE0000000000000000000001 /* PrivacyInfo.xcprivacy */; };
+		E91000000000000000000001 /* ServerMessageCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90000000000000000000001 /* ServerMessageCard.swift */; };
+		E91000000000000000000002 /* ServerCardRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90000000000000000000002 /* ServerCardRenderer.swift */; };
+		E91000000000000000000003 /* BookishMessagesPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90000000000000000000003 /* BookishMessagesPlugin.swift */; };
+		E91000000000000000000004 /* ServerMessageCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90000000000000000000001 /* ServerMessageCard.swift */; };
+		E91000000000000000000005 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000000F /* Fonts */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -119,6 +124,9 @@
 		D2000000000000000000010C /* lunair-sticker-13-on-my-way.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-13-on-my-way.png"; path = "BookishMessages/Stickers/lunair-sticker-13-on-my-way.png"; sourceTree = SOURCE_ROOT; };
 		D2000000000000000000010D /* lunair-sticker-14-no-peeking.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-14-no-peeking.png"; path = "BookishMessages/Stickers/lunair-sticker-14-no-peeking.png"; sourceTree = SOURCE_ROOT; };
 		BE0000000000000000000001 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		E90000000000000000000001 /* ServerMessageCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerMessageCard.swift; sourceTree = "<group>"; };
+		E90000000000000000000002 /* ServerCardRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerCardRenderer.swift; sourceTree = "<group>"; };
+		E90000000000000000000003 /* BookishMessagesPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookishMessagesPlugin.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,6 +190,7 @@
 				DA0000000000000000000001 /* SceneDelegate.swift */,
 				BA0000000000000000000003 /* PrivacyInfo.xcprivacy */,
 				BA0000000000000000000002 /* BookishMapPlugin.swift */,
+				E90000000000000000000003 /* BookishMessagesPlugin.swift */,
 				BA0000000000000000000001 /* BookishViewController.swift */,
 				504EC30B1FED79650016851F /* Main.storyboard */,
 				504EC30E1FED79650016851F /* Assets.xcassets */,
@@ -207,6 +216,8 @@
 			children = (
 				D20000000000000000000001 /* MessagesViewController.swift */,
 				D20000000000000000000002 /* MessageState.swift */,
+				E90000000000000000000002 /* ServerCardRenderer.swift */,
+				E90000000000000000000001 /* ServerMessageCard.swift */,
 				D20000000000000000000003 /* BookishTheme.swift */,
 				D20000000000000000000004 /* ClubDataStore.swift */,
 				D20000000000000000000005 /* CardRenderer.swift */,
@@ -358,6 +369,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				504EC3121FED79650016851F /* LaunchScreen.storyboard in Resources */,
+				E91000000000000000000005 /* Fonts in Resources */,
 				50B271D11FEDC1A000F3C39B /* public in Resources */,
 				504EC30F1FED79650016851F /* Assets.xcassets in Resources */,
 				BB0000000000000000000003 /* PrivacyInfo.xcprivacy in Resources */,
@@ -445,6 +457,9 @@
 				504EC3081FED79650016851F /* AppDelegate.swift in Sources */,
 				DB0000000000000000000001 /* SceneDelegate.swift in Sources */,
 				BB0000000000000000000002 /* BookishMapPlugin.swift in Sources */,
+				E91000000000000000000003 /* BookishMessagesPlugin.swift in Sources */,
+				E91000000000000000000002 /* ServerCardRenderer.swift in Sources */,
+				E91000000000000000000001 /* ServerMessageCard.swift in Sources */,
 				BB0000000000000000000001 /* BookishViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -455,6 +470,7 @@
 			files = (
 				D10000000000000000000001 /* MessagesViewController.swift in Sources */,
 				D10000000000000000000002 /* MessageState.swift in Sources */,
+				E91000000000000000000004 /* ServerMessageCard.swift in Sources */,
 				D10000000000000000000003 /* BookishTheme.swift in Sources */,
 				D10000000000000000000004 /* ClubDataStore.swift in Sources */,
 				D10000000000000000000005 /* CardRenderer.swift in Sources */,

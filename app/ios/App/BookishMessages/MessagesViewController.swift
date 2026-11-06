@@ -11,6 +11,8 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
     private var selectedVote: String?
     private var invalidSelection = false
     private var showingStickers = false
+    private var serverResource: MessageResource?
+    private let serverPanel = UIStackView()
     private var cardRows: [UIView] = []
     private let stickerPicker = StickerPickerViewController()
     private let content = UIStackView()
@@ -99,6 +101,15 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         newButton.addTarget(self, action: #selector(startNewCard), for: .touchUpInside)
         content.addArrangedSubview(newButton)
         cardRows = Array(content.arrangedSubviews.dropFirst(2))
+        serverPanel.axis = .vertical; serverPanel.spacing = 18
+        serverPanel.addArrangedSubview(label("Open your club in Bookish", style: .title))
+        serverPanel.addArrangedSubview(label("Sign in to view this conversation. Tea stays sealed until a fresh page check allows it.", style: .body))
+        let open = UIButton(type: .system); style(open, primary: true)
+        open.setTitle("Open Bookish", for: .normal)
+        open.addTarget(self, action: #selector(openServerResource), for: .touchUpInside)
+        serverPanel.addArrangedSubview(open)
+        serverPanel.isHidden = true
+        content.insertArrangedSubview(serverPanel, at: 2)
         addChild(stickerPicker)
         content.addArrangedSubview(stickerPicker.view)
         stickerPicker.view.heightAnchor.constraint(greaterThanOrEqualToConstant: 360).isActive = true
@@ -114,11 +125,14 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         let key = ([conversation.localParticipantIdentifier.uuidString] + conversation.remoteParticipantIdentifiers.map { $0.uuidString }.sorted()).joined(separator: ":")
         if key != conversationKey {
             conversationKey = key; knownCards.removeAll(); session = nil; pending = nil
+            serverResource = nil
             state = ClubDataStore.card(kind: .rsvp); invalidSelection = false; showingStickers = false
             selectedRSVP = .yes; selectedVote = nil; pageField.text = nil
         }
-        if let message = conversation.selectedMessage { select(message) }
-        else { render() }
+        if let message = conversation.selectedMessage {
+            select(message, openServer: serverResource?.url != message.url)
+        }
+        else { serverResource = nil; render() }
     }
 
     override func didSelect(_ message: MSMessage, conversation: MSConversation) { select(message) }
@@ -146,13 +160,21 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         pending = nil; render(); setStatus("Card removed from the message. You can try again.")
     }
 
-    private func select(_ message: MSMessage) {
+    private func select(_ message: MSMessage, openServer: Bool = true) {
+        serverResource = nil
         showingStickers = false
         if let draft = pending {
             render()
             setStatus(draft.message.url == message.url
                       ? "Ready in Messages. Tap Send, or remove the draft to keep editing."
                       : "Send or remove your current draft in Messages before opening another card.")
+            return
+        }
+        // Server cards never enter the self-contained v1 editor, or reveal inline.
+        if let url = message.url, let resource = try? MessageResource.decode(url: url) {
+            loadViewIfNeeded()
+            serverResource = resource; render()
+            if openServer { openServerResource() }
             return
         }
         guard let url = message.url, let decoded = try? MessageState.decode(url: url) else {
@@ -174,7 +196,17 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         render()
     }
 
+    @objc private func openServerResource() {
+        guard let resource = serverResource else { return }
+        extensionContext?.open(resource.appURL) { [weak self] opened in
+            DispatchQueue.main.async {
+                self?.setStatus(opened ? "Open Bookish to sign in and view this conversation." : "Open Bookish and choose your club to view this conversation.")
+            }
+        }
+    }
+
     @objc private func changeKind() {
+        serverResource = nil
         guard pending == nil else { return }
         if mode.selectedSegmentIndex == 3 { showingStickers = true; render(); return }
         guard CardKind.allCases.indices.contains(mode.selectedSegmentIndex) else { return }
@@ -193,6 +225,13 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
 
     private func render() {
         guard isViewLoaded else { return }
+        serverPanel.isHidden = serverResource == nil
+        cardRows.forEach { $0.isHidden = serverResource != nil }
+        if serverResource != nil {
+            mode.isEnabled = true
+            content.removeArrangedSubview(stickerPicker.view); stickerPicker.view.removeFromSuperview()
+            return
+        }
         mode.selectedSegmentIndex = showingStickers ? 3 : (CardKind.allCases.firstIndex(of: state.kind) ?? 0)
         for row in cardRows {
             if showingStickers {

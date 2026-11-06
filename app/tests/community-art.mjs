@@ -45,6 +45,7 @@ for(const role of ['host','member']){
  const t=await launch(role);t.input('#email-code','123456');await t.submit('#account-code');
  t.input('[name=display_name]','Alex');for(const name of ['adult','terms'])t.select(`[name=${name}]`).checked=true;await t.submit('#account-terms');
  const button=t.w.document.createElement('button');button.dataset.home='10000000-0000-4000-8000-000000000001';await t.ui.click(button);
+ await t.click('[data-room-tab=home]');
  assert.match(t.select('.meeting-card').textContent,/neighborhood library/);
  await t.click('[data-room-tab=members]');
  assert.equal(Boolean(t.w.document.querySelector('[data-decide]')),role==='host','Only hosts see approval controls');

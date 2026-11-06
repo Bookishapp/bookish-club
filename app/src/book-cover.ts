@@ -70,10 +70,11 @@ const bundled:Record<string,string> = {
   "sandwich": "Sandwich"
 };
 
-export function bookCover(id?:string,title='',className=''):string {
+export function bookCover(id?:string,title='',className='',metadata?:{cover_url?:string|null;cover_style?:string}):string {
   const book=data.books.find(b=>b.id===id||!!title&&b.t.toLowerCase()===title.toLowerCase());
   const key=book?.id||(id&&bundled[id]?id:Object.keys(bundled).find(k=>bundled[k].toLowerCase()===title.toLowerCase()));
   const name=book?.t||title||(key?bundled[key]:'Book cover unavailable');
-  const source=key&&bundled[key]?appAsset(`covers/${key}.jpg`):book?.c?`https://covers.openlibrary.org/b/id/${book.c}-M.jpg?default=false`:null;
-  return `<span class="community-book-cover ${esc(className)}"><span class="cover-fallback">${esc(name)}</span>${source?`<img src="${source}" alt="Cover of ${esc(name)}" loading="lazy">`:''}</span>`;
+  const remote=metadata?.cover_url&&/^https:\/\/covers\.openlibrary\.org\/b\/id\/[0-9]+-[SML]\.(?:jpg|webp)(?:\?default=false)?$/.test(metadata.cover_url)?metadata.cover_url:null;
+  const source=key&&bundled[key]?appAsset(`covers/${key}.jpg`):remote||(book?.c?`https://covers.openlibrary.org/b/id/${book.c}-M.jpg?default=false`:null);
+  return `<span class="community-book-cover ${esc(className)} cover-style-${esc(['green','wine','pink','yellow'].includes(metadata?.cover_style||'')?metadata!.cover_style!:'wine')}"><span class="cover-fallback">${esc(name)}</span>${source?`<img src="${source}" alt="Cover of ${esc(name)}" loading="lazy">`:''}</span>`;
 }

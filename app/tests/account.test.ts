@@ -28,3 +28,8 @@ test('signing out during refresh cannot restore the session',async()=>{
 test('a revoked authenticated request clears identity',async()=>{
  const client=new AccountClient(async(path)=>{if(path.includes('/rpc/'))throw Object.assign(Error('revoked'),{status:401});return {ok:true,session};});await client.verify('reader@example.com','123456');await assert.rejects(client.rpc('private'),/Sign in again/);assert.equal(client.user,null);
 });
+test('private calendar downloads use a refreshed bearer header and a resource-only GET',async()=>{
+ const calls:any[]=[];const client=new AccountClient(async(path,body,token,method)=>{calls.push({path,body,token,method});return path.endsWith('bookish-auth')?{ok:true,session}:'BEGIN:VCALENDAR\r\nEND:VCALENDAR\r\n';});
+ await client.verify('reader@example.com','123456');const file=await client.calendar('10000000-0000-4000-8000-000000000001');assert.match(file,/BEGIN:VCALENDAR/);const last=calls.at(-1);assert.equal(last.method,'GET');assert.equal(last.token,'access');assert.ok(!last.path.includes('access'));assert.equal(last.body,undefined);
+ await assert.rejects(client.calendar('bad?access_token=secret'));
+});

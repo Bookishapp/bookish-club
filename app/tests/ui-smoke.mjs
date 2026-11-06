@@ -33,7 +33,7 @@ async function launch(online=true,native=false,verified=false,api=null,hash='',s
   const remoteValue=url=>String(url).includes('bookish-directory')?{ok:true,clubs:publicClubs}:String(url).includes('bookish-community')?feeds.community:null;
   if(native){
     w.CapacitorCustomPlatform={name:'ios'};
-    const methods={Preferences:['get','set'],Geolocation:['requestPermissions','getCurrentPosition'],Share:['share'],LocalNotifications:['requestPermissions','schedule','getPending','cancel','addListener','removeListener'],App:['addListener','removeListener'],BookishMap:['present'],CapacitorHttp:['request']};
+    const methods={Preferences:['get','set'],Geolocation:['requestPermissions','getCurrentPosition'],Share:['share'],LocalNotifications:['requestPermissions','schedule','getPending','cancel','addListener','removeListener'],App:['addListener','removeListener','getLaunchUrl'],BookishMap:['present'],CapacitorHttp:['request']};
     w.Capacitor={PluginHeaders:Object.entries(methods).map(([name,methods])=>({name,methods:methods.map(name=>({name,rtype:'promise'}))})),nativePromise:async(plugin,method,options={})=>{
       nativeCalls.push({plugin,method,options});
       if(plugin==='Preferences'){if(method==='get')return{value:nativeStore.get(options.key)??null};nativeStore.set(options.key,options.value);return{};}
@@ -152,6 +152,7 @@ assert.ok(!v.document.querySelector('#account-join'),'Successful pending join ca
 click(v,'#browse-clubs');await until(()=>!v.document.querySelector('#detail').open);assert.ok(v.document.querySelector('#city'),'Sent-request secondary returns to discovery');click(v,'[data-tab=me]');await until(()=>v.document.querySelector('[data-home]'));
 click(v,'[data-home]');await until(()=>v.document.querySelector('[data-community=approved] #moment-continue'));click(v,'#moment-continue');await until(()=>v.document.querySelector('.room-tabs'));
 assert.match(v.document.querySelector('#detail').textContent,/The Midnight Library/);
+click(v,'[data-room-tab=home]');await until(()=>v.document.querySelector('.room-book'));
 assert.match(v.document.querySelector('#detail').textContent,/neighborhood library/);
 click(v,'[data-room-tab=votes]');await until(()=>v.document.querySelector('[data-ballot]'));
 click(v,'[data-ballot]');await until(()=>v.document.querySelector('[data-ballot][aria-pressed=true]'));
