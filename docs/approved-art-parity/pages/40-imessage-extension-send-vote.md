@@ -4,7 +4,7 @@
 
 Oct 18 batch reference; individual approval not recorded in decisions 111-143.
 
-**Partial: native UIKit review host**
+**Rebuilt and inspected, native review host (prior score 7/10)**
 
 Actual production vote editor in a standalone simulator host, including error and large-text states. Apple’s conversation, keyboard, and transport are not captured.
 

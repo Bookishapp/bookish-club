@@ -4,7 +4,7 @@
 
 Oct 18 approval receipt verified.
 
-**Existing surface: visual adaptation**
+**Rebuilt and inspected, data adaptations documented (prior score 7/10)**
 
 
 
@@ -12,9 +12,11 @@ Oct 18 approval receipt verified.
 
 
 
+[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/22-vote.png)
+
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
-| ![Approved Vote: pick the next book](../approved/22.jpg) | ![Actual app Anonymous book vote](../built/22-vote.jpg) |
+| ![Approved Vote: pick the next book](../approved/22.jpg) | ![Actual app Anonymous book vote](../built/22-vote.png) |
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 
@@ -22,9 +24,11 @@ Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: no
 
 
 
+[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/22-vote-selected.png)
+
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
-| ![Approved Vote: pick the next book](../approved/22.jpg) | ![Actual app Anonymous vote, selected choice](../built/22-vote-selected.jpg) |
+| ![Approved Vote: pick the next book](../approved/22.jpg) | ![Actual app Anonymous vote, selected choice](../built/22-vote-selected.png) |
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 
@@ -32,9 +36,11 @@ Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: no
 
 Existing host form opens after the previous vote closes.
 
+[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/22-open-vote.png)
+
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
-| ![Approved Vote: pick the next book](../approved/22.jpg) | ![Actual app Host anonymous vote form](../built/22-open-vote.jpg) |
+| ![Approved Vote: pick the next book](../approved/22.jpg) | ![Actual app Host anonymous vote form](../built/22-open-vote.png) |
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 
@@ -42,9 +48,11 @@ Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: no
 
 
 
+[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/empty-votes.png)
+
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
-| ![Approved Vote: pick the next book](../approved/22.jpg) | ![Actual app No active book votes](../built/empty-votes.jpg) |
+| ![Approved Vote: pick the next book](../approved/22.jpg) | ![Actual app No active book votes](../built/empty-votes.png) |
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 

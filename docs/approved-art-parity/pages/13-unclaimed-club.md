@@ -4,7 +4,7 @@
 
 Oct 18 approval receipt verified.
 
-**Existing surface: visual adaptation**
+**Rebuilt and inspected, data adaptations documented (prior score 4/10)**
 
 
 
@@ -12,9 +12,11 @@ Oct 18 approval receipt verified.
 
 
 
+[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/13-public-calendar.png)
+
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
-| ![Approved Unclaimed club](../approved/13.jpg) | ![Actual app Unclaimed public-calendar club](../built/13-public-calendar.jpg) |
+| ![Approved Unclaimed club](../approved/13.jpg) | ![Actual app Unclaimed public-calendar club](../built/13-public-calendar.png) |
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 

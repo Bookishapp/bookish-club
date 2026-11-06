@@ -101,6 +101,33 @@ enum BookishTheme {
     static func label(for choice: RSVPChoice) -> String {
         switch choice { case .yes: return "Yes"; case .maybe: return "Maybe"; case .cant: return "Can't" }
     }
+    /// Approved square check, drawn as native vector geometry at every display scale.
+    static func selectionMark(selected: Bool) -> UIImage {
+        UIGraphicsImageRenderer(size: CGSize(width: 24, height: 24)).image { _ in
+            let box = UIBezierPath(roundedRect: CGRect(x: 1, y: 1, width: 22, height: 22), cornerRadius: 6)
+            if selected { wine.setFill(); box.fill() }
+            else { line.setStroke(); box.lineWidth = 1.5; box.stroke() }
+            if selected {
+                let tick = UIBezierPath(); tick.move(to: CGPoint(x: 6, y: 12))
+                tick.addLine(to: CGPoint(x: 10, y: 16)); tick.addLine(to: CGPoint(x: 18, y: 7))
+                tick.lineWidth = 2.5; tick.lineCapStyle = .round; tick.lineJoinStyle = .round
+                card.setStroke(); tick.stroke()
+            }
+        }
+    }
+    /// Bundled covers correspond only to the existing sample books. Unknown books stay text-only.
+    static func cover(for book: CandidateBook) -> UIImage? {
+        let assets = ["pride": ("Pride and Prejudice", "Jane Austen"),
+                      "frankenstein": ("Frankenstein", "Mary Shelley"),
+                      "jane-eyre": ("Jane Eyre", "Charlotte Brontë")]
+        guard let known = assets[book.id], known.0 == book.title, known.1 == book.author else { return nil }
+        return UIImage(named: "Cover-" + book.id)
+    }
+    /// The URL model has no calendar date. Show a known weekday, without inventing a month or day.
+    static func meetingDay(_ state: MessageState) -> String? {
+        ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+            .first { state.meetingTitle.localizedCaseInsensitiveContains($0) }.map { String($0.prefix(3)).uppercased() }
+    }
     static func art(for kind: CardKind) -> UIImage {
         let name: String
         switch kind {

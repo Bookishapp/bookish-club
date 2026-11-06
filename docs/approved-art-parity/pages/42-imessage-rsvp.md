@@ -4,7 +4,7 @@
 
 Oct 18 approval receipt verified.
 
-**Partial: native UIKit review host**
+**Rebuilt and inspected, native review host (prior score 6/10)**
 
 Actual RSVP card and editor in the native review host. Apple’s host, incoming delivery, and send transport require device validation.
 

@@ -4,7 +4,7 @@
 
 Oct 19 approved v2 override.
 
-**Existing surface: visual adaptation**
+**Existing surface, visual review pending**
 
 
 
@@ -12,9 +12,11 @@ Oct 19 approved v2 override.
 
 
 
+[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/04-house-rules.png)
+
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
-| ![Approved House rules](../approved/04-v2.webp) | ![Actual app House rules, legal fields, and age confirmation](../built/04-house-rules.jpg) |
+| ![Approved House rules](../approved/04-v2.webp) | ![Actual app House rules, legal fields, and age confirmation](../built/04-house-rules.png) |
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 

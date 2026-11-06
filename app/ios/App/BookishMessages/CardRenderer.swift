@@ -15,7 +15,8 @@ enum CardRenderer {
     }
 
     static func image(for state: MessageState) -> UIImage {
-        let size = CGSize(width: 600, height: state.kind == .vote ? 570 : 520)
+        let bookmarkHeight: CGFloat = state.responses.filter { $0.page != nil }.count > 4 ? 600 : 500
+        let size = CGSize(width: 600, height: state.kind == .vote ? 570 : state.kind == .bookmarks ? bookmarkHeight : 520)
         let format = UIGraphicsImageRendererFormat(); format.scale = 1; format.opaque = true
         return UIGraphicsImageRenderer(size: size, format: format).image { context in
             let bounds = CGRect(origin: .zero, size: size)
@@ -27,23 +28,36 @@ enum CardRenderer {
     }
 
     private static func rsvp(_ state: MessageState, size: CGSize) {
-        draw("CLUB NIGHT", in: CGRect(x: 28, y: 26, width: 400, height: 26), style: .caption,
+        // The approved calendar block uses available meeting facts. No date is stored in v1 URLs.
+        let calendar = CGRect(x: 28, y: 28, width: 112, height: 158)
+        BookishTheme.card.setFill(); UIBezierPath(roundedRect: calendar, cornerRadius: 14).fill()
+        BookishTheme.line.setStroke(); let outline = UIBezierPath(roundedRect: calendar, cornerRadius: 14)
+        outline.lineWidth = 2; outline.stroke()
+        BookishTheme.wine.setFill()
+        UIBezierPath(roundedRect: CGRect(x: 28, y: 28, width: 112, height: 38), cornerRadius: 12).fill()
+        UIBezierPath(rect: CGRect(x: 28, y: 48, width: 112, height: 18)).fill()
+        draw("CLUB", in: CGRect(x: 35, y: 34, width: 98, height: 27), style: .caption,
+             color: BookishTheme.card, alignment: .center, tracking: 2)
+        draw(BookishTheme.meetingDay(state) ?? "MEET", in: CGRect(x: 35, y: 89, width: 98, height: 49),
+             style: BookishTheme.meetingDay(state) == nil ? .caption : .title, color: BookishTheme.wine, alignment: .center)
+        draw("NIGHT", in: CGRect(x: 35, y: 150, width: 98, height: 27), style: .caption,
+             color: BookishTheme.muted, alignment: .center, tracking: 2)
+        draw("CLUB NIGHT", in: CGRect(x: 164, y: 30, width: 408, height: 27), style: .caption,
              color: BookishTheme.wine, tracking: 3)
-        BookishTheme.art(for: .rsvp).drawAspectFit(in: CGRect(x: 438, y: 22, width: 136, height: 124))
-        draw(state.meetingTitle, in: CGRect(x: 28, y: 66, width: 398, height: 104), style: .title)
-        draw(state.meetingDetail, in: CGRect(x: 28, y: 177, width: 544, height: 67), style: .body,
+        draw(state.readingTitle, in: CGRect(x: 164, y: 76, width: 408, height: 93), style: .title)
+        draw(state.meetingTitle, in: CGRect(x: 28, y: 210, width: 544, height: 59), style: .heading)
+        draw(state.meetingDetail, in: CGRect(x: 28, y: 278, width: 544, height: 58), style: .body,
              color: BookishTheme.muted)
-        draw(state.readingTitle, in: CGRect(x: 28, y: 254, width: 544, height: 79), style: .heading)
         let counts = [state.responses.filter { $0.rsvp == .yes }.count,
                       state.responses.filter { $0.rsvp == .maybe }.count,
                       state.responses.filter { $0.rsvp == .cant }.count]
-        for (index, title) in ["Yes", "Maybe", "Can't"].enumerated() {
-            let rect = CGRect(x: CGFloat(28 + index * 186), y: 350, width: 172, height: 58)
+        for (index, title) in ["Going", "Maybe", "Can't"].enumerated() {
+            let rect = CGRect(x: CGFloat(28 + index * 186), y: 348, width: 172, height: 76)
             pill(rect, color: index == 0 ? BookishTheme.green : BookishTheme.cream)
-            draw("\(title) · \(counts[index])", in: rect.insetBy(dx: 6, dy: 14), style: .button,
+            draw("\(title) · \(counts[index])", in: rect.insetBy(dx: 6, dy: 23), style: .button,
                  color: index == 0 ? BookishTheme.card : BookishTheme.ink, alignment: .center)
         }
-        footer(state.clubName, action: "Tap to RSVP", top: 432, height: size.height - 432)
+        footer(state.clubName, action: "Are you coming? Tap to RSVP", top: 440, height: size.height - 440)
     }
 
     private static func vote(_ state: MessageState, size: CGSize) {
@@ -51,22 +65,25 @@ enum CardRenderer {
         UIBezierPath(rect: CGRect(x: 0, y: 0, width: size.width, height: 132)).fill()
         draw("OUR NEXT READ", in: CGRect(x: 28, y: 24, width: 420, height: 28), style: .caption,
              color: BookishTheme.wine, tracking: 3)
-        draw("Pick the next book.", in: CGRect(x: 28, y: 64, width: 435, height: 52), style: .title)
-        BookishTheme.art(for: .vote).drawAspectFit(in: CGRect(x: 477, y: 20, width: 100, height: 102))
+        draw("Pick the next book.", in: CGRect(x: 28, y: 64, width: 544, height: 52), style: .title)
         let total = state.responses.filter { $0.voteID != nil }.count
         for (index, book) in state.candidates.enumerated() {
             let y = CGFloat(146 + index * 112)
             let count = state.responses.filter { $0.voteID == book.id }.count
-            draw(book.title, in: CGRect(x: 28, y: y, width: 476, height: 45), style: .heading)
-            draw(book.author, in: CGRect(x: 28, y: y + 46, width: 476, height: 29), style: .caption,
+            let cover = BookishTheme.cover(for: book)
+            if let cover = cover { cover.drawAspectFit(in: CGRect(x: 28, y: y, width: 60, height: 92)) }
+            let textX: CGFloat = cover == nil ? 28 : 110
+            draw(book.title, in: CGRect(x: textX, y: y, width: 420 - textX + 28, height: 45), style: .heading)
+            draw(book.author, in: CGRect(x: textX, y: y + 44, width: 420, height: 29), style: .caption,
                  color: BookishTheme.muted)
-            draw(String(count), in: CGRect(x: 520, y: y + 5, width: 52, height: 38), style: .button,
-                 color: BookishTheme.wine, alignment: .right)
-            let ribbonWidth = total == 0 ? 0 : CGFloat(count) / CGFloat(total) * 465
+            BookishTheme.selectionMark(selected: false).draw(in: CGRect(x: 536, y: y + 24, width: 36, height: 36))
+            let ribbonWidth = total == 0 ? 0 : CGFloat(count) / CGFloat(total) * 300
             if ribbonWidth > 0 {
-                ribbon(CGRect(x: 28, y: y + 84, width: max(14, ribbonWidth), height: 13),
+                ribbon(CGRect(x: textX, y: y + 83, width: max(14, ribbonWidth), height: 16),
                        color: index == 0 ? BookishTheme.butter : BookishTheme.pink)
             }
+            draw(String(count), in: CGRect(x: textX + max(14, ribbonWidth) + 15, y: y + 73, width: 50, height: 32),
+                 style: .button, color: BookishTheme.wine)
             BookishTheme.line.setFill()
             UIBezierPath(rect: CGRect(x: 28, y: y + 106, width: 544, height: 1)).fill()
         }
@@ -85,32 +102,31 @@ enum CardRenderer {
         context.strokePath(); context.restoreGState()
         draw("READING TOGETHER", in: CGRect(x: 28, y: 25, width: 420, height: 27), style: .caption,
              color: BookishTheme.butter, tracking: 3)
-        draw(state.readingTitle, in: CGRect(x: 28, y: 67, width: 425, height: 89), style: .title,
+        draw(state.readingTitle, in: CGRect(x: 28, y: 67, width: 544, height: 89), style: .title,
              color: BookishTheme.card)
-        BookishTheme.art(for: .bookmarks).drawAspectFit(in: CGRect(x: 470, y: 28, width: 108, height: 116))
         let members = state.responses.filter { $0.page != nil }
         if members.isEmpty {
             draw("A place for every bookmark.", in: CGRect(x: 28, y: 211, width: 544, height: 90),
                  style: .heading, color: BookishTheme.card)
         } else {
             // Preserve the shared member order. Never sort readers by their page.
-            for (index, member) in members.prefix(4).enumerated() {
-                let y = CGFloat(169 + index * 59)
+            for (index, member) in members.prefix(6).enumerated() {
+                let y = CGFloat(169 + index * 49)
                 draw(member.name, in: CGRect(x: 28, y: y, width: 150, height: 34), style: .body,
                      color: BookishTheme.mint)
                 let width = CGFloat(member.page ?? 0) / CGFloat(max(1, state.totalPages)) * 266
                 if width > 0 { ribbon(CGRect(x: 190, y: y + 6, width: max(12, width), height: 23), color: BookishTheme.pink) }
-                draw("\(member.page ?? 0)", in: CGRect(x: 466, y: y, width: 106, height: 35), style: .button,
+                draw(member.page == state.totalPages ? "Done" : "\(member.page ?? 0)", in: CGRect(x: 466, y: y, width: 106, height: 35), style: .button,
                      color: BookishTheme.card, alignment: .right)
             }
-            if members.count > 4 {
-                draw("And \(members.count - 4) more on our shared shelf", in: CGRect(x: 28, y: 409, width: 544, height: 30),
+            if members.count > 6 {
+                draw("And \(members.count - 6) more on our shared shelf", in: CGRect(x: 28, y: 475, width: 544, height: 30),
                      style: .caption, color: BookishTheme.mint)
             }
         }
-        draw("Read at your own pace.", in: CGRect(x: 28, y: 449, width: 544, height: 30), style: .caption,
+        draw("Read at your own pace.", in: CGRect(x: 28, y: size.height - 81, width: 544, height: 30), style: .caption,
              color: BookishTheme.mint)
-        draw("Tap to add your bookmark", in: CGRect(x: 28, y: 485, width: 544, height: 29), style: .caption,
+        draw("Tap to add your bookmark", in: CGRect(x: 28, y: size.height - 41, width: 544, height: 29), style: .caption,
              color: BookishTheme.butter)
     }
 
@@ -135,7 +151,11 @@ enum CardRenderer {
                              color: UIColor = BookishTheme.ink, alignment: NSTextAlignment = .left,
                              tracking: CGFloat = 0) {
         let paragraph = NSMutableParagraphStyle()
-        paragraph.lineBreakMode = .byTruncatingTail; paragraph.alignment = alignment
+        switch style {
+        case .title, .heading, .body: paragraph.lineBreakMode = .byWordWrapping
+        case .caption, .button: paragraph.lineBreakMode = .byTruncatingTail
+        }
+        paragraph.alignment = alignment
         var font = BookishTheme.transcriptFont(style)
         // Long working titles wrap, and shrink within a bounded range before truncating.
         while font.pointSize > 18 {

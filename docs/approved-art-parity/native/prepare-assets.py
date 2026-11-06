@@ -77,17 +77,17 @@ sticker_dir.mkdir(exist_ok=True)
 for stem, art, caption in stickers:
     canvas = Image.new('RGBA', (408, 408))
     cutout = Image.open(assets / f'lunair/b-{art}.png').convert('RGBA')
-    cutout.thumbnail((380, 340), Image.Resampling.LANCZOS)
-    canvas.alpha_composite(cutout, ((408 - cutout.width) // 2, 340 - cutout.height))
+    cutout.thumbnail((370, 290), Image.Resampling.LANCZOS)
+    canvas.alpha_composite(cutout, ((408 - cutout.width) // 2, 290 - cutout.height))
     draw = ImageDraw.Draw(canvas)
-    font = ImageFont.truetype(str(fonts / 'Manrope-ExtraBold.ttf'), 29)
-    lines = textwrap.wrap(caption, 19)
+    font = ImageFont.truetype(str(fonts / 'Manrope-ExtraBold.ttf'), 46)
+    lines = textwrap.wrap(caption, 14)
     text = '\n'.join(lines)
     bounds = draw.multiline_textbbox((0, 0), text, font=font, spacing=3, align='center')
     w, h = bounds[2], bounds[3] - bounds[1]
-    x, y = (408-w)//2, 365-h//2
-    draw.rounded_rectangle((x-18, y-12, x+w+18, y+h+12), radius=15, fill='#7a1a2a', outline='#fffaf1', width=5)
-    draw.multiline_text((x, y-bounds[1]), text, font=font, fill='#fffaf1', spacing=3, align='center')
+    x, y = (408-w)//2, 344-h//2
+    draw.rounded_rectangle((x-20, y-14, x+w+20, y+h+14), radius=25, fill='#fffdf7', outline='#7a1a2a', width=3)
+    draw.multiline_text((x, y-bounds[1]), text, font=font, fill='#7a1a2a', spacing=3, align='center')
     canvas.save(sticker_dir / f'lunair-sticker-{stem}.png', optimize=True)
 # The app embeds the standalone sticker pack as well as the interactive extension.
 # Update only existing artwork, keeping both targets' identifiers and behavior intact.

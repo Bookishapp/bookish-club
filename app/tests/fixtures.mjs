@@ -4,7 +4,7 @@ export const ids={club:'10000000-0000-4000-8000-000000000001',reader:'20000000-0
 export const fixtureClub={id:ids.club,name:'The After Hours Readers',city:'Chicago',state:'IL',genres:['Literary fiction','Mystery'],vibe:'Good books, warm company, and one more chapter.',cadence:'The first Thursday of each month',format:'In person',source_name:null,source_url:null,last_seen:'2026-11-01',lat:41.88,lng:-87.63,verified:true,visibility:'private',current_book:{title:'The Midnight Library',authors:['Matt Haig']}};
 export function createFixtureAPI({role='host',member=true,counts=[3,2]}={}){
  const calls=[],failures=new Set();let accepted=false,joined=member,deleted=false,pending=true,choice=null,filters=[],club={...fixtureClub},current={id:'the-midnight-library',title:'The Midnight Library',authors:['Matt Haig']};
- let closed=false;const meetings=[{id:ids.meeting,title:'A cozy November chapter',starts_at:'2026-11-12T02:00:00Z',location:'The reading room at our neighborhood library',status:'scheduled',bring_items:[],rsvps:[]}];
+ let closed=false,winner=null;const meetings=[{id:ids.meeting,title:'A cozy November chapter',starts_at:'2026-11-12T02:00:00Z',location:'The reading room at our neighborhood library',status:'scheduled',bring_items:[],rsvps:[]}];
  const bookOptions=[{option_id:ids.one,book_id:'the-midnight-library',ballots:counts[0]},{option_id:ids.two,book_id:'yellowface',ballots:counts[1]}];
  return {calls,failNext(name){failures.add(name);},async respond(url,body={},method='GET'){
   calls.push({url,body,method});const suffix=new URL(url,'https://localhost').pathname.split('/').pop();if(failures.delete(suffix))return{$status:401,ok:false};const path=new URL(url,'https://localhost').pathname;
@@ -18,7 +18,7 @@ export function createFixtureAPI({role='host',member=true,counts=[3,2]}={}){
   if(rpc==='bookish_accept_terms'){accepted=true;return null;}
   if(rpc==='bookish_my_clubs')return joined&&!filters.some(f=>f.kind==='club')?[{...club,role}]:[];
   if(rpc==='bookish_my_content_filters')return filters;
-  if(rpc==='bookish_club_home')return {club,role,current_book:current,members:[{user_id:ids.reader,role,display_name:'Alex',joined_at:'2026-10-20'},{user_id:ids.other,role:'member',display_name:'Jamie',joined_at:'2026-10-22'}],meetings,votes:[{id:ids.vote,closes_at:'2026-11-10T23:59:00Z',status:closed?'closed':'open'}]};
+  if(rpc==='bookish_club_home')return {club,role,current_book:current,members:[{user_id:ids.reader,role,display_name:'Alex',joined_at:'2026-10-20'},{user_id:ids.other,role:'member',display_name:'Jamie',joined_at:'2026-10-22'}],meetings,votes:[{id:ids.vote,closes_at:'2026-11-10T23:59:00Z',status:closed?'closed':'open',winner_option:winner}]};
   if(rpc==='bookish_join_queue')return pending?[{id:ids.request,user_id:ids.other,first_name:'Jamie',note:'I love a good mystery and a lively discussion. I would love to read with you.',created_at:'2026-11-01T20:00:00Z'}]:[];
   if(rpc==='bookish_vote_tally')return bookOptions.map(o=>({...o,ballots:o.ballots+(choice===o.option_id?1:0)}));
   if(rpc==='bookish_my_vote')return choice;
@@ -33,7 +33,17 @@ export function createFixtureAPI({role='host',member=true,counts=[3,2]}={}){
   if(rpc==='bookish_set_current_book'){current={id:body.p_book,title:body.p_book==='yellowface'?'Yellowface':body.p_book,authors:[]};return null;}
   if(rpc==='bookish_content_action'){filters.push({kind:body.p_kind,id:body.p_id});return null;}
   if(rpc==='bookish_schedule_meeting'){meetings.push({id:ids.meeting,title:body.p_title,starts_at:body.p_starts,location:body.p_location,status:'scheduled'});return ids.meeting;}
-  if(rpc==='bookish_close_vote'){closed=true;return body.p_winner||ids.one;}
+  if(rpc==='bookish_close_vote'){
+   if(closed)return winner;
+   const top=Math.max(...bookOptions.map(o=>o.ballots+(choice===o.option_id?1:0)));
+   const leaders=bookOptions.filter(o=>o.ballots+(choice===o.option_id?1:0)===top);
+   if(!body.p_winner&&leaders.length!==1)return{$status:400,ok:false};
+   const selected=leaders.find(o=>o.option_id===(body.p_winner||leaders[0].option_id));
+   if(!selected)return{$status:400,ok:false};
+   closed=true;winner=selected.option_id;
+   current={id:selected.book_id,title:selected.book_id==='yellowface'?'Yellowface':'The Midnight Library',authors:[selected.book_id==='yellowface'?'R. F. Kuang':'Matt Haig']};
+   return winner;
+  }
   if(rpc==='bookish_open_vote')return ids.vote;
   throw Error(`Unmocked fixture request: ${method} ${path}`);
  }};

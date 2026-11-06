@@ -4,19 +4,19 @@
 
 Oct 18 approval receipt verified.
 
-**Partial: existing combined flow**
+**Rebuilt and inspected, data adaptations documented (prior score 3/10)**
 
 
 
-This is a partial mapping to working app behavior. The original screen composition and separate navigation are not fully implemented.
+## Book detail with Save and Open Library
 
-## Existing book card and Open Library link
 
-No in-app book-detail route exists. The real book card links to Open Library.
+
+[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/15-book-detail.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
-| ![Approved Book detail](../approved/15.jpg) | ![Actual app Existing book card and Open Library link](../built/15-book-equivalent.jpg) |
+| ![Approved Book detail](../approved/15.jpg) | ![Actual app Book detail with Save and Open Library](../built/15-book-detail.png) |
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 

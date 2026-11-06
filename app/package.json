@@ -13,7 +13,7 @@
     "preview": "vite preview --host 127.0.0.1 --port 4321 --strictPort",
     "sync": "npm run build && cap sync ios",
     "ios": "cap open ios",
-    "test:community": "node tests/community-art.mjs"
+    "test:community": "node tests/community-art.mjs && node tests/community-layout.mjs"
   },
   "dependencies": {
     "@capacitor/app": "^7.0.0",

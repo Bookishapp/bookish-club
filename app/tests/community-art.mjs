@@ -48,6 +48,7 @@ for(const role of ['host','member']){
  assert.match(t.select('.meeting-card').textContent,/neighborhood library/);
  await t.click('[data-room-tab=members]');
  assert.equal(Boolean(t.w.document.querySelector('[data-decide]')),role==='host','Only hosts see approval controls');
+ await t.click('#back-club-home');
  assert.equal(Boolean(t.w.document.querySelector('[data-room-tab=manage]')),role==='host','Only hosts see management');
  await t.click('[data-room-tab=votes]');
  assert.match(t.select('.vote-privacy').textContent,/Votes are anonymous/);

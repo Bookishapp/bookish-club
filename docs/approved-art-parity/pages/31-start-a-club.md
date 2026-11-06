@@ -4,17 +4,19 @@
 
 Oct 18 approval receipt verified.
 
-**Existing surface: visual adaptation**
+**Rebuilt and inspected, data adaptations documented (prior score 5/10)**
 
 
 
 ## Create club, including visibility and location fields
 
+The existing create RPC accepts name, city, state, and visibility. Genre and cadence controls are absent because those values have no existing storage or payload fields.
 
+[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/31-create-club.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
-| ![Approved Start a club](../approved/31.jpg) | ![Actual app Create club, including visibility and location fields](../built/31-create-club.jpg) |
+| ![Approved Start a club](../approved/31.jpg) | ![Actual app Create club, including visibility and location fields](../built/31-create-club.png) |
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 

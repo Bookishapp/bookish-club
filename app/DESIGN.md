@@ -1,6 +1,6 @@
 # Bookish design system
 
-The source of truth is `src/tokens.css`. Components are in `src/styles.css`, account and club flow layouts are in `src/community.css`, and decorative art helpers are in `src/design.ts`. Future Tea and hosting screens should use these foundations.
+The source of truth is `src/tokens.css`. Components are in `src/styles.css`, discovery and book compositions are in `src/compositions.css`, account and club flow layouts are in `src/community.css`, and decorative art helpers are in `src/design.ts`. Future Tea and hosting screens should use these foundations.
 
 The implementation follows the approved October 16 art and October 19 overrides described in `/Users/vahallo/biz/bookish/design/APPROVED-ART.md`. The original generator is `full-app-1016/src/base.py`. Drawn SVG geometry comes from `base.py`, `art81.py`, and the house rules in `screens1.py`. Approval provenance and screen comparisons are in [the parity report](../docs/approved-art-parity/index.html).
 
@@ -49,6 +49,10 @@ The spacing scale is `--space-1` through `--space-6`, then `--space-8` and `--sp
 `--radius-small` is 8px, `--radius-card` is 14px, `--radius-sheet` is 22px, and `--radius-pill` is 999px. `--shadow-card`, `--shadow-button`, and `--shadow-sheet` preserve the approved warm, soft shadows.
 
 ## Components
+
+Screens follow their individual approved compositions. The wine welcome and celebration screens, compact discovery list, full map and bottom sheet, green taped club hero, cover shelves, centered profile, grouped settings, and centered empty states should not be replaced with a shared illustrated heading and form card.
+
+`src/book-cover.ts` supplies consistent real book covers for discovery, shelves, club books, and votes. The existing catalog's available identification thumbnails are bundled in `public/covers/`, with source URLs in `provenance.json`. Unknown covers retain the book's title; a different book's artwork is never substituted. New catalog entries can still use their Open Library cover ID. Cover rendering works when a directory record supplies a title without a catalog ID.
 
 - `.primary` is a full-width wine pill, 52px minimum height. `.secondary` is an outlined pill. `.light-button` uses the pink tint. `.text-button` is an underlined text action.
 - `.paper` and `.card` are cream cards with 14px corners and `--shadow-card`. A paper canvas is a background, not a card filled with another dark theme.

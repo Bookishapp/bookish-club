@@ -4,7 +4,7 @@
 
 Oct 18 approval receipt verified.
 
-**Existing surface: visual adaptation**
+**Rebuilt and inspected, data adaptations documented (prior score 5/10)**
 
 
 
@@ -12,9 +12,11 @@ Oct 18 approval receipt verified.
 
 
 
+[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/07-near-me-list.png)
+
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
-| ![Approved Near me: list](../approved/07.jpg) | ![Actual app Near me, list](../built/07-near-me-list.jpg) |
+| ![Approved Near me: list](../approved/07.jpg) | ![Actual app Near me, list](../built/07-near-me-list.png) |
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 

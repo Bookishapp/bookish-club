@@ -4,17 +4,19 @@
 
 Oct 18 approval receipt verified.
 
-**Existing surface: visual adaptation**
+**Rebuilt and inspected, data adaptations documented (prior score 5/10)**
 
 
 
-## Saved clubs and books
+## Saved segments, reminder banner, and cover rows
 
+Local reminder and saved-book preferences are seeded fixtures. Browser capture never schedules a native notification.
 
+[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/16-saved.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
-| ![Approved Saved](../approved/16.jpg) | ![Actual app Saved clubs and books](../built/16-saved.jpg) |
+| ![Approved Saved](../approved/16.jpg) | ![Actual app Saved segments, reminder banner, and cover rows](../built/16-saved.png) |
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 

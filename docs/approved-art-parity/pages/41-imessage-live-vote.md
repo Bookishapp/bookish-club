@@ -4,7 +4,7 @@
 
 Oct 18 approval receipt verified.
 
-**Partial: native UIKit review host**
+**Rebuilt and inspected, native review host (prior score 7/10)**
 
 Actual CardRenderer output hosted in UIKit. Apple’s Messages transcript chrome and transport are not captured.
 

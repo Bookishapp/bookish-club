@@ -4,19 +4,19 @@
 
 Oct 18 approval receipt verified.
 
-**Partial: existing combined flow**
+**Rebuilt and inspected, data adaptations documented (prior score 3/10)**
 
 
 
-This is a partial mapping to working app behavior. The original screen composition and separate navigation are not fully implemented.
+## Reminders permission prime
 
-## Existing reminder permission explanation
 
-No separate notification-prime page exists. This is the existing reminder explanation inside club detail.
+
+[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/06-notifications-prime.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
-| ![Approved Reminders permission](../approved/06.jpg) | ![Actual app Existing reminder permission explanation](../built/06-reminder-explanation.jpg) |
+| ![Approved Reminders permission](../approved/06.jpg) | ![Actual app Reminders permission prime](../built/06-notifications-prime.png) |
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 

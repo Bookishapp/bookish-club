@@ -3,7 +3,7 @@ import Messages
 
 /// Messages supplies sticker tapping and peeling. This controller never sends a message.
 final class StickerPickerViewController: UIViewController, MSStickerBrowserViewDataSource {
-    private let browser = MSStickerBrowserView(frame: .zero, stickerSize: .small)
+    private let browser = MSStickerBrowserView(frame: .zero, stickerSize: .regular)
     private let helpLabel = UILabel()
     private let titleLabel = UILabel()
     private var stickers: [MSSticker] = []

@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-11-06T01:46:57.756249+00:00",
+  "capturedAt": "2026-11-06T07:38:21.002600+00:00",
   "device": "iPhone 13 Pro",
   "runtime": "iOS 26.5 (23F77)",
   "xcode": "27.1 (27A9275)",
@@ -26,109 +26,115 @@
       "path": "actual/editor-bookmarks.png",
       "width": 390,
       "height": 844,
-      "sha256": "92989e4db4791655af549a0092693c30a13e4d367ab43fe771b6f6bf97ae817a"
+      "sha256": "c6a7bf36c73ce3a960f733f6de2aee0af22d929e19f00ebb1cee0e974e508343"
     },
     {
       "path": "actual/editor-rsvp.png",
       "width": 390,
       "height": 844,
-      "sha256": "c96ac9fc14d1b96e52d6fe121808d19f7b25a4422e40a3fdd2c8e9650271cf0f"
+      "sha256": "f663640917d1051c29a152a09cdef9781ded0725d1457baf36936bbe79a1ee80"
     },
     {
       "path": "actual/editor-vote-error-scrolled.png",
       "width": 390,
       "height": 844,
-      "sha256": "4dc7afe78ee9b3ef15006f9562a78deb6d222c1aef8964f2bc858fe79a68622a"
+      "sha256": "30ef41de8db70ae67b6972d15a56cc977e5f9b97076dbcbf584c2653081a8a4d"
     },
     {
       "path": "actual/editor-vote-large-type-scrolled.png",
       "width": 390,
       "height": 844,
-      "sha256": "5d00d148c0cad3b1a6836efac0fe81f7213ce2b41e9217742d41fd500006167e"
+      "sha256": "84d31da790bedd280e03b3be607cab4f905128787fef8945849dad323803c1cf"
     },
     {
       "path": "actual/editor-vote-large-type.png",
       "width": 390,
       "height": 844,
-      "sha256": "033898565d61c11164d82809e2d499e0481069d947bdb3cd848b7b240ffe58b6"
+      "sha256": "09d10dd271e382e140a58bec2522a87f6894e7f505b9d64f99b9e703767aec3d"
     },
     {
       "path": "actual/editor-vote-scrolled.png",
       "width": 390,
       "height": 844,
-      "sha256": "dc22af7d3f4ce44b32d37a6da63b8e1b8c1206882fab1fbd80a91dd64e05038b"
+      "sha256": "c3fcc11a62307b70aeff70c22a8c1814cb53d50a819a22f124f153d954a9c67a"
+    },
+    {
+      "path": "actual/editor-vote-selected.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "3f6c5597faa146636f8fe6dac8e7453d422b28c3979d1b56b732b5bba44d0b7b"
     },
     {
       "path": "actual/editor-vote.png",
       "width": 390,
       "height": 844,
-      "sha256": "11a05f5fc6819988907a71907ea09615bc92a46e14b4220a34bb8bc5afbbaacb"
+      "sha256": "67dafd2e0fa8f7c6b455b8b17a9f8abc0398d2a4c10ea8e2ff4cd4559ba65bd2"
     },
     {
       "path": "actual/stickers.png",
       "width": 390,
       "height": 844,
-      "sha256": "c222a56b69533bbe03ec918bd4071c339161c15fd86fd730da2d873df3400e68"
+      "sha256": "fd5c67d0eb7003c0403c27fc44abddefa1876edceae9866a648567bbdb31e698"
     },
     {
       "path": "actual/transcript-bookmarks-empty.png",
       "width": 390,
       "height": 844,
-      "sha256": "4127f5180c376210ec5dfb290b0ac105d6ccc5ccbb0deac9124d7d07a87aeee6"
+      "sha256": "e22ed8ef565b9463990fedcc7588b4d73359b0eb17441e5fa661e0b3a60dbf74"
     },
     {
       "path": "actual/transcript-bookmarks.png",
       "width": 390,
       "height": 844,
-      "sha256": "d3642c3a2e25b25a0d9f99b6dfcfa1245ab92a1ebcd097f17e57aadc1250a3fb"
+      "sha256": "3b34644eac549fedea9c817479881dc97c4f08cfdbe9a4f935c33df2f60ad9f9"
     },
     {
       "path": "actual/transcript-rsvp-long.png",
       "width": 390,
       "height": 844,
-      "sha256": "57887ae99ed785ed3a3c8cb53f42c9025dae978a151b683916b79e99981e9ffc"
+      "sha256": "58735c91239014a24ccb2af9d8e68131835a37c4b78c5e37b65e6aaccd43c3dc"
     },
     {
       "path": "actual/transcript-rsvp.png",
       "width": 390,
       "height": 844,
-      "sha256": "03bd48117ef9d5e75e3e429652eadad390c6224bbc47ade9e9060489a1678079"
+      "sha256": "feb9577310e644bbc6c103d8024747d6d2960c9adf1e237585206dfb7457b14d"
     },
     {
       "path": "actual/transcript-vote.png",
       "width": 390,
       "height": 844,
-      "sha256": "d0b5fa5cee1dfc2022dfef7429452bb90a30156abcc30c133c6a6e051c5483af"
+      "sha256": "de726a82c49cfdc87211cac690c43b20b308eb84673792e273c32be627f42e15"
     },
     {
       "path": "cards/transcript-bookmarks-empty.png",
       "width": 600,
-      "height": 520,
-      "sha256": "9b4cb83a6477cf5812442d23f0e9c318b20028bbd3a159e89bac47868f0ab282"
+      "height": 500,
+      "sha256": "434af999cc83a40fc4119b913bfefd4ebdd77623842b877980058194bc935495"
     },
     {
       "path": "cards/transcript-bookmarks.png",
       "width": 600,
-      "height": 520,
-      "sha256": "49a89d8f24edf427fc8430bcd92c6d7ee60ad297dfeeb5aa31e8a6059e66fe67"
+      "height": 500,
+      "sha256": "fcf64529e801e3cde724ecb81dd13f193f2f6f79c9c4bc5ab639d5ee85ea5323"
     },
     {
       "path": "cards/transcript-rsvp-long.png",
       "width": 600,
       "height": 520,
-      "sha256": "74f4130c170316066fcc87e5e6d4dd4b76d38c938cb22d33086703fe5b416429"
+      "sha256": "b0af74f7ad5942c6499eeea4bd65ae86b35939379f42411d09c515d271e395d1"
     },
     {
       "path": "cards/transcript-rsvp.png",
       "width": 600,
       "height": 520,
-      "sha256": "68947beccbe580231208c5e4a49da796bec3bcfaa9f1b26dec9a940a121bc555"
+      "sha256": "850e642e40f798fc549d2d7fa855bfc8e65831aa9940c903ac77e50acc29d413"
     },
     {
       "path": "cards/transcript-vote.png",
       "width": 600,
       "height": 570,
-      "sha256": "a8a6b740c8e8a6779ba2e868e7dfac585ed1ad3bba4bab206e88cb02510cc5b9"
+      "sha256": "1d236d25bf2c8822caa5c00879d644c70cbb81571064bc82d8f799527d1ba483"
     }
   ]
 }

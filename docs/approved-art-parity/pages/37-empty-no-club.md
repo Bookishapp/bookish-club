@@ -4,19 +4,19 @@
 
 Oct 18 approval receipt verified.
 
-**Partial: existing combined flow**
+**Rebuilt and inspected, data adaptations documented (prior score 4/10)**
 
 
-
-This is a partial mapping to working app behavior. The original screen composition and separate navigation are not fully implemented.
 
 ## Signed-in account without a club
 
 
 
+[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/37-no-club.png)
+
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
-| ![Approved Empty: not in a club yet](../approved/37.jpg) | ![Actual app Signed-in account without a club](../built/37-no-club.jpg) |
+| ![Approved Empty: not in a club yet](../approved/37.jpg) | ![Actual app Signed-in account without a club](../built/37-no-club.png) |
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 

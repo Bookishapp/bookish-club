@@ -17,7 +17,7 @@ const virtualConsole = new VirtualConsole();
 virtualConsole.on('jsdomError',e=>errors.push(e.message));
 const nativeCalls=[],nativeStore=new Map();
 let locationAllowed=true,notificationAllowed=true;
-async function launch(online=true,native=false,verified=false,api=null,hash='') {
+async function launch(online=true,native=false,verified=false,api=null,hash='',skipWelcome=true) {
   const dom = new JSDOM('<!doctype html><html><body><div id="app"></div><div id="toast"></div></body></html>',{url:`https://localhost/${hash}`,runScripts:'outside-only',virtualConsole,pretendToBeVisual:true});
   const w=dom.window;
   w.scrollTo=()=>{};
@@ -53,13 +53,29 @@ async function launch(online=true,native=false,verified=false,api=null,hash='') 
     return{ok:true,json:async()=>JSON.parse(JSON.stringify(feeds[key]))};
   };
   w.eval(script);
-  await until(()=>w.document.querySelector('h1')?.textContent.includes('Pull up a chair'));
-  if(online)await until(()=>w.document.querySelector('.club-open'));
+  await until(()=>w.document.querySelector('#welcome-find, #city, .network-state, #account-email'));
+  if(skipWelcome&&w.document.querySelector('#welcome-find')){click(w,'#welcome-find');await until(()=>!w.document.querySelector('#welcome-find'));}
+  if(online&&skipWelcome)await until(()=>w.document.querySelector('.club-open'));
   return dom;
 }
 async function until(fn){for(let i=0;i<100;i++){if(fn())return;await new Promise(r=>setTimeout(r,10));}throw new Error('UI state did not arrive');}
 function click(w,selector){const el=w.document.querySelector(selector);assert.ok(el,`control ${selector}`);el.click();}
 function input(w,selector,value,event='input'){const el=w.document.querySelector(selector);assert.ok(el,`input ${selector}`);el.value=value;el.dispatchEvent(new w.Event(event,{bubbles:true}));}
+
+// Regression: a guest holding a typed invitation can discover entry before auth.
+const typedInviteAPI=createFixtureAPI({role:'member',member:false});
+const typedInvite=await launch(true,false,false,typedInviteAPI,'',false),guest=typedInvite.window;
+click(guest,'#redeem-invite');
+await until(()=>guest.document.querySelector('#account-email'));
+input(guest,'#account-email [name=email]','reader@example.test');
+const guestSubmit=selector=>guest.document.querySelector(selector).dispatchEvent(new guest.Event('submit',{bubbles:true,cancelable:true}));
+guestSubmit('#account-email');await until(()=>guest.document.querySelector('#account-code'));
+input(guest,'#account-code [name=token]','123456');guestSubmit('#account-code');await until(()=>guest.document.querySelector('#account-terms'));
+input(guest,'#account-terms [name=display_name]','Alex');guest.document.querySelector('[name=adult]').checked=true;guest.document.querySelector('[name=terms]').checked=true;guestSubmit('#account-terms');
+await until(()=>guest.document.querySelector('#account-invite'));
+assert.ok(guest.document.querySelector('#account-invite [name=code]'),'Guest invite entry survives authentication and opens the typed-code form');
+assert.ok(!typedInviteAPI.calls.some(c=>c.url.endsWith('bookish_redeem_invite')),'Guest discovery and authentication never redeem an invitation automatically');
+typedInvite.window.close();
 
 const unavailable=await launch(false),u=unavailable.window;
 assert.equal(u.document.querySelectorAll('.club-card').length,0);
@@ -71,10 +87,10 @@ assert.deepEqual(JSON.parse(u.localStorage.getItem('bookish.saved')),[]);
 assert.ok(!u.localStorage.getItem('bookish.feed').includes('secret-old'));
 click(u,'[data-tab=saved]');assert.equal(u.document.querySelectorAll('.club-card').length,0);unavailable.window.close();
 const offline=await launch(),w=offline.window;
-assert.match(w.document.querySelector('h1').textContent,/Pull up a chair/);
+assert.ok(w.document.querySelector('#city'),'Near me offers city discovery');
 assert.equal(w.document.querySelectorAll('.club-card').length,40);
 click(w,'.save');await until(()=>w.document.querySelector('.save[aria-pressed=true]'));
-click(w,'[data-tab=saved]');await until(()=>w.document.querySelector('h1').textContent.includes('collection'));
+click(w,'[data-tab=saved]');await until(()=>w.document.querySelector('[data-saved-section]'));
 assert.equal(w.document.querySelectorAll('.club-card').length,1);
 assert.equal(Object.keys(JSON.parse(w.localStorage.getItem('bookish.saved'))).length,1);
 click(w,'.club-open');assert.ok(w.document.querySelector('#detail').open);
@@ -88,20 +104,20 @@ assert.ok((await calendars.at(-1).text()).includes('DTSTART:20300101T180000Z'), 
 assert.equal(w.document.querySelector('#remind .primary').textContent,'Download calendar reminder');
 click(w,'#close-detail');
 click(w,'[data-tab=near]');await until(()=>w.document.querySelector('#city'));
-input(w,'#city','Chicago, IL','change');await until(()=>w.document.querySelector('.list-heading h2').textContent==='Chicago, IL');
-assert.ok([...w.document.querySelectorAll('.club-open p:first-of-type')].every(p=>p.textContent.includes('Chicago, IL')));
-click(w,'[data-view=map]');assert.ok(w.document.querySelector('.city-links a'));
+input(w,'#city','Chicago, IL','change');await until(()=>w.document.querySelector('#city')?.value==='Chicago, IL');
+assert.ok([...w.document.querySelectorAll('.club-open .club-city')].every(p=>p.textContent.includes('Chicago, IL')));
+click(w,'[data-view=map]');assert.ok(w.document.querySelector('.map-cluster[data-map-city="Chicago, IL"]'),'Map clusters identify city centers');
 click(w,'[data-tab=read]');await until(()=>w.document.querySelector('[data-mood]'));
-click(w,'[data-mood=big_fantasy]');click(w,'#next');click(w,'[data-length=any]');click(w,'#next');
+click(w,'[data-mood=big_fantasy]');click(w,'[data-length=any]');
 input(w,'#book-search','fourth');click(w,'[data-loved=fourth-wing]');click(w,'#next');
-await until(()=>w.document.querySelector('.book-card'));
-assert.equal(w.document.querySelectorAll('.paper')[0].querySelectorAll('.book-card').length,3);
-assert.match(w.document.querySelector('.book-card h3').textContent,/Iron Flame/);
-assert.ok(w.document.querySelector('a.cover[href^="https://openlibrary.org/works/"] img[src^="https://covers.openlibrary.org/"]'));
+await until(()=>w.document.querySelector('.recommendation-hero'));
+assert.ok(w.document.querySelectorAll('.recommendation-hero, .book-shelf li').length>=3,'Recommendations include a hero and cover shelves');
+assert.match(w.document.querySelector('.recommendation-hero h2').textContent,/Iron Flame/);
+click(w,'[data-book-detail]');assert.ok(w.document.querySelector('#detail[data-book-detail]'));assert.ok(w.document.querySelector('#detail a[href^="https://openlibrary.org/works/"]'));click(w,'#close-book-detail');
 click(w,'[data-book-save]');await until(()=>w.document.querySelector('[data-book-save][aria-pressed=true]'));
-click(w,'[data-tab=saved]');await until(()=>w.document.querySelector('h1').textContent.includes('collection'));
-assert.equal(w.document.querySelectorAll('.book-card').length,1);
-assert.deepEqual([...w.document.querySelectorAll('.tabs button')].map(b=>b.dataset.tab),['near','read','saved','me']);
+click(w,'[data-tab=saved]');await until(()=>w.document.querySelector('[data-saved-section]'));
+click(w,'[data-saved-section=books]');assert.equal(w.document.querySelectorAll('.book-card').length,1);
+assert.deepEqual([...w.document.querySelectorAll('.tabs button')].map(b=>b.dataset.tab),['club','near','read','saved','me']);
 click(w,'[data-tab=me]');assert.ok(w.document.querySelector('#sign-in'),'Me offers email account entry');assert.ok(w.document.querySelector('a[href="https://meetbookish.com/privacy/"]'));
 assert.ok(w.document.querySelector('a[href="https://meetbookish.com/terms/"]'));
 assert.ok(w.document.querySelector('#refresh'));
@@ -133,8 +149,8 @@ assert.equal(v.document.querySelector('#account-join [name=note]').value,'I woul
 assert.equal(api.calls.filter(c=>c.url.endsWith('bookish-account-join')).length,1,'Reauthentication never resubmits a join automatically');
 submit(v,'#account-join');await until(()=>v.document.querySelector('#detail-title')?.textContent==='Fingers crossed.');
 assert.ok(!v.document.querySelector('#account-join'),'Successful pending join cannot resubmit');
-click(v,'#community-close');click(v,'[data-tab=me]');await until(()=>v.document.querySelector('[data-home]'));
-click(v,'[data-home]');await until(()=>v.document.querySelector('.room-tabs'));
+click(v,'#browse-clubs');await until(()=>!v.document.querySelector('#detail').open);assert.ok(v.document.querySelector('#city'),'Sent-request secondary returns to discovery');click(v,'[data-tab=me]');await until(()=>v.document.querySelector('[data-home]'));
+click(v,'[data-home]');await until(()=>v.document.querySelector('[data-community=approved] #moment-continue'));click(v,'#moment-continue');await until(()=>v.document.querySelector('.room-tabs'));
 assert.match(v.document.querySelector('#detail').textContent,/The Midnight Library/);
 assert.match(v.document.querySelector('#detail').textContent,/neighborhood library/);
 click(v,'[data-room-tab=votes]');await until(()=>v.document.querySelector('[data-ballot]'));
@@ -144,7 +160,7 @@ assert.ok(v.document.querySelector('[data-winner]'),'Hosts can settle a tie with
 assert.ok(!api.calls.some(c=>c.url.includes('bookish_vote_ballots')),'Never requests ballot identities');
 click(v,'[data-room-tab=manage]');await until(()=>v.document.querySelector('[data-decide]'));
 click(v,'[data-approve=true]');await until(()=>!v.document.querySelector('[data-decide]'));
-click(v,'#rotate-invite');await until(()=>v.document.querySelector('.invite-code'));
+click(v,'#rotate-invite');await until(()=>v.document.querySelector('#invite-code'));
 assert.equal(v.document.querySelector('.invite-code').textContent,'READTOGETHER');
 click(v,'[data-room-tab=members]');await until(()=>v.document.querySelector('[data-kind=member]'));
 click(v,'[data-kind=member]');await until(()=>v.document.querySelector('#account-report'));
@@ -172,7 +188,7 @@ input(i,'#account-terms [name=display_name]','Alex');i.document.querySelector('[
 await until(()=>i.document.querySelector('#account-invite'));
 assert.equal(i.document.querySelector('#account-invite [name=code]').value,'READTOGETHER');
 assert.ok(!inviteAPI.calls.some(c=>c.url.endsWith('bookish_redeem_invite')),'Opening an invitation never consumes it');
-submit(i,'#account-invite');await until(()=>i.document.querySelector('.room-tabs'));
+submit(i,'#account-invite');await until(()=>i.document.querySelector('[data-community=approved] #moment-continue'));click(i,'#moment-continue');await until(()=>i.document.querySelector('.room-tabs'));
 assert.ok(inviteAPI.calls.some(c=>c.body.p_code==='READTOGETHER'));
 await new Promise(r=>setTimeout(r,40));invited.window.close();
 const passwordAPI=createFixtureAPI({counts:[0,0]}),passwordDom=await launch(true,false,false,passwordAPI),p=passwordDom.window;
@@ -181,18 +197,18 @@ input(p,'#account-password [name=email]','reviewer@example.test');input(p,'#acco
 assert.equal(passwordAPI.calls.find(c=>c.body.action==='password').body.password,'  private password  ','Passwords preserve intentional spaces');
 input(p,'#account-terms [name=display_name]','Alex');p.document.querySelector('[name=adult]').checked=true;p.document.querySelector('[name=terms]').checked=true;submit(p,'#account-terms');await until(()=>!p.document.querySelector('#detail').open);
 click(p,'#create-club');await until(()=>p.document.querySelector('#account-create'));
-input(p,'#account-create [name=name]','The Saturday Chapter');input(p,'#account-create [name=city]','Chicago');input(p,'#account-create [name=state]','IL');input(p,'#account-create [name=visibility]','hidden','change');submit(p,'#account-create');await until(()=>p.document.querySelector('.room-tabs'));
+input(p,'#account-create [name=name]','The Saturday Chapter');input(p,'#account-create [name=city]','Chicago');input(p,'#account-create [name=state]','IL');input(p,'#account-create [name=visibility]','hidden','change');submit(p,'#account-create');await until(()=>p.document.querySelector('[data-community=started] #moment-continue'));click(p,'#moment-continue');await until(()=>p.document.querySelector('.room-tabs'));
 assert.equal(p.document.querySelector('#detail-title').textContent,'The Saturday Chapter');
 click(p,'[data-room-tab=manage]');await until(()=>p.document.querySelector('#room-visibility'));
 assert.ok(p.document.querySelector('#room-city'),'Host can correct club city before publishing');
-input(p,'#room-city [name=city]','Madison');input(p,'#room-city [name=state]','WI');submit(p,'#room-city');await until(()=>p.document.querySelector('#detail').textContent.includes('Madison'));
+input(p,'#room-city [name=city]','Madison');input(p,'#room-city [name=state]','WI');const oldCityForm=p.document.querySelector('#room-city');submit(p,'#room-city');await until(()=>!oldCityForm.isConnected&&p.document.querySelector('#room-city [name=city]')?.value==='Madison');
 assert.ok(passwordAPI.calls.some(c=>c.url.endsWith('bookish_set_club_city')&&c.body.p_city==='Madison'));
 input(p,'#room-visibility [name=visibility]','open','change');const oldVisibility=p.document.querySelector('#room-visibility');submit(p,'#room-visibility');await until(()=>!oldVisibility.isConnected);
 input(p,'#room-book [name=book]','yellowface','change');submit(p,'#room-book');await until(()=>p.document.querySelector('.room-book h2')?.textContent==='Yellowface');
-click(p,'[data-room-tab=manage]');input(p,'#room-meeting [name=title]','Our Saturday chapter');input(p,'#room-meeting [name=starts]','2030-01-01T18:00');input(p,'#room-meeting [name=location]','The neighborhood library');passwordAPI.failNext('bookish_schedule_meeting');submit(p,'#room-meeting');await until(()=>p.document.querySelector('#account-password'));click(p,'#use-email');submit(p,'#account-email');await until(()=>p.document.querySelector('#account-code'));input(p,'#account-code [name=token]','123456');submit(p,'#account-code');await until(()=>p.document.querySelector('#room-meeting'));
+click(p,'[data-room-tab=manage]');click(p,'#new-meeting');await until(()=>p.document.querySelector('#room-meeting'));input(p,'#room-meeting [name=title]','Our Saturday chapter');input(p,'#room-meeting [name=starts]','2030-01-01T18:00');input(p,'#room-meeting [name=location]','The neighborhood library');passwordAPI.failNext('bookish_schedule_meeting');submit(p,'#room-meeting');await until(()=>p.document.querySelector('#account-password'));click(p,'#use-email');submit(p,'#account-email');await until(()=>p.document.querySelector('#account-code'));input(p,'#account-code [name=token]','123456');submit(p,'#account-code');await until(()=>p.document.querySelector('#room-meeting'));
 assert.equal(p.document.querySelector('#room-meeting [name=title]').value,'Our Saturday chapter','Meeting draft and host desk survive reauthentication');
 assert.equal(passwordAPI.calls.filter(c=>c.url.endsWith('bookish_schedule_meeting')).length,1,'Reauthentication never schedules a meeting automatically');submit(p,'#room-meeting');await until(()=>p.document.querySelector('#detail').textContent.includes('Our Saturday chapter'));
-click(p,'[data-room-tab=votes]');assert.equal(p.document.querySelectorAll('[data-winner]').length,2,'All-zero votes expose both host winner choices');click(p,'[data-winner]');await until(()=>!p.document.querySelector('[data-ballot]'));
+click(p,'[data-room-tab=votes]');assert.equal(p.document.querySelectorAll('[data-winner]').length,2,'All-zero votes expose both host winner choices');click(p,'[data-winner]');await until(()=>p.document.querySelector('[data-community=winner] #moment-continue'));click(p,'#moment-continue');await until(()=>!p.document.querySelector('[data-ballot]'));
 assert.ok(passwordAPI.calls.some(c=>c.url.endsWith('bookish_close_vote')&&c.body.p_winner===ids.one));
 await new Promise(r=>setTimeout(r,40));passwordDom.window.close();
 const noMailAPI=createFixtureAPI();
@@ -210,12 +226,18 @@ assert.ok(n.document.querySelector('#city'));
 locationAllowed=true;click(n,'#locate');await until(()=>n.document.querySelector('#toast').textContent.includes('location is ready'));
 assert.ok(nativeCalls.some(c=>c.plugin==='Geolocation'&&c.method==='getCurrentPosition'));
 assert.ok(![...nativeStore.keys()].some(k=>/location|position/.test(k)));
-click(n,'[data-view=map]');await until(()=>n.document.querySelector('.list-heading h2').textContent==='Chicago, IL');
+click(n,'[data-view=map]');await until(()=>n.document.querySelector('#city')?.value==='Chicago, IL');
 assert.ok(nativeCalls.find(c=>c.plugin==='BookishMap').options.cities.every(c=>Number.isFinite(c.lat)&&c.count>0));
 click(n,'.club-open');click(n,'#share');await until(()=>nativeCalls.some(c=>c.plugin==='Share'));
 assert.match(nativeCalls.find(c=>c.plugin==='Share').options.url,/meetbookish\.com\/book-clubs\/chicago-il\/#/);
 input(n,'#remind input[name=meeting]','2030-01-01T18:00');
 notificationAllowed=false;n.document.querySelector('#remind').dispatchEvent(new n.Event('submit',{bubbles:true,cancelable:true}));
+await until(()=>n.document.querySelector('#prime-enable'));assert.ok(!nativeCalls.some(c=>c.plugin==='LocalNotifications'&&c.method==='requestPermissions'),'Native permission waits for the presentation choice');
+click(n,'#prime-later');await until(()=>!n.document.querySelector('#remind button[type=submit]').disabled);
+assert.ok(!nativeCalls.some(c=>c.plugin==='LocalNotifications'&&['requestPermissions','schedule'].includes(c.method)),'Maybe later never requests permission or schedules a notification');
+assert.equal(n.document.querySelector('#notification-prime-dialog').open,false,'Maybe later closes the prime and keeps the reminder draft editable');
+assert.equal(n.document.querySelector('#remind [name=meeting]').value,'2030-01-01T18:00','Declining the prime preserves the chosen meeting');
+n.document.querySelector('#remind').dispatchEvent(new n.Event('submit',{bubbles:true,cancelable:true}));await until(()=>n.document.querySelector('#notification-prime-dialog').open);click(n,'#prime-enable');
 await until(()=>n.document.querySelector('#remind .form-message').textContent.includes('Settings'));
 assert.ok(!nativeCalls.some(c=>c.plugin==='LocalNotifications'&&c.method==='schedule'));
 notificationAllowed=true;n.document.querySelector('#remind').dispatchEvent(new n.Event('submit',{bubbles:true,cancelable:true}));
@@ -228,4 +250,4 @@ await until(()=>JSON.parse(nativeStore.get('bookish.reminders'))&&Object.keys(JS
 assert.ok(nativeCalls.some(c=>c.plugin==='LocalNotifications'&&c.method==='cancel'&&c.options.notifications[0].id===scheduled.id));
 native.window.close();
 assert.deepEqual(errors,[]);
-console.log('UI smoke passed: fail-closed offline discovery; guest clubs, city map, saves, book recommendations, Resources, and calendar download; email OTP, terms and age gate, private join, member-only club home, anonymous voting, zero-ballot host winner selection, approvals, club creation/city correction/visibility/book/meeting editing, member and Saved-club blocking, 401 join-note and meeting-draft recovery, typed account deletion, and invite hash intent through signup; mocked native permission recovery, MapKit, sharing, and notifications. All account writes used local fixtures.');
+console.log('UI smoke passed: fail-closed offline discovery; guest clubs, city map, saves, book recommendations, Resources, and calendar download; email OTP, terms and age gate, private join, member-only club home, anonymous voting, zero-ballot host winner selection, approvals, club creation/city correction/visibility/book/meeting editing, member and Saved-club blocking, 401 join-note and meeting-draft recovery, typed account deletion, guest typed invite and invite hash intent through signup, and approval, creation, and winner continuation; mocked native prime decline and permission recovery, MapKit, sharing, and notifications. All account writes used local fixtures.');

@@ -4,19 +4,19 @@
 
 Oct 19 approved v2 override.
 
-**Partial: existing combined flow**
+**Rebuilt and inspected, data adaptations documented (prior score 4/10)**
 
 
-
-This is a partial mapping to working app behavior. The original screen composition and separate navigation are not fully implemented.
 
 ## Current book in existing club home
 
-The app has a shared current-book section. Reading-progress tracking is absent.
+The real Book view also serves club home. Reading-progress tracking is absent.
+
+[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/20-current-book.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
-| ![Approved Current book and reading together (v2)](../approved/20-v2.webp) | ![Actual app Current book in existing club home](../built/20-current-book.jpg) |
+| ![Approved Current book and reading together (v2)](../approved/20-v2.webp) | ![Actual app Current book in existing club home](../built/20-current-book.png) |
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 

@@ -4,19 +4,19 @@
 
 Oct 18 batch reference; individual approval not recorded in decisions 111-143.
 
-**Partial: existing combined flow**
+**Rebuilt and inspected, data adaptations documented (prior score 4/10)**
 
 
 
-This is a partial mapping to working app behavior. The original screen composition and separate navigation are not fully implemented.
+## First-run welcome
 
-## Signed-out account entry
 
-No standalone welcome screen exists. The shipped signed-out Me entry is shown.
+
+[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/01-welcome.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
-| ![Approved welcome](../approved/01.jpg) | ![Actual app Signed-out account entry](../built/01-welcome-equivalent.jpg) |
+| ![Approved welcome](../approved/01.jpg) | ![Actual app First-run welcome](../built/01-welcome.png) |
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 

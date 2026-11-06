@@ -4,7 +4,7 @@
 
 Oct 19 approved v2 override.
 
-**Partial: native UIKit review host**
+**Rebuilt and inspected, native review host (prior score 7/10)**
 
 Actual communal bookmarks card and editor follow the v2 reading-together reference. Member order is preserved, with no ranked reading view.
 

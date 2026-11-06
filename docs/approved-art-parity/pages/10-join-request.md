@@ -4,7 +4,7 @@
 
 Oct 18 approval receipt verified.
 
-**Existing surface: visual adaptation**
+**Rebuilt and inspected, data adaptations documented (prior score 6/10)**
 
 
 
@@ -12,9 +12,11 @@ Oct 18 approval receipt verified.
 
 
 
+[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/10-join-request.png)
+
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
-| ![Approved Join: request sheet](../approved/10.jpg) | ![Actual app Private-club join request](../built/10-join-request.jpg) |
+| ![Approved Join: request sheet](../approved/10.jpg) | ![Actual app Private-club join request](../built/10-join-request.png) |
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 

@@ -4,19 +4,19 @@
 
 Oct 18 approval receipt verified.
 
-**Partial: existing combined flow**
+**Rebuilt and inspected, data adaptations documented (prior score 4/10)**
 
 
 
-This is a partial mapping to working app behavior. The original screen composition and separate navigation are not fully implemented.
+## Account profile, clubs, and My shelf
 
-## Account profile and clubs
+Local Saved-book preferences are seeded fixtures. No reading scores or streaks are added.
 
-
+[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/29-profile.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
-| ![Approved Profile](../approved/29.jpg) | ![Actual app Account profile and clubs](../built/29-profile.jpg) |
+| ![Approved Profile](../approved/29.jpg) | ![Actual app Account profile, clubs, and My shelf](../built/29-profile.png) |
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 
@@ -24,9 +24,11 @@ Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: no
 
 A valid 64-character email local part exercises the account greeting beside approved art.
 
+[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/29-profile-long-email.png)
+
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
-| ![Approved Profile](../approved/29.jpg) | ![Actual app Account profile with a long email](../built/29-profile-long-email.jpg) |
+| ![Approved Profile](../approved/29.jpg) | ![Actual app Account profile with a long email](../built/29-profile-long-email.png) |
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 
@@ -36,7 +38,7 @@ Additional narrow-device stress capture at 320 by 844.
 
 | Approved reference | Actual app, 320 by 844 |
 | --- | --- |
-| ![Approved Profile](../approved/29.jpg) | ![Actual app Account profile with a long email at 320 pixels](../built/29-profile-long-email-narrow.jpg) |
+| ![Approved Profile](../approved/29.jpg) | ![Actual app Account profile with a long email at 320 pixels](../built/29-profile-long-email-narrow.png) |
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 

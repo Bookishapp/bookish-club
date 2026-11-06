@@ -48,7 +48,8 @@ xcrun simctl boot "$simulator"
 xcrun simctl bootstatus "$simulator" -b
 xcrun simctl status_bar "$simulator" override --time 9:41 --batteryState charged --batteryLevel 100
 xcrun simctl install "$simulator" "$app_dir"
-for mode in editor-rsvp editor-vote editor-vote-scrolled editor-vote-error-scrolled editor-vote-large-type editor-vote-large-type-scrolled editor-bookmarks stickers transcript-rsvp transcript-vote transcript-bookmarks transcript-bookmarks-empty transcript-rsvp-long drawer-icon; do
+capture_modes="${BOOKISH_CAPTURE_MODES:-editor-rsvp editor-vote editor-vote-selected editor-vote-scrolled editor-vote-error-scrolled editor-vote-large-type editor-vote-large-type-scrolled editor-bookmarks stickers transcript-rsvp transcript-vote transcript-bookmarks transcript-bookmarks-empty transcript-rsvp-long drawer-icon}"
+for mode in $capture_modes; do
   xcrun simctl launch --terminate-running-process "$simulator" com.meetbookish.parity.review "$mode"
   sleep 2
   xcrun simctl io "$simulator" screenshot "$build_dir/$mode.png" >/dev/null

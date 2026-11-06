@@ -33,6 +33,10 @@ final class ParityHost: UIResponder, UIApplicationDelegate {
                 segmented.selectedSegmentIndex = mode.contains("stickers") ? 3 : mode.contains("vote") ? 1 : mode.contains("bookmarks") ? 2 : 0
                 segmented.sendActions(for: .valueChanged)
             }
+            if mode.contains("selected"), let button = allSubviews(in: editor.view).compactMap({ $0 as? UIButton })
+                .first(where: { $0.accessibilityLabel?.hasPrefix("Pride and Prejudice,") == true }) {
+                button.sendActions(for: .touchUpInside)
+            }
             if mode.contains("error"), let button = allSubviews(in: editor.view).compactMap({ $0 as? UIButton }).first(where: { $0.currentTitle == "Add to message" }) {
                 button.sendActions(for: .touchUpInside)
             }
