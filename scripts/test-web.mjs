@@ -17,7 +17,7 @@ test('every generated Bookish page offers working routes without launch placehol
   const storeLinks = [...doc.querySelectorAll('a[href*="apps.apple.com"]')];
   assert.equal(storeLinks.length, 2, 'offer the released iOS app in the hero and footer');
   for (const link of storeLinks) {
-    assert.equal(link.href, 'https://apps.apple.com/app/bookish-book-club-night/id6823470101');
+    assert.equal(link.href, 'https://apps.apple.com/us/app/bookish-book-club-night/id6823470101');
     assert.equal(link.querySelector('img')?.alt, 'Download on the App Store');
   }
   assert.ok(storeLinks[0].closest('.hero-actions'), 'download belongs next to the main action');
