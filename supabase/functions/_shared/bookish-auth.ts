@@ -28,7 +28,7 @@ type Dependencies = {
   logout: (token: string) => Promise<void>;
   sync: (token: string) => Promise<void>;
   codes: {
-    put: (code: ShortCode) => Promise<void>;
+    put: (code: ShortCode) => Promise<boolean>;
     get: (emailHash: string) => Promise<ShortCode | null>;
     finish: (
       emailHash: string,
@@ -126,21 +126,26 @@ export async function bookishAuthHandler(
       message: "Enter the code from your email.",
     });
   }
-  const ip = (req.headers.get("x-forwarded-for") || "unknown").split(",")[0]
-    .trim();
+  // Hosted Supabase sets this at ingress. X-Forwarded-For can preserve a
+  // caller-supplied prefix. Without the trusted header, share a fallback bucket.
+  // https://supabase.com/docs/guides/api/query-plans#production-use-with-pre-request-protection
+  // https://developers.cloudflare.com/fundamentals/reference/http-headers/#x-forwarded-for
+  const ip = req.headers.get("cf-connecting-ip")?.trim() || "unknown";
+  const rateLimited = () =>
+    reply(429, {
+      ok: false,
+      message: "Please wait a little before trying again.",
+    });
   try {
     const emailHash = await hash(`bookish:${email}`);
     if (
       !await deps.throttle(
         emailHash,
         await hash(`bookish:${ip}`),
-        String(action),
+        action === "start" && b.short === true ? "start_short" : String(action),
       )
     ) {
-      return reply(429, {
-        ok: false,
-        message: "Please wait a little before trying again.",
-      });
+      return rateLimited();
     }
     if (action === "start") {
       if (!await deps.configured()) throw Error("delivery configuration");
@@ -162,13 +167,14 @@ export async function bookishAuthHandler(
         code = shortCode();
         salt = [...crypto.getRandomValues(new Uint8Array(16))]
           .map((value) => value.toString(16).padStart(2, "0")).join("");
-        await deps.codes.put({
+        const stored = await deps.codes.put({
           email_hash: emailHash,
           salt,
           code_hash: await hash(`bookish-code:${emailHash}:${salt}:${code}`),
           expires_at: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
           attempts: 0,
         });
+        if (!stored) return rateLimited();
       } else {
         code = await deps.generate(email);
         if (!/^\d{6,10}$/.test(code)) throw Error("code generation");
@@ -188,7 +194,8 @@ export async function bookishAuthHandler(
         if (!existing?.bookish) {
           return reply(401, {
             ok: false,
-            message: "That code could not be verified. Try a fresh code.",
+            message:
+              "That code or session could not be verified. Sign in again.",
           });
         }
       }

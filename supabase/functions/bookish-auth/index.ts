@@ -39,10 +39,14 @@ Deno.serve((req) =>
     },
     codes: {
       put: async (code) => {
-        const { error } = await sb.from("bookish_auth_codes").upsert(code, {
-          onConflict: "email_hash",
+        const { data, error } = await sb.rpc("bookish_auth_code_put", {
+          p_email_hash: code.email_hash,
+          p_salt: code.salt,
+          p_code_hash: code.code_hash,
+          p_expires_at: code.expires_at,
         });
         if (error) throw Error("Code storage unavailable");
+        return data === true;
       },
       get: async (emailHash) => {
         const { data, error } = await sb.from("bookish_auth_codes")

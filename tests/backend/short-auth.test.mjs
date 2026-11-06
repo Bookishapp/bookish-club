@@ -9,7 +9,7 @@ import { bookishAuthHandler } from '../../supabase/functions/_shared/bookish-aut
 const email = 'reader@example.test';
 const request = body => new Request('https://local.test/auth', {
   method: 'POST',
-  headers: { origin: 'capacitor://localhost', 'x-forwarded-for': '192.0.2.1' },
+  headers: { origin: 'capacitor://localhost', 'cf-connecting-ip': '192.0.2.1' },
   body: JSON.stringify({ email, ...body }),
 });
 const digest = text => createHash('sha256').update(text).digest('hex');
@@ -29,7 +29,7 @@ function fixture(overrides = {}) {
     },
     sync: async token => { synced.push(token); },
     codes: {
-      put: async row => { rows.set(row.email_hash, structuredClone(row)); },
+      put: async row => { rows.set(row.email_hash, structuredClone(row)); return true; },
       get: async key => structuredClone(rows.get(key) || null),
       finish: async (key, salt, matched) => {
         const row = rows.get(key);
@@ -195,7 +195,7 @@ test('short start and verify retain per-email and per-IP throttling', async () =
   const f = fixture();
   await f.start();
   await f.verify(f.sent[0].code);
-  assert.deepEqual(f.throttles, ['start', 'verify'].map(action => [digest(`bookish:${email}`), digest('bookish:192.0.2.1'), action]));
+  assert.deepEqual(f.throttles, ['start_short', 'verify'].map(action => [digest(`bookish:${email}`), digest('bookish:192.0.2.1'), action]));
   f.deps.throttle = async () => false;
   assert.equal((await f.start()).status, 429);
   assert.equal((await f.verify('1234')).status, 429);
@@ -260,4 +260,62 @@ test('a failed send cannot invalidate the newer code that replaced it', async ()
   release(false);
   assert.equal((await oldStart).status, 503);
   assert.equal((await f.verify(f.sent[1].code)).status, 200);
+});
+
+
+test('live 1.1 six-digit hosted codes still start and verify without short-code storage', async () => {
+  const f = fixture({ generate: async () => '123456', codes: undefined });
+  assert.equal((await f.call({ action: 'start' })).status, 200);
+  assert.deepEqual(f.sent, [{ recipient: email, code: '123456' }]);
+  assert.equal((await f.verify('123456')).status, 200);
+  assert.deepEqual(f.exchanges, [{ recipient: email, token: '123456' }]);
+  assert.deepEqual(f.synced, ['access']);
+});
+
+test('rotating forged forwarding headers cannot change the hosted IP throttle key', async () => {
+  const f = fixture();
+  for (const forged of ['198.51.100.1', '198.51.100.2, 203.0.113.7']) {
+    const req = request({ action: 'start' });
+    req.headers.set('x-forwarded-for', forged);
+    req.headers.set('x-real-ip', forged);
+    req.headers.set('cf-connecting-ip', '192.0.2.9');
+    assert.equal((await bookishAuthHandler(req, f.deps)).status, 200);
+  }
+  assert.deepEqual(f.throttles.map(t => t[1]), [digest('bookish:192.0.2.9'), digest('bookish:192.0.2.9')]);
+});
+
+test('a missing gateway IP uses a shared bucket regardless of forged forwarding headers', async () => {
+  const f = fixture();
+  for (const forged of ['198.51.100.1', '198.51.100.2']) {
+    const req = request({ action: 'start' });
+    req.headers.delete('cf-connecting-ip');
+    req.headers.set('x-forwarded-for', forged);
+    assert.equal((await bookishAuthHandler(req, f.deps)).status, 200);
+  }
+  assert.deepEqual(f.throttles.map(t => t[1]), [digest('bookish:unknown'), digest('bookish:unknown')]);
+});
+
+test('missing, foreign, and Bookish identities receive the same failed-verification response', async () => {
+  for (const token of ['1234', '123456']) {
+    const bodies = [];
+    for (const identity of [null, { id: 'foreign', bookish: false }, { id: 'reader', bookish: true }]) {
+      const f = fixture({ lookup: async () => identity, verify: async () => { throw Error('wrong code'); } });
+      const response = await f.verify(token);
+      assert.equal(response.status, 401);
+      bodies.push(await response.json());
+    }
+    assert.deepEqual(bodies[0], bodies[2]);
+    assert.deepEqual(bodies[1], bodies[2]);
+  }
+});
+
+
+test('a lockout reached between throttle and storage returns the calm 429 without sending a code', async () => {
+  const f = fixture();
+  f.deps.codes.put = async () => false;
+  const response = await f.start();
+  assert.equal(response.status, 429);
+  assert.deepEqual(await response.json(), { ok: false, message: 'Please wait a little before trying again.' });
+  assert.deepEqual(f.sent, []);
+  assert.equal(f.generated(), 0);
 });

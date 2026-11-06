@@ -53,3 +53,21 @@ Delivery: Commit with the requested trailers and CI skip marker, push the featur
 - Repo lint, edge typecheck, formatting, and fixture-backed web build passed.
 - Fresh-context review found no critical or important issues. Its delivery-failure hardening suggestion was implemented with failing-then-passing tests for false sends, throwing sends, and replacement safety.
 - Database tests execute only in local PGlite. No hosted migration, function deployment, Auth change, native build, or store action was performed.
+
+## PR 36 Review Blocker Repair
+
+The later review in `/Users/vahallo/ted-ops/oneshots/1105-bookish36-review/VERDICT.md` identified the missing cumulative guess budget and unsafe first-entry X-Forwarded-For selection. The repair follows the user's explicit fix instructions.
+
+- [x] Add a separate rolling 24-hour ledger, charged only for accepted wrong guesses inside `bookish_auth_code_finish`. Replacement, success, and failed delivery cannot reset it.
+- [x] At ten failures, reject short starts and outstanding short-code verification. Recheck the budget in a guarded put RPC under the shared per-email advisory lock to close the admitted-start race.
+- [x] Limit short starts to three per hour and ten per day per email, preserving the existing combined start and verify/password limits.
+- [x] Use the platform-set `cf-connecting-ip` header, with a shared `unknown` bucket if absent. Ignore X-Forwarded-For and X-Real-IP for throttle attribution.
+- [x] Unify the differing failed-verification messages.
+- [x] Exercise actual edge transports and local SQL across code replacements, hourly expiry, rolling daily expiry, and six-digit legacy authentication during short lockout.
+- [x] Verify all verdict commands, obtain a fresh read-only review, and prepare the branch-only push and PR-body update.
+
+Gateway evidence is documentation-based, with no live probe: [Supabase's platform-set IP header](https://supabase.com/docs/guides/api/query-plans#production-use-with-pre-request-protection), [Supabase gateway log headers](https://supabase.com/docs/guides/observability/log-field-reference#captured-http-headers), and [Cloudflare's forwarded-header behavior](https://developers.cloudflare.com/fundamentals/reference/http-headers/#x-forwarded-for). Cloudflare appends to existing X-Forwarded-For values, so the first entry cannot establish a trusted client address. Supabase does not document a guarantee that its gateway strips that prefix. The selected header follows the platform documentation; hosted rewriting was not independently probed.
+
+Verification: 189 backend, 26 confirmation, 19 server, 5 operations, 21 app, 26 visibility, and 18 web tests passed, plus UI smoke. Lint, edge typecheck, both builds, Deno formatting, and Git whitespace checks passed. The visibility suite was rerun successfully after a concurrent build replaced its output directory. A temporary isolated mutation with the ledger insert removed made the edge-route regression fail, and the real implementation passed. Fresh review reported no findings; real multi-connection PostgreSQL contention and hosted infrastructure were not exercised locally.
+
+Deferred verdict LOW items: a server-only pepper needs secret provisioning and rollout; successful short verification still replaces any pending hosted OTP; and dead code rows still have no periodic purge, with one row retained per email. Failure-ledger events older than 24 hours are pruned by the throttle. No routine, hosted SQL, deployment, or merge was performed.
