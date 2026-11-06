@@ -77,7 +77,7 @@ async function auth(s,{rules=false,create=false}={}){
  else{await dismissWelcome(s);await click(s,'[data-tab=me]');await click(s,'#sign-in');}
  await fill(s,'#account-email [name=email]','nina@example.test');await submit(s,'#account-email');
  await s.p.locator('#account-code').waitFor();await fill(s,'#account-code [name=token]','123456');await submit(s,'#account-code');
- await s.p.locator('#account-terms').waitFor();if(rules)return;
+ await s.p.locator('#account-terms').waitFor();if(rules)return;if(!await s.p.locator('#account-terms [name=display_name]').isVisible())await click(s,'#account-terms .terms-details summary');
  await fill(s,'#account-terms [name=display_name]','Nina');
  const city=s.p.locator('#account-terms [name=home_city]');if(await city.count())await fill(s,'#account-terms [name=home_city]','Austin');
  for(const name of ['adult','terms']){const selector=`#account-terms [name=${name}]`;if(await s.p.locator(selector).count())await check(s,selector);}
@@ -94,8 +94,8 @@ async function home(s){
  if(await s.p.locator('#moment-continue').isVisible())await click(s,'#moment-continue');
  await s.p.locator('[data-room-tab=tea]').first().waitFor();
 }
-async function tab(s,name){await click(s,`[data-room-tab=${name}]`);}
-async function openFeature(s,id){if(!await s.p.locator(id).first().isVisible()&&await s.p.locator('#open-menu').isVisible())await click(s,'#open-menu');await click(s,id);}
+async function tab(s,name){if(name==='members'&&!await s.p.locator('[data-room-tab=members]').first().isVisible()){await click(s,'#open-menu');await click(s,'.menu-tools summary');}await click(s,`[data-room-tab=${name}]`);}
+async function openFeature(s,id){if(!await s.p.locator(id).first().isVisible()&&await s.p.locator('#open-menu').isVisible())await click(s,'#open-menu');if(!await s.p.locator(id).first().isVisible()&&await s.p.locator('.menu-tools summary').isVisible())await click(s,'.menu-tools summary');await click(s,id);}
 async function browse(s){if(await s.p.locator('dialog[open]').count()){await openFeature(s,'#browse-clubs');return;}if(!await s.p.locator('.finder-top').isVisible())await click(s,'[data-tab=near]');}
 async function navigate(s,id){
  if(id==='01')return;

@@ -84,7 +84,7 @@ export const classicBooks:Record<string,{title:string;author:string;color:string
 };
 export function bookCover(id?:string,title='',className='',metadata?:{cover_url?:string|null;cover_style?:string}):string {
   const classic=classicBooks[id||'']||Object.values(classicBooks).find(b=>b.title.toLowerCase()===title.toLowerCase());
-  if(classic)return `<span role="img" aria-label="Cover of ${esc(classic.title)}" class="community-book-cover v3-classic v3-classic-${classic.color} ${esc(className)}"><strong class="v3-classic-title">${esc(classic.title)}</strong><svg class="v3-classic-symbol" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 29C11 24 2 17 2 10C2 2 13 1 16 8C19 1 30 2 30 10C30 17 21 24 16 29Z"/></svg><small class="v3-classic-author">${esc(classic.author)}</small></span>`;
+  if(classic){const key=Object.keys(classicBooks).find(k=>classicBooks[k]===classic)!;return `<span role="img" aria-label="Cover of ${esc(classic.title)}" class="community-book-cover v3-approved-cover ${esc(className)}"><img src="${appAsset('v3/cover-'+key+'.png')}" alt="" loading="lazy"></span>`;}
   const book=data.books.find(b=>b.id===id||!!title&&b.t.toLowerCase()===title.toLowerCase());
   const key=book?.id||(id&&bundled[id]?id:Object.keys(bundled).find(k=>bundled[k].toLowerCase()===title.toLowerCase()));
   const name=book?.t||title||(key?bundled[key]:'Book cover unavailable');

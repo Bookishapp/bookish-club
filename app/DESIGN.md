@@ -18,7 +18,7 @@ Use 16px mobile gutters, compact paper cards, and natural scrolling. Keep access
 
 Only existing approved Lunair cutouts shown in the v3 images are used. The full poses in `public/art/` match the v3 art; cropped Bible variants remain bundled for compatibility. `art()` resolves cropped variant names to those approved full poses. A CSS silhouette supplies the approved white cutout edge. No character artwork was generated.
 
-The classics use the approved v3 typographic cover treatment. Other books keep their actual bundled or trusted catalog cover and title fallback. The fallback is hidden while an image is present, and restored when an image fails. Unknown books never borrow another book's cover.
+The classics use identification thumbnails cropped directly from the approved v3 images. Source files and crop coordinates are recorded in `public/v3/approved-crops.json`. Other books keep their actual bundled or trusted catalog cover and title fallback. The fallback is hidden while an image is present, and restored when an image fails. Unknown books never borrow another book's cover.
 
 Custom vector spot art and interface illustrations remain code-native. Use SVG or the existing art helpers, never emoji.
 

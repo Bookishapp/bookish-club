@@ -69,7 +69,7 @@ const spots: Record<string,string> = {
 };
 
 /** Decorative inline art. Put the accessible name on its containing control. */
-export function icon(name:string):string { return `<span class="drawn-icon" aria-hidden="true">${icons[name]||icons.book}</span>`; }
+export function icon(name:string):string { if(name==='spark')return '<span class="drawn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2Q13 11 22 12Q13 13 12 22Q11 13 2 12Q11 11 12 2Z" fill="#efcc76" stroke="currentColor" stroke-width="1.2"/></svg></span>';return `<span class="drawn-icon" aria-hidden="true">${icons[name]||icons.book}</span>`; }
 export function spot(name:string,size=32):string { if(name==='tea')return `<span class="spot-art" aria-hidden="true" style="--art-size:${Math.min(120,Math.max(16,size))}px"><img src="${appAsset('v3/tea-cup.png')}" alt="" width="${size}" height="${size}"></span>`;return `<span class="spot-art" aria-hidden="true" style="--art-size:${Math.min(120,Math.max(16,size))}px">${spots[name]||spots.openbook}</span>`; }
 /** Approved cutout, decorative so it does not repeat the nearby heading. */
 export function art(name:string,className=''):string { if(name.startsWith('b-'))name=name.slice(2);if(name==='crown')name='wave';return `<img class="lunair ${esc(className)}" src="${appAsset(`art/${encodeURIComponent(name)}.webp`)}" alt="" width="320" height="320">`; }
