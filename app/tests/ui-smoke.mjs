@@ -53,7 +53,7 @@ async function launch(online=true,native=false,verified=false,api=null,hash='') 
     return{ok:true,json:async()=>JSON.parse(JSON.stringify(feeds[key]))};
   };
   w.eval(script);
-  await until(()=>w.document.querySelector('h1')?.textContent.includes('Pull up a chair'));
+  await until(()=>w.document.querySelector('h1')?.textContent.includes('Your book club, just more fun'));
   if(online)await until(()=>w.document.querySelector('.club-open'));
   return dom;
 }
@@ -71,7 +71,7 @@ assert.deepEqual(JSON.parse(u.localStorage.getItem('bookish.saved')),[]);
 assert.ok(!u.localStorage.getItem('bookish.feed').includes('secret-old'));
 click(u,'[data-tab=saved]');assert.equal(u.document.querySelectorAll('.club-card').length,0);unavailable.window.close();
 const offline=await launch(),w=offline.window;
-assert.match(w.document.querySelector('h1').textContent,/Pull up a chair/);
+assert.match(w.document.querySelector('h1').textContent,/Your book club, just more fun/);
 assert.equal(w.document.querySelectorAll('.club-card').length,40);
 click(w,'.save');await until(()=>w.document.querySelector('.save[aria-pressed=true]'));
 click(w,'[data-tab=saved]');await until(()=>w.document.querySelector('h1').textContent.includes('collection'));
