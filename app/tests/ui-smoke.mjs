@@ -124,11 +124,16 @@ assert.ok(!v.document.querySelector('[data-provider]'),'Email-only sign-in has n
 input(v,'#account-email [name=email]','reviewer@example.test');
 const submit=(window,selector)=>window.document.querySelector(selector).dispatchEvent(new window.Event('submit',{bubbles:true,cancelable:true}));
 submit(v,'#account-email');await until(()=>v.document.querySelector('#account-code'));
-input(v,'#account-code [name=token]','123456');submit(v,'#account-code');await until(()=>v.document.querySelector('#account-terms'));
+const codeInput=v.document.querySelector('#account-code [name=token]');
+assert.equal(codeInput.inputMode,'numeric');assert.equal(codeInput.autocomplete,'one-time-code');
+assert.equal(codeInput.minLength,4);assert.equal(codeInput.maxLength,4);
+for(const code of ['123','12345','123456','12a4']){codeInput.value=code;assert.equal(codeInput.checkValidity(),false,code);}
+codeInput.value='0123';assert.equal(codeInput.checkValidity(),true);
+input(v,'#account-code [name=token]','0123');submit(v,'#account-code');await until(()=>v.document.querySelector('#account-terms'));
 input(v,'#account-terms [name=display_name]','Alex');v.document.querySelector('[name=adult]').checked=true;v.document.querySelector('[name=terms]').checked=true;submit(v,'#account-terms');
 await until(()=>v.document.querySelector('#account-join'));
 input(v,'#account-join [name=note]','I would love to discuss a good mystery.');api.failNext('bookish-account-join');submit(v,'#account-join');await until(()=>v.document.querySelector('#account-email'));
-submit(v,'#account-email');await until(()=>v.document.querySelector('#account-code'));input(v,'#account-code [name=token]','123456');submit(v,'#account-code');await until(()=>v.document.querySelector('#account-join'));
+submit(v,'#account-email');await until(()=>v.document.querySelector('#account-code'));input(v,'#account-code [name=token]','0123');submit(v,'#account-code');await until(()=>v.document.querySelector('#account-join'));
 assert.equal(v.document.querySelector('#account-join [name=note]').value,'I would love to discuss a good mystery.','Join target and note survive reauthentication');
 assert.equal(api.calls.filter(c=>c.url.endsWith('bookish-account-join')).length,1,'Reauthentication never resubmits a join automatically');
 submit(v,'#account-join');await until(()=>v.document.querySelector('#detail-title')?.textContent==='Fingers crossed.');
@@ -167,7 +172,7 @@ const inviteAPI=createFixtureAPI({role:'member',member:false}),invited=await lau
 await until(()=>i.document.querySelector('#account-email'));
 assert.equal(i.location.hash,'','Invite codes leave the address bar after opening');
 input(i,'#account-email [name=email]','reader@example.test');submit(i,'#account-email');await until(()=>i.document.querySelector('#account-code'));
-input(i,'#account-code [name=token]','123456');submit(i,'#account-code');await until(()=>i.document.querySelector('#account-terms'));
+input(i,'#account-code [name=token]','0123');submit(i,'#account-code');await until(()=>i.document.querySelector('#account-terms'));
 input(i,'#account-terms [name=display_name]','Alex');i.document.querySelector('[name=adult]').checked=true;i.document.querySelector('[name=terms]').checked=true;submit(i,'#account-terms');
 await until(()=>i.document.querySelector('#account-invite'));
 assert.equal(i.document.querySelector('#account-invite [name=code]').value,'READTOGETHER');
@@ -189,7 +194,7 @@ input(p,'#room-city [name=city]','Madison');input(p,'#room-city [name=state]','W
 assert.ok(passwordAPI.calls.some(c=>c.url.endsWith('bookish_set_club_city')&&c.body.p_city==='Madison'));
 input(p,'#room-visibility [name=visibility]','open','change');const oldVisibility=p.document.querySelector('#room-visibility');submit(p,'#room-visibility');await until(()=>!oldVisibility.isConnected);
 input(p,'#room-book [name=book]','yellowface','change');submit(p,'#room-book');await until(()=>p.document.querySelector('.room-book h2')?.textContent==='Yellowface');
-click(p,'[data-room-tab=manage]');input(p,'#room-meeting [name=title]','Our Saturday chapter');input(p,'#room-meeting [name=starts]','2030-01-01T18:00');input(p,'#room-meeting [name=location]','The neighborhood library');passwordAPI.failNext('bookish_schedule_meeting');submit(p,'#room-meeting');await until(()=>p.document.querySelector('#account-password'));click(p,'#use-email');submit(p,'#account-email');await until(()=>p.document.querySelector('#account-code'));input(p,'#account-code [name=token]','123456');submit(p,'#account-code');await until(()=>p.document.querySelector('#room-meeting'));
+click(p,'[data-room-tab=manage]');input(p,'#room-meeting [name=title]','Our Saturday chapter');input(p,'#room-meeting [name=starts]','2030-01-01T18:00');input(p,'#room-meeting [name=location]','The neighborhood library');passwordAPI.failNext('bookish_schedule_meeting');submit(p,'#room-meeting');await until(()=>p.document.querySelector('#account-password'));click(p,'#use-email');submit(p,'#account-email');await until(()=>p.document.querySelector('#account-code'));input(p,'#account-code [name=token]','0123');submit(p,'#account-code');await until(()=>p.document.querySelector('#room-meeting'));
 assert.equal(p.document.querySelector('#room-meeting [name=title]').value,'Our Saturday chapter','Meeting draft and host desk survive reauthentication');
 assert.equal(passwordAPI.calls.filter(c=>c.url.endsWith('bookish_schedule_meeting')).length,1,'Reauthentication never schedules a meeting automatically');submit(p,'#room-meeting');await until(()=>p.document.querySelector('#detail').textContent.includes('Our Saturday chapter'));
 click(p,'[data-room-tab=votes]');assert.equal(p.document.querySelectorAll('[data-winner]').length,2,'All-zero votes expose both host winner choices');click(p,'[data-winner]');await until(()=>!p.document.querySelector('[data-ballot]'));
@@ -204,6 +209,23 @@ input(m,'#account-email [name=email]','reader@example.test');submit(m,'#account-
 await until(()=>m.document.querySelector('#account-email .form-message').textContent);
 assert.equal(m.document.querySelector('#account-email .form-message').textContent,'Email codes are not available right now. Try again soon.');
 assert.ok(!m.document.querySelector('#account-code'));noMail.window.close();
+for(const action of ['start','verify','password']){
+ const limitedAPI=createFixtureAPI(),respond=limitedAPI.respond;
+ limitedAPI.respond=async(url,body,method)=>url.endsWith('/bookish-auth')&&body.action===action?{$status:429,ok:false,message:'Please wait a little before trying again.'}:respond(url,body,method);
+ const limited=await launch(true,false,false,limitedAPI),l=limited.window;
+ click(l,'[data-tab=me]');click(l,'#sign-in');await until(()=>l.document.querySelector('#account-email'));
+ let selector='#account-email';
+ if(action==='password'){
+  click(l,'#use-password');selector='#account-password';
+  input(l,`${selector} [name=email]`,'reader@example.test');input(l,`${selector} [name=password]`,'private-password');
+ }else{
+  input(l,'#account-email [name=email]','reader@example.test');
+  if(action==='verify'){submit(l,'#account-email');await until(()=>l.document.querySelector('#account-code'));selector='#account-code';input(l,`${selector} [name=token]`,'0123');}
+ }
+ submit(l,selector);await until(()=>l.document.querySelector(`${selector} .form-message`).textContent);
+ assert.equal(l.document.querySelector(`${selector} .form-message`).textContent,'A few too many tries. Let this settle, then request a fresh code.',`${action} displays calm 429 copy`);
+ assert.ok(!l.document.querySelector('#account-terms'));limited.window.close();
+}
 const native=await launch(true,true),n=native.window;
 locationAllowed=false;click(n,'#locate');await until(()=>n.document.querySelector('#toast').textContent.includes('Pick a city'));
 assert.ok(n.document.querySelector('#city'));

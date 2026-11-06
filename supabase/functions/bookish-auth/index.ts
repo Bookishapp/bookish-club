@@ -25,7 +25,8 @@ async function auth(path: string, body: unknown, token = key) {
 Deno.serve((req) =>
   bookishAuthHandler(req, {
     publicKey,
-    configured: async () => !!(await readBookishSecret("BOOKISH_EMAIL_FROM")) &&
+    configured: async () =>
+      !!(await readBookishSecret("BOOKISH_EMAIL_FROM")) &&
       !!(await readBookishSecret("RESEND_API_KEY")),
     throttle: async (email, ip, action) => {
       const { data, error } = await sb.rpc("bookish_auth_throttle", {
@@ -35,6 +36,34 @@ Deno.serve((req) =>
       });
       if (error) throw Error("Rate limiter unavailable");
       return data === true;
+    },
+    codes: {
+      put: async (code) => {
+        const { data, error } = await sb.rpc("bookish_auth_code_put", {
+          p_email_hash: code.email_hash,
+          p_salt: code.salt,
+          p_code_hash: code.code_hash,
+          p_expires_at: code.expires_at,
+        });
+        if (error) throw Error("Code storage unavailable");
+        return data === true;
+      },
+      get: async (emailHash) => {
+        const { data, error } = await sb.from("bookish_auth_codes")
+          .select("email_hash,salt,code_hash,expires_at,attempts")
+          .eq("email_hash", emailHash).maybeSingle();
+        if (error) throw Error("Code storage unavailable");
+        return data;
+      },
+      finish: async (emailHash, salt, matched) => {
+        const { data, error } = await sb.rpc("bookish_auth_code_finish", {
+          p_email_hash: emailHash,
+          p_salt: salt,
+          p_matched: matched,
+        });
+        if (error) throw Error("Code storage unavailable");
+        return data === true;
+      },
     },
     lookup: async (email) => {
       const { data, error } = await sb.rpc("bookish_auth_lookup", {
