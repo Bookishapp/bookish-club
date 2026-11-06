@@ -49,7 +49,7 @@ async function launch(options={}){
   const req=route.request(),url=new URL(req.url());
   try{
    if(url.origin===origin){const response=await route.fetch();if(response.status()>=400)s.missing.push(`${response.status()} ${url.pathname}`);return route.fulfill({response});}
-   if(url.hostname.endsWith('.supabase.co')){let body={};try{body=req.postDataJSON()||{};}catch{}const result=await s.api.respond(req.url(),body,req.method());manifest.hostedRequests.push({method:req.method(),path:url.pathname,intercepted:true});return route.fulfill({status:result?.$status||200,contentType:typeof result==='string'?'text/calendar':'application/json',body:typeof result==='string'?result:JSON.stringify(result)});}
+   if(url.hostname.endsWith('.supabase.co')){let body={};try{body=req.postDataJSON()||{};}catch{}const result=await s.api.respond(req.url(),body,req.method()),calendar=url.pathname.endsWith('/bookish-meeting-calendar');manifest.hostedRequests.push({method:req.method(),path:url.pathname,intercepted:true});return route.fulfill({status:result?.$status||200,contentType:calendar?'text/calendar':'application/json',body:calendar?String(result):JSON.stringify(result)});}
    if(url.hostname==='covers.openlibrary.org'){
     const id=url.pathname.match(/\/([0-9]+)-/)?.[1],books=JSON.parse(await fs.readFile(path.join(root,'app/public/data/books.json'),'utf8')),book=books.find(b=>String(b.c)===id);
     if(book){try{return route.fulfill({status:200,contentType:'image/jpeg',body:await fs.readFile(path.join(root,'app/public/covers',book.id+'.jpg'))});}catch{}}
@@ -60,8 +60,10 @@ async function launch(options={}){
  await p.goto(origin);await p.locator('#welcome-find, [data-tab=me]').first().waitFor();
  return s;
 }
-async function click(s,selector){const loc=s.p.locator(selector).first();if(!await loc.isVisible()){const menu=s.p.locator('#open-menu');if(await menu.isVisible()){s.steps.push({action:'click',selector:'#open-menu'});await menu.click();}else{const summary=s.p.locator('.room-section-menu > summary');if(await summary.isVisible()){s.steps.push({action:'click',selector:'.room-section-menu > summary'});await summary.click();}}}s.steps.push({action:'click',selector});await loc.click();}
-async function fill(s,selector,value){s.steps.push({action:'fill',selector,value});await s.p.locator(selector).first().fill(value);}
+async function control(s,selector){const active=s.p.locator('dialog[open]').last().locator(selector);return await active.count()?active.first():s.p.locator(selector).first();}
+async function click(s,selector){let loc=await control(s,selector);if(!await loc.isVisible()){const menu=s.p.locator('dialog[open] #open-menu');if(await menu.isVisible()){s.steps.push({action:'click',selector:'#open-menu'});await menu.click();}else{const summary=s.p.locator('dialog[open] .room-section-menu > summary');if(await summary.isVisible()){s.steps.push({action:'click',selector:'.room-section-menu > summary'});await summary.click();}}loc=await control(s,selector);}s.steps.push({action:'click',selector});await loc.click();}
+async function fill(s,selector,value){s.steps.push({action:'fill',selector,value});await (await control(s,selector)).fill(value);}
+async function check(s,selector){s.steps.push({action:'check',selector});await (await control(s,selector)).check();}
 async function submit(s,selector){await click(s,`${selector} button[type=submit]`);}
 async function dismissWelcome(s){if(await s.p.locator('#welcome-find').isVisible())await click(s,'#welcome-find');}
 async function auth(s,{rules=false,create=false}={}){
@@ -73,7 +75,7 @@ async function auth(s,{rules=false,create=false}={}){
  await s.p.locator('#account-terms').waitFor();if(rules)return;
  await fill(s,'#account-terms [name=display_name]','Nina');
  const city=s.p.locator('#account-terms [name=home_city]');if(await city.count())await fill(s,'#account-terms [name=home_city]','Austin');
- for(const name of ['adult','terms']){const check=s.p.locator(`#account-terms [name=${name}]`);if(await check.count())await check.check();}
+ for(const name of ['adult','terms']){const selector=`#account-terms [name=${name}]`;if(await s.p.locator(selector).count())await check(s,selector);}
  await submit(s,'#account-terms');await s.p.locator('#account-terms').waitFor({state:'detached'});
  if(create&&!await s.p.locator('#account-create').isVisible())await click(s,'#create-club');
 }
@@ -92,22 +94,22 @@ async function navigate(s,id){
  if(id==='01')return;
  if(id==='02'){await auth(s,{create:true});await s.p.locator('#account-create').waitFor();await fill(s,'#account-create [name=name]','Unhinged Annotators Society');return;}
  if(id==='03'){await auth(s,{rules:true});return;}
- if(id==='18'){await dismissWelcome(s);await click(s,'[data-tab=near]');const city=s.p.locator('#city');if(await city.count())await city.selectOption({label:'Austin, TX'}).catch(()=>{});return;}
+ if(id==='18'){await dismissWelcome(s);await click(s,'[data-tab=near]');const city=s.p.locator('#city');if(await city.count()){s.steps.push({action:'select',selector:'#city',label:'Austin, TX'});await city.selectOption({label:'Austin, TX'});}return;}
  if(id==='17'){
   await auth(s);await dismissWelcome(s);await click(s,'[data-tab=near]');await click(s,'.verified .club-open');await click(s,'#account-join-club');await s.p.locator('#account-join').waitFor();await fill(s,'#account-join [name=note]','Austen person, will bring cookies.');await submit(s,'#account-join');await s.p.getByText('Fingers crossed.',{exact:true}).waitFor();return;
  }
  await home(s);
  if(id==='04'){await tab(s,'tea');return;}
- if(id==='05'){await tab(s,'tea');await click(s,'#new-take');await fill(s,'#room-take [name=body]','Lizzie reading that letter fourteen times is the most relatable thing in the book');const page=s.p.locator('#room-take [name=page]');if(await page.count())await fill(s,'#room-take [name=page]','288');return;}
+ if(id==='05'){await tab(s,'tea');await click(s,'#new-take');await s.p.locator('#room-take').waitFor();await fill(s,'#room-take [name=body]','Lizzie reading that letter fourteen times is the most relatable thing in the book');const page=s.p.locator('#room-take [name=page]');if(await page.count())await fill(s,'#room-take [name=page]','288');return;}
  if(id==='06'){await tab(s,'home');return;}
  if(id==='07'){await tab(s,'home');await click(s,'#log-page');return;}
  if(id==='08'){await tab(s,'meet');return;}
  if(id==='09'){await tab(s,'votes');return;}
- if(id==='10'){await tab(s,'home');await openFeature(s,'#rate-book');const take=s.p.locator('#room-rating [name=take], #book-rating [name=take], [data-community=rating] textarea');if(await take.count())await fill(s,'#room-rating [name=take], #book-rating [name=take], [data-community=rating] textarea','Mr. Collins deserves his own spinoff, and I mean that as a threat.');const hearts=s.p.locator('#room-rating [name=hearts][value="4"]');if(await hearts.count())await hearts.check();const asMe=s.p.locator('#room-rating [name=anonymous][value="false"]');if(await asMe.count())await asMe.check();return;}
+ if(id==='10'){await tab(s,'home');await openFeature(s,'#rate-book');await s.p.locator('#room-rating').waitFor();await fill(s,'#room-rating [name=take]','Mr. Collins deserves his own spinoff, and I mean that as a threat.');await check(s,'#room-rating [name=hearts][value="4"]');await check(s,'#room-rating [name=anonymous][value="false"]');return;}
  if(id==='11'){await openFeature(s,'#our-shelf');return;}
  if(id==='12'){await openFeature(s,'#up-next');return;}
  if(id==='13'){await tab(s,'members');return;}
- if(id==='14'){await openFeature(s,'#club-privacy');return;}
+ if(id==='14'){await openFeature(s,'#club-privacy');await s.p.locator('#room-privacy').waitFor();await click(s,'#rotate-invite');await s.p.getByText('ANNOTATE42',{exact:true}).waitFor();return;}
  if(id==='15'){await openFeature(s,'#open-notifications');return;}
  if(id==='16'){await openFeature(s,'#account-settings');return;}
  if(id==='19'){await openFeature(s,'#open-menu');return;}
@@ -120,6 +122,7 @@ async function capture(s,def){
  await s.p.evaluate(async()=>{await document.fonts.ready;for(const d of document.querySelectorAll('dialog[open]'))d.scrollTop=0;await Promise.all([...document.images].map(async i=>{i.loading='eager';await i.decode().catch(()=>{});}));if(document.activeElement instanceof HTMLElement)document.activeElement.blur();});
  const checks=await s.p.evaluate(v=>{const scope=[...document.querySelectorAll('dialog[open]')].at(-1)||document.body,text=scope.innerText;return{viewportMatches:innerWidth===v.width&&innerHeight===v.height,horizontalOverflow:document.documentElement.scrollWidth>v.width||scope.scrollWidth>scope.clientWidth,brokenImages:[...scope.querySelectorAll('img')].filter(i=>i.complete&&!i.naturalWidth).map(i=>i.getAttribute('src')),emDash:text.includes('\u2014'),visibleText:text,route:location.pathname+location.hash,communityPage:scope.getAttribute('data-community'),dialogOpen:scope.tagName==='DIALOG'};},viewport);
  const built=path.join(out,'built',def.id+'.png');await s.p.screenshot({path:built,animations:'disabled'});
+ for(const extension of ['png','html'])await fs.rm(path.join(out,'built',def.id+'-failure.'+extension),{force:true});
  const reference=path.join(source,def.source),comparison=path.join(out,`${def.id}-${def.name}.png`);
  // Pillow composes only review evidence. It never edits a production asset.
  const py=process.env.PILLOW_PYTHON||'/tmp/bookish-native-art-venv/bin/python';
