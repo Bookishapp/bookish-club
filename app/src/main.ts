@@ -1,4 +1,5 @@
 import './styles.css';
+import { appLink } from './app-links.ts';
 import { community } from './community.ts';
 import { appAsset } from './paths.ts';
 import { calendarEvent } from './calendar.ts';
@@ -6,10 +7,12 @@ import { data, loadData, refreshData, clearDiscovery } from './data.ts';
 import { esc, cityKey, safeURL, clubURL, appleMapsURL, miles, reminderDate } from './domain.ts';
 import type { Club, Book, Taste, Reminder } from './domain.ts';
 import { rank, picks, why, moods } from './recommend.ts';
-import { isNative, readStore, writeStore, locate, shareClub, remoteJSON, Notifications, NativeApp, CityMap } from './native.ts';
+import { isNative, isIOS, isAndroid, readStore, writeStore, locate, shareClub, remoteJSON, Notifications, NativeApp, CityMap } from './native.ts';
 
 type Tab = 'near'|'read'|'saved'|'me';
 let mePage:'home'|'resources'='home';
+let linkedClubId:string|null=null;
+let refreshTask:Promise<void>|null=null;
 const root = document.querySelector<HTMLDivElement>('#app')!;
 let tab:Tab='near', selectedCity='', clubId:string|null=null, view='list', listing='all';
 let position:{lat:number;lng:number}|null=null, saved:Record<string,Club>={}, bookSaved:string[]=[], reminders:Record<string,Reminder>={};
@@ -21,6 +24,8 @@ const titles:Record<Tab,string> = {near:'Near me',read:'Read next',saved:'Saved'
 const ext = (url:string,label:string) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)} <span class="sr-only">(opens outside Bookish)</span></a>`;
 const message = (s:string) => { const t=document.querySelector('#toast')!; t.textContent=s; t.classList.add('visible'); setTimeout(()=>t.classList.remove('visible'),5500); };
 const persist = async () => { await writeStore('saved',Object.keys(saved)); await writeStore('bookSaved',bookSaved); await writeStore('reminders',reminders); };
+const mapName=isAndroid?'Google Maps':'Apple Maps';
+const mapURL=(c:Pick<Club,'city'|'state'|'lat'|'lng'>)=>isAndroid?`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.lat!=null&&c.lng!=null?`${c.lat},${c.lng}`:cityKey(c))}`:appleMapsURL(c);
 const cityGroups = () => {
   const groups=new Map<string,{key:string;name:string;count:number;lat:number;lng:number}>();
   for(const c of data.clubs.filter(c=>community.visible(c.club_id||c.id))) { if(c.lat==null||c.lng==null) continue; const key=cityKey(c), prior=groups.get(key); if(prior) prior.count++; else groups.set(key,{key,name:key,count:1,lat:c.lat,lng:c.lng}); }
@@ -37,7 +42,7 @@ function near() {
   return `<header class="intro ${view==='map'?'map-intro':''}"><p class="hello">Good books. Your people.</p><h1>Pull up a chair.</h1><p>Your next chapter starts with a book club.</p><p><button id="redeem-invite" class="invite-entry">Have an invite code?</button></p></header>
   <section class="finder paper ${view==='map'?'map-finder':''}" aria-label="Find clubs">${view==='map'?'<details><summary>Choose a city or genre</summary>':''}<button class="primary" id="locate">${position?'Refresh my location':'Use my location'}</button><p class="small">Your location stays on this device. City centers only.</p><label for="city">Or pick a city</label><select id="city"><option value="">${position?'Closest cities first':'All cities'}</option>${cityOptions.map(key=>`<option ${selectedCity===key?'selected':''}>${esc(key)}</option>`).join('')}</select><label for="club-search">Find a club or genre</label><input id="club-search" type="search" value="${esc(clubQuery)}" placeholder="Mystery, romance, a favorite city…">${view==='map'?'</details>':''}<div class="switch"><button data-view="list" aria-pressed="${view==='list'}">List</button><button data-view="map" aria-pressed="${view==='map'}">Map</button></div></section>
   <div class="list-heading"><h2>${selectedCity?esc(selectedCity):position?'A little closer to you':'Find your people'}</h2><label class="small">Show<select id="listing"><option value="all" ${listing==='all'?'selected':''}>All clubs</option><option value="on" ${listing==='on'?'selected':''}>On Bookish</option><option value="calendar" ${listing==='calendar'?'selected':''}>Public calendars</option></select></label></div>
-  ${data.discovery!=='ready'?`<section class="paper network-state" role="status"><h2>${data.discovery==='loading'?'Opening the directory…':'The directory needs a connection.'}</h2><p>${data.discovery==='loading'?'Finding the latest clubs and their city centers.':'We could not load the latest clubs. Your saved books are still here. Reconnect and give the directory another try.'}</p>${data.discovery==='unavailable'?'<button id="refresh" class="primary">Try the directory again</button>':''}</section>`:view==='map'?`<section class="paper"><h2>A whole city of stories</h2><p>City centers only. Meeting places stay inside each club.</p>${isNative?'<button class="primary" id="native-map">Explore the map</button>':''}${browserMap(groups)}<ul class="city-links">${groups.filter(c=>!selectedCity||c.key===selectedCity).slice(0,30).map(c=>`<li><div><b>${esc(c.name)}</b><p>${c.count} clubs</p></div>${ext(appleMapsURL({city:c.name.split(', ')[0],state:c.name.split(', ')[1],lat:c.lat,lng:c.lng}),'Apple Maps')}</li>`).join('')}</ul></section>`:
+  ${data.discovery!=='ready'?`<section class="paper network-state" role="status"><h2>${data.discovery==='loading'?'Opening the directory…':'The directory needs a connection.'}</h2><p>${data.discovery==='loading'?'Finding the latest clubs and their city centers.':'We could not load the latest clubs. Your saved books are still here. Reconnect and give the directory another try.'}</p>${data.discovery==='unavailable'?'<button id="refresh" class="primary">Try the directory again</button>':''}</section>`:view==='map'?`<section class="paper"><h2>A whole city of stories</h2><p>City centers only. Meeting places stay inside each club.</p>${isIOS?'<button class="primary" id="native-map">Explore the map</button>':''}${browserMap(groups)}<ul class="city-links">${groups.filter(c=>!selectedCity||c.key===selectedCity).slice(0,30).map(c=>`<li><div><b>${esc(c.name)}</b><p>${c.count} clubs</p></div>${ext(mapURL({city:c.name.split(', ')[0],state:c.name.split(', ')[1],lat:c.lat,lng:c.lng}),mapName)}</li>`).join('')}</ul></section>`:
   `<p class="small">${clubs.length.toLocaleString()} clubs${selectedCity?' in this city':''}. Public-calendar clubs link to their original listing.</p><ul class="clubs">${clubs.slice(0,pageSize).map(clubCard).join('')}</ul>${clubs.length>pageSize?'<button id="more" class="secondary">More clubs</button>':''}${!clubs.length?'<div class="paper"><h2>A fresh page</h2><p>Try another city or refresh the directory. Your next gathering is out there.</p><button id="refresh" class="primary">Refresh directory</button></div>':''}`}`;
 }
 function browserMap(groups:ReturnType<typeof cityGroups>){
@@ -78,18 +83,50 @@ function currentClub() { return data.clubs.find(c=>c.id===clubId&&community.visi
 function renderDetail() {
   const c=currentClub(); if(!c) {clubId=null;document.querySelector<HTMLDialogElement>('#detail')?.close();return;}
   const d=document.querySelector<HTMLDialogElement>('#detail')!;
-  d.innerHTML=`<div class="detail-head"><button id="close-detail" class="text-button">Close</button><button id="share" class="text-button">Share club</button></div><p class="status">${c.verified?'On Bookish':'From a public calendar'}</p><h1 id="detail-title">${esc(c.name)}</h1><p>${esc(cityKey(c))}</p><div class="detail-info"><p>${esc(c.vibe||'A good book and a table full of readers.')}</p><p>${esc(c.cadence||'Check with the host for the next gathering.')}${c.current_book?` · Reading ${esc(c.current_book.title)}`:''}</p><p>${esc(c.genres.join(', '))}${c.format?` · ${esc(c.format)}`:''}</p>${c.source_name?`<p>Listed by ${esc(c.source_name)}</p>`:''}${c.last_seen?`<p class="small">Listing checked ${esc(c.last_seen)}</p>`:''}<p>Meeting places are shared by the host. The map shows the city center.</p>${ext(appleMapsURL(c),'See city in Apple Maps')}${safeURL(c.source_url)?`<p>${ext(c.source_url!,'Visit the original listing')}</p>`:''}</div><button class="secondary" data-save="${esc(c.id)}" aria-pressed="${!!saved[c.id]}">${saved[c.id]?'♥\uFE0E Saved on this device':'♡\uFE0E Save this club'}</button>
+  d.innerHTML=`<div class="detail-head"><button id="close-detail" class="text-button">Close</button><button id="share" class="text-button">Share club</button></div><p class="status">${c.verified?'On Bookish':'From a public calendar'}</p><h1 id="detail-title">${esc(c.name)}</h1><p>${esc(cityKey(c))}</p><div class="detail-info"><p>${esc(c.vibe||'A good book and a table full of readers.')}</p><p>${esc(c.cadence||'Check with the host for the next gathering.')}${c.current_book?` · Reading ${esc(c.current_book.title)}`:''}</p><p>${esc(c.genres.join(', '))}${c.format?` · ${esc(c.format)}`:''}</p>${c.source_name?`<p>Listed by ${esc(c.source_name)}</p>`:''}${c.last_seen?`<p class="small">Listing checked ${esc(c.last_seen)}</p>`:''}<p>Meeting places are shared by the host. The map shows the city center.</p>${ext(mapURL(c),`See city in ${mapName}`)}${safeURL(c.source_url)?`<p>${ext(c.source_url!,'Visit the original listing')}</p>`:''}</div><button class="secondary" data-save="${esc(c.id)}" aria-pressed="${!!saved[c.id]}">${saved[c.id]?'♥\uFE0E Saved on this device':'♡\uFE0E Save this club'}</button>
   ${c.verified?`<section class="join-section"><h2>${c.visibility==='open'?'A chair is waiting.':'Your people might be here.'}</h2><p>${c.visibility==='open'?'Join this Open club and step into the reading room.':'Private clubs welcome readers after the host approves a request.'}</p><button class="primary" id="account-join-club">${community.signedIn?(c.visibility==='open'?'Join club':'Request to join'):'Sign in to join'}</button><button class="text-button" data-content="${esc(c.club_id||c.id)}" data-kind="club" data-label="${esc(c.name)}">Report or block this club</button></section>`:`<section><h2>A public-calendar gathering</h2><p>Visit the original listing for the current book, meeting date, and how to take part.</p>${ext(`https://meetbookish.com/claim/?club_id=${encodeURIComponent(c.id)}&club_name=${encodeURIComponent(c.name)}&club_city=${encodeURIComponent(c.city)}`,'Host this club? Claim it')}</section>`}
   <section class="reminder-section"><h2>Make a date of it</h2><p>Got a date from your host or the listing? Save it here. Times use your device’s time zone.</p>${reminders[c.id]?`<p class="chosen">Meeting: ${new Date(reminders[c.id].meeting).toLocaleString()}</p><button class="text-button" data-cancel="${esc(c.id)}">Remove reminder</button>`:''}<form id="remind"><label>Next meeting<input type="datetime-local" name="meeting" required></label><label>Remind me<select name="minutes"><option value="60">An hour before</option><option value="1440">A day before</option><option value="0">At meeting time</option></select></label><button type="submit" class="primary">${isNative?'Save meeting reminder':'Download calendar reminder'}</button><p class="small">${isNative?'We’ll ask to send a local notification when you save.':'Download a calendar file with your meeting and reminder.'}</p><p class="form-message" role="status"></p></form></section>`;
   if(!d.open) d.showModal();
   d.oncancel=()=>{clubId=null;};
 }
 async function changeTab(t:Tab) { tab=t;mePage='home';clubId=null;render();window.scrollTo(0,0);document.querySelector<HTMLElement>('#main')?.focus({preventScroll:true}); }
+function androidBack(){
+  linkedClubId=null;
+  const detail=document.querySelector<HTMLDialogElement>('#detail');
+  if(detail?.open){
+    if(!community.back()){
+      const cancel=new Event('cancel',{cancelable:true});
+      if(detail.dispatchEvent(cancel)){detail.close();clubId=null;lastDetailTrigger?.focus();}
+    }
+  }else if(tab==='me'&&mePage==='resources'){mePage='home';render();}
+  else if(tab==='read'&&!showPicks&&step>1){step--;render();}
+  else if(tab==='read'&&showPicks){showPicks=false;step=1;render();}
+  else if(tab!=='near'){void changeTab('near');}
+  else if(view==='map'){view='list';render();}
+  else void NativeApp.minimizeApp();
+}
+function resolveLinkedClub(){
+  if(!linkedClubId)return;
+  const club=data.clubs.find(c=>c.id===linkedClubId&&community.visible(c.club_id||c.id));
+  if(club){tab='near';clubId=club.id;}
+  else{linkedClubId=null;message('This club is unavailable. Refresh the directory and try again.');}
+}
+function openAppLink(value:string){
+  const link=appLink(value);if(!link)return;
+  community.dismiss();clubId=null;linkedClubId=null;
+  if(link.kind==='invite'){tab='me';mePage='home';community.openInvite(link.code);render();}
+  else {
+    linkedClubId=link.id;
+    if(data.discovery!=='ready'){void refresh();return;}
+    resolveLinkedClub();render();
+  }
+}
 async function cancelReminder(id:string) { const r=reminders[id]; if(!r)return; if(isNative) await Notifications.cancel({notifications:[{id:r.id}]}); delete reminders[id]; await persist(); render(); message('Reminder removed. Your club is still saved.'); }
 root.addEventListener('input',e=>{const el=e.target as HTMLInputElement;if(el.id==='book-search'){query=el.value;document.querySelector('#book-hits')!.innerHTML=bookHits();}});
 root.addEventListener('change',async e=>{const el=e.target as HTMLInputElement;if(el.id==='city'){selectedCity=el.value;pageSize=40;await writeStore('city',selectedCity);render();}if(el.id==='listing'){listing=el.value;pageSize=40;render();}if(el.id==='club-search'){clubQuery=el.value;pageSize=40;render();}});
 root.addEventListener('click',async e=>{
   const b=(e.target as HTMLElement).closest<HTMLElement>('button');if(!b)return;
+  linkedClubId=null;
   try {
     if(community.handles(b)){await community.click(b);return;}
     if(b.id==='account-join-club'){if(currentClub())await community.join(currentClub()!.id);return;}
@@ -102,7 +139,7 @@ root.addEventListener('click',async e=>{
     if(b.dataset.save){const id=b.dataset.save,c=data.clubs.find(c=>c.id===id)||saved[id];if(!c)return;if(saved[id]){if(reminders[id])await cancelReminder(id);delete saved[id];}else saved[id]=c;await persist();render();return;}
     if(b.dataset.bookSave){const id=b.dataset.bookSave;bookSaved=bookSaved.includes(id)?bookSaved.filter(x=>x!==id):[...bookSaved,id];await persist();render();return;}
     if(b.dataset.cancel){await cancelReminder(b.dataset.cancel);return;}
-    if(b.dataset.view){view=b.dataset.view;render();if(view==='map'&&isNative)await openMap();return;}
+    if(b.dataset.view){view=b.dataset.view;render();if(view==='map'&&isIOS)await openMap();return;}
     if(b.id==='native-map'){await openMap();return;}
     if(b.id==='locate'){b.setAttribute('disabled','');b.textContent='Finding nearby cities…';try{position=await locate();selectedCity='';await writeStore('city','');render();message('Your location is ready. Let’s find your people.');}finally{b.removeAttribute('disabled');b.textContent='Use my location';}return;}
     if(b.id==='more'){pageSize+=40;render();return;}
@@ -144,12 +181,18 @@ root.addEventListener('submit',async e=>{
 root.addEventListener('error',e=>{const img=e.target as HTMLImageElement;if(img.tagName==='IMG'&&img.closest('.cover')){const s=document.createElement('span');s.className='typo-cover';s.textContent=img.alt.replace(/^Cover of /,'');img.replaceWith(s);}},true);
 root.addEventListener('load',e=>{const img=e.target as HTMLImageElement;if(img.tagName==='IMG'&&img.closest('.cover')&&img.naturalWidth<10)img.dispatchEvent(new Event('error'));},true);
 async function openMap(){const result=await CityMap.present({cities:cityGroups(),selected:selectedCity||undefined});if(result.cityKey){selectedCity=result.cityKey;view='list';pageSize=40;await writeStore('city',selectedCity);render();}}
-async function refresh(){
+function refresh():Promise<void>{
+ if(refreshTask)return refreshTask;
+ refreshTask=refreshDirectory().finally(()=>{refreshTask=null;});
+ return refreshTask;
+}
+async function refreshDirectory(){
  clearDiscovery();saved={};clubId=null;render();
  const prior=await readStore<unknown>('saved',[]);
  const ids=Array.isArray(prior)?prior:prior&&typeof prior==='object'?Object.keys(prior):[];
  const ok=await refreshData();saved=Object.fromEntries(data.clubs.filter(c=>ids.includes(c.id)).map(c=>[c.id,c]));
  await writeStore('saved',Object.keys(saved));
+ resolveLinkedClub();
  refreshStatus=ok?'Fresh from the shelves. Directory updated just now.':'Club discovery needs a connection. Your books are still here.';
  render();
 }
@@ -163,6 +206,11 @@ async function start(){
   await writeStore('saved',Object.keys(saved));
   [bookSaved,reminders,taste,selectedCity]=await Promise.all([readStore('bookSaved',[]),readStore('reminders',{}),readStore('taste',taste),readStore('city','')]);
   render();
+  if(isAndroid){
+    await NativeApp.addListener('backButton',androidBack);
+    await NativeApp.addListener('appUrlOpen',event=>openAppLink(event.url));
+    const launch=await NativeApp.getLaunchUrl();if(launch?.url)openAppLink(launch.url);
+  }
   if(isNative){await Notifications.addListener('localNotificationActionPerformed',event=>{const id=event.notification.extra?.clubId;if(id&&(saved[id]||data.clubs.some(c=>c.id===id))){tab='saved';clubId=id;render();}});await NativeApp.addListener('resume',()=>{void refresh();});}
   window.addEventListener('focus',()=>{void refresh();});
   document.addEventListener('visibilitychange',()=>{if(document.hidden){clearDiscovery();saved={};clubId=null;render();}else void refresh();});

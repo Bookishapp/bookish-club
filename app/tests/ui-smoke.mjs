@@ -16,8 +16,8 @@ const errors=[],posts=[],calendars=[],downloads=[];
 const virtualConsole = new VirtualConsole();
 virtualConsole.on('jsdomError',e=>errors.push(e.message));
 const nativeCalls=[],nativeStore=new Map();
-let locationAllowed=true,notificationAllowed=true;
-async function launch(online=true,native=false,verified=false,api=null,hash='') {
+let locationAllowed=true,coarseLocationAllowed=false,notificationAllowed=true;
+async function launch(online=true,native=false,verified=false,api=null,hash='',platform='ios') {
   const dom = new JSDOM('<!doctype html><html><body><div id="app"></div><div id="toast"></div></body></html>',{url:`https://localhost/${hash}`,runScripts:'outside-only',virtualConsole,pretendToBeVisual:true});
   const w=dom.window;
   w.scrollTo=()=>{};
@@ -32,15 +32,16 @@ async function launch(online=true,native=false,verified=false,api=null,hash='') 
   const publicClubs=feeds.clubs.map((c,i)=>({...c,verified:verified&&i===0}));
   const remoteValue=url=>String(url).includes('bookish-directory')?{ok:true,clubs:publicClubs}:String(url).includes('bookish-community')?feeds.community:null;
   if(native){
-    w.CapacitorCustomPlatform={name:'ios'};
-    const methods={Preferences:['get','set'],Geolocation:['requestPermissions','getCurrentPosition'],Share:['share'],LocalNotifications:['requestPermissions','schedule','getPending','cancel','addListener','removeListener'],App:['addListener','removeListener'],BookishMap:['present'],CapacitorHttp:['request']};
-    w.Capacitor={PluginHeaders:Object.entries(methods).map(([name,methods])=>({name,methods:methods.map(name=>({name,rtype:'promise'}))})),nativePromise:async(plugin,method,options={})=>{
+    w.CapacitorCustomPlatform={name:platform};
+    w.nativeEvents={};
+    const methods={Preferences:['get','set'],Geolocation:['requestPermissions','getCurrentPosition'],Share:['share'],LocalNotifications:['requestPermissions','schedule','getPending','cancel','addListener','removeListener'],App:['addListener','removeListener','getLaunchUrl','minimizeApp'],BookishMap:['present'],CapacitorHttp:['request']};
+    w.Capacitor={PluginHeaders:Object.entries(methods).map(([name,methods])=>({name,methods:methods.map(name=>({name,rtype:name==='addListener'?'callback':'promise'}))})),nativeCallback:(plugin,method,options,callback)=>{w.nativeEvents[`${plugin}.${options.eventName}`]=callback;return 'listener';},nativePromise:async(plugin,method,options={})=>{
       nativeCalls.push({plugin,method,options});
       if(plugin==='Preferences'){if(method==='get')return{value:nativeStore.get(options.key)??null};nativeStore.set(options.key,options.value);return{};}
-      if(plugin==='Geolocation')return method==='requestPermissions'?{location:locationAllowed?'granted':'denied'}:{coords:{latitude:41.88,longitude:-87.63}};
+      if(plugin==='Geolocation')return method==='requestPermissions'?{location:locationAllowed?'granted':'denied',coarseLocation:coarseLocationAllowed?'granted':'denied'}:{coords:{latitude:41.88,longitude:-87.63}};
       if(plugin==='LocalNotifications'){if(method==='requestPermissions')return{display:notificationAllowed?'granted':'denied'};if(method==='getPending')return{notifications:[]};return{};}
       if(plugin==='BookishMap')return{cityKey:'Chicago, IL'};
-      if(plugin==='CapacitorHttp')return{status:online?200:503,data:remoteValue(options.url)};
+      if(plugin==='CapacitorHttp'){if(api&&String(options.url).includes('supabase.co')){const result=await api.respond(options.url,options.data||{},options.method||'GET');return{status:result?.$status||200,data:result};}return{status:online?200:503,data:remoteValue(options.url)};}
       return{};
     }};
   }
@@ -124,6 +125,9 @@ assert.ok(!v.document.querySelector('[data-provider]'),'Email-only sign-in has n
 input(v,'#account-email [name=email]','reviewer@example.test');
 const submit=(window,selector)=>window.document.querySelector(selector).dispatchEvent(new window.Event('submit',{bubbles:true,cancelable:true}));
 submit(v,'#account-email');await until(()=>v.document.querySelector('#account-code'));
+assert.equal(v.document.querySelector('#account-code input').type,'text');
+assert.equal(v.document.querySelector('#account-code input').inputMode,'numeric');
+assert.equal(v.document.querySelector('#account-code input').enterKeyHint,'done');
 input(v,'#account-code [name=token]','123456');submit(v,'#account-code');await until(()=>v.document.querySelector('#account-terms'));
 input(v,'#account-terms [name=display_name]','Alex');v.document.querySelector('[name=adult]').checked=true;v.document.querySelector('[name=terms]').checked=true;submit(v,'#account-terms');
 await until(()=>v.document.querySelector('#account-join'));
@@ -229,3 +233,53 @@ assert.ok(nativeCalls.some(c=>c.plugin==='LocalNotifications'&&c.method==='cance
 native.window.close();
 assert.deepEqual(errors,[]);
 console.log('UI smoke passed: fail-closed offline discovery; guest clubs, city map, saves, book recommendations, Resources, and calendar download; email OTP, terms and age gate, private join, member-only club home, anonymous voting, zero-ballot host winner selection, approvals, club creation/city correction/visibility/book/meeting editing, member and Saved-club blocking, 401 join-note and meeting-draft recovery, typed account deletion, and invite hash intent through signup; mocked native permission recovery, MapKit, sharing, and notifications. All account writes used local fixtures.');
+
+// Android must never invoke the iOS-only map plugin, and Back must navigate the UI.
+const android=await launch(true,true,false,null,'','android'),a=android.window;
+locationAllowed=false;coarseLocationAllowed=true;
+click(a,'#locate');await until(()=>a.document.querySelector('#toast.visible'));
+assert.equal(a.document.querySelector('#city').value,'','Approximate Android location can sort nearby cities');
+assert.match(a.document.querySelector('#city option').textContent,/Closest cities first/);
+locationAllowed=true;coarseLocationAllowed=false;
+click(a,'[data-view=map]');
+assert.ok(!a.document.querySelector('#native-map'),'Android uses the shared city map');
+assert.ok(a.document.querySelector('.city-map'));
+await until(()=>a.nativeEvents['App.backButton']);
+click(a,'.map-cities button');
+click(a,'.club-open');
+assert.ok(a.document.querySelector('#detail').open);
+assert.ok(a.document.querySelector('#detail a[href^="https://www.google.com/maps/search/"]'),'Android opens city centers in Google Maps');
+a.nativeEvents['App.backButton']({canGoBack:false});
+await until(()=>!a.document.querySelector('#detail').open);
+click(a,'[data-tab=me]');click(a,'#open-resources');
+a.nativeEvents['App.backButton']({canGoBack:false});
+await until(()=>a.document.querySelector('#open-resources'));
+a.nativeEvents['App.backButton']({canGoBack:false});
+await until(()=>a.document.querySelector('#city'));
+// A link supersedes an existing auth dialog, and survives the native resume refresh.
+click(a,'[data-tab=me]');click(a,'#sign-in');
+const linkClub=feeds.clubs.find(c=>c.city==='Chicago');
+a.nativeEvents['App.appUrlOpen']({url:`https://meetbookish.com/book-clubs/chicago-il/#${encodeURIComponent(linkClub.id)}`});
+await until(()=>a.document.querySelector('#detail-title')?.textContent===linkClub.name);
+a.nativeEvents['App.resume']();
+await until(()=>a.document.querySelector('#detail-title')?.textContent===linkClub.name);
+a.document.dispatchEvent(new a.Event('visibilitychange'));
+a.nativeEvents['App.appUrlOpen']({url:`https://meetbookish.com/book-clubs/chicago-il/#${encodeURIComponent(linkClub.id)}`});
+await until(()=>a.document.querySelector('#detail-title')?.textContent===linkClub.name);
+android.window.close();
+
+const warmInviteAPI=createFixtureAPI(),inviteAndroid=await launch(true,true,false,warmInviteAPI,'','android'),ia=inviteAndroid.window;
+await until(()=>ia.nativeEvents['App.appUrlOpen']);
+click(ia,'.verified .club-open');click(ia,'#account-join-club');
+await until(()=>ia.document.querySelector('#account-email'));
+ia.nativeEvents['App.appUrlOpen']({url:'https://meetbookish.com/app/#invite=NEWCODE1'});
+input(ia,'#account-email [name=email]','reviewer@example.test');submit(ia,'#account-email');
+await until(()=>ia.document.querySelector('#account-code'));
+input(ia,'#account-code [name=token]','123456');submit(ia,'#account-code');
+await until(()=>ia.document.querySelector('#account-terms'));
+input(ia,'#account-terms [name=display_name]','Alex');ia.document.querySelector('[name=adult]').checked=true;ia.document.querySelector('[name=terms]').checked=true;submit(ia,'#account-terms');
+await until(()=>ia.document.querySelector('#account-invite'));
+assert.equal(ia.document.querySelector('#account-invite [name=code]').value,'NEWCODE1');
+inviteAndroid.window.close();
+
+console.log('Android smoke passed: shared map, Back navigation, warm club links across refresh, auth-dialog replacement, and incoming invite intent.');

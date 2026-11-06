@@ -38,6 +38,15 @@ export const community={
  handles(b:HTMLElement){return ['sign-in','community-close','change-email','use-password','use-email','create-club','redeem-invite','account-settings','delete-account','reload-account','sign-out','rotate-invite','share-invite','back-club-home'].includes(b.id)||!!(b.dataset.home||b.dataset.roomTab||b.dataset.decide||b.dataset.ballot||b.dataset.closeVote||b.dataset.winner||b.dataset.content);},
  init(render:()=>void,notify:(s:string)=>void){redraw=render;toast=notify;const match=/^#invite=([A-Z0-9]{6,12})$/i.exec(location.hash);if(match){inviteInput=match[1].toUpperCase();history.replaceState(null,'',location.pathname+location.search);afterAuth='invite';page='auth';}},
  rendered(){if(page)show();},
+ dismiss(){page=null;pendingRef='';afterAuth=null;authResume=null;drafts={};},
+ openInvite(code:string){pendingRef='';authResume=null;drafts={};inviteInput=code;afterAuth='invite';page=client.user?'invite':'auth';codeSent=false;usePassword=false;},
+ back(){
+  if(!page)return false;
+  if(home&&page!=='home'){page='home';show();}
+  else if(page==='home'&&tabHome!=='home'){tabHome='home';show();}
+  else{page=null;pendingRef='';afterAuth=null;authResume=null;drafts={};document.querySelector<HTMLDialogElement>('#detail')?.close();}
+  return true;
+ },
  recoverAuth(){if(!client.user&&(account||home)){authResume={page:page||'home',club:home?.club.id||null,tab:tabHome};account=null;clubs=[];home=null;votes={};page='auth';codeSent=false;redraw();show();return true;}return false;},
  get signedIn(){return !!client.user;},
  visible(id:string){return !filters.some(f=>f.kind==='club'&&f.id===id);},
@@ -99,6 +108,8 @@ function show(){
  if(!page)return;
  let d=document.querySelector<HTMLDialogElement>('#detail');if(!d)return;
  d.innerHTML=`<div class="detail-head"><button id="community-close" class="text-button">Close</button>${home&&page!=='home'?'<button id="back-club-home" class="text-button">Back to club</button>':''}</div>${body()}`;
+ const code=d.querySelector<HTMLInputElement>('#account-code input[name="token"]');
+ if(code){code.enterKeyHint='done';code.autocapitalize='off';code.spellcheck=false;}
  restoreDrafts(d);if(!d.open)d.showModal();d.oncancel=()=>{page=null;authResume=null;afterAuth=null;pendingRef='';};d.scrollTop=0;d.querySelector<HTMLElement>('h1')?.focus({preventScroll:true});
 }
 function rememberDraft(f:HTMLFormElement){
