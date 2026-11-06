@@ -112,7 +112,7 @@ ${body}
 </main>
 ${landing ? "" : `<footer class="foot-site"><div class="wrap cols">
 <div><a class="wordmark" href="${url("/")}">${WORDMARK(false)}</a>
-<p>Your book club, just more fun. Find your people, choose your next read, and keep your favorites close on Bookish.</p>
+<p>Your book club, just more fun. RSVPs, book hot takes, votes, and more - right in the group chat you already use.</p>
 <p class="credit">Book covers and book details from <a href="https://openlibrary.org/" rel="noopener">Open Library</a>.</p></div>
 <div><p class="h">Find</p><ul><li><a href="${url("/book-clubs/")}">All cities</a></li><li><a href="${url("/read-next/")}">What to read next</a></li>${["romance", "mystery-thriller", "fantasy", "nonfiction"].filter((g) => genreTotals[g] >= 5).map((g) => `<li><a href="${url(`/genres/${g}/`)}">${GENRES[g]} clubs</a></li>`).join("")}</ul></div>
 <div><p class="h">Your club</p><ul><li><a href="${url("/start/")}">Bring my club</a></li><li><a href="${url("/start/")}">List your club</a></li><li><a href="${url("/claim/")}">Claim your listing</a></li><li><a href="${url("/resources/")}">Resources</a></li><li><a href="${url("/press/")}">Press</a></li><li><a href="${url("/about/")}">About &amp; sources</a></li><li><a href="${url("/support/")}">Support</a></li><li><a href="${url("/privacy/")}">Privacy</a> · <a href="${url("/terms/")}">Terms</a></li></ul></div>
@@ -150,7 +150,7 @@ const searchBox = (sel = "", placeholder = "Sacramento, or a ZIP code", extra = 
 // Geographic shells never embed club facts, ids, counts, or structured listings.
 const hostCallout = () => `<section><div class="wrap"><div class="callout-card"><h2>A seat for your club.</h2><p>Choose Open, Private, or Hidden, and bring your readers together.</p><a class="btn" href="${url('/start/')}">Start a club</a> <a href="${url('/club-settings/')}">Club settings</a></div></div></section>`;
 function discoveryPage(p,title,scope={}) {
- const body=`<div class="wrap"><header class="page-head"><p class="eyebrow">Good books. Your people.</p><h1>${esc(title)}</h1><p class="lede">Open clubs welcome anyone. Private clubs ask the host to approve. Hosts share meeting details with their members.</p></header>${searchBox()}<div id="club-map" class="club-map" role="region" aria-label="Book clubs by city"></div><section id="live-directory" data-city="${esc(scope.city||'')}" data-state="${esc(scope.state||'')}" data-genre="${esc(scope.genre||'')}"><h2>Find your people</h2><label>Search clubs<input id="live-query" type="search" placeholder="Club name, city, or genre"></label><p id="live-status" role="status">Loading current clubs…</p><ul class="clubs" id="live-clubs"></ul><button class="btn" id="live-more" hidden>More clubs</button></section></div>${hostCallout()}`;
+ const body=`<div class="wrap"><header class="page-head"><p class="eyebrow">Your book club, just more fun.</p><h1>${esc(title)}</h1><p class="lede">Open clubs welcome anyone. Private clubs ask the host to approve. Hosts share meeting details with their members.</p></header>${searchBox()}<div id="club-map" class="club-map" role="region" aria-label="Book clubs by city"></div><section id="live-directory" data-city="${esc(scope.city||'')}" data-state="${esc(scope.state||'')}" data-genre="${esc(scope.genre||'')}"><h2>Find your people</h2><label>Search clubs<input id="live-query" type="search" placeholder="Club name, city, or genre"></label><p id="live-status" role="status">Loading current clubs…</p><ul class="clubs" id="live-clubs"></ul><button class="btn" id="live-more" hidden>More clubs</button></section></div>${hostCallout()}`;
  write(p==='/'?'index.html':`${p.slice(1)}index.html`,layout({title:`${title} | Bookish`,desc:'Find Open and Private book clubs. Club listings are checked live so hosts control who can find their club.',path:p,body}));
  page(p,p==='/'?1:0.6);
 }
@@ -198,12 +198,12 @@ ${withSearch ? `<details><summary>Search by city, ZIP, or genre</summary>${searc
 
 const clubIntro = ({ press = false } = {}) => `<section class="lander club-lander"><div class="wrap">
 <div class="l-sheet"><p class="l-tag">${press ? "Meet Bookish" : "Bring the club you already have"}</p>
-<div class="hsheet"><h1>${press ? "The group chat for book clubs." : "Your book club, just more fun."}</h1>
-<p class="sub">Preview the shared club experience: RSVPs, book votes, anonymous hot takes, and reading check-ins in iMessage. These features are not available in the current guest app.</p>
-<p class="launch-note">Find your people, or bring the club you already have.</p>
+<div class="hsheet"><h1>Your book club, just more fun.</h1>
+<p class="sub">RSVPs, book hot takes, votes, and more - right in the group chat you already use.</p>
+<p class="launch-note">These features are not available in the current guest app.</p>
 <a class="btn" href="${url("/start/")}">Add your club ${ARROW}</a>
 </div>${prop("prop-sun-240.webp", 240, 243, "l-sun", true)}</div>
-<div class="l-art">${lunair("lunair-hug", 300, 252, 600, 503, "Lunair hugging a book", "", true)}<p class="bubble">Same people. A little more plot.</p>${prop("prop-daisy-240.webp", 240, 243, "daisy", true)}</div>
+<div class="l-art">${lunair("lunair-hug", 300, 252, 600, 503, "Lunair hugging a book", "", true)}<p class="bubble">Your book club, just more fun.</p>${prop("prop-daisy-240.webp", 240, 243, "daisy", true)}</div>
 </div></section>`;
 
 // ---------- home ----------
@@ -212,7 +212,7 @@ const clubIntro = ({ press = false } = {}) => `<section class="lander club-lande
     .replace("__SEARCH__", searchBox()).replaceAll("__BASE__", BASE);
   write("index.html", layout({
     title: "Bookish: Book Club Night | Your book club, just more fun",
-    desc: "Bring the club you already have. Bookish is bringing anonymous hot takes, book votes, RSVPs, and easier hosting to your iMessage group chat. Explore the club finder, reading suggestions, and resources.",
+    desc: "Your book club, just more fun. RSVPs, book hot takes, votes, and more - right in the group chat you already use.",
     path: "/", body, landing: true,
     jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Bookish: Book Club Night", alternateName: "Bookish", url: abs("/"),
       potentialAction: { "@type": "SearchAction", target: { "@type": "EntryPoint", urlTemplate: `${abs("/")}?q={search_term_string}` }, "query-input": "required name=search_term_string" } },
@@ -225,11 +225,11 @@ const clubIntro = ({ press = false } = {}) => `<section class="lander club-lande
 {
   const body = `${clubIntro({ press: true })}${clubFun()}${clubHost()}${clubRules()}
 <section class="club-story"><div class="wrap"><div class="paper press-notes"><h2>Bookish, in a few words.</h2>
-<h3>The short version</h3><p>Bookish is building the group chat for book clubs: more fun for the club you already have, and less herding for the host. Anonymous comments, the DNF confessional, spoiler-safe hot takes, post-meeting superlatives, and Club Wrapped sit alongside RSVPs, reminders, book votes, and meeting plans, right inside iMessage.</p>
+<h3>The short version</h3><p>Your book club, just more fun. Anonymous comments, the DNF confessional, spoiler-safe hot takes, post-meeting superlatives, and Club Wrapped sit alongside RSVPs, reminders, book votes, and meeting plans, right inside iMessage.</p>
 <h3 id="creators">Availability</h3><p>Explore the <a href="${url("/app/")}">Bookish web app</a> for club discovery, reading suggestions, and saved favorites. The social club screens shown on this page are feature previews; shared clubs and interactive iMessage cards are not available in the current release.</p>
 <h3>Art and press questions</h3><p><a href="${url("/img/bookish-wordmark.png")}" download>Download the Bookish wordmark</a>. For press questions, write to <a href="mailto:hello@meetbookish.com">hello@meetbookish.com</a>.</p>
 </div></div></section>${clubFinder()}`;
-  write("press/index.html", layout({ title: "Bookish Press | The group chat for book clubs", desc: "Bookish is building the group chat for book clubs. Anonymous hot takes, club memories, and easier hosting for the club you already have, right inside iMessage.", path: "/press/", body }));
+  write("press/index.html", layout({ title: "Bookish Press | Your book club, just more fun", desc: "Your book club, just more fun. RSVPs, book hot takes, votes, and more - right in the group chat you already use.", path: "/press/", body }));
   page("/press/", 0.5);
 }
 
@@ -298,7 +298,7 @@ ${hp}${consent}
 page("/start/", 0.6);
 
 write("hosts/index.html", layout({
-  title: "Bring Your Book Club to iMessage | Bookish", desc: "More fun for your existing book club, and less herding for the host. List your book club, claim your existing listing, and explore reading resources.", path: "/hosts/",
+  title: "Bring Your Book Club to iMessage | Bookish", desc: "Your book club, just more fun. RSVPs, book hot takes, votes, and more - right in the group chat you already use.", path: "/hosts/",
   body: `${clubIntro()}${clubFun()}${clubHost()}${clubRules()}
 <section id="bring-your-club" class="club-story"><div class="wrap"><h2>Bring your club.</h2>
 <p class="lede">Add your club to the finder, or claim the listing your library or bookstore already has.</p>
@@ -345,8 +345,8 @@ write("confirmed/index.html", layout({
 }));
 
 const prose = (p, title, desc, h, html) => { write(`${p.slice(1)}index.html`, layout({ title, desc, path: p, body: `<div class="wrap">${crumbs([["Home", "/"], [h, null]])}<header class="page-head"><h1>${h}</h1></header><section class="prose">${html}</section></div>` })); page(p, 0.3); };
-prose("/about/", "About Bookish and Our Sources", "More fun for the book club you already have, plus the sources behind the Bookish club finder.", "About Bookish", `
-<p>Your book club, just more fun. Bookish is bringing anonymous hot takes, the DNF confessional, spoiler-safe conversations, post-meeting superlatives, and Club Wrapped to the club you already have, right inside iMessage.</p>
+prose("/about/", "About Bookish and Our Sources", "Your book club, just more fun.", "About Bookish", `
+<p>Your book club, just more fun. RSVPs, book hot takes, votes, and more - right in the group chat you already use.</p>
 <p>For the host, that means RSVPs, reminders, book votes, the bring-list, and the next meeting in the thread. The social club screens are feature previews. <a href="${url("/app/")}">Open Bookish on the web</a> for the club finder, reading suggestions, and saved favorites.</p>
 <h2>Your club, your rules</h2><p>Club listings have three visibility settings: Open is on the map and anyone can join, Private is on the map and the host approves requests, and Hidden is off the map and requires an invite code or link.</p>
 <h2>Looking for a club?</h2><p>The <a href="${url("/book-clubs/")}">web finder</a> is already here, with book clubs across the United States gathered from public library and bookstore calendars.</p>
