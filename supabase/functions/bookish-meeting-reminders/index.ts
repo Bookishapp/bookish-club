@@ -13,10 +13,7 @@ Deno.serve(remindersHandler({
     const [from, resendKey] = await Promise.all([
       readBookishSecret('BOOKISH_EMAIL_FROM'), readBookishSecret('RESEND_API_KEY'),
     ]);
-    const url = Deno.env.get('SUPABASE_URL');
-    return from && resendKey && url
-      ? { from, resendKey, calendarUrl: `${url}/functions/v1/bookish-meeting-calendar` }
-      : null;
+    return from && resendKey ? { from, resendKey } : null;
   },
   claim: () => rpc('bookish_claim_reminders'),
   prepare: (p_id, p_lease) => rpc('bookish_prepare_reminder', { p_id, p_lease }),

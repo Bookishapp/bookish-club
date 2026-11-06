@@ -2,21 +2,22 @@ import {test,before,after} from 'node:test';
 import assert from 'node:assert/strict';
 import {fixture,host,reader,other,outside} from './helpers/tea-db.mjs';
 let f;before(async()=>{f=await fixture();});after(()=>f?.db.close());
-const tomorrow=()=>new Date(Date.UTC(new Date().getUTCFullYear(),new Date().getUTCMonth(),new Date().getUTCDate()+1,20)).toISOString();
+const reminderTime=new Date(Date.now()+24*3600000).toISOString();
+const tomorrow=()=>reminderTime;
 async function meeting(time=tomorrow()){return f.rpc(host,'bookish_schedule_meeting',[f.club,time,'Reading night','PRIVATE VENUE',100]);}
 test('day-before claims include only current Yes and Maybe members with reminders enabled',async()=>{
  const m=await meeting();await f.rpc(reader,'bookish_rsvp',[m,'yes']);await f.rpc(other,'bookish_rsvp',[m,'maybe']);await f.rpc(host,'bookish_rsvp',[m,'cant']);
  await f.rpc(other,'bookish_reminder_preferences',[f.club,false]);
  const batch=await f.service('bookish_claim_reminders');assert.equal(batch.length,1);assert.equal(batch[0].meeting_id,m);assert.equal(batch[0].email,'tea1@example.test');assert.ok(batch[0].lease);assert.ok(!('author_id' in batch[0]));
  assert.equal((await f.service('bookish_claim_reminders')).length,0);
- const row=await f.service('bookish_prepare_reminder',[batch[0].id,batch[0].lease]);assert.equal(row.meeting_id,m);
+ const row=await f.service('bookish_prepare_reminder',[batch[0].id,batch[0].lease]);assert.equal(row.meeting_id,m);assert.equal(row.location,'PRIVATE VENUE');
  await f.service('bookish_complete_reminder',[batch[0].id,batch[0].lease]);assert.equal((await f.service('bookish_claim_reminders')).length,0);
  assert.ok((await f.rpc(reader,'bookish_notifications')).some(n=>n.kind==='meeting_reminder'&&n.target_id===m));
  await assert.rejects(f.rpc(reader,'bookish_claim_reminders'),/permission/i);await assert.rejects(f.rpc(reader,'bookish_prepare_reminder',[batch[0].id,batch[0].lease]),/permission/i);
 });
 test('expired leases retry safely, stale tokens fail, and opt-out is rechecked immediately before delivery',async()=>{
  const m=await meeting();await f.rpc(reader,'bookish_rsvp',[m,'maybe']);const [a]=await f.service('bookish_claim_reminders');
- await f.q("update bookish_private.meeting_reminders set leased_at=now()-interval '11 minutes' where id=$1",[a.id]);const [b]=await f.service('bookish_claim_reminders');assert.equal(a.id,b.id);assert.notEqual(a.lease,b.lease);
+ await f.q("update bookish_private.meeting_reminders set leased_at=now()-interval '11 minutes' where id=$1",[a.id]);const [b]=await f.service('bookish_claim_reminders');assert.equal(a.id,b.id);assert.notEqual(a.lease,b.lease);assert.ok(a.calendar_generated_at);assert.equal(a.calendar_generated_at,b.calendar_generated_at);
  assert.equal(await f.service('bookish_prepare_reminder',[a.id,a.lease]),null);
  await assert.rejects(f.service('bookish_complete_reminder',[a.id,a.lease]),/lease/i);
  await f.rpc(reader,'bookish_reminder_preferences',[f.club,false]);assert.equal(await f.service('bookish_prepare_reminder',[b.id,b.lease]),null);await f.rpc(reader,'bookish_reminder_preferences',[f.club,true]);
@@ -72,4 +73,40 @@ test('rescheduling a never-attempted queued row creates one fresh delivery witho
  await f.q('insert into bookish_private.meeting_reminders(meeting_id,club_id,user_id,starts_at,payload) select id,club_id,$2,starts_at,bookish_private.reminder_payload(id,$2) from bookish_meetings where id=$1',[m,reader]);
  await f.rpc(host,'bookish_edit_meeting',[m,new Date(new Date(tomorrow()).getTime()+3600000).toISOString(),'Moved one hour','Venue',100,false]);
  const batch=await f.service('bookish_claim_reminders');assert.equal(batch.filter(x=>x.meeting_id===m).length,1);
+});
+
+test('a meeting six hours away never receives a day-before reminder',async()=>{
+ const m=await meeting(new Date(Date.now()+6*3600000).toISOString());await f.rpc(reader,'bookish_rsvp',[m,'yes']);
+ assert.ok(!(await f.service('bookish_claim_reminders')).some(r=>r.meeting_id===m));
+ assert.equal((await f.q('select id from bookish_private.meeting_reminders where meeting_id=$1',[m])).length,0);
+});
+test('location edits invalidate a leased calendar attachment',async()=>{
+ const m=await meeting();await f.rpc(reader,'bookish_rsvp',[m,'yes']);
+ const claim=(await f.service('bookish_claim_reminders')).find(r=>r.meeting_id===m);
+ await f.rpc(host,'bookish_edit_meeting',[m,tomorrow(),'Reading night','Changed venue',100,false]);
+ assert.equal(await f.service('bookish_prepare_reminder',[claim.id,claim.lease]),null);
+});
+
+test('reminder eligibility uses a 20 to 30 hour window rather than UTC dates',async()=>{
+ for(const hours of [6,19,31,40]){
+  const m=await meeting(new Date(Date.now()+hours*3600000).toISOString());await f.rpc(reader,'bookish_rsvp',[m,'yes']);
+  assert.ok(!(await f.service('bookish_claim_reminders')).some(r=>r.meeting_id===m),`${hours} hours away`);
+ }
+});
+test('claim scan excludes historical meetings and opted-out members before computing payloads',async()=>{
+ const local=await fixture();try{
+  const valid=await local.rpc(host,'bookish_schedule_meeting',[local.club,tomorrow(),'Valid','Venue',0]);
+  for(const hours of [-24,72])await local.rpc(host,'bookish_schedule_meeting',[local.club,new Date(Date.now()+hours*3600000).toISOString(),'Outside window','Venue',0]);
+  const cancelled=await local.rpc(host,'bookish_schedule_meeting',[local.club,tomorrow(),'Cancelled','Venue',0]);await local.q("update bookish_meetings set status='cancelled' where id=$1",[cancelled]);
+  await local.rpc(reader,'bookish_rsvp',[valid,'yes']);await local.rpc(other,'bookish_reminder_preferences',[local.club,false]);
+  await local.db.exec(`alter function bookish_private.reminder_payload(uuid,uuid) rename to original_reminder_payload;
+   create function bookish_private.reminder_payload(mid uuid,uid uuid) returns jsonb language plpgsql security definer set search_path='' as $$
+   begin
+    if exists(select 1 from public.bookish_meetings where id=mid and (status<>'scheduled' or starts_at<clock_timestamp() or starts_at>clock_timestamp()+interval '2 days'))
+     or exists(select 1 from public.bookish_members where user_id=uid and not meeting_reminders)
+    then raise exception 'Payload evaluated before candidate filter';end if;
+    return bookish_private.original_reminder_payload(mid,uid);
+   end $$;`);
+  const batch=await local.service('bookish_claim_reminders');assert.equal(batch.length,1);assert.equal(batch[0].meeting_id,valid);
+ }finally{await local.db.close();}
 });

@@ -7,9 +7,11 @@ type Reminder = {
   email: string;
   title: string;
   starts_at: string;
+  location: string;
+  calendar_generated_at: string;
 };
 type Calendar = { id: string; title: string; starts_at: string; location: string };
-type Config = { from: string; resendKey: string; calendarUrl: string };
+type Config = { from: string; resendKey: string };
 type ReminderDependencies = {
   key: () => Promise<string | undefined>;
   config: () => Promise<Config | null>;
@@ -42,7 +44,7 @@ export function remindersHandler(deps: ReminderDependencies) {
       try { body = JSON.parse(text); } catch { return reply(400, { ok: false }); }
       if (!body || Array.isArray(body) || body.action !== 'run' || Object.keys(body).length !== 1) return reply(400, { ok: false });
       const config = await deps.config();
-      if (!config?.from || !config.resendKey || !config.calendarUrl.startsWith('https://')) return reply(503, { ok: false });
+      if (!config?.from || !config.resendKey) return reply(503, { ok: false });
       const batch = await deps.claim();
       if (!Array.isArray(batch) || batch.length > 50) return reply(503, { ok: false });
       let sent = 0, skipped = 0, failed = 0;
@@ -54,8 +56,9 @@ export function remindersHandler(deps: ReminderDependencies) {
           const row = await deps.prepare(claim.id, claim.lease);
           if (!row) { skipped++; continue; }
           if (row.id !== claim.id || row.lease !== claim.lease || !uuid.test(row.meeting_id)) throw Error('Invalid delivery');
-          const calendar = new URL(config.calendarUrl);
-          calendar.searchParams.set('meeting', row.meeting_id);
+          // Persisted first-lease time keeps the attachment byte-identical on retries.
+          const calendar = meetingIcs({ id: row.meeting_id, title: row.title, starts_at: row.starts_at, location: row.location }, new Date(row.calendar_generated_at));
+          const content = btoa(Array.from(new TextEncoder().encode(calendar), (byte) => String.fromCharCode(byte)).join(''));
           const response = await (deps.fetcher || fetch)('https://api.resend.com/emails', {
             method: 'POST',
             headers: {
@@ -66,8 +69,9 @@ export function remindersHandler(deps: ReminderDependencies) {
             body: JSON.stringify({
               from: config.from,
               to: [row.email],
-              subject: 'Your Bookish meeting is tomorrow',
-              text: `${row.title}\n${row.starts_at} (UTC)\n\nAdd to calendar (.ics, Bookish sign-in required):\n${calendar.href}\n\nTurn off meeting reminders in your club settings.`,
+              subject: 'Your Bookish meeting is coming up',
+              text: `${row.title}\n\nCalendar invite attached. Open it for your local meeting time.\n\nTurn off meeting reminders in your club settings.`,
+              attachments: [{ filename: `bookish-${row.meeting_id}.ics`, content }],
             }),
             signal: AbortSignal.timeout(10000),
           });
@@ -94,11 +98,12 @@ function foldIcs(line: string) {
   lines.push(current);
   return lines.join('\r\n');
 }
-export function meetingIcs(meeting: Calendar) {
+export function meetingIcs(meeting: Calendar, generatedAt = new Date()) {
+  const stamp = generatedAt.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
   const start = new Date(meeting.starts_at).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
   return [
     'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Bookish//Club Meetings//EN', 'CALSCALE:GREGORIAN',
-    'BEGIN:VEVENT', `UID:${meeting.id}@meetbookish.com`, `DTSTAMP:${start}`, `DTSTART:${start}`,
+    'BEGIN:VEVENT', `UID:${meeting.id}@meetbookish.com`, `DTSTAMP:${stamp}`, `DTSTART:${start}`, 'DURATION:PT2H',
     `SUMMARY:${escapeIcs(meeting.title)}`, `LOCATION:${escapeIcs(meeting.location)}`,
     'END:VEVENT', 'END:VCALENDAR', '',
   ].map(foldIcs).join('\r\n');

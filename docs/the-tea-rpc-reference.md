@@ -1,6 +1,6 @@
 # Bookish 1.1.1 Server RPC Reference
 
-All screen RPCs execute with the signed-in reader's bearer session. Never use the service role in app or iMessage code. UUIDs below are resource IDs, not access tokens. SQL parameter names are the PostgREST JSON keys. New migrations extend the staged `supabase/sql/001` through `011` baseline and must be reviewed and applied separately by the release operator. This PR does not apply them.
+All screen RPCs execute with the signed-in reader's bearer session. Never use the service role in app or iMessage code. UUIDs below are resource IDs, not access tokens. SQL parameter names are the PostgREST JSON keys. New migrations extend the staged `supabase/sql/001` through `011` baseline and must be reviewed and applied separately by the release operator. This PR does not apply them. Before apply, Ted must run `supabase/checks/bookish-tea-preflight.sql` and review the counts. The migrations preserve original take fields and reactions in the private, RLS-protected `tea_migration_backup_20261105` table. Ted owns restoration, retention, and eventual removal of that snapshot.
 
 ## The Tea
 
@@ -27,30 +27,30 @@ Compatibility: `bookish_post_take` remains callable, but rejects `p_signed=true`
 | `bookish_share_reading` | `p_club`, `p_share bool` | Void. Sharing defaults to false. |
 | `bookish_reading_together` | `p_club` | `{book,my_page,my_finished,my_did_not_finish,sharing,meeting_mark,members}`. Members are an unordered collection of opted-in readers, each with `{user_id,display_name,page,finished}`. DNF status is private. No current book returns `{book:null,members:[]}`. |
 
-Never sort the shelf by progress or attach ranks, streaks, scores, or competitive notifications. `bookish_race` is a compatibility alias for the unordered shared member collection. Book objects from `bookish_books`, `bookish_club_home`, and the reading RPC include `cover_id`, generated `cover_url`, and `cover_style` for a fallback. A null cover ID gives a null URL. Image availability remains an external concern.
+Never sort the shelf by progress or attach ranks, streaks, scores, or competitive notifications. `bookish_race` is a compatibility alias for the unordered shared member collection. Book objects from `bookish_club_home` and the reading RPC include `cover_id`, computed `cover_url`, and `cover_style` for a fallback. Tea cards also include computed `cover_url`. Direct `bookish_books` rows retain their existing shape and `cover_id`; no stored generated column is added. A null cover ID gives a null URL. Image availability remains an external concern.
 
 ## Hosting and Notifications
 
 | RPC | Parameters | Result |
 | --- | --- | --- |
 | `bookish_rsvp` | `p_meeting uuid`, `p_response = 'yes'`, `'maybe'`, or `'cant'` | Void. Replaces the caller's response. Future, scheduled meetings only. |
-| `bookish_meeting_detail` | `p_meeting` | Meeting fields, `counts:{yes,maybe,cant}`, `my_rsvp`, and `bring_items:[{id,label,claimed_by,display_name}]`. Location is member-only. |
+| `bookish_meeting_detail` | `p_meeting` | Meeting fields, `counts:{yes,maybe,cant}`, `my_rsvp`, and `bring_items:[{id,label,claimed,claimed_by,display_name}]`. Location is member-only. Hidden claimants retain `claimed=true`, with null `claimed_by` and `display_name`. |
 | `bookish_add_bring_item` | Existing `p_meeting`, `p_label text` | Item UUID, host or cohost only. |
 | `bookish_claim_bring_item` | Existing `p_item uuid`, `p_claim bool` | Void. Atomic one-person claim. Only the claimant may release it. Future, scheduled meetings only. |
 | `bookish_reminder_preferences` | `p_club`, `p_enabled bool` | Void. Caller-only per-club opt-out, default true. Preference is also readable on the caller's member row. |
-| `bookish_notifications` | `p_limit int = 50`, `p_offset int = 0` | Newest-first `{id,club_id,kind,target_id,created_at,read_at}` rows. Kinds: `new_take`, `vote_opened`, `meeting_reminder`, and `join_request`. No body or author fields. Limit 1 to 100, offset 0 to 10,000. |
+| `bookish_notifications` | `p_limit int = 50`, `p_offset int = 0` | Newest-first `{id,club_id,kind,target_id,created_at,read_at}` rows. Kinds: `new_take`, `vote_opened`, `meeting_reminder`, and `join_request`. No body or author fields. The RLS policy calls `bookish_notification_visible(p_id uuid)`, which returns false unless the row belongs to the caller, then checks target visibility. The private helper has no reader grant. Limit 1 to 100, offset 0 to 10,000. |
 | `bookish_mark_notifications_read` | `p_id uuid = null` | Void. Null marks all visible own rows read. |
 | `bookish_meeting_calendar` | `p_meeting` | Member-only `{id,title,starts_at,location}` for a future, scheduled meeting. |
 
-RSVP storage retains `going`, `maybe`, and `next_time`; screen RPCs map these to Yes, Maybe, and Can't. Direct authenticated RSVP writes are retired in favor of the checked RPC. Existing meeting schedule, edit, cancel, and vote RPCs remain available. Opening a vote and submitting a pending join request automatically creates the relevant notifications. New-take notices are created only for eligible pages at post time, not backfilled when a reader advances.
+RSVP storage retains `going`, `maybe`, and `next_time`; screen RPCs map these to Yes, Maybe, and Can't. Direct authenticated RSVP writes are retired in favor of the checked RPC. Direct bring-item reads are retired so raw claimant IDs cannot bypass member hiding. Read bring items through `bookish_meeting_detail` or `bookish_club_home`, which preserve occupancy and redact hidden claimant IDs. Existing meeting schedule, edit, cancel, and vote RPCs remain available. Opening a vote and submitting a pending join request automatically creates the relevant notifications. New-take notices are created only for eligible pages at post time, not backfilled when a reader advances.
 
-`GET /functions/v1/bookish-meeting-calendar?meeting=<uuid>` with `Authorization: Bearer <reader session>` downloads a private `.ics`. The email links to this endpoint. The screen must sign in and fetch with that header, then present or save the calendar file. An unauthenticated browser receives 401. No bearer tokens are put in URLs.
+`GET /functions/v1/bookish-meeting-calendar?meeting=<uuid>` with `Authorization: Bearer <reader session>` downloads a private `.ics`. Reminder emails instead attach the `.ics` directly and say "Calendar invite attached". The attachment imports without a session, includes the location, and defaults to a two-hour duration. The screen must sign in and fetch with that header, then present or save the calendar file. An unauthenticated browser receives 401. No bearer tokens are put in URLs.
 
 ## Reminder Worker Contract, Not a Production Schedule
 
 `POST /functions/v1/bookish-meeting-reminders`, header `x-bookish-worker-key`, body `{"action":"run"}`. Environment-only `BOOKISH_REMINDER_WORKER_KEY` must have at least 32 characters. Delivery also requires `BOOKISH_EMAIL_FROM`, `RESEND_API_KEY`, and the standard Supabase runtime configuration. Missing configuration prevents claims. Responses contain only `{ok,sent,skipped,failed}`. Partial failure returns 503; claims retry after ten minutes, using a stable Resend idempotency key.
 
-A separately authorized operator can later invoke it periodically on the Mac mini. No job is installed here. It considers tomorrow by UTC date, excludes past or cancelled meetings, and sends only to current, verified members with Yes or Maybe RSVP and reminders enabled. A batch claims at most 50 rows. Reinvoke to drain more batches. Claim leases and frozen payloads are private. Never-leased queued snapshots refresh after edits; snapshots with a possible delivery attempt stay immutable for idempotency.
+A separately authorized operator can later invoke it periodically on the Mac mini. No job is installed here. It considers scheduled meetings 20 to 30 hours away, uses the subject "Your Bookish meeting is coming up", excludes past or cancelled meetings, and sends only to current, verified members with Yes or Maybe RSVP and reminders enabled. A batch claims at most 50 rows. Reinvoke to drain more batches. Claim leases and frozen payloads are private. Never-leased queued snapshots refresh after edits; snapshots with a possible delivery attempt stay immutable for idempotency. Prepare returns the eligible location and persisted `calendar_generated_at` first-lease time, keeping the attached calendar byte-identical on retries. Title, location, or email edits invalidate a leased snapshot. The claim scan filters scheduled meetings within two days and opted-in members before evaluating payloads, supported by a `(status, starts_at)` meeting index.
 
 Only the service role can call `bookish_claim_reminders()`, `bookish_prepare_reminder(p_id,p_lease)`, and `bookish_complete_reminder(p_id,p_lease)`. None returns a take author. Never expose these to the screen client.
 

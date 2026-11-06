@@ -14,6 +14,10 @@ test('Tea requires a page or DNF, anonymous legacy posting, and at most 280 char
 test('filter rejects slurs, email, phone, street addresses, and invisible-character evasions',async()=>{
  for(const body of ['you faggot','contact me at tea@example.com','Call +1 (415) 555-0123','123 Main Street','42B North Oak Avenue','t\u200bea@example.com','４１５５５５０１２３'])await assert.rejects(f.post(reader,body),/book|personal|filter/i,body);
 });
+test('filter allows ordinary page, chapter, year-range, and ISBN discussion',async()=>{
+ for(const body of ['I read 50 pages of the court scenes and cried','At 120 pages in the way she lies is wild','Chapter 3 of the place','I was 3 chapters into the drive home','The 1999-2005 timeline confused me','ISBN 9780593099322 edition','ISBN 9791234567896 edition'])await f.post(other,body,0);
+ await f.q('delete from bookish_private.tea_post_events');
+});
 test('spoilers use the caller page even with shield disabled and all Tea surfaces omit identity',async()=>{
  const {id}=await f.post(reader,'The secret at the wall',100);
  await f.rpc(other,'bookish_member_preferences',[f.club,false,false,false]);
@@ -92,7 +96,8 @@ test('page logging retries do not mutate DNF status, reject cross-book reuse, an
  await f.rpc(reader,'bookish_share_reading',[f.club,true]);assert.ok(!(await f.rpc(host,'bookish_reading_together',[f.club])).members.some(m=>'did_not_finish' in m));
 });
 test('all club tables and RPCs deny outsiders, and removed or banned readers lose access immediately',async()=>{
- for(const table of ['bookish_club_books','bookish_members','bookish_meetings','bookish_rsvps','bookish_bring_items','bookish_votes','bookish_vote_options','bookish_page_log','bookish_notifications'])assert.equal((await f.as(outside,`select * from ${table} where club_id=$1`,[f.club])).length,0,table);
+ for(const table of ['bookish_club_books','bookish_members','bookish_meetings','bookish_rsvps','bookish_votes','bookish_vote_options','bookish_page_log','bookish_notifications'])assert.equal((await f.as(outside,`select * from ${table} where club_id=$1`,[f.club])).length,0,table);
+ await assert.rejects(f.as(outside,'select * from bookish_bring_items'),/permission/i);
  const ids=(await f.q("select id from bookish_takes where club_id=$1 and not hidden limit 1",[f.club]));await assert.rejects(f.rpc(outside,'bookish_message_card',['take',ids[0].id]),/unavailable/i);
  await f.q('update bookish_profiles set banned_at=now() where id=$1',[other]);await assert.rejects(f.feed(other),/club|member|join/i);assert.equal((await f.as(other,'select * from bookish_notifications')).length,0);
  await f.q('update bookish_profiles set banned_at=null where id=$1',[other]);

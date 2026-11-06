@@ -1,33 +1,57 @@
 -- Additive to the staged 001 through 011 baseline. Do not apply with this PR.
 begin;
-alter table public.bookish_takes add column did_not_finish boolean not null default false;
+set local lock_timeout='5s';
+alter table public.bookish_takes add column if not exists did_not_finish boolean not null default false;
+-- Preserve the original values before any rewrite. No foreign key: this
+-- operator-only snapshot must survive deletion until Ted reviews retention.
+create table if not exists bookish_private.tea_migration_backup_20261105 (
+ id uuid primary key,anonymous boolean,signed_name text,spoiler_chapter int,
+ spoiler_page int,hidden boolean,reactions jsonb not null
+);
+alter table bookish_private.tea_migration_backup_20261105 enable row level security;
+revoke all on bookish_private.tea_migration_backup_20261105 from public,anon,authenticated,service_role;
+insert into bookish_private.tea_migration_backup_20261105
+ select t.id,t.anonymous,t.signed_name,t.spoiler_chapter,t.spoiler_page,t.hidden,
+ coalesce((select jsonb_agg(to_jsonb(r) order by r.user_id) from public.bookish_take_reactions r where r.take_id=t.id),'[]'::jsonb)
+ from public.bookish_takes t on conflict(id) do nothing;
+alter table public.bookish_takes add column if not exists legacy_length_hidden boolean not null default false;
 -- A legacy chapter has no reliable page translation. Seal it to the final
 -- page without relabeling the author's take as Didn't finish.
 update public.bookish_takes t set spoiler_page=greatest(t.spoiler_page,coalesce(b.pages,100000)),spoiler_chapter=null
 from public.bookish_books b where b.id=t.book_id and t.spoiler_chapter>0;
 -- Retire the signed projection, including historical signed names.
 update public.bookish_takes set anonymous=true,signed_name=null;
-update public.bookish_takes set hidden=true where length(body)>280;
-alter table public.bookish_takes add constraint bookish_tea_anonymous check(anonymous and signed_name is null);
-alter table public.bookish_takes add constraint bookish_tea_length check(hidden or length(body)<=280);
+update public.bookish_takes set legacy_length_hidden=true where length(body)>280;
+do $guard$ begin
+ if not exists(select 1 from pg_constraint where conrelid='public.bookish_takes'::regclass and conname='bookish_tea_anonymous') then
+  alter table public.bookish_takes add constraint bookish_tea_anonymous check(anonymous and signed_name is null) not valid;
+ end if;
+end $guard$;
+do $guard$ begin
+ if not exists(select 1 from pg_constraint where conrelid='public.bookish_takes'::regclass and conname='bookish_tea_length') then
+  alter table public.bookish_takes add constraint bookish_tea_length check(hidden or legacy_length_hidden or length(body)<=280) not valid;
+ end if;
+end $guard$;
 -- There is no RPC identity escape hatch, even for service moderation.
-drop function public.bookish_escalate_author(uuid,text,text);
-create table bookish_private.tea_post_events (
+drop function if exists public.bookish_escalate_author(uuid,text,text);
+create table if not exists bookish_private.tea_post_events (
  author_id uuid not null references public.bookish_profiles(id) on delete cascade,
  posted_at timestamptz not null default clock_timestamp()
 );
-create index bookish_tea_rate on bookish_private.tea_post_events(author_id,posted_at);
+create index if not exists bookish_tea_rate on bookish_private.tea_post_events(author_id,posted_at);
 alter table bookish_private.tea_post_events enable row level security;
 revoke all on bookish_private.tea_post_events from public,anon,authenticated,service_role;
 
-create function bookish_private.tea_verdict(p_club uuid,p_body text) returns text
+create or replace function bookish_private.tea_verdict(p_club uuid,p_body text) returns text
 language plpgsql stable security definer set search_path='' as $$
-declare normalized text;
+declare normalized text;phone_text text;
 begin
  normalized:=normalize(regexp_replace(p_body,'[[:cntrl:]​‌‍]','','g'),NFKC);
+ -- ISBN-13 runs are book metadata, not phone numbers.
+ phone_text:=regexp_replace(normalized,'\m97[89][0-9]{10}\M','','g');
  if normalized ~* '[[:alnum:]._%+\-]+@[[:alnum:].\-]+\.[[:alpha:]]{2,}'
- or normalized ~ '(\+?[0-9][ ()+.-]*){7,}'
- or normalized ~* '\m[0-9]{1,6}[[:alpha:]]?[[:space:]]+([[:alpha:]]+[[:space:]]+){1,5}(street|st|avenue|ave|road|rd|drive|dr|lane|ln|court|ct|boulevard|blvd|way|place|pl|terrace|circle)\M'
+ or phone_text ~ '(\m(\+?[0-9]{1,3}[ .-]?)?\(?[0-9]{3}\)?[ .-]?[0-9]{3}[ .-]?[0-9]{4}\M|\+[0-9]{10,15}\M)'
+ or normalized ~* '\m[0-9]{1,5}[[:alpha:]]?[[:space:]]+(?!(of|the|in|into|a|pages|chapters)\M)[[:alpha:]]+[[:space:]]+((?!(of|the|in|into|a|pages|chapters)\M)[[:alpha:]]+[[:space:]]+){0,2}(street|avenue|ave|road|rd|drive|lane|ln|boulevard|blvd|terrace)\M'
  then return 'blocked'; end if;
  return bookish_private.content_verdict(p_club,normalized);
 end $$;
@@ -39,6 +63,21 @@ begin
  if not new.anonymous or new.signed_name is not null then raise exception 'The Tea is anonymous.';end if;
  return new;
 end $$;
+-- A voluntary departure must not correlate anonymous posts with the member list.
+create or replace function bookish_private.can_view_take(p_take uuid) returns boolean language sql stable security definer set search_path='' as $$
+ with recursive chain as (
+  select t.id,t.parent_id,t.club_id,(t.hidden or t.legacy_length_hidden) hidden,0 depth from public.bookish_takes t where t.id=p_take
+  union all select t.id,t.parent_id,t.club_id,(t.hidden or t.legacy_length_hidden) hidden,c.depth+1 from public.bookish_takes t join chain c on c.parent_id=t.id where c.depth<10
+ )
+ select exists(select 1 from chain) and not exists(
+  select 1 from chain c left join bookish_private.take_authors a on a.take_id=c.id
+  left join public.bookish_profiles p on p.id=a.author_id
+  where c.hidden or not bookish_private.is_member(c.club_id) or a.author_id is null or p.banned_at is not null
+   or exists(select 1 from bookish_private.hidden_takes h where h.take_id=c.id and h.user_id=auth.uid())
+   or exists(select 1 from bookish_private.actor_blocks ab where ab.user_id=auth.uid() and ab.author_id=a.author_id)
+   or exists(select 1 from bookish_private.blocks b where b.user_id=auth.uid() and b.take_id=c.id)
+ )
+$$;
 create or replace function bookish_private.can_unseal(p_take uuid) returns boolean language sql stable security definer set search_path='' as $$
  select coalesce((select case when t.did_not_finish then coalesce(l.finished,false)
  else coalesce(l.finished,false) or coalesce(l.page,0)>=t.spoiler_page end
@@ -48,7 +87,7 @@ create or replace function bookish_private.can_unseal(p_take uuid) returns boole
  where l.club_id=t.club_id and l.book_id=t.book_id and l.user_id=auth.uid() and l.logged_at>=cb.reading_started_at
  order by l.logged_at desc,l.id desc limit 1) l on true where t.id=p_take),false)
 $$;
-create function public.bookish_create_take(p_club uuid,p_book text,p_body text,p_page int default null,p_dnf boolean default false,p_parent uuid default null)
+create or replace function public.bookish_create_take(p_club uuid,p_book text,p_body text,p_page int default null,p_dnf boolean default false,p_parent uuid default null)
 returns jsonb language plpgsql security definer set search_path='' as $$
 declare tid uuid;parent public.bookish_takes;total int;depth int;
 begin
@@ -80,7 +119,7 @@ begin
  if p_chapter is not null then raise exception 'Choose a page marker.';end if;
  return public.bookish_create_take(p_club,p_book,p_body,p_page,false,p_parent);
 end $$;
-create function public.bookish_tea_feed(p_club uuid,p_book text,p_parent uuid default null,p_limit int default 30,p_offset int default 0)
+create or replace function public.bookish_tea_feed(p_club uuid,p_book text,p_parent uuid default null,p_limit int default 30,p_offset int default 0)
 returns jsonb language plpgsql stable security definer set search_path='' as $$
 declare result jsonb;
 begin
@@ -103,7 +142,7 @@ language sql stable security definer set search_path='' as $$
  select x.id,x.parent_id,x.body,true,null::text,x.page,null::int,x.sealed,false,jsonb_build_object('sip',x.sips),case when x.sipped then 'sip' end,x.reply_count,x.created_at
  from jsonb_to_recordset(public.bookish_tea_feed(p_club,p_book,p_parent,p_limit,p_offset)) x(id uuid,parent_id uuid,body text,page int,sealed boolean,sips bigint,sipped boolean,reply_count bigint,created_at timestamptz)
 $$;
-create function public.bookish_sip(p_take uuid,p_sip boolean default true) returns void language plpgsql security definer set search_path='' as $$
+create or replace function public.bookish_sip(p_take uuid,p_sip boolean default true) returns void language plpgsql security definer set search_path='' as $$
 begin
  perform bookish_private.require_terms();
  if not bookish_private.can_interact(p_take) then raise exception 'This conversation is unavailable or sealed.';end if;
@@ -123,4 +162,10 @@ grant execute on function bookish_private.active_user(),bookish_private.is_membe
 revoke all on function public.bookish_create_take(uuid,text,text,int,boolean,uuid),public.bookish_tea_feed(uuid,text,uuid,int,int),public.bookish_sip(uuid,boolean) from public,anon,authenticated,service_role;
 grant execute on function public.bookish_create_take(uuid,text,text,int,boolean,uuid),public.bookish_tea_feed(uuid,text,uuid,int,int),public.bookish_sip(uuid,boolean) to authenticated;
 revoke all on function bookish_private.tea_verdict(uuid,text) from public,anon,authenticated,service_role;
+commit;
+-- Release the ADD CONSTRAINT lock before scanning historical rows.
+begin;
+set local lock_timeout='5s';
+alter table public.bookish_takes validate constraint bookish_tea_anonymous;
+alter table public.bookish_takes validate constraint bookish_tea_length;
 commit;
