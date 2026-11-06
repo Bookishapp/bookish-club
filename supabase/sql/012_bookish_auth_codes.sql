@@ -26,27 +26,33 @@ revoke all on public.bookish_auth_code_failures from public, anon, authenticated
 
 -- Preserve 010's shared limits, counting both forms of start together. The
 -- short-only hourly/daily limits and failure budget never gate legacy starts.
+-- NULL means no trusted client IP. Retain email accounting without grouping
+-- unrelated callers into a shared fallback IP or taking a shared IP lock.
+alter table bookish_private.auth_attempts alter column ip_hash drop not null;
 create or replace function public.bookish_auth_throttle(
   p_email text, p_ip text, p_action text
 ) returns boolean language plpgsql security definer set search_path = '' as $$
 begin
-  if p_email is null or p_ip is null or p_action is null
+  if p_email is null or p_action is null
     or p_action not in ('start','start_short','verify','password','refresh','logout') then
     return false;
   end if;
-  perform pg_advisory_xact_lock(hashtextextended(p_ip,42));
+  if p_ip is not null then
+    perform pg_advisory_xact_lock(hashtextextended(p_ip,42));
+  end if;
   perform pg_advisory_xact_lock(hashtextextended(p_email,43));
   delete from bookish_private.auth_attempts where created_at < now() - interval '30 days';
   delete from public.bookish_auth_code_failures where created_at <= clock_timestamp() - interval '24 hours';
-  if (select count(*) from bookish_private.auth_attempts
+  if p_ip is not null and (select count(*) from bookish_private.auth_attempts
     where ip_hash = p_ip and created_at > now() - interval '1 hour') >= 100 then
     return false;
   end if;
   if p_action in ('start','start_short') and (
     (select count(*) from bookish_private.auth_attempts where email_hash = p_email
       and action in ('start','start_short') and created_at > now() - interval '1 hour') >= 5
-    or (select count(*) from bookish_private.auth_attempts where ip_hash = p_ip
+    or (p_ip is not null and (select count(*) from bookish_private.auth_attempts where ip_hash = p_ip
       and action in ('start','start_short') and created_at > now() - interval '1 hour') >= 15
+    )
   ) then return false; end if;
   if p_action = 'start_short' and (
     (select count(*) from public.bookish_auth_code_failures where email_hash = p_email

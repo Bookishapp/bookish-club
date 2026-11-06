@@ -1,4 +1,5 @@
 // Bookish-only email auth. Dependencies are injectable for local security tests.
+import { isIP } from "node:net";
 type User = { id: string; app_metadata?: { app?: string } };
 type Session = {
   access_token: string;
@@ -16,7 +17,11 @@ type ShortCode = {
 type Dependencies = {
   publicKey: string;
   configured: () => Promise<boolean>;
-  throttle: (email: string, ip: string, action: string) => Promise<boolean>;
+  throttle: (
+    email: string,
+    ip: string | null,
+    action: string,
+  ) => Promise<boolean>;
   lookup: (email: string) => Promise<{ id: string; bookish: boolean } | null>;
   create: (email: string) => Promise<unknown>;
   generate: (email: string) => Promise<string>;
@@ -64,6 +69,21 @@ function constantTimeEqual(a: string, b: string): boolean {
     difference |= a.charCodeAt(i) ^ b.charCodeAt(i);
   }
   return difference === 0;
+}
+function clientIP(req: Request): string | null {
+  // Supabase documents X-Forwarded-For in this Edge Functions example:
+  // https://supabase.com/docs/guides/functions/examples/cloudflare-turnstile
+  // Accept one valid address only. The docs do not guarantee a trusted hop in
+  // a forwarded chain, so ambiguous chains and absent/invalid IPs skip IP limits.
+  const value = req.headers.get("x-forwarded-for")?.trim() || "";
+  if (value.includes("%")) return null;
+  const version = isIP(value);
+  if (version === 4) return value;
+  // Normalize equivalent IPv6 spellings to one throttle key.
+  if (version === 6) {
+    return new URL(`http://[${value}]/`).hostname.slice(1, -1);
+  }
+  return null;
 }
 export async function bookishAuthHandler(
   req: Request,
@@ -126,11 +146,7 @@ export async function bookishAuthHandler(
       message: "Enter the code from your email.",
     });
   }
-  // Hosted Supabase sets this at ingress. X-Forwarded-For can preserve a
-  // caller-supplied prefix. Without the trusted header, share a fallback bucket.
-  // https://supabase.com/docs/guides/api/query-plans#production-use-with-pre-request-protection
-  // https://developers.cloudflare.com/fundamentals/reference/http-headers/#x-forwarded-for
-  const ip = req.headers.get("cf-connecting-ip")?.trim() || "unknown";
+  const ip = clientIP(req);
   const rateLimited = () =>
     reply(429, {
       ok: false,
@@ -141,7 +157,7 @@ export async function bookishAuthHandler(
     if (
       !await deps.throttle(
         emailHash,
-        await hash(`bookish:${ip}`),
+        ip === null ? null : await hash(`bookish:${ip}`),
         action === "start" && b.short === true ? "start_short" : String(action),
       )
     ) {

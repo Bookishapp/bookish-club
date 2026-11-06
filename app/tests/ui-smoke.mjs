@@ -209,6 +209,23 @@ input(m,'#account-email [name=email]','reader@example.test');submit(m,'#account-
 await until(()=>m.document.querySelector('#account-email .form-message').textContent);
 assert.equal(m.document.querySelector('#account-email .form-message').textContent,'Email codes are not available right now. Try again soon.');
 assert.ok(!m.document.querySelector('#account-code'));noMail.window.close();
+for(const action of ['start','verify','password']){
+ const limitedAPI=createFixtureAPI(),respond=limitedAPI.respond;
+ limitedAPI.respond=async(url,body,method)=>url.endsWith('/bookish-auth')&&body.action===action?{$status:429,ok:false,message:'Please wait a little before trying again.'}:respond(url,body,method);
+ const limited=await launch(true,false,false,limitedAPI),l=limited.window;
+ click(l,'[data-tab=me]');click(l,'#sign-in');await until(()=>l.document.querySelector('#account-email'));
+ let selector='#account-email';
+ if(action==='password'){
+  click(l,'#use-password');selector='#account-password';
+  input(l,`${selector} [name=email]`,'reader@example.test');input(l,`${selector} [name=password]`,'private-password');
+ }else{
+  input(l,'#account-email [name=email]','reader@example.test');
+  if(action==='verify'){submit(l,'#account-email');await until(()=>l.document.querySelector('#account-code'));selector='#account-code';input(l,`${selector} [name=token]`,'0123');}
+ }
+ submit(l,selector);await until(()=>l.document.querySelector(`${selector} .form-message`).textContent);
+ assert.equal(l.document.querySelector(`${selector} .form-message`).textContent,'A few too many tries. Let this settle, then request a fresh code.',`${action} displays calm 429 copy`);
+ assert.ok(!l.document.querySelector('#account-terms'));limited.window.close();
+}
 const native=await launch(true,true),n=native.window;
 locationAllowed=false;click(n,'#locate');await until(()=>n.document.querySelector('#toast').textContent.includes('Pick a city'));
 assert.ok(n.document.querySelector('#city'));

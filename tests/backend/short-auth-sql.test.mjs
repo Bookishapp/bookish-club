@@ -202,3 +202,27 @@ test('rerunning 012 preserves an active daily lockout', async () => {
   assert.equal(await throttle(), false);
   assert.equal(await guardedPut(), false);
 });
+
+
+test('no-IP requests retain per-email start, verification, and daily failure limits', async () => {
+  for (let i = 0; i < 3; i++) assert.equal(await throttle('start_short', null), true);
+  assert.equal(await throttle('start_short', null), false);
+  for (let i = 0; i < 2; i++) assert.equal(await throttle('start', null), true);
+  assert.equal(await throttle('start', null), false);
+  for (let i = 0; i < 10; i++) assert.equal(await throttle(i % 2 ? 'verify' : 'password', null), true);
+  assert.equal(await throttle('verify', null), false);
+  assert.equal(await throttle('password', null), false);
+  await db.exec('truncate bookish_private.auth_attempts');
+  await db.query(`insert into public.bookish_auth_code_failures(email_hash)
+    select $1 from generate_series(1,10)`, [emailHash]);
+  assert.equal(await throttle('start_short', null), false);
+  assert.equal(await throttle('start', null), true, 'Live 1.1 remains available during short-code lockout');
+});
+
+test('a known IP still has the 100-call hourly cap across different users', async () => {
+  for (let i = 0; i < 100; i++) {
+    assert.equal((await db.query('select public.bookish_auth_throttle($1,$2,$3) as ok', [`reader-${i}`, 'known-ip', 'refresh'])).rows[0].ok, true);
+  }
+  assert.equal(await throttle('refresh', 'known-ip'), false);
+  assert.equal(await throttle('refresh', null), true, 'An exhausted known IP cannot block a caller without an IP');
+});

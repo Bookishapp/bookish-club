@@ -10,7 +10,7 @@ let publicKey=import.meta.env.VITE_BOOKISH_PUBLISHABLE_KEY||import.meta.env.VITE
 const client=new AccountClient(async(path,body,token,method='POST')=>{
  const response=await requestJSON(base+path,{method,body,headers:{...(token?{Authorization:`Bearer ${token}`} :{}),...(publicKey?{apikey:publicKey}:{})}});
  if(response.data?.public_key)publicKey=response.data.public_key;
- if(!response.ok||response.data?.ok===false)throw Object.assign(Error(response.data?.error==='rate_limited'?'A few too many tries. Let this settle, then request a fresh code.':path.includes('bookish-auth')&&body?.action==='start'&&response.status===503?'Email codes are not available right now. Try again soon.':path.includes('bookish-auth')?'We could not complete sign-in. Check your code and connection, then try again.':'We could not save that change. Check your connection and club access, then try again.'),{status:response.status});
+ if(!response.ok||response.data?.ok===false)throw Object.assign(Error(response.status===429||response.data?.error==='rate_limited'?'A few too many tries. Let this settle, then request a fresh code.':path.includes('bookish-auth')&&body?.action==='start'&&response.status===503?'Email codes are not available right now. Try again soon.':path.includes('bookish-auth')?'We could not complete sign-in. Check your code and connection, then try again.':'We could not save that change. Check your connection and club access, then try again.'),{status:response.status});
  return response.data;
 });
 type Page='auth'|'terms'|'create'|'invite'|'home'|'settings'|'delete'|'report'|'pending';

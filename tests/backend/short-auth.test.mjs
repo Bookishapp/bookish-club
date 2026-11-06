@@ -4,12 +4,15 @@ import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { stripTypeScriptTypes } from 'node:module';
 import vm from 'node:vm';
+import { isIP } from 'node:net';
+import { PGlite } from '@electric-sql/pglite';
+import { initShortAuthDb } from './support/short-auth-db.mjs';
 import { bookishAuthHandler } from '../../supabase/functions/_shared/bookish-auth.ts';
 
 const email = 'reader@example.test';
 const request = body => new Request('https://local.test/auth', {
   method: 'POST',
-  headers: { origin: 'capacitor://localhost', 'cf-connecting-ip': '192.0.2.1' },
+  headers: { origin: 'capacitor://localhost', 'x-forwarded-for': '192.0.2.1' },
   body: JSON.stringify({ email, ...body }),
 });
 const digest = text => createHash('sha256').update(text).digest('hex');
@@ -68,8 +71,8 @@ test('short start sends exactly four digits and stores a salted hash without pla
 
 async function isolatedHandler(globals) {
   const source = await readFile(new URL('../../supabase/functions/_shared/bookish-auth.ts', import.meta.url), 'utf8');
-  return vm.runInNewContext(stripTypeScriptTypes(source).replace('export async function', 'async function') + '\nbookishAuthHandler;', {
-    crypto, Date, Request, Response, TextEncoder, ...globals,
+  return vm.runInNewContext(stripTypeScriptTypes(source).replace(/import \{ isIP \} from "node:net";/, '').replace('export async function', 'async function') + '\nbookishAuthHandler;', {
+    crypto, Date, Request, Response, TextEncoder, URL, isIP, ...globals,
   });
 }
 
@@ -272,27 +275,65 @@ test('live 1.1 six-digit hosted codes still start and verify without short-code 
   assert.deepEqual(f.synced, ['access']);
 });
 
-test('rotating forged forwarding headers cannot change the hosted IP throttle key', async () => {
+test('a documented single-address Edge Functions header keys the IP throttle', async () => {
   const f = fixture();
-  for (const forged of ['198.51.100.1', '198.51.100.2, 203.0.113.7']) {
+  for (const ip of ['192.0.2.9', '2001:db8::1', '2001:0DB8:0:0:0:0:0:1']) {
     const req = request({ action: 'start' });
-    req.headers.set('x-forwarded-for', forged);
-    req.headers.set('x-real-ip', forged);
-    req.headers.set('cf-connecting-ip', '192.0.2.9');
+    req.headers.set('x-forwarded-for', ` ${ip} `);
+    req.headers.set('cf-connecting-ip', '198.51.100.1');
+    req.headers.set('x-real-ip', '198.51.100.2');
     assert.equal((await bookishAuthHandler(req, f.deps)).status, 200);
   }
-  assert.deepEqual(f.throttles.map(t => t[1]), [digest('bookish:192.0.2.9'), digest('bookish:192.0.2.9')]);
+  assert.deepEqual(f.throttles.map(t => t[1]), ['192.0.2.9', '2001:db8::1', '2001:db8::1'].map(ip => digest(`bookish:${ip}`)));
 });
 
-test('a missing gateway IP uses a shared bucket regardless of forged forwarding headers', async () => {
+test('a missing documented IP header skips IP throttling and ignores other headers', async () => {
   const f = fixture();
   for (const forged of ['198.51.100.1', '198.51.100.2']) {
     const req = request({ action: 'start' });
-    req.headers.delete('cf-connecting-ip');
-    req.headers.set('x-forwarded-for', forged);
+    req.headers.delete('x-forwarded-for');
+    req.headers.set('cf-connecting-ip', forged);
+    req.headers.set('x-real-ip', forged);
     assert.equal((await bookishAuthHandler(req, f.deps)).status, 200);
   }
-  assert.deepEqual(f.throttles.map(t => t[1]), [digest('bookish:unknown'), digest('bookish:unknown')]);
+  assert.deepEqual(f.throttles.map(t => t[1]), [null, null]);
+  assert.ok(f.throttles.every(t => t[0] === digest(`bookish:${email}`)), 'Email throttling still runs');
+});
+
+test('malformed or ambiguous IP headers skip the IP limit without a shared fallback', async () => {
+  const f = fixture();
+  const invalid = ['', 'unknown', '999.0.2.1', '192.0.2.1:443', '192.0.2', '01.2.3.4', '[2001:db8::1]', '2001:db8:::1', 'fe80::1%eth0', 'for=192.0.2.1', '198.51.100.1, 192.0.2.9', ',192.0.2.9', '192.0.2.9,'];
+  for (const ip of invalid) {
+    const req = request({ action: 'start' });
+    req.headers.set('x-forwarded-for', ip);
+    assert.equal((await bookishAuthHandler(req, f.deps)).status, 200, ip);
+  }
+  assert.deepEqual(f.throttles.map(t => t[1]), invalid.map(() => null));
+});
+
+test('120 different users without IPs can start and verify short and live 1.1 codes through the real SQL throttle', async () => {
+  const db = new PGlite();
+  try {
+    await initShortAuthDb(db);
+    const f = fixture({ throttle: async (email, ip, action) => (await db.query(
+      'select public.bookish_auth_throttle($1,$2,$3) as ok', [email, ip, action],
+    )).rows[0].ok });
+    for (let user = 0; user < 120; user++) {
+      const recipient = `reader${user}@example.test`, short = user % 2 === 0;
+      const call = body => {
+        const req = request({ email: recipient, ...body });
+        req.headers.delete('x-forwarded-for');
+        return bookishAuthHandler(req, f.deps);
+      };
+      assert.equal((await call({ action: 'start', short })).status, 200, recipient);
+      const response = await call({ action: 'verify', token: f.sent.at(-1).code });
+      assert.equal(response.status, 200, recipient);
+      assert.equal((await response.json()).session.access_token, 'access');
+    }
+    const { rows } = await db.query('select count(*)::int as total, count(ip_hash)::int as ips from bookish_private.auth_attempts');
+    assert.deepEqual(rows, [{ total: 240, ips: 0 }]);
+    assert.equal(f.synced.length, 120);
+  } finally { await db.close(); }
 });
 
 test('missing, foreign, and Bookish identities receive the same failed-verification response', async () => {
