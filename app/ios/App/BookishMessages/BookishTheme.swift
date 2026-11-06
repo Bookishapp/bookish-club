@@ -29,7 +29,7 @@ enum BookishTheme {
     static var green: UIColor { hex(0x1D5A46) }
     static var deepGreen: UIColor { hex(0x133B31) }
     static var pink: UIColor { color("Pink", 0xF4A6BF) }
-    static var butter: UIColor { color("Butter", 0xECB74E) }
+    static var butter: UIColor { hex(0xF9D865) }
     static var mint: UIColor { color("Mint", 0xDCEBE1) }
     static var sky: UIColor { color("Sky", 0xF3D9D9) }
     static var lilac: UIColor { color("Lilac", 0xFBE1E8) }
@@ -76,10 +76,10 @@ enum BookishTheme {
         }
         return font(style, scalable: false).withSize(size)
     }
-    static func paperBackground(in view: UIView) {
-        let paper = UIImageView(image: UIImage(named: "BookishPaper"))
+    static func paperBackground(in view: UIView, oxblood: Bool = false) {
+        let paper = UIImageView(image: UIImage(named: oxblood ? "BookishOxblood" : "BookishPaper"))
         paper.contentMode = .scaleAspectFill
-        paper.alpha = 0.55
+        paper.alpha = oxblood ? 1 : 0.45
         paper.clipsToBounds = true
         paper.isUserInteractionEnabled = false
         paper.isAccessibilityElement = false
@@ -99,13 +99,13 @@ enum BookishTheme {
         switch kind { case .rsvp: return "Club night"; case .vote: return "Our next read"; case .bookmarks: return "Reading together" }
     }
     static func label(for choice: RSVPChoice) -> String {
-        switch choice { case .yes: return "Yes"; case .maybe: return "Maybe"; case .cant: return "Can't" }
+        switch choice { case .yes: return "I'm in"; case .maybe: return "Maybe"; case .cant: return "Can't" }
     }
     /// Approved square check, drawn as native vector geometry at every display scale.
     static func selectionMark(selected: Bool) -> UIImage {
         UIGraphicsImageRenderer(size: CGSize(width: 24, height: 24)).image { _ in
             let box = UIBezierPath(roundedRect: CGRect(x: 1, y: 1, width: 22, height: 22), cornerRadius: 6)
-            if selected { wine.setFill(); box.fill() }
+            if selected { green.setFill(); box.fill() }
             else { line.setStroke(); box.lineWidth = 1.5; box.stroke() }
             if selected {
                 let tick = UIBezierPath(); tick.move(to: CGPoint(x: 6, y: 12))
@@ -117,6 +117,17 @@ enum BookishTheme {
     }
     /// Bundled covers correspond only to the existing sample books. Unknown books stay text-only.
     static func cover(for book: CandidateBook) -> UIImage? {
+        let classics = ["emma": "Emma", "wuthering": "Wuthering Heights", "anne": "Anne of Green Gables"]
+        if classics[book.id] == book.title {
+            let colors: [String: UInt32] = ["emma": 0xF8E1E8, "wuthering": 0xC7B2E4, "anne": 0xF49A60]
+            return UIGraphicsImageRenderer(size: CGSize(width: 100, height: 148)).image { _ in
+                hex(colors[book.id]!).setFill(); UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 100, height: 148), cornerRadius: 4).fill()
+                ink.withAlphaComponent(0.12).setFill(); UIBezierPath(rect: CGRect(x: 0, y: 0, width: 8, height: 148)).fill()
+                (book.title as NSString).draw(in: CGRect(x: 15, y: 9, width: 79, height: 76), withAttributes: [.font: font(.heading, scalable: false).withSize(book.id == "wuthering" ? 14 : 17), .foregroundColor: ink])
+                let symbol = book.id == "emma" ? "cup.and.saucer" : book.id == "wuthering" ? "sparkle" : "house"
+                UIImage(systemName: symbol)?.withTintColor(ink, renderingMode: .alwaysOriginal).draw(in: CGRect(x: 37, y: 109, width: 27, height: 27))
+            }
+        }
         let assets = ["pride": ("Pride and Prejudice", "Jane Austen"),
                       "frankenstein": ("Frankenstein", "Mary Shelley"),
                       "jane-eyre": ("Jane Eyre", "Charlotte Brontë")]
@@ -127,6 +138,12 @@ enum BookishTheme {
     static func meetingDay(_ state: MessageState) -> String? {
         ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
             .first { state.meetingTitle.localizedCaseInsensitiveContains($0) }.map { String($0.prefix(3)).uppercased() }
+    }
+    static func editorArt(for kind: CardKind) -> UIImage {
+        let full = art(for: kind)
+        guard let source = full.cgImage,
+              let crop = source.cropping(to: CGRect(x: 0, y: 0, width: source.width, height: Int(CGFloat(source.height) * 0.55))) else { return full }
+        return UIImage(cgImage: crop, scale: full.scale, orientation: full.imageOrientation)
     }
     static func art(for kind: CardKind) -> UIImage {
         let name: String

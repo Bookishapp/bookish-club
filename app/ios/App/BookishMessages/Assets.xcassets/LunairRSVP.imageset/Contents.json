@@ -1,8 +1,8 @@
 {
   "images": [
     {
-      "idiom": "universal",
-      "filename": "LunairRSVP.png"
+      "filename": "LunairRSVP.png",
+      "idiom": "universal"
     }
   ],
   "info": {

@@ -31,11 +31,11 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = BookishTheme.cream
-        BookishTheme.paperBackground(in: view)
+        BookishTheme.paperBackground(in: view, oxblood: true)
         let scroll = UIScrollView(); scroll.keyboardDismissMode = .interactive
         scroll.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(scroll)
-        content.axis = .vertical; content.spacing = 14; content.translatesAutoresizingMaskIntoConstraints = false
+        content.axis = .vertical; content.spacing = 6; content.translatesAutoresizingMaskIntoConstraints = false
         scroll.addSubview(content)
         NSLayoutConstraint.activate([
             scroll.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
@@ -44,7 +44,7 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
             scroll.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             content.leadingAnchor.constraint(equalTo: scroll.contentLayoutGuide.leadingAnchor, constant: 20),
             content.trailingAnchor.constraint(equalTo: scroll.contentLayoutGuide.trailingAnchor, constant: -20),
-            content.topAnchor.constraint(equalTo: scroll.contentLayoutGuide.topAnchor, constant: 16),
+            content.topAnchor.constraint(equalTo: scroll.contentLayoutGuide.topAnchor, constant: 8),
             content.bottomAnchor.constraint(equalTo: scroll.contentLayoutGuide.bottomAnchor, constant: -24),
             content.widthAnchor.constraint(equalTo: scroll.frameLayoutGuide.widthAnchor, constant: -40)
         ])
@@ -52,8 +52,16 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         wordmark.contentMode = .scaleAspectFit
         wordmark.accessibilityLabel = "Bookish"; wordmark.isAccessibilityElement = true
         wordmark.widthAnchor.constraint(equalToConstant: 112).isActive = true
-        wordmark.heightAnchor.constraint(equalToConstant: 38).isActive = true
-        let header = UIStackView(arrangedSubviews: [wordmark, UIView()])
+        wordmark.heightAnchor.constraint(equalToConstant: 18).isActive = true
+        let menu = UIButton(type: .system)
+        menu.setImage(UIImage(systemName: "ellipsis.circle.fill"), for: .normal)
+        menu.tintColor = BookishTheme.card
+        menu.accessibilityLabel = "Choose a Bookish card"
+        menu.showsMenuAsPrimaryAction = true
+        menu.menu = UIMenu(children: ["RSVP", "Book vote", "Bookmarks", "Stickers"].enumerated().map { index, title in
+            UIAction(title: title) { [weak self] _ in self?.mode.selectedSegmentIndex = index; self?.changeKind() }
+        })
+        let header = UIStackView(arrangedSubviews: [wordmark, UIView(), menu])
         header.axis = .horizontal
         content.addArrangedSubview(header)
         mode.selectedSegmentIndex = 0; mode.selectedSegmentTintColor = BookishTheme.wine
@@ -62,12 +70,12 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         mode.heightAnchor.constraint(greaterThanOrEqualToConstant: 40).isActive = true
         mode.setTitleTextAttributes([.foregroundColor: BookishTheme.wine, .font: BookishTheme.font(.caption)], for: .normal)
         mode.addTarget(self, action: #selector(changeKind), for: .valueChanged)
-        content.addArrangedSubview(mode)
+        mode.isHidden = true; content.addArrangedSubview(mode)
         artView.contentMode = .scaleAspectFit; artView.isAccessibilityElement = false
-        artView.widthAnchor.constraint(equalToConstant: 88).isActive = true
-        artView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        artView.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        artView.heightAnchor.constraint(equalToConstant: 52).isActive = true
         configure(detailLabel, style: .title)
-        let hero = UIStackView(arrangedSubviews: [detailLabel, artView])
+        let hero = UIStackView(arrangedSubviews: [artView, detailLabel])
         hero.axis = .horizontal; hero.spacing = 8; hero.alignment = .center
         detailLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         content.addArrangedSubview(hero)
@@ -92,9 +100,9 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         content.addArrangedSubview(label("Your name on the card", style: .caption))
         content.addArrangedSubview(nameField)
         content.addArrangedSubview(summaryCard)
-        style(addButton, primary: true); addButton.setTitle("Add to message", for: .normal)
+        style(addButton, primary: true); addButton.setTitle("Send to the chat", for: .normal)
         addButton.addTarget(self, action: #selector(prepareMessage), for: .touchUpInside)
-        content.addArrangedSubview(addButton)
+        content.insertArrangedSubview(addButton, at: 4)
         configure(statusLabel, style: .caption)
         content.addArrangedSubview(statusLabel)
         style(newButton, primary: false); newButton.setTitle("Start a new card", for: .normal)
@@ -243,16 +251,16 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         } else {
             content.removeArrangedSubview(stickerPicker.view); stickerPicker.view.removeFromSuperview()
         }
-        artView.image = BookishTheme.art(for: state.kind)
+        artView.image = BookishTheme.editorArt(for: state.kind)
         let heading = state.kind == .rsvp ? state.meetingTitle
-            : state.kind == .vote ? "Pick the next book." : "Reading together"
+            : state.kind == .vote ? "Next book vote" : "Reading together"
         let detail = state.kind == .rsvp ? "\(state.meetingDetail)\n\(state.readingTitle)"
-            : state.kind == .vote ? "Everyone gets a say. Choose a book to share with the chat."
+            : state.kind == .vote ? ""
             : "\(state.readingTitle)\nRead at your own pace."
-        let heroText = NSMutableAttributedString(string: heading + "\n", attributes: [
-            .font: BookishTheme.font(.title), .foregroundColor: BookishTheme.ink])
+        let heroText = NSMutableAttributedString(string: heading + (detail.isEmpty ? "" : "\n"), attributes: [
+            .font: BookishTheme.font(.title), .foregroundColor: BookishTheme.card])
         heroText.append(NSAttributedString(string: detail, attributes: [
-            .font: BookishTheme.font(.caption), .foregroundColor: BookishTheme.muted]))
+            .font: BookishTheme.font(.caption), .foregroundColor: BookishTheme.cream]))
         detailLabel.attributedText = heroText
         let memberLines = state.responses.map { member -> String in
             switch state.kind {
@@ -270,7 +278,10 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         choices.layer.cornerRadius = 14
         choices.layer.borderWidth = state.kind == .vote ? 1 : 0
         choices.layer.borderColor = BookishTheme.line.cgColor
-        choices.spacing = state.kind == .vote ? 0 : 10
+        choices.spacing = state.kind == .vote ? 8 : 10
+        choices.axis = state.kind == .vote ? .horizontal : .vertical
+        choices.distribution = state.kind == .vote ? .fillEqually : .fill
+        addButton.setTitle(state.kind == .vote ? "Send vote to the chat" : "Send to the chat", for: .normal)
         summaryCard.isHidden = state.responses.isEmpty
         choices.arrangedSubviews.forEach { choices.removeArrangedSubview($0); $0.removeFromSuperview() }
         switch state.kind {
@@ -294,6 +305,7 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         addButton.isEnabled = editing && !invalidSelection
         mode.isEnabled = editing; newButton.isEnabled = editing
         nameField.isEnabled = editing; pageField.isEnabled = editing; choices.isUserInteractionEnabled = editing
+        statusLabel.textColor = BookishTheme.card
         statusLabel.text = invalidSelection ? "Start a new card to continue." : pending == nil
             ? "Sample club details. Add your response, then tap Send in Messages."
             : "Ready in Messages. Tap Send to share, or remove the draft to keep editing."
@@ -357,7 +369,7 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
     }
     private func style(_ button: UIButton, primary: Bool) {
         var config = UIButton.Configuration.filled()
-        config.baseBackgroundColor = primary ? BookishTheme.wine : BookishTheme.card
+        config.baseBackgroundColor = primary ? BookishTheme.green : BookishTheme.card
         config.baseForegroundColor = primary ? BookishTheme.card : BookishTheme.wine
         config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
             var result = incoming; result.font = BookishTheme.font(.button); return result
@@ -383,7 +395,7 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
             let titleFont = BookishTheme.font(.heading).withSize(UIFontMetrics(forTextStyle: .headline).scaledValue(for: 16))
             let styled = NSMutableAttributedString(string: lines[0], attributes: [.font: titleFont, .foregroundColor: BookishTheme.ink])
             styled.append(NSAttributedString(string: "\n" + lines.dropFirst().joined(separator: "\n"), attributes: [
-                .font: BookishTheme.font(.caption), .foregroundColor: BookishTheme.muted]))
+                .font: BookishTheme.font(.caption), .foregroundColor: BookishTheme.cream]))
             config.titleTextAttributesTransformer = nil
             config.attributedTitle = AttributedString(styled)
         } else { config.title = title }
@@ -394,34 +406,34 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
     }
     private func bookChoice(_ book: CandidateBook, selected: Bool) -> UIButton {
         let button = UIButton(type: .custom)
-        button.backgroundColor = selected ? BookishTheme.lilac : .clear
-        button.layer.cornerRadius = 12
-        let title = label(book.title, style: .heading)
-        title.font = BookishTheme.font(.heading).withSize(UIFontMetrics(forTextStyle: .headline).scaledValue(for: 17))
-        let author = label(book.author, style: .caption); author.textColor = BookishTheme.muted
-        let description = label(book.reason, style: .caption); description.textColor = BookishTheme.muted
-        let text = UIStackView(arrangedSubviews: [title, author, description])
-        text.axis = .vertical; text.spacing = 3
-        let check = UIImageView(image: BookishTheme.selectionMark(selected: selected))
-        check.widthAnchor.constraint(equalToConstant: 24).isActive = true
-        check.heightAnchor.constraint(equalToConstant: 24).isActive = true
-        let row = UIStackView(); row.axis = .horizontal; row.spacing = 11; row.alignment = .center
-        if let image = BookishTheme.cover(for: book) {
-            let cover = UIImageView(image: image); cover.contentMode = .scaleAspectFill
-            cover.clipsToBounds = true; cover.layer.cornerRadius = 3
-            cover.widthAnchor.constraint(equalToConstant: 40).isActive = true
-            cover.heightAnchor.constraint(equalToConstant: 60).isActive = true
-            row.addArrangedSubview(cover)
-        }
-        row.addArrangedSubview(text); row.addArrangedSubview(check)
-        row.isUserInteractionEnabled = false; row.translatesAutoresizingMaskIntoConstraints = false
-        button.addSubview(row)
+        button.backgroundColor = .clear
+        let title = label(book.title, style: .button); title.textAlignment = .center
+        title.font = BookishTheme.font(.button).withSize(12)
+        title.numberOfLines = 2; title.adjustsFontSizeToFitWidth = true; title.minimumScaleFactor = 0.8
+        title.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        let reason = label(book.reason, style: .caption); reason.textAlignment = .center
+        reason.numberOfLines = 2; reason.adjustsFontSizeToFitWidth = true; reason.minimumScaleFactor = 0.8
+        reason.heightAnchor.constraint(equalToConstant: 28).isActive = true
+        reason.font = BookishTheme.font(.caption).withSize(10); reason.textColor = BookishTheme.wine
+        let cover = UIImageView(image: BookishTheme.cover(for: book)); cover.contentMode = .scaleAspectFit
+        cover.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        let check = UIImageView(image: UIImage(systemName: selected ? "checkmark.circle.fill" : "circle"))
+        check.tintColor = BookishTheme.green; check.contentMode = .scaleAspectFit
+        check.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        let coverBox = UIView(); coverBox.heightAnchor.constraint(equalToConstant: 72).isActive = true
+        cover.translatesAutoresizingMaskIntoConstraints = false; check.translatesAutoresizingMaskIntoConstraints = false
+        coverBox.addSubview(cover); coverBox.addSubview(check)
+        NSLayoutConstraint.activate([cover.centerXAnchor.constraint(equalTo: coverBox.centerXAnchor), cover.widthAnchor.constraint(equalToConstant: 60), cover.topAnchor.constraint(equalTo: coverBox.topAnchor), check.trailingAnchor.constraint(equalTo: coverBox.trailingAnchor, constant: -6), check.bottomAnchor.constraint(equalTo: coverBox.bottomAnchor), check.widthAnchor.constraint(equalToConstant: 20)])
+        let column = UIStackView(arrangedSubviews: [coverBox, title, reason])
+        column.axis = .vertical; column.spacing = 4
+        column.isUserInteractionEnabled = false; column.translatesAutoresizingMaskIntoConstraints = false
+        button.addSubview(column)
         NSLayoutConstraint.activate([
-            row.leadingAnchor.constraint(equalTo: button.leadingAnchor, constant: 12),
-            row.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: -12),
-            row.topAnchor.constraint(equalTo: button.topAnchor, constant: 12),
-            row.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: -12),
-            button.heightAnchor.constraint(greaterThanOrEqualToConstant: 88)
+            column.leadingAnchor.constraint(equalTo: button.leadingAnchor, constant: 4),
+            column.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: -4),
+            column.topAnchor.constraint(equalTo: button.topAnchor, constant: 6),
+            column.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: -6),
+            button.heightAnchor.constraint(greaterThanOrEqualToConstant: 150)
         ])
         button.isAccessibilityElement = true
         button.accessibilityLabel = "\(book.title), \(book.author). \(book.reason)"

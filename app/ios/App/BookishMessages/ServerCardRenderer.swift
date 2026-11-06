@@ -21,6 +21,7 @@ enum ServerCardRenderer {
     }()
     static func image(for card: ServerMessageCard) -> UIImage {
         _ = registeredFonts
+        if card.kind != .take { return v3Image(card) }
         let height: CGFloat = card.kind == .take ? 410 : card.kind == .vote ? 600 : 480
         let format = UIGraphicsImageRendererFormat(); format.scale = 1; format.opaque = true
         return UIGraphicsImageRenderer(size: CGSize(width: 600, height: height), format: format).image { _ in
@@ -34,6 +35,36 @@ enum ServerCardRenderer {
             text(card.kind == .take ? "New take on \(card.title)" : card.kind == .vote ? "Open Bookish to vote" : "Are you coming?", x: 28, y: height - 88, width: 544, height: 38, size: 25, bold: true)
             let detail = card.kind == .take ? (card.didNotFinish == true ? "Sealed until you finish the book" : "Sealed until you reach \(card.pageMarker)") : card.kind == .vote ? "A shared snapshot. Everyone gets a say." : "Address for members only"
             text(detail, x: 28, y: height - 45, width: 544, height: 30, size: 21, color: muted)
+        }
+    }
+    private static func v3Image(_ card: ServerMessageCard) -> UIImage {
+        let format = UIGraphicsImageRendererFormat(); format.scale = 1; format.opaque = true
+        return UIGraphicsImageRenderer(size: CGSize(width: 600, height: 450), format: format).image { _ in
+            paper.setFill(); UIBezierPath(rect: CGRect(x: 0, y: 0, width: 600, height: 450)).fill()
+            if card.kind == .meeting {
+                let date = card.startsAt.flatMap(ServerMessageCard.date)
+                let day = DateFormatter(); day.locale = Locale(identifier: "en_US"); day.dateFormat = "EEEE, MMM d"
+                CardRenderer.header(title: card.title, eyebrow: date.map { day.string(from: $0).uppercased() } ?? "CLUB NIGHT", detail: "", kind: .rsvp)
+                CardRenderer.text("Are you coming?", CGRect(x: 28, y: 233, width: 544, height: 46), size: 35, serif: true)
+                for (i, pair) in [("I'm in", card.counts?.yes ?? 0), ("Maybe", card.counts?.maybe ?? 0), ("Can't", card.counts?.cant ?? 0)].enumerated() {
+                    let rect = CGRect(x: 28 + i * 181, y: 291, width: 169, height: 66)
+                    CardRenderer.pill(rect, fill: i == 0 ? green : paper, border: i != 0)
+                    CardRenderer.text("\(pair.0) · \(pair.1)", rect.insetBy(dx: 5, dy: 18), size: 24, bold: true, color: i == 0 ? paper : ink, center: true)
+                }
+                CardRenderer.text("\(card.counts?.yes ?? 0) in, \(card.counts?.maybe ?? 0) maybe", CGRect(x: 28, y: 391, width: 285, height: 35), size: 23, color: muted)
+                CardRenderer.text("Bring list: \(card.openItems.count) open", CGRect(x: 310, y: 391, width: 266, height: 35), size: 23, bold: true, color: green, center: true)
+            } else {
+                CardRenderer.header(title: "Next book vote", eyebrow: "EVERYONE GETS A SAY", detail: "", kind: .vote)
+                let total = max(1, card.options.reduce(0) { $0 + $1.ballots })
+                for (index, option) in card.options.enumerated() {
+                    let y = CGFloat(237 + index * 45)
+                    CardRenderer.text(catalog[option.bookID] ?? "Book option \(index + 1)", CGRect(x: 28, y: y, width: 430, height: 34), size: 25, serif: true)
+                    CardRenderer.text("\(option.ballots)", CGRect(x: 490, y: y, width: 82, height: 34), size: 24, bold: true, color: green, center: true)
+                    let width = CGFloat(option.ballots) / CGFloat(total) * 380
+                    if width > 0 { CardRenderer.pill(CGRect(x: 28, y: y + 33, width: max(10, width), height: 5), fill: butter) }
+                }
+                CardRenderer.text("Open Bookish to vote", CGRect(x: 28, y: 419, width: 544, height: 28), size: 21, bold: true, color: green, center: true)
+            }
         }
     }
     private static func tea(_ card: ServerMessageCard) {

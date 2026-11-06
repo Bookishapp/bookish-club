@@ -7,18 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-        D1000000000000000000000F /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000000F /* Fonts */; };
+		123C550FFE0C9EE597EE048D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 86BED859083795DBAB07AA4E /* PrivacyInfo.xcprivacy */; };
+		152D34DC7E968150BB827148 /* CardRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000005 /* CardRenderer.swift */; };
+		2A6061A99E9E6BE9BC9A5B39 /* MessageState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000002 /* MessageState.swift */; };
 		2FAD9763203C412B000D30F8 /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAD9762203C412B000D30F8 /* config.xml */; };
+		39A8E7D7A7738EBF47E5700C /* BookishMessages.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D2000000000000000000000A /* BookishMessages.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		481A79C5778263945DDF2131 /* BookishWidgets.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = F5910F977F2914049A7AE3E8 /* BookishWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		48DE46748351395923F4E64D /* BookishTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000003 /* BookishTheme.swift */; };
 		50379B232058CBB4000EE86E /* capacitor.config.json in Resources */ = {isa = PBXBuildFile; fileRef = 50379B222058CBB4000EE86E /* capacitor.config.json */; };
 		504EC3081FED79650016851F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504EC3071FED79650016851F /* AppDelegate.swift */; };
 		504EC30D1FED79650016851F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 504EC30B1FED79650016851F /* Main.storyboard */; };
 		504EC30F1FED79650016851F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 504EC30E1FED79650016851F /* Assets.xcassets */; };
 		504EC3121FED79650016851F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 504EC3101FED79650016851F /* LaunchScreen.storyboard */; };
+		50840CB314E087B16B5686ED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000006 /* Assets.xcassets */; };
 		50B271D11FEDC1A000F3C39B /* public in Resources */ = {isa = PBXBuildFile; fileRef = 50B271D01FEDC1A000F3C39B /* public */; };
+		51E95BBAFA6F756FFB0CC458 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000000F /* Fonts */; };
+		55FDCB374C501ECE381ED466 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000006 /* Assets.xcassets */; };
+		69F8C5DA52E9741869B57E7F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F768D1E7D810E00D533D1C6 /* Foundation.framework */; };
+		7349DE397F7AF412ADF6FE24 /* BookishWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96029FD7F6FB113BA5011C4D /* BookishWidgets.swift */; };
+		838C13D5CB5A71F829C42720 /* WidgetSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CAC4CECCABA763991AC968 /* WidgetSnapshot.swift */; };
+		9D959371219549FD7DF467FA /* BookishTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000003 /* BookishTheme.swift */; };
 		A084ECDBA7D38E1E42DFC39D /* Pods_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF277DCFFFF123FFC6DF26C7 /* Pods_App.framework */; };
+		B75B77CD54A324ABB6CDA114 /* MessageState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000002 /* MessageState.swift */; };
 		BB0000000000000000000001 /* BookishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0000000000000000000001 /* BookishViewController.swift */; };
 		BB0000000000000000000002 /* BookishMapPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0000000000000000000002 /* BookishMapPlugin.swift */; };
 		BB0000000000000000000003 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = BA0000000000000000000003 /* PrivacyInfo.xcprivacy */; };
+		BD0000000000000000000001 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = BE0000000000000000000001 /* PrivacyInfo.xcprivacy */; };
+		C6E1ED61B8FB4C47A239A8B9 /* WidgetSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CAC4CECCABA763991AC968 /* WidgetSnapshot.swift */; };
 		D10000000000000000000001 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000001 /* MessagesViewController.swift */; };
 		D10000000000000000000002 /* MessageState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000002 /* MessageState.swift */; };
 		D10000000000000000000003 /* BookishTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000003 /* BookishTheme.swift */; };
@@ -30,7 +45,7 @@
 		D10000000000000000000009 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000009 /* Stickers.xcassets */; };
 		D1000000000000000000000A /* BookishStickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D2000000000000000000000B /* BookishStickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D1000000000000000000000C /* StickerPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000000E /* StickerPickerViewController.swift */; };
-		DB0000000000000000000001 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0000000000000000000001 /* SceneDelegate.swift */; };
+		D1000000000000000000000F /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000000F /* Fonts */; };
 		D10000000000000000000100 /* lunair-sticker-01-hi-book-club.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000100 /* lunair-sticker-01-hi-book-club.png */; };
 		D10000000000000000000101 /* lunair-sticker-02-im-in.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000101 /* lunair-sticker-02-im-in.png */; };
 		D10000000000000000000102 /* lunair-sticker-03-see-you-thursday.png in Resources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000102 /* lunair-sticker-03-see-you-thursday.png */; };
@@ -45,7 +60,7 @@
 		D1000000000000000000010B /* lunair-sticker-12-your-turn-to-host.png in Resources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000010B /* lunair-sticker-12-your-turn-to-host.png */; };
 		D1000000000000000000010C /* lunair-sticker-13-on-my-way.png in Resources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000010C /* lunair-sticker-13-on-my-way.png */; };
 		D1000000000000000000010D /* lunair-sticker-14-no-peeking.png in Resources */ = {isa = PBXBuildFile; fileRef = D2000000000000000000010D /* lunair-sticker-14-no-peeking.png */; };
-		BD0000000000000000000001 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = BE0000000000000000000001 /* PrivacyInfo.xcprivacy */; };
+		DB0000000000000000000001 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0000000000000000000001 /* SceneDelegate.swift */; };
 		E91000000000000000000001 /* ServerMessageCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90000000000000000000001 /* ServerMessageCard.swift */; };
 		E91000000000000000000002 /* ServerCardRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90000000000000000000002 /* ServerCardRenderer.swift */; };
 		E91000000000000000000003 /* BookishMessagesPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90000000000000000000003 /* BookishMessagesPlugin.swift */; };
@@ -54,12 +69,26 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		8486001C37CBA870438F611D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 504EC2FC1FED79650016851F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D40000000000000000000001;
+			remoteInfo = BookishMessages;
+		};
 		D30000000000000000000001 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 504EC2FC1FED79650016851F /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = D40000000000000000000002;
 			remoteInfo = BookishStickers;
+		};
+		E5D802F31CEC3F0EC87DCA35 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 504EC2FC1FED79650016851F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0EBC2020AC78F59FDA49F90D;
+			remoteInfo = BookishWidgets;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -71,6 +100,8 @@
 			dstSubfolderSpec = 13;
 			files = (
 				D1000000000000000000000A /* BookishStickers.appex in Embed App Extensions */,
+				481A79C5778263945DDF2131 /* BookishWidgets.appex in Embed App Extensions */,
+				39A8E7D7A7738EBF47E5700C /* BookishMessages.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -78,7 +109,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-        D2000000000000000000000F /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
 		2FAD9762203C412B000D30F8 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
 		50379B222058CBB4000EE86E /* capacitor.config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = capacitor.config.json; sourceTree = "<group>"; };
 		504EC3041FED79650016851F /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,12 +118,17 @@
 		504EC3111FED79650016851F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		504EC3131FED79650016851F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		50B271D01FEDC1A000F3C39B /* public */ = {isa = PBXFileReference; lastKnownFileType = folder; path = public; sourceTree = "<group>"; };
+		5CEA5CFEE8039FF9BD4D0066 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5F768D1E7D810E00D533D1C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		67CAC4CECCABA763991AC968 /* WidgetSnapshot.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WidgetSnapshot.swift; sourceTree = "<group>"; };
+		86BED859083795DBAB07AA4E /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		96029FD7F6FB113BA5011C4D /* BookishWidgets.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BookishWidgets.swift; sourceTree = "<group>"; };
 		AF277DCFFFF123FFC6DF26C7 /* Pods_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF51FD2D460BCFE21FA515B2 /* Pods-App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.release.xcconfig"; path = "Pods/Target Support Files/Pods-App/Pods-App.release.xcconfig"; sourceTree = "<group>"; };
-		FC68EB0AF532CFC21C3344DD /* Pods-App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-App/Pods-App.debug.xcconfig"; sourceTree = "<group>"; };
 		BA0000000000000000000001 /* BookishViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookishViewController.swift; sourceTree = "<group>"; };
 		BA0000000000000000000002 /* BookishMapPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookishMapPlugin.swift; sourceTree = "<group>"; };
 		BA0000000000000000000003 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		BE0000000000000000000001 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		D20000000000000000000001 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		D20000000000000000000002 /* MessageState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageState.swift; sourceTree = "<group>"; };
 		D20000000000000000000003 /* BookishTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookishTheme.swift; sourceTree = "<group>"; };
@@ -108,7 +143,7 @@
 		D2000000000000000000000C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D2000000000000000000000D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D2000000000000000000000E /* StickerPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerPickerViewController.swift; sourceTree = "<group>"; };
-		DA0000000000000000000001 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		D2000000000000000000000F /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
 		D20000000000000000000100 /* lunair-sticker-01-hi-book-club.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-01-hi-book-club.png"; path = "BookishMessages/Stickers/lunair-sticker-01-hi-book-club.png"; sourceTree = SOURCE_ROOT; };
 		D20000000000000000000101 /* lunair-sticker-02-im-in.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-02-im-in.png"; path = "BookishMessages/Stickers/lunair-sticker-02-im-in.png"; sourceTree = SOURCE_ROOT; };
 		D20000000000000000000102 /* lunair-sticker-03-see-you-thursday.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-03-see-you-thursday.png"; path = "BookishMessages/Stickers/lunair-sticker-03-see-you-thursday.png"; sourceTree = SOURCE_ROOT; };
@@ -123,13 +158,24 @@
 		D2000000000000000000010B /* lunair-sticker-12-your-turn-to-host.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-12-your-turn-to-host.png"; path = "BookishMessages/Stickers/lunair-sticker-12-your-turn-to-host.png"; sourceTree = SOURCE_ROOT; };
 		D2000000000000000000010C /* lunair-sticker-13-on-my-way.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-13-on-my-way.png"; path = "BookishMessages/Stickers/lunair-sticker-13-on-my-way.png"; sourceTree = SOURCE_ROOT; };
 		D2000000000000000000010D /* lunair-sticker-14-no-peeking.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "lunair-sticker-14-no-peeking.png"; path = "BookishMessages/Stickers/lunair-sticker-14-no-peeking.png"; sourceTree = SOURCE_ROOT; };
-		BE0000000000000000000001 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		DA0000000000000000000001 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E90000000000000000000001 /* ServerMessageCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerMessageCard.swift; sourceTree = "<group>"; };
 		E90000000000000000000002 /* ServerCardRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerCardRenderer.swift; sourceTree = "<group>"; };
 		E90000000000000000000003 /* BookishMessagesPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookishMessagesPlugin.swift; sourceTree = "<group>"; };
+		E9C99046DFB16BFDB0AF22BE /* BookishWidgets.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = BookishWidgets.entitlements; sourceTree = "<group>"; };
+		F5910F977F2914049A7AE3E8 /* BookishWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BookishWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		FC68EB0AF532CFC21C3344DD /* Pods-App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-App/Pods-App.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3C4416BD7BD5E1689026C3FB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				69F8C5DA52E9741869B57E7F /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		504EC3011FED79650016851F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -156,8 +202,22 @@
 				AF277DCFFFF123FFC6DF26C7 /* Pods_App.framework */,
 				D20000000000000000000007 /* Messages.framework */,
 				D20000000000000000000008 /* UIKit.framework */,
+				6CEE2B29967C144D0BFD47AE /* iOS */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		453640CCD5DD4DB22AA07F24 /* BookishWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				96029FD7F6FB113BA5011C4D /* BookishWidgets.swift */,
+				67CAC4CECCABA763991AC968 /* WidgetSnapshot.swift */,
+				5CEA5CFEE8039FF9BD4D0066 /* Info.plist */,
+				E9C99046DFB16BFDB0AF22BE /* BookishWidgets.entitlements */,
+				86BED859083795DBAB07AA4E /* PrivacyInfo.xcprivacy */,
+			);
+			name = BookishWidgets;
+			path = BookishWidgets;
 			sourceTree = "<group>";
 		};
 		504EC2FB1FED79650016851F = {
@@ -169,6 +229,7 @@
 				504EC3051FED79650016851F /* Products */,
 				7F8756D8B27F46E3366F6CEA /* Pods */,
 				27E2DDA53C4D2A4D1A88CE4A /* Frameworks */,
+				453640CCD5DD4DB22AA07F24 /* BookishWidgets */,
 			);
 			sourceTree = "<group>";
 		};
@@ -178,6 +239,7 @@
 				504EC3041FED79650016851F /* App.app */,
 				D2000000000000000000000A /* BookishMessages.appex */,
 				D2000000000000000000000B /* BookishStickers.appex */,
+				F5910F977F2914049A7AE3E8 /* BookishWidgets.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -202,6 +264,14 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		6CEE2B29967C144D0BFD47AE /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				5F768D1E7D810E00D533D1C6 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
 		7F8756D8B27F46E3366F6CEA /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -223,7 +293,7 @@
 				D20000000000000000000005 /* CardRenderer.swift */,
 				D2000000000000000000000E /* StickerPickerViewController.swift */,
 				D20000000000000000000006 /* Assets.xcassets */,
-                D2000000000000000000000F /* Fonts */,
+				D2000000000000000000000F /* Fonts */,
 				D60000000000000000000003 /* Sticker Images */,
 				D2000000000000000000000C /* Info.plist */,
 			);
@@ -264,6 +334,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		0EBC2020AC78F59FDA49F90D /* BookishWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CBBF94B290DF4C12DDDF00EC /* Build configuration list for PBXNativeTarget "BookishWidgets" */;
+			buildPhases = (
+				07E60BDFCD3B908DA9D503AA /* Sources */,
+				3C4416BD7BD5E1689026C3FB /* Frameworks */,
+				89AFD4EC95E6281F9AB7BBE5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BookishWidgets;
+			productName = BookishWidgets;
+			productReference = F5910F977F2914049A7AE3E8 /* BookishWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		504EC3031FED79650016851F /* App */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 504EC3161FED79650016851F /* Build configuration list for PBXNativeTarget "App" */;
@@ -279,6 +366,8 @@
 			);
 			dependencies = (
 				D70000000000000000000001 /* PBXTargetDependency */,
+				3C964DEDEF38D61306977435 /* PBXTargetDependency */,
+				BACF0D01C70BE33560F0450B /* PBXTargetDependency */,
 			);
 			name = App;
 			productName = App;
@@ -326,17 +415,17 @@
 				LastSwiftUpdateCheck = 0920;
 				LastUpgradeCheck = 0920;
 				TargetAttributes = {
+					504EC3031FED79650016851F = {
+						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 1100;
+						ProvisioningStyle = Automatic;
+					};
 					D40000000000000000000001 = {
 						CreatedOnToolsVersion = 27.1;
 						ProvisioningStyle = Automatic;
 					};
 					D40000000000000000000002 = {
 						CreatedOnToolsVersion = 27.1;
-						ProvisioningStyle = Automatic;
-					};
-					504EC3031FED79650016851F = {
-						CreatedOnToolsVersion = 9.2;
-						LastSwiftMigration = 1100;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -350,8 +439,6 @@
 				Base,
 			);
 			mainGroup = 504EC2FB1FED79650016851F;
-			packageReferences = (
-			);
 			productRefGroup = 504EC3051FED79650016851F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -359,6 +446,7 @@
 				504EC3031FED79650016851F /* App */,
 				D40000000000000000000001 /* BookishMessages */,
 				D40000000000000000000002 /* BookishStickers */,
+				0EBC2020AC78F59FDA49F90D /* BookishWidgets */,
 			);
 		};
 /* End PBXProject section */
@@ -376,6 +464,17 @@
 				50379B232058CBB4000EE86E /* capacitor.config.json in Resources */,
 				504EC30D1FED79650016851F /* Main.storyboard in Resources */,
 				2FAD9763203C412B000D30F8 /* config.xml in Resources */,
+				55FDCB374C501ECE381ED466 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		89AFD4EC95E6281F9AB7BBE5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50840CB314E087B16B5686ED /* Assets.xcassets in Resources */,
+				51E95BBAFA6F756FFB0CC458 /* Fonts in Resources */,
+				123C550FFE0C9EE597EE048D /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -384,7 +483,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D10000000000000000000006 /* Assets.xcassets in Resources */,
-                D1000000000000000000000F /* Fonts in Resources */,
+				D1000000000000000000000F /* Fonts in Resources */,
 				D10000000000000000000100 /* lunair-sticker-01-hi-book-club.png in Resources */,
 				D10000000000000000000101 /* lunair-sticker-02-im-in.png in Resources */,
 				D10000000000000000000102 /* lunair-sticker-03-see-you-thursday.png in Resources */,
@@ -450,6 +549,17 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		07E60BDFCD3B908DA9D503AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7349DE397F7AF412ADF6FE24 /* BookishWidgets.swift in Sources */,
+				C6E1ED61B8FB4C47A239A8B9 /* WidgetSnapshot.swift in Sources */,
+				9D959371219549FD7DF467FA /* BookishTheme.swift in Sources */,
+				B75B77CD54A324ABB6CDA114 /* MessageState.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		504EC3001FED79650016851F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -461,6 +571,10 @@
 				E91000000000000000000002 /* ServerCardRenderer.swift in Sources */,
 				E91000000000000000000001 /* ServerMessageCard.swift in Sources */,
 				BB0000000000000000000001 /* BookishViewController.swift in Sources */,
+				838C13D5CB5A71F829C42720 /* WidgetSnapshot.swift in Sources */,
+				48DE46748351395923F4E64D /* BookishTheme.swift in Sources */,
+				152D34DC7E968150BB827148 /* CardRenderer.swift in Sources */,
+				2A6061A99E9E6BE9BC9A5B39 /* MessageState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -481,6 +595,18 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		3C964DEDEF38D61306977435 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = BookishWidgets;
+			target = 0EBC2020AC78F59FDA49F90D /* BookishWidgets */;
+			targetProxy = E5D802F31CEC3F0EC87DCA35 /* PBXContainerItemProxy */;
+		};
+		BACF0D01C70BE33560F0450B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = BookishMessages;
+			target = D40000000000000000000001 /* BookishMessages */;
+			targetProxy = 8486001C37CBA870438F611D /* PBXContainerItemProxy */;
+		};
 		D70000000000000000000001 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D40000000000000000000002 /* BookishStickers */;
@@ -508,6 +634,49 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		0727874E10E026C8D0809AA6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = BookishWidgets/BookishWidgets.entitlements;
+				CURRENT_PROJECT_VERSION = 6;
+				DEVELOPMENT_TEAM = L8YGD7ATLL;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = BookishWidgets/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.meetbookish.app.BookishWidgets;
+				PRODUCT_NAME = BookishWidgets;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3587A6C93151DCD56CFAB31A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = BookishWidgets/BookishWidgets.entitlements;
+				CURRENT_PROJECT_VERSION = 6;
+				DEVELOPMENT_TEAM = L8YGD7ATLL;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = BookishWidgets/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.meetbookish.app.BookishWidgets;
+				PRODUCT_NAME = BookishWidgets;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 		504EC3141FED79650016851F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -620,9 +789,10 @@
 			baseConfigurationReference = FC68EB0AF532CFC21C3344DD /* Pods-App.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = L8YGD7ATLL;
 				CURRENT_PROJECT_VERSION = 6;
+				DEVELOPMENT_TEAM = L8YGD7ATLL;
 				INFOPLIST_FILE = App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -641,17 +811,18 @@
 			baseConfigurationReference = AF51FD2D460BCFE21FA515B2 /* Pods-App.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution";
-				PROVISIONING_PROFILE_SPECIFIER = "Bookish App Store Mac mini 20261016";
-				DEVELOPMENT_TEAM = L8YGD7ATLL;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 6;
+				DEVELOPMENT_TEAM = L8YGD7ATLL;
 				INFOPLIST_FILE = App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.meetbookish.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Bookish App Store Mac mini 20261016";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -665,8 +836,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = L8YGD7ATLL;
 				CURRENT_PROJECT_VERSION = 6;
+				DEVELOPMENT_TEAM = L8YGD7ATLL;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = BookishMessages/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
@@ -688,8 +859,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = L8YGD7ATLL;
 				CURRENT_PROJECT_VERSION = 6;
+				DEVELOPMENT_TEAM = L8YGD7ATLL;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = BookishMessages/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
@@ -711,8 +882,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = L8YGD7ATLL;
 				CURRENT_PROJECT_VERSION = 6;
+				DEVELOPMENT_TEAM = L8YGD7ATLL;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = BookishStickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
@@ -732,11 +903,10 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Manual;
 				CODE_SIGN_IDENTITY = "Apple Distribution";
-				PROVISIONING_PROFILE_SPECIFIER = "Bookish Stickers App Store 20261023";
-				DEVELOPMENT_TEAM = L8YGD7ATLL;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 6;
+				DEVELOPMENT_TEAM = L8YGD7ATLL;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = BookishStickers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
@@ -744,6 +914,7 @@
 				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.meetbookish.app.BookishStickers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Bookish Stickers App Store 20261023";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -767,6 +938,15 @@
 			buildConfigurations = (
 				504EC3171FED79650016851F /* Debug */,
 				504EC3181FED79650016851F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CBBF94B290DF4C12DDDF00EC /* Build configuration list for PBXNativeTarget "BookishWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0727874E10E026C8D0809AA6 /* Release */,
+				3587A6C93151DCD56CFAB31A /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -2,6 +2,7 @@ import UIKit
 import Capacitor
 import Messages
 import MessageUI
+import WidgetKit
 
 /// The signed-in web client fetches bookish_message_card before calling this bridge.
 /// Only an allowlisted image and resource URL leave the app. Sessions stay in memory.
@@ -11,10 +12,25 @@ public final class BookishMessagesPlugin: CAPPlugin, CAPBridgedPlugin, MFMessage
     public let jsName = "BookishMessages"
     public let pluginMethods: [CAPPluginMethod] = [
         CAPPluginMethod(name: "share", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "saveCalendar", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "saveCalendar", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "updateWidgets", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "clearWidgets", returnType: CAPPluginReturnPromise)
     ]
     private var activeCall: CAPPluginCall?
     private var calendarDirectory: URL?
+
+    @objc func updateWidgets(_ call: CAPPluginCall) {
+        guard let object = call.getObject("snapshot"),
+              let data = try? JSONSerialization.data(withJSONObject: object),
+              let snapshot = try? WidgetSnapshot.decode(data) else {
+            call.reject("This widget summary is invalid.", "INVALID_WIDGET"); return
+        }
+        do { try WidgetSnapshotStore.save(snapshot); WidgetCenter.shared.reloadAllTimelines(); call.resolve() }
+        catch { call.reject("The widget summary could not be saved.", "WIDGET_SAVE_FAILED") }
+    }
+    @objc func clearWidgets(_ call: CAPPluginCall) {
+        WidgetSnapshotStore.clear(); WidgetCenter.shared.reloadAllTimelines(); call.resolve()
+    }
 
     @objc func share(_ call: CAPPluginCall) {
         guard let envelope = call.getObject("card"),

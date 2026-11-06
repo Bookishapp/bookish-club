@@ -90,9 +90,9 @@ struct MessageState: Codable, Equatable {
             readingTitle: "Pride and Prejudice",
             totalPages: 432,
             candidates: [
-                CandidateBook(id: "pride", title: "Pride and Prejudice", author: "Jane Austen", reason: "Wit, first impressions, and a lively discussion."),
-                CandidateBook(id: "frankenstein", title: "Frankenstein", author: "Mary Shelley", reason: "An absorbing story about ambition and responsibility."),
-                CandidateBook(id: "jane-eyre", title: "Jane Eyre", author: "Charlotte Brontë", reason: "A determined voice, a mystery, and plenty to talk about.")
+                CandidateBook(id: "emma", title: "Emma", author: "Jane Austen", reason: "because you loved Persuasion"),
+                CandidateBook(id: "wuthering", title: "Wuthering Heights", author: "Emily Brontë", reason: "because you loved Jane Eyre"),
+                CandidateBook(id: "anne", title: "Anne of Green Gables", author: "L. M. Montgomery", reason: "nominated by Kat")
             ],
             responses: []
         )

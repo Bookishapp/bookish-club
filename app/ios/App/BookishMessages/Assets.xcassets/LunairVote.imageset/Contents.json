@@ -1,8 +1,8 @@
 {
   "images": [
     {
-      "idiom": "universal",
-      "filename": "LunairVote.png"
+      "filename": "LunairVote.png",
+      "idiom": "universal"
     }
   ],
   "info": {

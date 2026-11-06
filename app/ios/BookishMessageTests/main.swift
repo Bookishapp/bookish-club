@@ -40,6 +40,19 @@ let teaJSON = """
 """
 
 let tests: [(String, () throws -> Void)] = [
+    ("widget summaries retain display counts and strip private fields", {
+        let raw = #"{"readingTitle":"Pride and Prejudice","page":212,"totalPages":432,"stopPage":247,"friendsReading":3,"meetingTitle":"7:30 at Jess's","meetingDetail":"Up to ch. 30","meetingDay":"Thursday","going":true,"newTakes":6,"sealedTakes":2,"chapter":34,"body":"PRIVATE","token":"SECRET"}"#
+        let snapshot = try WidgetSnapshot.decode(Data(raw.utf8))
+        try expect(snapshot.page == 212 && snapshot.remainingPages == 35, "Widget progress lost its reading stop")
+        let encoded = String(data: try JSONEncoder().encode(snapshot), encoding: .utf8)!
+        try expect(!encoded.contains("PRIVATE") && !encoded.contains("SECRET"), "Private fields entered the widget cache")
+    }),
+    ("widget summaries reject invalid counts and oversized titles", {
+        let raw = #"{"readingTitle":"Pride","page":212,"totalPages":432,"friendsReading":3,"going":false,"newTakes":6,"sealedTakes":2}"#
+        for invalid in [raw.replacingOccurrences(of: "212", with: "433"), raw.replacingOccurrences(of: "Pride", with: String(repeating: "x", count: 161)), raw.replacingOccurrences(of: "\"newTakes\":6", with: "\"newTakes\":-1")] {
+            try expectThrows({ _ = try WidgetSnapshot.decode(Data(invalid.utf8)) }, "Invalid widget data was accepted")
+        }
+    }),
     ("resource links reject encoded route aliases", {
         try expectThrows({ _ = try MessageResource.decode(url: URL(string: "https://meetbookish.com/imessage/v2/%74ake/11111111-1111-4111-8111-111111111111")!) }, "Encoded route alias was accepted")
     }),
