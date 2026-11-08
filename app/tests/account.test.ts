@@ -2,6 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { AccountClient } from '../src/account.ts';
 const session={access_token:'access',refresh_token:'refresh',expires_in:3600,user:{id:'reader',email:'reader@example.com'}};
+test('email sign-in opts in to short codes and verifies four digits',async()=>{
+ const calls:any[]=[];const client=new AccountClient(async(path,body)=>{calls.push({path,body});return body.action==='start'?{ok:true}:{ok:true,session};});
+ await client.start('reader@example.com');
+ assert.deepEqual(calls[0],{path:'/functions/v1/bookish-auth',body:{action:'start',email:'reader@example.com',short:true}});
+ await client.verify('reader@example.com','0123');
+ assert.equal(calls[1].body.token,'0123');assert.equal(client.user?.id,'reader');
+});
 test('email verification creates an in-memory session and authorizes RPCs',async()=>{
  const calls:any[]=[];const client=new AccountClient(async(path,body,token)=>{calls.push({path,body,token});return path.endsWith('bookish-auth')?{ok:true,session}: {id:'reader'};});
  await client.verify('reader@example.com','123456');assert.equal(client.user?.id,'reader');await client.rpc('bookish_my_account');assert.equal(calls[1].token,'access');
