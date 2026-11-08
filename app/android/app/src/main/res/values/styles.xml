@@ -9,20 +9,27 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="BaseAppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:background">@null</item>
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="android:statusBarColor">#33101a</item>
-        <item name="android:navigationBarColor">#33101a</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowBackground">#f5ead8</item>
+        <item name="android:statusBarColor">#f5ead8</item>
+        <item name="android:navigationBarColor">#f5ead8</item>
     </style>
 
 
-    <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">#33101a</item>
+    <style name="BaseAppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#f5ead8</item>
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
         <item name="postSplashScreenTheme">@style/AppTheme.NoActionBar</item>
-        <item name="android:background">@drawable/splash</item>
+        <item name="android:statusBarColor">#f5ead8</item>
+        <item name="android:navigationBarColor">#f5ead8</item>
+        <item name="android:background">#f5ead8</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
+    <!-- Dark navigation icons are available from API 27 through the theme. -->
+    <style name="AppTheme.NoActionBar" parent="BaseAppTheme.NoActionBar" />
+    <style name="AppTheme.NoActionBarLaunch" parent="BaseAppTheme.NoActionBarLaunch" />
 </resources>

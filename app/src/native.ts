@@ -67,3 +67,20 @@ export async function shareBookSuggestion(title:string){
  else if(navigator.share)await navigator.share({title,text,url});
  else await navigator.clipboard.writeText(`${text} ${url}`);
 }
+
+// Capacitor Share rejects when Android's chooser is dismissed. Other failures
+// still reach the reader so they can retry or use another sharing destination.
+export function isShareCancellation(error:unknown){
+ const e=error as {name?:string;message?:string}|null;
+ return e?.name==='AbortError'||typeof e?.message==='string'&&/^Share cancel(?:ed|led)\.?$/i.test(e.message);
+}
+export async function shareCard(kind:'take'|'vote'|'meeting',url:string){
+ const copy={
+  take:{title:'The Tea on Bookish',text:'A sealed book take is waiting in Bookish.',dialogTitle:'Share a sealed take'},
+  vote:{title:'Our next read on Bookish',text:'Open Bookish to choose our next book.',dialogTitle:'Share a book vote'},
+  meeting:{title:'Bookish club night',text:'Open Bookish to RSVP and see the bring list.',dialogTitle:'Share club night'},
+ }[kind];
+ if(isNative)await Share.share({...copy,url});
+ else if(navigator.share)await navigator.share({title:copy.title,text:copy.text,url});
+ else await navigator.clipboard.writeText(url);
+}

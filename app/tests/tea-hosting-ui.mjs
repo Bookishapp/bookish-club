@@ -26,7 +26,7 @@ async function launch(role='host'){
 }
 const t=await launch();
 assert.equal(t.w.document.querySelectorAll('.code-boxes span').length,4,'Email sign-in starts with four digit boxes');
-assert.equal(t.select('#email-code').maxLength,4);
+assert.equal(t.select('#email-code').hasAttribute('maxlength'),false,'The browser must pass the complete paste to the digit filter');
 t.input('#email-code','a012345');assert.equal(t.select('#email-code').value,'0123','Paste strips non-digits and limits entry to four digits');
 assert.equal(t.w.document.querySelectorAll('.code-boxes span').length,4,'Pasting does not expand the code field');
 t.input('#email-code','0123');await t.submit('#account-code');t.input('[name=display_name]','Alex');for(const name of ['adult','terms'])t.select(`[name=${name}]`).checked=true;await t.submit('#account-terms');

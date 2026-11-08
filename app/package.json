@@ -13,7 +13,7 @@
     "preview": "vite preview --host 127.0.0.1 --port 4321 --strictPort",
     "sync": "npm run build && cap sync ios",
     "ios": "cap open ios",
-    "test:community": "node tests/community-art.mjs && node tests/community-layout.mjs && node tests/tea-hosting-ui.mjs && node tests/v3-navigation.mjs",
+    "test:community": "node tests/community-art.mjs && node tests/community-layout.mjs && node tests/tea-hosting-ui.mjs && node tests/v3-navigation.mjs && node --test tests/release-fix1.mjs",
     "sync:android": "npm run build && cap sync android",
     "android": "cap open android"
   },

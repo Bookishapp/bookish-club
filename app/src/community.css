@@ -51,8 +51,6 @@
 .code-boxes>span{height:58px;display:flex;align-items:center;justify-content:center;background:var(--card);border:1.5px solid #4a142026;border-radius:12px;font:700 clamp(14px,6vw,24px)/1 var(--display)}
 .code-field:focus-within{outline:2px solid var(--wine);outline-offset:4px}
 .code-field[data-code-length="4"]{max-width:260px}
-.code-field:is([data-code-length="7"],[data-code-length="8"],[data-code-length="9"],[data-code-length="10"]) .code-boxes{gap:4px}
-.code-field:is([data-code-length="7"],[data-code-length="8"],[data-code-length="9"],[data-code-length="10"]) .code-boxes>span{font-size:16px;border-radius:7px}
 .house-rules{margin-top:20px}
 .house-rules>div{display:flex;align-items:flex-start;gap:14px;padding:16px 0;border-top:1px solid var(--line)}
 .house-rules>div>svg{flex:none;width:36px;height:36px}

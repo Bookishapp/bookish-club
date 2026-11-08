@@ -1,5 +1,7 @@
 # Bookish 1.1.1 release candidate
 
+**Merge gate: Do not merge PR #44 until SQL 012 through the library migration, in the order below, and all three functions (`bookish-auth`, `bookish-meeting-calendar`, and `bookish-meeting-reminders`) are live. Merging #44 into main runs the site deployment workflow, which republishes meetbookish.com/app with this client. The four-digit client cannot sign in against the legacy auth handler, and its Tea, hosting, reminder, and library features require the new backend.**
+
 Includes PRs #36, #38, #39, #40, #41, #42, and #43. The release branch starts from approved art v3 and merges main, tagline, four-digit codes, and Android in that order with merge commits.
 
 All iOS targets use 1.1.1 (7). App Store Connect read-only inspection found maximum build 6. The widget now matches the iPhone-only containing app. Android uses 1.1.1 (2), minimum API 24, and target API 36.

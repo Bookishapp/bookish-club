@@ -144,7 +144,7 @@ submit(v,'#account-email');await until(()=>v.document.querySelector('#account-co
 const codeInput=v.document.querySelector('#account-code [name=token]');
 assert.equal(codeInput.enterKeyHint,'done');
 assert.equal(codeInput.inputMode,'numeric');assert.equal(codeInput.autocomplete,'one-time-code');
-assert.equal(codeInput.minLength,4);assert.equal(codeInput.maxLength,4);
+assert.equal(codeInput.minLength,4);assert.equal(codeInput.hasAttribute('maxlength'),false);
 for(const code of ['123','12345','123456','12a4']){codeInput.value=code;assert.equal(codeInput.checkValidity(),false,code);}
 codeInput.value='0123';assert.equal(codeInput.checkValidity(),true);
 input(v,'#account-code [name=token]','0123');submit(v,'#account-code');await until(()=>v.document.querySelector('#account-terms'));

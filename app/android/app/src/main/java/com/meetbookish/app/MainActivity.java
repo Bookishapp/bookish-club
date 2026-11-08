@@ -18,11 +18,11 @@ public class MainActivity extends BridgeActivity {
         super.onCreate(savedInstanceState);
         // Own insets once, in native pixels. CSS safe-area values remain zero on Android.
         // Include IME insets so focused fields and dialog actions stay above the keyboard.
-        getWindow().setBackgroundDrawable(new ColorDrawable(Color.rgb(51, 16, 26)));
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.rgb(245, 234, 216)));
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         WindowInsetsControllerCompat controller = new WindowInsetsControllerCompat(getWindow(), bridge.getWebView());
-        controller.setAppearanceLightStatusBars(false);
-        controller.setAppearanceLightNavigationBars(false);
+        controller.setAppearanceLightStatusBars(true);
+        controller.setAppearanceLightNavigationBars(true);
         ViewCompat.setOnApplyWindowInsetsListener(bridge.getWebView(), (view, windowInsets) -> {
             Insets insets = windowInsets.getInsets(
                 WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout() | WindowInsetsCompat.Type.ime()
