@@ -18,8 +18,8 @@ test('reader discovery route preserves the frozen shelves and public evidence', 
   assert.equal(doc.querySelector('meta[name=robots]'), null);
   assert.equal(doc.querySelector('#main').getAttribute('tabindex'), '-1', 'skip destination must accept keyboard focus');
   assert.equal(doc.querySelectorAll('.shelf').length, 8);
-  assert.equal(doc.querySelectorAll('.book').length, 160);
-  assert.equal(new Set([...doc.querySelectorAll('.book')].map(b => b.dataset.key)).size, 140);
+  assert.equal(doc.querySelectorAll('.book').length, 148);
+  assert.equal(new Set([...doc.querySelectorAll('.book')].map(b => b.dataset.key)).size, 128);
   assert.doesNotMatch(html, /\u2014/u);
   assert.equal(doc.querySelectorAll('blockquote,a[download],a[href$=".csv"]').length, 0);
   for (const img of doc.querySelectorAll('.book-cover img')) {
@@ -38,4 +38,34 @@ test('reader discovery route preserves the frozen shelves and public evidence', 
     const relative = href.slice(base.length + 1);
     assert.ok(fs.existsSync(new URL(relative + (href.endsWith('/') ? 'index.html' : ''), root)), href);
   }
+});
+
+// These cases catch a low-sample average and the singular rating branch.
+test('rating evidence hides averages below five ratings', async () => {
+  const { renderMostRecommended } = await import('./most-recommended.mjs');
+  const snapshot = JSON.parse(fs.readFileSync(new URL('../data/most-recommended.json', import.meta.url)));
+  for (const [count, expected] of [[0, '0 ratings'], [1, '1 rating'], [2, '2 ratings'], [4, '4 ratings'], [5, '4.0 / 5 from 5 ratings']]) {
+    const html = renderMostRecommended({ ...snapshot, books: [{ ...snapshot.books[0], ratings_count: count, ratings_average: 4 }] }, { esc: String, fmt: String, url: String });
+    const doc = new JSDOM(html).window.document;
+    assert.equal(doc.querySelector('.book-evidence > p:nth-child(2)').textContent, expected);
+  }
+});
+
+test('every published book has at least fifty reading-list additions', () => {
+  const { books } = JSON.parse(fs.readFileSync(new URL('../data/most-recommended.json', import.meta.url)));
+  assert.ok(books.every(book => book.readinglog_count >= 50));
+});
+
+test('search finds titles across apostrophes, punctuation, and extra spaces', () => {
+  const html = fs.readFileSync(new URL('most-recommended/index.html', root), 'utf8');
+  const dom = new JSDOM(html, { runScripts: 'outside-only' });
+  dom.window.eval(fs.readFileSync(new URL('../src/most-recommended.js', import.meta.url), 'utf8'));
+  const doc = dom.window.document;
+  const search = doc.querySelector('#mr-search');
+  for (const query of ['ladies detective', "ladies’ detective", 'LADIES   DETECTIVE', 'ladies-detective']) {
+    search.value = query;
+    search.dispatchEvent(new dom.window.Event('input'));
+    assert.ok([...doc.querySelectorAll('.book:not([hidden]) h3')].some(el => el.textContent.includes('Detective Agency')), query);
+  }
+  dom.window.close();
 });

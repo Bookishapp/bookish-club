@@ -5,7 +5,7 @@ const shelves = [...document.querySelectorAll('.shelf')];
 const search = document.querySelector('#mr-search');
 const mood = document.querySelector('#mr-mood');
 const trope = document.querySelector('#mr-trope');
-const fold = text => text.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[’‘]/g, "'").toLowerCase();
+const fold = text => text.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/['’‘]/g, '').replace(/[^\p{L}\p{N}]+/gu, ' ').trim().toLowerCase();
 function filterBooks() {
   const query = fold(search.value.trim());
   const keys = new Set();
