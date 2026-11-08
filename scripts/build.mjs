@@ -74,6 +74,9 @@ const CSS = (fs.readFileSync(path.join(ROOT, "src/theme.css"), "utf8") + fs.read
 function layout({ title, desc, path: p, body, jsonld = [], noindex = false, landing = false, referrerPolicy = "no-referrer", extraCSS = "" }) {
   const canonical = abs(p);
   const landingCSS = landing ? fs.readFileSync(path.join(ROOT, "src/landing.css"), "utf8").replaceAll("__BASE__", BASE) : "";
+  const mostRecommended = body.includes('class="wrap mr"');
+  const pageCSS = `${landing ? landingCSS : CSS}${extraCSS}`;
+  const inlineCSS = mostRecommended ? pageCSS.replace(/\/\*[\s\S]*?\*\//g, "") : pageCSS;
   return `<!doctype html>
 <html lang="en" data-base="${BASE}" data-api="${API}" data-join-api="${JOIN_API}" data-directory-api="${DIRECTORY_API}">
 <head>
@@ -99,7 +102,7 @@ ${noindex ? '<meta name="robots" content="noindex">' : ""}
 <link rel="preload" href="${url("/fonts/manrope-400_800.woff2")}" as="font" type="font/woff2" crossorigin>
 ${landing ? `<link rel="preload" href="${url("/img/landing/fonts/BricolageGrotesque-var.woff2")}" as="font" type="font/woff2" crossorigin>` : `<link rel="preload" href="${url("/fonts/unbounded-400_900.woff2")}" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="${url("/fonts/youngserif-400.woff2")}" as="font" type="font/woff2" crossorigin>`}
-<style>${landing ? landingCSS : CSS}${extraCSS}</style>
+<style>${inlineCSS}</style>
 ${jsonld.map((j) => `<script type="application/ld+json">${JSON.stringify(j).replace(/</g, "\\u003c")}</script>`).join("\n")}
 </head>
 <body>

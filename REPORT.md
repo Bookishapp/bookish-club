@@ -1,1 +1,0 @@
-Round 6 complete: Restored ink-colored book titles with hover-only underlines, preserved accessible green dropdown links, added the home main focus rule, removed the public verification note, passed the production web build and all 22 web tests, and confirmed no overflow at 390 or 768 pixels in Chrome Beta.

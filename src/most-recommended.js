@@ -33,7 +33,6 @@ document.querySelector('#mr-reset').addEventListener('click', reset);
 document.querySelector('#empty-reset').addEventListener('click', reset);
 document.querySelector('#mr-filters').hidden = false;
 
-// Keep a title-and-author card available if a cover cannot be decoded.
 for (const image of document.querySelectorAll('.book-cover img')) {
   const fallback = image.parentElement.querySelector('.cover-fallback');
   const failed = () => { image.hidden = true; fallback.hidden = false; };
