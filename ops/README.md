@@ -4,7 +4,9 @@ Install this job only on the Mac mini. The commands below prepare an installatio
 
 The job polls the worker-key-protected Bookish function every 15 minutes. Each unseen pending report creates a card through the operator-provided `$TED_OPS_DIR/ted-board/card.py new` helper, using a deterministic card ID. The helper must support `--project`, `--title`, `--body`, and `--card-id`. The poller does not start an agent or resolve a report. Atomic owner-only state records only successfully created cards. Failed polls and failed card creation exit nonzero, and retry on the next scheduled run. File locking prevents overlapping runs. Pagination covers queues larger than 100 reports.
 
-Generate the deployment packet with `node scripts/stage-dedicated-sql.mjs`. Review `.cache/dedicated-sql/preflight.sql`, apply the numbered chunks in order through `apply-20.sql`, and deploy the `bookish-report-alerts` function using `supabase/config.toml`. Confirm the dedicated project before any deployment, and set the target confirmation required by the SQL. Generated files stay in the ignored cache. Canonical preflight, hardening, and rollback SQL live in `supabase/packets/`.
+Generate the deployment packet with `node scripts/stage-dedicated-sql.mjs`. Review `.cache/dedicated-sql/preflight.sql`, apply the numbered chunks in order through `apply-20.sql`, and deploy the `bookish-report-alerts` function using `supabase/config.toml`. Confirm the dedicated project before any deployment, and set the target confirmation required by the SQL. Generated files stay in the ignored cache. Run `node scripts/stage-dedicated-sql.mjs --check` to compare the complete packet with the committed `supabase/packets/SHA256SUMS`, without needing a local cache. After an intentional SQL or seed update, review the generated packet and update those SHA-256 hashes in the same change. Generated chunks must remain below 20, which is reserved for the hand-authored hardening migration. Canonical preflight, hardening, and rollback SQL live in `supabase/packets/`.
+
+The committed `.plist.template` contains placeholders and must be rendered using the installation commands below before loading it.
 
 Generate a new random Bookish-only key, and store it in the dedicated project's environment or Vault as `BOOKISH_REPORT_WORKER_KEY`. Put the same value into `$TED_OPS_DIR/keys/bookish-report-alerts.env`, as a single unquoted line `BOOKISH_REPORT_WORKER_KEY=VALUE`. Use 32 to 256 URL-safe characters. Set the file mode to 0600. Do not reuse the board key or any Supabase key. No secret belongs in the plist.
 
@@ -22,7 +24,7 @@ import plistlib
 
 root = Path(os.environ['TED_OPS_DIR']).resolve()
 python = os.environ['PYTHON3']
-with Path('ops/com.meetbookish.report-alerts.plist').open('rb') as source:
+with Path('ops/com.meetbookish.report-alerts.plist.template').open('rb') as source:
     job = plistlib.load(source)
 job['ProgramArguments'] = [python, str(root / 'bookish-report-alerts/bookish_report_alerts.py')]
 job['WorkingDirectory'] = str(root)

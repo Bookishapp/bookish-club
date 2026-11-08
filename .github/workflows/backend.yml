@@ -5,6 +5,8 @@ on:
       - "supabase/**"
       - "tests/**"
       - "scripts/build.mjs"
+      - "scripts/stage-dedicated-sql.mjs"
+      - "ops/**"
       - "scripts/lib.mjs"
       - "src/**"
       - "data/**"
@@ -16,6 +18,8 @@ on:
       - "supabase/**"
       - "tests/**"
       - "scripts/build.mjs"
+      - "scripts/stage-dedicated-sql.mjs"
+      - "ops/**"
       - "scripts/lib.mjs"
       - "src/**"
       - "data/**"
@@ -39,6 +43,8 @@ jobs:
         with:
           deno-version: v2.x
       - run: npm ci
+      - name: Verify reviewed SQL packet hashes
+        run: node scripts/stage-dedicated-sql.mjs --check
       - run: npm test
       - run: npm run check:edge
       - name: Lint and format new edge functions

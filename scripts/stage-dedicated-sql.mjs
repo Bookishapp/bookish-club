@@ -1,5 +1,6 @@
 // Generates review files only. Never connects to any database or reads secrets.
 import fs from 'node:fs';
+import {createHash} from 'node:crypto';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 const root=fileURLToPath(new URL('../',import.meta.url));
@@ -83,6 +84,9 @@ function batches(rows,statement){
  if(batch.length)result.push(statement(batch));
  return result;
 }
+export function assertGeneratedChunkCount(count){
+ if(count>=20)throw new Error('Generated SQL reached reserved chunk 20. Split or redesign the packet deliberately before release.');
+}
 export function buildPacket(){
  const centers=new Map();
  for(const [key,v] of Object.entries(json('data/ref/places.json'))){
@@ -100,6 +104,7 @@ insert into public.bookish_city_centers(city,state,lat,lng)
 insert into public.bookish_clubs(club_ref,name,city,state,visibility,listed,public_data)
  select ref,name,city,state,'open',true,public_data from jsonb_to_recordset(${literal(rows)}) as x(ref text,name text,city text,state text,public_data jsonb)
  on conflict(club_ref) where club_ref is not null do nothing;`)];
+ assertGeneratedChunkCount(bodies.length);
  const markers=bodies.map((_,i)=>`dedicated-chunk-${String(i+1).padStart(2,'0')}`);
  const steps=bodies.map((body,i)=>`${i?`do $order$ begin
  if to_regclass('${state}') is null then raise exception 'Apply earlier Bookish chunks first.';end if;
@@ -118,11 +123,12 @@ if(process.argv[1]===fileURLToPath(import.meta.url)){
  for(const name of ['apply-20.sql','preflight.sql','rollback.sql'])packet.files[name]=read(`supabase/packets/${name}`);
  const out=path.join(root,'.cache/dedicated-sql');
  if(process.argv.includes('--check')){
-  for(const [name,sql] of Object.entries(packet.files))if(read(`.cache/dedicated-sql/${name}`)!==sql)throw new Error(`Regenerate .cache/dedicated-sql/${name}`);
-  // Chunk 20 is the hand-authored post-deployment hardening migration.
-  const actual=fs.readdirSync(out).filter(n=>/^apply-\d\d\.sql$/.test(n)&&n!=='apply-20.sql');
-  if(actual.length!==Object.keys(packet.files).filter(n=>/^apply-\d\d\.sql$/.test(n)&&n!=='apply-20.sql').length)throw new Error('Unexpected stale SQL chunk');
-  console.log('Dedicated SQL generation is reproducible.');
+  const manifest='supabase/packets/SHA256SUMS';
+  const expected=Object.entries(packet.files).sort(([a],[b])=>a.localeCompare(b)).map(([name,sql])=>`${createHash('sha256').update(sql).digest('hex')}  ${name}\n`).join('');
+  if(!fs.existsSync(path.join(root,manifest)) || read(manifest)!==expected){
+   console.error(`Reviewed packet hash mismatch. Regenerate the packet, review every SQL change, and deliberately update ${manifest}.`);
+   process.exitCode=1;
+  }else console.log('Dedicated SQL matches the committed reviewed packet hashes.');
  }else{
   fs.mkdirSync(out,{recursive:true});
   // Regenerate only the packet files; keep other local review artifacts.
