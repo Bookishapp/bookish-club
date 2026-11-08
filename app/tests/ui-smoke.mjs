@@ -65,7 +65,7 @@ function input(w,selector,value,event='input'){const el=w.document.querySelector
 
 // Regression: a guest holding a typed invitation can discover entry before auth.
 const typedInviteAPI=createFixtureAPI({role:'member',member:false});
-const typedInvite=await launch(true,false,false,typedInviteAPI,'',false),guest=typedInvite.window;
+const typedInvite=await launch(true,false,false,typedInviteAPI,'','ios',false),guest=typedInvite.window;
 click(guest,'#redeem-invite');
 await until(()=>guest.document.querySelector('#account-email'));
 input(guest,'#account-email [name=email]','reader@example.test');
@@ -145,7 +145,7 @@ const codeInput=v.document.querySelector('#account-code [name=token]');
 assert.equal(codeInput.enterKeyHint,'done');
 assert.equal(codeInput.inputMode,'numeric');assert.equal(codeInput.autocomplete,'one-time-code');
 assert.equal(codeInput.minLength,4);assert.equal(codeInput.maxLength,4);
-for(const code of ['123','12345','0123','12a4']){codeInput.value=code;assert.equal(codeInput.checkValidity(),false,code);}
+for(const code of ['123','12345','123456','12a4']){codeInput.value=code;assert.equal(codeInput.checkValidity(),false,code);}
 codeInput.value='0123';assert.equal(codeInput.checkValidity(),true);
 input(v,'#account-code [name=token]','0123');submit(v,'#account-code');await until(()=>v.document.querySelector('#account-terms'));
 input(v,'#account-terms [name=display_name]','Alex');v.document.querySelector('[name=adult]').checked=true;v.document.querySelector('[name=terms]').checked=true;submit(v,'#account-terms');
@@ -282,16 +282,20 @@ const android=await launch(true,true,false,null,'','android'),a=android.window;
 locationAllowed=false;coarseLocationAllowed=true;
 click(a,'#locate');await until(()=>a.document.querySelector('#toast.visible'));
 assert.equal(a.document.querySelector('#city').value,'','Approximate Android location can sort nearby cities');
-assert.match(a.document.querySelector('#city option').textContent,/Closest cities first/);
+assert.match(a.document.querySelector('#city option').textContent,/Closest cities/);
 locationAllowed=true;coarseLocationAllowed=false;
 click(a,'[data-view=map]');
 assert.ok(!a.document.querySelector('#native-map'),'Android uses the shared city map');
 assert.ok(a.document.querySelector('.city-map'));
 await until(()=>a.nativeEvents['App.backButton']);
-click(a,'.map-cities button');
+click(a,'[data-map-city]');
 click(a,'.club-open');
 assert.ok(a.document.querySelector('#detail').open);
 assert.ok(a.document.querySelector('#detail a[href^="https://www.google.com/maps/search/"]'),'Android opens city centers in Google Maps');
+click(a,'#notification-prime');assert.ok(a.document.querySelector('#notification-prime-dialog').open);
+a.nativeEvents['App.backButton']({canGoBack:false});
+assert.ok(!a.document.querySelector('#notification-prime-dialog').open,'Android Back dismisses the top reminder dialog');
+assert.ok(a.document.querySelector('#detail').open,'Back preserves the underlying club details');
 a.nativeEvents['App.backButton']({canGoBack:false});
 await until(()=>!a.document.querySelector('#detail').open);
 click(a,'[data-tab=me]');click(a,'#open-resources');
@@ -318,11 +322,19 @@ await until(()=>ia.document.querySelector('#account-email'));
 ia.nativeEvents['App.appUrlOpen']({url:'https://meetbookish.com/app/#invite=NEWCODE1'});
 input(ia,'#account-email [name=email]','reviewer@example.test');submit(ia,'#account-email');
 await until(()=>ia.document.querySelector('#account-code'));
-input(ia,'#account-code [name=token]','123456');submit(ia,'#account-code');
+input(ia,'#account-code [name=token]','0123');submit(ia,'#account-code');
 await until(()=>ia.document.querySelector('#account-terms'));
 input(ia,'#account-terms [name=display_name]','Alex');ia.document.querySelector('[name=adult]').checked=true;ia.document.querySelector('[name=terms]').checked=true;submit(ia,'#account-terms');
 await until(()=>ia.document.querySelector('#account-invite'));
 assert.equal(ia.document.querySelector('#account-invite [name=code]').value,'NEWCODE1');
+input(ia,'#account-invite [name=code]','READTOGETHER');submit(ia,'#account-invite');
+await until(()=>ia.document.querySelector('#moment-continue'));click(ia,'#moment-continue');
+click(ia,'[data-room-tab=meet]');await until(()=>ia.document.querySelector('[data-card-kind=meeting]'));
+click(ia,'[data-card-kind=meeting]');await until(()=>ia.document.querySelector('#send-message-card'));
+assert.equal(ia.document.querySelector('#send-message-card').textContent.trim(),'Share card link','Android uses its native share sheet, without the iOS Messages bridge');
+const shareBefore=nativeCalls.filter(c=>c.plugin==='Share').length;
+click(ia,'#send-message-card');await until(()=>nativeCalls.filter(c=>c.plugin==='Share').length>shareBefore);
+assert.match(nativeCalls.filter(c=>c.plugin==='Share').at(-1).options.url,/https:\/\/meetbookish.com\/app\/#message=meeting\//);
 inviteAndroid.window.close();
 
 console.log('Android smoke passed: shared map, Back navigation, warm club links across refresh, auth-dialog replacement, and incoming invite intent.');

@@ -14,6 +14,7 @@ import com.getcapacitor.BridgeActivity;
 public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        registerPlugin(BookishMessagesPlugin.class);
         super.onCreate(savedInstanceState);
         // Own insets once, in native pixels. CSS safe-area values remain zero on Android.
         // Include IME insets so focused fields and dialog actions stay above the keyboard.

@@ -1,6 +1,6 @@
 # Bookish for Android
 
-Bookish uses the same Capacitor 7 local web bundle, app ID `com.meetbookish.app`, version `1.1`, and source artwork as iOS. Android targets API 36, with minimum API 23, AGP 8.9.1, Gradle 8.11.1, and Java 21. There is no remote `server.url`.
+Bookish uses the same Capacitor 7 local web bundle, app ID `com.meetbookish.app`, version `1.1.1`, and source artwork as iOS. Android targets API 36, with minimum API 24, AGP 8.9.1, Gradle 8.11.1, and Java 21. There is no remote `server.url`.
 
 ## Build
 
@@ -32,7 +32,7 @@ Gradle release tasks require all four environment variables:
 - `BOOKISH_KEY_ALIAS`: `upload`.
 - `BOOKISH_KEY_PASSWORD`: key password, loaded without printing it.
 
-`BOOKISH_VERSION_CODE` defaults to `1` for the first local upload. CI derives it from the Codemagic build number plus one, leaving code 1 for that first manual upload. After other manual uploads, ensure the next Codemagic value exceeds the largest Play version code.
+`BOOKISH_VERSION_CODE` defaults to `2` for the 1.1.1 internal upload. CI derives it from the Codemagic build number plus one, leaving code 1 for that first manual upload. After other manual uploads, ensure the next Codemagic value exceeds the largest Play version code.
 
 Build with `./gradlew bundleRelease`. Release tasks fail if signing variables are missing. The AAB is `app/android/app/build/outputs/bundle/release/app-release.aab`. Enroll in Play App Signing when the Play app is created. The upload certificate and the Google-held app-signing certificate serve different purposes.
 
@@ -42,7 +42,7 @@ The native activity applies system-bar, cutout, and IME insets once, in native p
 
 Android Back lets the system dismiss the keyboard first, then closes dialogs or returns through club pages, Resources, Read Next, and the main tabs. At the root it backgrounds the app. Incoming HTTPS links to `meetbookish.com/app/#invite=...` and `/book-clubs/.../#club-id` become local app state. Incoming intent supersedes an earlier sign-in destination, and club links survive a concurrent resume refresh. Untrusted hosts, credentials in URLs, malformed fragments, and unrelated routes are ignored.
 
-Approximate-only Android location grants are sufficient for on-device city sorting. The manifest requests location only for optional on-device city sorting, and notifications for local reminders. Android backup and transfer rules exclude app data. The code field stays a text field with numeric input and one-time-code autocomplete. This branch does not change its current length validation or auth protocol, keeping the four-digit-code work independent.
+Approximate-only Android location grants are sufficient for on-device city sorting. The manifest requests location only for optional on-device city sorting, and notifications for local reminders. Android backup and transfer rules exclude app data. The code field stays a text field with numeric input and one-time-code autocomplete. Sign-in uses four digits, the short-code auth protocol, and Android keyboard hints.
 
 ## Verified HTTPS app links
 

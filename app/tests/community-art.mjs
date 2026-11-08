@@ -24,17 +24,17 @@ async function launch(role='host'){
  input('[name=email]','reader@example.test');await submit('#account-email');
  return{dom,w,api,ui,select,click,input,submit};
 }
-for(const code of ['1234','123456','1234567890']){
+for(const code of ['1234','0123']){
  const t=await launch();
  assert.equal(t.select('#email-code').autocomplete,'one-time-code');
  assert.equal(t.select('#email-code').inputMode,'numeric');
- for(const invalid of ['123','12345','12345678901']){const field=t.input('#email-code',invalid);assert.equal(field.checkValidity(),invalid.length===11,'Only input truncation can turn an invalid length into a valid code');}
+ for(const invalid of ['123','12345','12345678901']){const field=t.input('#email-code',invalid);assert.equal(field.checkValidity(),invalid.length>=4,'Input truncation preserves the four-digit limit');}
  t.input('#email-code',code);
  assert.equal(t.select('#account-code').checkValidity(),true);
  assert.equal(t.select('.code-field').dataset.codeLength,String(code.length));
  assert.equal(t.select('.code-boxes').textContent,code);
  await t.submit('#account-code');
- assert.ok(t.api.calls.some(call=>call.body.action==='verify'&&call.body.token===code),'The full code reaches the existing transport');
+ assert.ok(t.api.calls.some(call=>call.body.action==='verify'&&call.body.token===code),'The four-digit code reaches the short-code transport');
  assert.ok(t.select('#account-terms'));
  for(const name of ['adult','terms'])t.select(`[name=${name}]`).checked=true;
  t.input('[name=display_name]','Alex');await t.submit('#account-terms');
@@ -42,7 +42,7 @@ for(const code of ['1234','123456','1234567890']){
  t.dom.window.close();
 }
 for(const role of ['host','member']){
- const t=await launch(role);t.input('#email-code','123456');await t.submit('#account-code');
+ const t=await launch(role);t.input('#email-code','0123');await t.submit('#account-code');
  t.input('[name=display_name]','Alex');for(const name of ['adult','terms'])t.select(`[name=${name}]`).checked=true;await t.submit('#account-terms');
  const button=t.w.document.createElement('button');button.dataset.home='10000000-0000-4000-8000-000000000001';await t.ui.click(button);
  await t.click('[data-room-tab=home]');
@@ -59,4 +59,4 @@ for(const role of ['host','member']){
  await t.click('#community-close');assert.equal(t.select('#detail').open,false);assert.equal(t.select('#detail').hasAttribute('data-community'),false);
  t.dom.window.close();
 }
-console.log('Community art checks passed: four-, six-, and ten-digit autofill input, backend payloads, legal acceptance, private meeting detail, host/member access, and anonymous votes.');
+console.log('Community art checks passed: four-digit autofill input, backend payloads, legal acceptance, private meeting detail, host/member access, and anonymous votes.');

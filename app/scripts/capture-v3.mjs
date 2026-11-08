@@ -76,7 +76,7 @@ async function auth(s,{rules=false,create=false}={}){
  else if(await s.p.locator('#sign-in').isVisible())await click(s,'#sign-in');
  else{await dismissWelcome(s);await click(s,'[data-tab=me]');await click(s,'#sign-in');}
  await fill(s,'#account-email [name=email]','nina@example.test');await submit(s,'#account-email');
- await s.p.locator('#account-code').waitFor();await fill(s,'#account-code [name=token]','123456');await submit(s,'#account-code');
+ await s.p.locator('#account-code').waitFor();await fill(s,'#account-code [name=token]','0123');await submit(s,'#account-code');
  await s.p.locator('#account-terms').waitFor();if(rules)return;if(!await s.p.locator('#account-terms [name=display_name]').isVisible())await click(s,'#account-terms .terms-details summary');
  await fill(s,'#account-terms [name=display_name]','Nina');
  const city=s.p.locator('#account-terms [name=home_city]');if(await city.count())await fill(s,'#account-terms [name=home_city]','Austin');
