@@ -91,10 +91,10 @@ The repo is public because GitHub Pages for private repos needs a paid plan.
 
 ## Forms backend
 
-Bookish uses its dedicated Supabase project, `tkrsrnlasinmlftkcufi`, at `https://tkrsrnlasinmlftkcufi.supabase.co`. Native and web account requests use the project publishable key through the `apikey` header, with the signed-in reader's JWT separately in `Authorization`. The app includes the publishable key by default; `VITE_BOOKISH_PUBLISHABLE_KEY` can override it at build time. `VITE_BOOKISH_ANON_KEY` remains a compatibility override. Never supply service credentials to either variable. See [.ted/DEPLOY.md](.ted/DEPLOY.md) for the complete dedicated-project deployment packet.
+Bookish uses its dedicated Supabase project, `tkrsrnlasinmlftkcufi`, at `https://tkrsrnlasinmlftkcufi.supabase.co`. Native and web account requests use the project publishable key through the `apikey` header, with the signed-in reader's JWT separately in `Authorization`. The app includes the publishable key by default; `VITE_BOOKISH_PUBLISHABLE_KEY` can override it at build time. `VITE_BOOKISH_ANON_KEY` remains a compatibility override. Never supply service credentials to either variable. Generate the dedicated-project deployment packet with `node scripts/stage-dedicated-sql.mjs`; see [ops/README.md](ops/README.md) for its location and application order.
 
 - Tables `public.bookish_submissions` (`supabase/sql/001_bookish_submissions.sql`), `public.bookish_join_requests` and `public.bookish_invites` (`002_bookish_join.sql`). RLS is on with no policies, so only the service role can read or write them.
-  - Apply the reviewed dedicated-project packet in [.ted/DEPLOY.md](.ted/DEPLOY.md) as raw SQL, **not** with `supabase db push`.
+  - Review the generated `.cache/dedicated-sql/` packet, and apply its numbered chunks through `apply-20.sql` as raw SQL, **not** with `supabase db push`. Confirm the target project as required by each file.
 - `bookish-submit` (POST, public) validates input and applies spam protection:
   - a honeypot field and a minimum fill time
   - no links allowed in free text
@@ -177,7 +177,7 @@ Re-run it with `python3 scripts/stickers.py`. It needs Pillow installed.
 See [RESULT.md](RESULT.md) for the upgrade order, schema, iOS API contract,
 auth configuration, moderation operations, verification, and release decisions.
 The SQL upgrades are `supabase/sql/005_*` through `008_*`; they extend PR #12.
-Bookish targets its dedicated project `tkrsrnlasinmlftkcufi`. Apply the complete reviewed packet in `.ted/` to initialize that project; the historical upgrade files are not an empty-project deployment guide.
+Bookish targets its dedicated project `tkrsrnlasinmlftkcufi`. Generate the complete packet with `node scripts/stage-dedicated-sql.mjs`, and apply the reviewed numbered chunks in `.cache/dedicated-sql/` to initialize that project; the historical upgrade files are not an empty-project deployment guide.
 
 Run `npm ci` and `npm test` with Node 24+. Use `npm run check:edge` with Deno
 for the new edge functions. Their provider settings and secrets are examples

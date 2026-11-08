@@ -114,17 +114,20 @@ end $order$;\n`:''}${body}\ninsert into ${state} values('${markers[i]}',now()) o
  return {files,centers:centers.size,clubs:directory.length};
 }
 if(process.argv[1]===fileURLToPath(import.meta.url)){
- const packet=buildPacket(),out=path.join(root,'.ted');
+ const packet=buildPacket();
+ for(const name of ['apply-20.sql','preflight.sql','rollback.sql'])packet.files[name]=read(`supabase/packets/${name}`);
+ const out=path.join(root,'.cache/dedicated-sql');
  if(process.argv.includes('--check')){
-  for(const [name,sql] of Object.entries(packet.files))if(read(`.ted/${name}`)!==sql)throw new Error(`Regenerate .ted/${name}`);
+  for(const [name,sql] of Object.entries(packet.files))if(read(`.cache/dedicated-sql/${name}`)!==sql)throw new Error(`Regenerate .cache/dedicated-sql/${name}`);
   // Chunk 20 is the hand-authored post-deployment hardening migration.
   const actual=fs.readdirSync(out).filter(n=>/^apply-\d\d\.sql$/.test(n)&&n!=='apply-20.sql');
-  if(actual.length!==Object.keys(packet.files).length-1)throw new Error('Unexpected stale SQL chunk');
+  if(actual.length!==Object.keys(packet.files).filter(n=>/^apply-\d\d\.sql$/.test(n)&&n!=='apply-20.sql').length)throw new Error('Unexpected stale SQL chunk');
   console.log('Dedicated SQL generation is reproducible.');
  }else{
-  // Never erase the hand-authored hardening chunk when regenerating the base.
+  fs.mkdirSync(out,{recursive:true});
+  // Regenerate only the packet files; keep other local review artifacts.
   for(const name of Object.keys(packet.files))if(fs.existsSync(path.join(out,name)))fs.unlinkSync(path.join(out,name));
   for(const [name,sql] of Object.entries(packet.files))fs.writeFileSync(path.join(out,name),sql);
-  console.log(`Prepared full SQL plus ${Object.keys(packet.files).length-1} chunks, ${packet.centers} city centers, and ${packet.clubs} calendars. No database connection was made.`);
+  console.log(`Prepared full SQL plus ${Object.keys(packet.files).filter(n=>/^apply-\d\d\.sql$/.test(n)).length} chunks, ${packet.centers} city centers, and ${packet.clubs} calendars. No database connection was made.`);
  }
 }

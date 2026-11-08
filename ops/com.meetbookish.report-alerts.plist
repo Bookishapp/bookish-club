@@ -6,19 +6,19 @@
 	<string>com.meetbookish.report-alerts</string>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/Library/Developer/CommandLineTools/usr/bin/python3</string>
-		<string>/Users/vahallo/ted-ops/bookish-report-alerts/bookish_report_alerts.py</string>
+		<string>__PYTHON3__</string>
+		<string>__TED_OPS_DIR__/bookish-report-alerts/bookish_report_alerts.py</string>
 	</array>
 	<key>StartInterval</key>
 	<integer>900</integer>
 	<key>RunAtLoad</key>
 	<true/>
 	<key>WorkingDirectory</key>
-	<string>/Users/vahallo/ted-ops</string>
+	<string>__TED_OPS_DIR__</string>
 	<key>StandardOutPath</key>
-	<string>/Users/vahallo/ted-ops/logs/bookish-report-alerts.log</string>
+	<string>__TED_OPS_DIR__/logs/bookish-report-alerts.log</string>
 	<key>StandardErrorPath</key>
-	<string>/Users/vahallo/ted-ops/logs/bookish-report-alerts.error.log</string>
+	<string>__TED_OPS_DIR__/logs/bookish-report-alerts.error.log</string>
 	<key>ProcessType</key>
 	<string>Background</string>
 </dict>

@@ -1,10 +1,12 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {readFile,readdir} from 'node:fs/promises';
+import {readFile} from 'node:fs/promises';
 import {PGlite} from '@electric-sql/pglite';
 
+import {buildPacket} from '../../scripts/stage-dedicated-sql.mjs';
+const packet=buildPacket().files;
 const target='tkrsrnlasinmlftkcufi';
-const read=name=>readFile(`.ted/${name}`,'utf8');
+const read=async name=>packet[name]??readFile(`supabase/packets/${name}`,'utf8');
 // Hosted-service shims, not a simulation of Vault encryption or GoTrue.
 // PGlite has no supabase_vault binary. Only CREATE EXTENSION is omitted;
 // the remaining production packet, including the RPC, runs unchanged.
@@ -88,7 +90,7 @@ test('fresh full packet guards the dedicated target and exposes only allowlisted
 });
 
 test('ordered chunks fit 200KB, refuse missing predecessors, and reapply without erasing host changes',async()=>{
- const names=(await readdir('.ted')).filter(n=>/^apply-\d\d\.sql$/.test(n)).sort();
+ const names=[...Object.keys(packet).filter(n=>/^apply-\d\d\.sql$/.test(n)),'apply-20.sql'].sort();
  assert.ok(names.length>1,'the dedicated packet must be split into ordered chunks');
  const chunks=await Promise.all(names.map(read));
  for(let i=0;i<chunks.length;i++)assert.ok(Buffer.byteLength(chunks[i])<=200_000,`${names[i]} exceeds 200KB`);
