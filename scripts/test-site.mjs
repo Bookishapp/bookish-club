@@ -102,3 +102,22 @@ test('website decision page prepares a POST without acting on load or exposing t
  const invalid=new JSDOM(page,{url:'https://meetbookish.com/join/confirm/#token=bad&action=approve',runScripts:'outside-only'});
  invalid.window.eval(script);assert.equal(invalid.window.document.querySelector('#join-decision').hidden,true);invalid.window.close();
 });
+
+test('all built HTML and CSS are free of comment markers', () => {
+  const files = fs.readdirSync(root, { recursive: true }).filter(file => /\.(html|css)$/.test(file));
+  assert.ok(files.length > 0, 'Build the site before checking its output');
+  for (const file of files) {
+    const source = fs.readFileSync(new URL(file, root), 'utf8');
+    assert.ok(!source.includes('<!--'), `${file}: HTML comment marker`);
+    assert.ok(!source.includes('/*'), `${file}: block comment marker`);
+  }
+  assert.ok(!fs.readFileSync(new URL('discovery.js', root), 'utf8').includes('__SOURCE_URL_UPGRADES__'), 'The build must consume the injection marker');
+});
+
+test('root worker notes are never tracked', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const tracked = execFileSync('git', ['ls-files', '-z', '--', 'REPORT.md', 'PLAN.md', 'BRIEF.md'], {
+    cwd: new URL('../', import.meta.url), encoding: 'utf8',
+  });
+  assert.equal(tracked, '', 'Keep worker notes outside the repository');
+});

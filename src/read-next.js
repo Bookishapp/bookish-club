@@ -1,8 +1,3 @@
-// "Stuck on what to read next?" Cold-start taps + deterministic picks. No dependencies.
-// Ranking is fixed rules over data/books.json (no per-request calls). Community
-// numbers come from a fresh bookish-community response that already passed
-// the privacy floor and excludes Hidden clubs.
-// Taps and saved books live in localStorage on this device only.
 (() => {
   const root = document.getElementById("rn");
   if (!root) return;
@@ -17,7 +12,7 @@
   };
   const PLUS = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>`;
   const CHECK = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 10 17 19 7"/></svg>`;
-  const PACE = 120; // pages per week when we don't know the club's pace (spec)
+  const PACE = 120;
 
   let BOOKS = [], BY = new Map(), COMM = { city: [], state: [], national: [], next: [] };
   const ready = Promise.all([
@@ -25,10 +20,6 @@
     fetch("https://tkrsrnlasinmlftkcufi.supabase.co/functions/v1/bookish-community",{cache:"no-store"}).then((r) => r.ok ? r.json() : COMM).catch(() => COMM),
   ]).then(([b, c]) => { BOOKS = b; BY = new Map(b.map((x) => [x.id, x])); COMM = c; });
 
-  // ---------- covers ----------
-  // Real covers: Open Library Covers API by cover id (not rate-limited), medium
-  // size, shown whole (never cropped or overlaid) and linked to the book's
-  // Open Library page. No cover, or it fails to load: the typographic cover.
   const typo = (b, w) => {
     const st = b.st || {}, words = b.t.split(" "), lw = Math.max(...words.map((x) => x.length));
     const fs = Math.min(b.t.length < 14 ? w / 6.2 : b.t.length < 24 ? w / 7.6 : w / 9.4, (w * 0.74) / (lw * 0.58));
@@ -49,13 +40,11 @@
     const b = BY.get(img.dataset.id);
     if (b) img.outerHTML = typo(b, +img.dataset.w);
   }, true);
-  // Open Library serves a 1x1 placeholder for some ids even with default=false.
   root.addEventListener("load", (e) => {
     const img = e.target;
     if (img.tagName === "IMG" && img.classList.contains("rn-cover") && img.naturalWidth < 10) img.dispatchEvent(new Event("error"));
   }, true);
 
-  // ---------- the three taps ----------
   const taste = store.get("bk_taste", { moods: [], length: null, loved: null });
   let step = 1;
   const COPY = {
@@ -97,7 +86,6 @@
     if (step === 3) { taste.loved = null; store.set("bk_taste", taste); show("taps"); return; }
     show("skip");
   });
-  // typeahead over the catalog (local, no network)
   const q = $("#rn-q"), sug = $("#rn-sug");
   q.addEventListener("input", async () => {
     await ready;
@@ -111,7 +99,6 @@
     sug.hidden = false;
   });
 
-  // ---------- ranking ----------
   const MOOD_LINE = { fight: "Built to split the room.", slow_burn: "All yearning, no hurry.", mystery: "Whodunit first, then the arguing.",
     cry: "Bring tissues. And wine.", big_fantasy: "Maps included. Clear the calendar.", short: "Done in a weekend." };
   const MOOD_NOUN = { fight: "bite", slow_burn: "slow burn", mystery: "whodunit pull", cry: "heartbreak", big_fantasy: "big-world sweep", short: "pace" };
@@ -141,8 +128,6 @@
         const hist = sequel ? 1 : (nextFrom.get(b.id) || 0) / maxNext;
         const n = nat.get(b.id);
         const commS = n ? 0.5 * (n.clubs / maxClubs) + 0.5 * (((n.mean_pour ?? 3) * n.clubs + 3 * 5) / (n.clubs + 5) / 5) : 0;
-        // Spec weights: own 0.35, history 0.20, community 0.20, taste 0.15. At cold start
-        // "own" is the loved book; with no loved book its weight moves to taste.
         const score = (loved ? 0.35 * lovedS + 0.15 * tasteS : 0.5 * tasteS) + 0.2 * hist + 0.2 * commS + 0.001 * hash(b.id);
         return { b, score, tasteS, lovedS, hist, sequel, n, next: nextFrom.get(b.id), moodHits };
       })
@@ -154,14 +139,12 @@
     const out = [], authors = new Set(), ok = (r) => r && !out.includes(r) && !authors.has(r.b.a) && !(r.sequel && out.some((o) => o.sequel));
     const add = (r, slot) => { if (ok(r)) { out.push(Object.assign(r, { slot })); authors.add(r.b.a); } };
     const okLen = (r) => lenFit(r.b.p, t.length) > 0;
-    // A sequel or the community's "went here next" beats the length tap: it's the obvious one.
     add(ranked.find((r) => r.sequel || r.next) || (loved && [...ranked].filter(okLen).sort((x, y) => y.lovedS - x.lovedS || y.score - x.score).find(ok)) || ranked.find((r) => ok(r) && okLen(r)), "obvious");
     add([...ranked].sort((x, y) => y.tasteS - x.tasteS || y.score - x.score).find((r) => ok(r) && okLen(r)), "fit");
     add(ranked.find((r) => ok(r) && okLen(r) && r.b.m.includes("fight")) || ranked.find((r) => ok(r) && okLen(r)) || ranked.find(ok), "wildcard");
     return out;
   }
 
-  // Why lines: fixed templates; numbers only from floor-passing community rows.
   function why(r, t) {
     const loved = t.loved && BY.get(t.loved), b = r.b;
     if (r.slot === "obvious" && r.next && loved) return `The obvious one. ${r.next} clubs went straight here after ${loved.t}.`;
@@ -182,7 +165,6 @@
     n && n.finish_rate >= 0.9 ? `<span class="ch g">${Math.round(n.finish_rate * 100)}% finish</span>` : "",
   ].join("");
 
-  // ---------- results ----------
   const saved = new Set(store.get("bk_saved", []));
   const saveBtn = (b, cls) => `<button type="button" class="${cls}${saved.has(b.id) ? " on" : ""}" data-save="${esc(b.id)}" aria-pressed="${saved.has(b.id)}" aria-label="${saved.has(b.id) ? "Saved" : "Save"} ${esc(b.t)}">${saved.has(b.id) ? CHECK : PLUS}<span>${saved.has(b.id) ? "Saved" : cls === "tla" ? "save" : "Save"}</span></button>`;
   const LF = `<img class="lf" src="${BASE}/img/lunair-face-40.webp" srcset="${BASE}/img/lunair-face-40.webp 1x, ${BASE}/img/lunair-face-80.webp 2x" width="20" height="20" alt="">`;
@@ -191,12 +173,11 @@
   const GLASS = (f, i) => `<svg width="9" height="14" viewBox="0 0 22 36" aria-hidden="true"><defs><clipPath id="rg${i}"><path d="M4 2h14c.4 6-1 11.5-7 12C5 13.5 3.6 8 4 2z"/></clipPath></defs><rect x="0" y="${(3 + (1 - f) * 14).toFixed(1)}" width="22" height="14" fill="#e6a2ac" clip-path="url(#rg${i})"/><path d="M4 2h14c.4 6-1 11.5-7 12C5 13.5 3.6 8 4 2zM11 14v14M6.5 32c2-1 7-1 9 0" fill="none" stroke="#f8ecd8" stroke-width="1.6" stroke-linecap="round"/></svg>`;
   let gid = 0;
   const pour = (s) => `<span class="pourg" role="img" aria-label="${s} of 5 glasses">${[0, 1, 2, 3, 4].map((i) => GLASS(Math.max(0, Math.min(1, s - i)), ++gid)).join("")}</span><span class="pn">${s}</span>`;
-  // The save button sits under the cover, never on it (covers are shown unaltered).
   const tile = (b, line, score) => `<li class="tl">${cover(b, 92)}<p class="tlt">${esc(b.t)}</p>${score != null ? `<p class="tls">${pour(score)}</p>` : ""}<p class="tlw">${esc(line)}</p>${saveBtn(b, "tla")}</li>`;
   const row = (title, items) => items.length ? `<section class="rn-row"><h2 class="rowh">${esc(title)}</h2><ul class="tiles">${items.join("")}</ul></section>` : "";
 
   async function cityRows() {
-    const slug = store.get("bk_city", null); // set by site.js on the last city page this reader opened
+    const slug = store.get("bk_city", null);
     let place = null;
     if (slug && (COMM.city.length || COMM.state.length)) {
       const cities = await window.bookishDiscovery("cities").catch(() => []);
@@ -271,7 +252,6 @@ ${rows.join("")}
   });
 
   paint();
-  // Returning reader with saved taps: go straight to their picks.
   if (location.hash === "#picks" && (taste.moods.length || taste.length || taste.loved)) show("taps");
   else if (location.hash === "#clubs") show("skip");
 })();
