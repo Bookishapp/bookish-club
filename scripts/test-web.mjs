@@ -26,6 +26,17 @@ test('every generated Bookish page offers working routes without launch placehol
   assert.equal(doc.querySelector('a[href*="play.google.com"]'), null, 'no Android app is available');
 });
 
+test('landing small-print links and the hero badge match the page instead of browser defaults', () => {
+  const doc = new JSDOM(fs.readFileSync(new URL('index.html', root), 'utf8')).window.document;
+  const css = [...doc.querySelectorAll('style')].map(s => s.textContent).join('\n');
+  // The hero "Open Bookish on the web." and the how-it-works "Open Bookish" links sit in .sm on oxblood.
+  const smallLinks = [...doc.querySelectorAll('.sm a')].filter(a => !a.getAttribute('style'));
+  assert.ok(smallLinks.length >= 2, 'landing keeps its small-print web app links');
+  assert.match(css, /\.sm a\{[^}]*color:var\(--on\)/, 'small-print links use the page ink, not default link blue');
+  // Clear space stays as padding, but the visible badge lines up with the buttons above it.
+  assert.match(css, /\.hero-actions>\.app-store-badge\{[^}]*margin-left:-12px/, 'hero badge artwork aligns with the hero buttons');
+});
+
 test('deployed web app has its own bundle and all local assets resolve under its prefix', () => {
   const file = new URL('app/index.html', root);
   assert.ok(fs.existsSync(file), 'web app must be deployed');
