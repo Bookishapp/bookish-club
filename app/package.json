@@ -13,9 +13,12 @@
     "preview": "vite preview --host 127.0.0.1 --port 4321 --strictPort",
     "sync": "npm run build && cap sync ios",
     "ios": "cap open ios",
-    "test:community": "node tests/community-art.mjs && node tests/community-layout.mjs && node tests/tea-hosting-ui.mjs && node tests/v3-navigation.mjs"
+    "test:community": "node tests/community-art.mjs && node tests/community-layout.mjs && node tests/tea-hosting-ui.mjs && node tests/v3-navigation.mjs",
+    "sync:android": "npm run build && cap sync android",
+    "android": "cap open android"
   },
   "dependencies": {
+    "@capacitor/android": "^7.6.10",
     "@capacitor/app": "^7.0.0",
     "@capacitor/core": "^7.0.0",
     "@capacitor/geolocation": "^7.0.0",

@@ -3,6 +3,16 @@
   "appName": "Bookish",
   "webDir": "dist",
   "backgroundColor": "#f5ead8",
-  "ios": { "contentInset": "never", "preferredContentMode": "mobile" },
-  "plugins": { "CapacitorHttp": { "enabled": false } }
+  "ios": {
+    "contentInset": "never",
+    "preferredContentMode": "mobile"
+  },
+  "plugins": {
+    "CapacitorHttp": {
+      "enabled": false
+    }
+  },
+  "android": {
+    "backgroundColor": "#f5ead8"
+  }
 }

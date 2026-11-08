@@ -1,6 +1,7 @@
 import './styles.css';
 import { icon, spot, art } from './design.ts';
 import { bookCover } from './book-cover.ts';
+import { appLink } from './app-links.ts';
 import { community } from './community.ts';
 import './compositions.css';
 import './v3.css';
@@ -10,13 +11,15 @@ import { data, loadData, refreshData, clearDiscovery } from './data.ts';
 import { esc, cityKey, safeURL, clubURL, appleMapsURL, miles, reminderDate } from './domain.ts';
 import type { Club, Book, Taste, Reminder } from './domain.ts';
 import { rank, picks, why, moods } from './recommend.ts';
-import { isNative, readStore, writeStore, locate, shareClub, remoteJSON, Notifications, NativeApp, CityMap } from './native.ts';
+import { isNative, isIOS, isAndroid, readStore, writeStore, locate, shareClub, remoteJSON, Notifications, NativeApp, CityMap } from './native.ts';
 
 type Tab = 'club'|'near'|'read'|'saved'|'me';
 let welcomeShown=false, remindersPrimed=false, savedSection:'clubs'|'books'='clubs', bookDetailId:string|null=null;
 const inviteOnLaunch=/^#(?:invite|message)=/i.test(location.hash);
 let resolvePrime:((enabled:boolean)=>void)|null=null;
 let mePage:'home'|'resources'='home';
+let linkedClubId:string|null=null;
+let refreshTask:Promise<void>|null=null;
 const root = document.querySelector<HTMLDivElement>('#app')!;
 let tab:Tab='near', selectedCity='', clubId:string|null=null, view='list', listing='all';
 let position:{lat:number;lng:number}|null=null, saved:Record<string,Club>={}, bookSaved:string[]=[], reminders:Record<string,Reminder>={};
@@ -27,6 +30,8 @@ const titles:Record<Tab,string> = {club:'Club',near:'Near me',read:'Read next',s
 const ext = (url:string,label:string) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)} <span class="sr-only">(opens outside Bookish)</span></a>`;
 const message = (s:string) => { const t=document.querySelector('#toast')!; t.textContent=s; t.classList.add('visible'); setTimeout(()=>t.classList.remove('visible'),5500); };
 const persist = async () => { await writeStore('saved',Object.keys(saved)); await writeStore('bookSaved',bookSaved); await writeStore('reminders',reminders); };
+const mapName=isAndroid?'Google Maps':'Apple Maps';
+const mapURL=(c:Pick<Club,'city'|'state'|'lat'|'lng'>)=>isAndroid?`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.lat!=null&&c.lng!=null?`${c.lat},${c.lng}`:cityKey(c))}`:appleMapsURL(c);
 const cityGroups = () => {
   const groups=new Map<string,{key:string;name:string;count:number;lat:number;lng:number}>();
   for(const c of data.clubs.filter(c=>community.visible(c.club_id||c.id))) { if(c.lat==null||c.lng==null) continue; const key=cityKey(c), prior=groups.get(key); if(prior) prior.count++; else groups.set(key,{key,name:key,count:1,lat:c.lat,lng:c.lng}); }
@@ -121,11 +126,43 @@ function showNotificationPrime():Promise<boolean>{
   return new Promise(resolve=>{resolvePrime=resolve;});
 }
 async function changeTab(t:Tab) { tab=t;mePage='home';clubId=null;bookDetailId=null;render();window.scrollTo(0,0);document.querySelector<HTMLElement>('#main')?.focus({preventScroll:true}); }
+function androidBack(){
+  linkedClubId=null;
+  const detail=document.querySelector<HTMLDialogElement>('#detail');
+  if(detail?.open){
+    if(!community.back()){
+      const cancel=new Event('cancel',{cancelable:true});
+      if(detail.dispatchEvent(cancel)){detail.close();clubId=null;lastDetailTrigger?.focus();}
+    }
+  }else if(tab==='me'&&mePage==='resources'){mePage='home';render();}
+  else if(tab==='read'&&!showPicks&&step>1){step--;render();}
+  else if(tab==='read'&&showPicks){showPicks=false;step=1;render();}
+  else if(tab!=='near'){void changeTab('near');}
+  else if(view==='map'){view='list';render();}
+  else void NativeApp.minimizeApp();
+}
+function resolveLinkedClub(){
+  if(!linkedClubId)return;
+  const club=data.clubs.find(c=>c.id===linkedClubId&&community.visible(c.club_id||c.id));
+  if(club){tab='near';clubId=club.id;}
+  else{linkedClubId=null;message('This club is unavailable. Refresh the directory and try again.');}
+}
+function openAppLink(value:string){
+  const link=appLink(value);if(!link)return;
+  community.dismiss();clubId=null;linkedClubId=null;
+  if(link.kind==='invite'){tab='me';mePage='home';community.openInvite(link.code);render();}
+  else {
+    linkedClubId=link.id;
+    if(data.discovery!=='ready'){void refresh();return;}
+    resolveLinkedClub();render();
+  }
+}
 async function cancelReminder(id:string) { const r=reminders[id]; if(!r)return; if(isNative) await Notifications.cancel({notifications:[{id:r.id}]}); delete reminders[id]; await persist(); render(); message('Reminder removed. Your club is still saved.'); }
 root.addEventListener('input',e=>{const el=e.target as HTMLInputElement;if(el.id==='book-search'){query=el.value;document.querySelector('#book-hits')!.innerHTML=bookHits();}});
 root.addEventListener('change',async e=>{const el=e.target as HTMLInputElement;if(el.id==='city'){selectedCity=el.value;pageSize=40;await writeStore('city',selectedCity);render();}if(el.id==='listing'){listing=el.value;pageSize=40;render();}if(el.id==='club-search'){clubQuery=el.value;pageSize=40;render();}});
 root.addEventListener('click',async e=>{
   const b=(e.target as HTMLElement).closest<HTMLElement>('button');if(!b)return;
+  linkedClubId=null;
   try {
     if(welcomeShown&&(b.id==='welcome-find'||b.id==='redeem-invite'||b.id==='sign-in'||b.id==='create-club')){welcomeShown=false;await writeStore('welcomeSeen',true);if(b.id==='welcome-find'){render();window.scrollTo(0,0);return;}render();}
     if(b.id==='prime-enable'||b.id==='prime-later'){document.querySelector<HTMLDialogElement>('#notification-prime-dialog')!.close();resolvePrime?.(b.id==='prime-enable');resolvePrime=null;return;}
@@ -148,7 +185,7 @@ root.addEventListener('click',async e=>{
     if(b.dataset.save){const id=b.dataset.save,c=data.clubs.find(c=>c.id===id)||saved[id];if(!c)return;if(saved[id]){if(reminders[id])await cancelReminder(id);delete saved[id];}else saved[id]=c;await persist();render();return;}
     if(b.dataset.bookSave){const id=b.dataset.bookSave;bookSaved=bookSaved.includes(id)?bookSaved.filter(x=>x!==id):[...bookSaved,id];await persist();render();return;}
     if(b.dataset.cancel){await cancelReminder(b.dataset.cancel);return;}
-    if(b.dataset.view){view=b.dataset.view;render();if(view==='map'&&isNative)await openMap();return;}
+    if(b.dataset.view){view=b.dataset.view;render();if(view==='map'&&isIOS)await openMap();return;}
     if(b.id==='native-map'){await openMap();return;}
     if(b.id==='locate'){b.setAttribute('disabled','');b.textContent='Finding nearby cities…';try{position=await locate();selectedCity='';await writeStore('city','');render();message('Your location is ready. Let’s find your people.');}finally{b.removeAttribute('disabled');b.textContent='Use my location';}return;}
     if(b.id==='more'){pageSize+=40;render();return;}
@@ -190,12 +227,18 @@ root.addEventListener('submit',async e=>{
 root.addEventListener('error',e=>{const img=e.target as HTMLImageElement;if(img.tagName==='IMG'&&img.closest('.community-book-cover')){img.remove();}},true);
 root.addEventListener('load',e=>{const img=e.target as HTMLImageElement;if(img.tagName==='IMG'&&img.closest('.community-book-cover')&&img.naturalWidth<10)img.dispatchEvent(new Event('error'));},true);
 async function openMap(){const result=await CityMap.present({cities:cityGroups(),selected:selectedCity||undefined});if(result.cityKey){selectedCity=result.cityKey;view='list';pageSize=40;await writeStore('city',selectedCity);render();}}
-async function refresh(){
+function refresh():Promise<void>{
+ if(refreshTask)return refreshTask;
+ refreshTask=refreshDirectory().finally(()=>{refreshTask=null;});
+ return refreshTask;
+}
+async function refreshDirectory(){
  clearDiscovery();saved={};clubId=null;render();
  const prior=await readStore<unknown>('saved',[]);
  const ids=Array.isArray(prior)?prior:prior&&typeof prior==='object'?Object.keys(prior):[];
  const ok=await refreshData();saved=Object.fromEntries(data.clubs.filter(c=>ids.includes(c.id)).map(c=>[c.id,c]));
  await writeStore('saved',Object.keys(saved));
+ resolveLinkedClub();
  refreshStatus=ok?'Fresh from the shelves. Directory updated just now.':'Club discovery needs a connection. Your books are still here.';
  render();
 }
@@ -211,7 +254,8 @@ async function start(){
   welcomeShown=!inviteOnLaunch&&!await readStore('welcomeSeen',false);
   remindersPrimed=await readStore('remindersPrimed',false);
   render();
-  if(isNative){await NativeApp.addListener('appUrlOpen',event=>{if(event.url)void community.openMessage(event.url);});const launch=await NativeApp.getLaunchUrl();if(launch?.url)await community.openMessage(launch.url);await Notifications.addListener('localNotificationActionPerformed',event=>{const id=event.notification.extra?.clubId;if(id&&(saved[id]||data.clubs.some(c=>c.id===id))){tab='saved';clubId=id;render();}});await NativeApp.addListener('resume',()=>{void refresh();});}
+  if(isAndroid)await NativeApp.addListener('backButton',androidBack);
+  if(isNative){await NativeApp.addListener('appUrlOpen',event=>{if(event.url){if(isAndroid)openAppLink(event.url);else void community.openMessage(event.url);}});const launch=await NativeApp.getLaunchUrl();if(launch?.url){if(isAndroid)openAppLink(launch.url);else await community.openMessage(launch.url);}await Notifications.addListener('localNotificationActionPerformed',event=>{const id=event.notification.extra?.clubId;if(id&&(saved[id]||data.clubs.some(c=>c.id===id))){tab='saved';clubId=id;render();}});await NativeApp.addListener('resume',()=>{void refresh();});}
   window.addEventListener('focus',()=>{void refresh();});
   document.addEventListener('visibilitychange',()=>{if(document.hidden){clearDiscovery();saved={};clubId=null;render();}else void refresh();});
 }

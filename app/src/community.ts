@@ -65,6 +65,15 @@ export const community={
  handles(b:HTMLElement){return featureHandles(b)||['sign-in','community-close','change-email','use-password','use-email','create-club','redeem-invite','account-settings','delete-account','reload-account','sign-out','rotate-invite','share-invite','back-club-home','moment-continue','moment-share','browse-clubs','new-meeting','edit-profile','blocked-members','back-settings','calendar-prev','calendar-next','club-switcher','meeting-calendar'].includes(b.id)||!!(b.dataset.home||b.dataset.roomTab||b.dataset.decide||b.dataset.ballot||b.dataset.closeVote||b.dataset.winner||b.dataset.content||b.dataset.calendarDate||b.dataset.meetingTime||b.dataset.meetingCalendar);},
  init(render:()=>void,notify:(s:string)=>void){redraw=render;toast=notify;const message=/^#message=(take|vote|meeting)\/([0-9a-f-]{36})$/i.exec(location.hash);if(message&&uuid.test(message[2])){pendingMessage={kind:message[1] as 'take'|'vote'|'meeting',id:message[2]};history.replaceState(null,'',location.pathname+location.search);afterAuth='message';page='auth';codeSent=false;}const match=/^#invite=([A-Z0-9]{6,12})$/i.exec(location.hash);if(match){inviteInput=match[1].toUpperCase();history.replaceState(null,'',location.pathname+location.search);afterAuth='invite';page='auth';}},
  rendered(){if(page)show();},
+ dismiss(){page=null;pendingRef='';afterAuth=null;authResume=null;drafts={};},
+ openInvite(code:string){pendingRef='';authResume=null;drafts={};inviteInput=code;afterAuth='invite';page=client.user?'invite':'auth';codeSent=false;usePassword=false;},
+ back(){
+  if(!page)return false;
+  if(home&&page!=='home'){page='home';show();}
+  else if(page==='home'&&tabHome!=='home'){tabHome='home';show();}
+  else{page=null;pendingRef='';afterAuth=null;authResume=null;drafts={};document.querySelector<HTMLDialogElement>('#detail')?.close();}
+  return true;
+ },
  recoverAuth(){if(!client.user&&(account||home)){if(isNative)void MessageCards.clearWidgets().catch(()=>{});privateGeneration++;authResume={page:page||'home',club:home?.club.id||null,tab:tabHome,editing:editingMeeting,thread:threadReference(),reply:replyParent?{id:replyParent.id,parent_id:replyParent.parent_id}:undefined,book:teaBook()?.id,ratingBookId:ratingBook?.id,conversationBook:conversationBook?{...conversationBook}:undefined};clearFeatures();account=null;clubs=[];home=null;votes={};page='auth';codeSent=false;redraw();show();return true;}return false;},
  get signedIn(){return !!client.user;},
  visible(id:string){return !filters.some(f=>f.kind==='club'&&f.id===id);},
@@ -171,7 +180,7 @@ function show(){
  const starts=d.querySelector<HTMLInputElement>('#meeting-starts');if(starts){const sync=()=>{for(const b of d.querySelectorAll<HTMLElement>('[data-calendar-date]'))b.setAttribute('aria-pressed',String(b.dataset.calendarDate===starts.value.split('T')[0]));for(const b of d.querySelectorAll<HTMLElement>('[data-meeting-time]'))b.setAttribute('aria-pressed',String(b.dataset.meetingTime===starts.value.split('T')[1]));};starts.oninput=sync;sync();}
  for(const image of d.querySelectorAll<HTMLImageElement>('.community-book-cover img')){image.addEventListener('error',()=>image.remove());image.addEventListener('load',()=>{if(image.naturalWidth<10)image.remove();});}
  const code=d.querySelector<HTMLInputElement>('#email-code');
- if(code){const update=()=>{code.value=code.value.replace(/[^0-9]/g,'').slice(0,10);const length=code.value.length&&code.value.length<=4?4:Math.max(6,code.value.length);const field=code.closest<HTMLElement>('.code-field')!;field.dataset.codeLength=String(length);field.style.setProperty('--code-length',String(length));field.querySelector('.code-boxes')!.innerHTML=Array.from({length},(_,i)=>`<span>${code.value[i]||''}</span>`).join('');};code.addEventListener('input',update);update();}
+ if(code){code.enterKeyHint='done';code.autocapitalize='off';code.spellcheck=false;const update=()=>{code.value=code.value.replace(/[^0-9]/g,'').slice(0,10);const length=code.value.length&&code.value.length<=4?4:Math.max(6,code.value.length);const field=code.closest<HTMLElement>('.code-field')!;field.dataset.codeLength=String(length);field.style.setProperty('--code-length',String(length));field.querySelector('.code-boxes')!.innerHTML=Array.from({length},(_,i)=>`<span>${code.value[i]||''}</span>`).join('');};code.addEventListener('input',update);update();}
  if(!d.open)d.showModal();d.oncancel=()=>{page=null;authResume=null;afterAuth=null;pendingRef='';delete d.dataset.community;};d.scrollTop=0;d.querySelector<HTMLElement>('h1')?.focus({preventScroll:true});
 
 }
