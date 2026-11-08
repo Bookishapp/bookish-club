@@ -64,7 +64,7 @@ Workflow `bookish-android-internal` triggers on `android-v*`, uses Node 24 and J
 
 The binary is decoded only into a temporary mode-600 file on the CI worker, and is removed when the build step exits. The prepared publishing block is commented out until the first manual upload and publisher credential are ready, so a missing publisher credential cannot stop signed builds. Its destination is `internal`, with `submit_as_draft: true` and `changes_not_sent_for_review: true`. No production, closed-track, promotion, or site-deployment action is configured. A tag is an explicit build trigger; none is needed to open the draft PR.
 
-The requested existing publisher is `kres-68@gen-lang-client-0329895377.iam.gserviceaccount.com`. Grant only Bookish app viewing and testing-release permissions, then put that account's existing JSON key in the app-specific group. Global secret sharing requires a paid Codemagic team subscription, so do not upgrade to share Fictora's secrets. The first AAB must be uploaded manually to the internal track, per [Codemagic's first-release requirements](https://docs.codemagic.io/yaml-publishing/google-play/).
+The requested existing publisher is `(service account, kept private)`. Grant only Bookish app viewing and testing-release permissions, then put that account's existing JSON key in the app-specific group. Global secret sharing requires a paid Codemagic team subscription, so do not upgrade to share Fictora's secrets. The first AAB must be uploaded manually to the internal track, per [Codemagic's first-release requirements](https://docs.codemagic.io/yaml-publishing/google-play/).
 
 ## Store preparation and QA
 

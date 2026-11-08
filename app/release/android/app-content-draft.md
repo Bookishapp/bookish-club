@@ -54,4 +54,4 @@ Use the app category for a social or communication product because members inter
 
 ## Internal testing
 
-Tester: `sebastian.cosentinojr@gmail.com`. Only the INTERNAL track is authorized. No production release, closed release, review submission, site deployment, or function deployment is authorized.
+Tester: `(owner email, kept private)`. Only the INTERNAL track is authorized. No production release, closed release, review submission, site deployment, or function deployment is authorized.
