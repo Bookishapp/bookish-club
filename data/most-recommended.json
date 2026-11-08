@@ -1,0 +1,4503 @@
+{
+  "snapshot": "2026-10-31",
+  "recent_since": "2023-10-31",
+  "books": [
+    {
+      "title": "It Ends with Us",
+      "author": "Colleen Hoover",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL18020194W"
+      ],
+      "shelves": [
+        "Romance"
+      ],
+      "moods": [
+        "Heartfelt"
+      ],
+      "tropes": [
+        "Romantic relationships"
+      ],
+      "open_library_id": "OL18020194W",
+      "readinglog_count": 44613,
+      "want_to_read_count": 40622,
+      "currently_reading_count": 2630,
+      "already_read_count": 1361,
+      "recent_readinglog_count": 10304,
+      "weighted_readinglog_count": 21740.333333,
+      "ratings_count": 1064,
+      "ratings_average": 4.1842,
+      "recent_ratings_count": 213,
+      "weighted_ratings_count": 496.666667,
+      "weighted_rating_sum": 2025.333333,
+      "reader_score": 70.3592,
+      "cover_id": 10473609
+    },
+    {
+      "title": "A Game of Thrones",
+      "author": "George R. R. Martin",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL257943W"
+      ],
+      "shelves": [
+        "Fantasy"
+      ],
+      "moods": [
+        "Wondrous"
+      ],
+      "tropes": [
+        "Imagined worlds",
+        "Dragons",
+        "Family ties"
+      ],
+      "open_library_id": "OL257943W",
+      "readinglog_count": 13645,
+      "want_to_read_count": 11836,
+      "currently_reading_count": 900,
+      "already_read_count": 909,
+      "recent_readinglog_count": 8160,
+      "weighted_readinglog_count": 9988.333333,
+      "ratings_count": 766,
+      "ratings_average": 4.2219,
+      "recent_ratings_count": 357,
+      "weighted_ratings_count": 493.333333,
+      "weighted_rating_sum": 2072.666667,
+      "reader_score": 66.7767,
+      "cover_id": 9269962
+    },
+    {
+      "title": "Pride and Prejudice",
+      "author": "Jane Austen",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL66554W"
+      ],
+      "shelves": [
+        "Romance"
+      ],
+      "moods": [
+        "Heartfelt"
+      ],
+      "tropes": [
+        "Romantic relationships",
+        "Family ties"
+      ],
+      "open_library_id": "OL66554W",
+      "readinglog_count": 8035,
+      "want_to_read_count": 6756,
+      "currently_reading_count": 670,
+      "already_read_count": 609,
+      "recent_readinglog_count": 4557,
+      "weighted_readinglog_count": 5716.333333,
+      "ratings_count": 415,
+      "ratings_average": 4.2072,
+      "recent_ratings_count": 240,
+      "weighted_ratings_count": 298.333333,
+      "weighted_rating_sum": 1263.333333,
+      "reader_score": 62.9477,
+      "cover_id": 14348537
+    },
+    {
+      "title": "It Starts with Us",
+      "author": "Colleen Hoover",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL27733867W"
+      ],
+      "shelves": [
+        "Romance"
+      ],
+      "moods": [
+        "Heartfelt"
+      ],
+      "tropes": [
+        "Romantic relationships",
+        "Family ties",
+        "Friendship"
+      ],
+      "open_library_id": "OL27733867W",
+      "readinglog_count": 19607,
+      "want_to_read_count": 18230,
+      "currently_reading_count": 862,
+      "already_read_count": 515,
+      "recent_readinglog_count": 4909,
+      "weighted_readinglog_count": 9808.333333,
+      "ratings_count": 420,
+      "ratings_average": 4.0143,
+      "recent_ratings_count": 104,
+      "weighted_ratings_count": 209.333333,
+      "weighted_rating_sum": 832.0,
+      "reader_score": 62.7987,
+      "cover_id": 12749873
+    },
+    {
+      "title": "The Hobbit",
+      "author": "J.R.R. Tolkien",
+      "mention_count": 4,
+      "sources": [
+        "https://openlibrary.org/works/OL27482W",
+        "https://literature.stackexchange.com/a/1395",
+        "https://scifi.stackexchange.com/a/15535",
+        "https://scifi.stackexchange.com/a/15536",
+        "https://scifi.stackexchange.com/a/98763"
+      ],
+      "shelves": [
+        "Fantasy"
+      ],
+      "moods": [
+        "Wondrous"
+      ],
+      "tropes": [
+        "Imagined worlds",
+        "Dragons",
+        "Mythic retelling"
+      ],
+      "open_library_id": "OL27482W",
+      "readinglog_count": 5299,
+      "want_to_read_count": 4068,
+      "currently_reading_count": 379,
+      "already_read_count": 852,
+      "recent_readinglog_count": 2283,
+      "weighted_readinglog_count": 3288.333333,
+      "ratings_count": 507,
+      "ratings_average": 4.2978,
+      "recent_ratings_count": 125,
+      "weighted_ratings_count": 252.333333,
+      "weighted_rating_sum": 1089.0,
+      "reader_score": 62.1946,
+      "cover_id": 14627509
+    },
+    {
+      "title": "Twisted Love",
+      "author": "Ana Huang",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL24390422W"
+      ],
+      "shelves": [
+        "Romance"
+      ],
+      "moods": [
+        "Heartfelt"
+      ],
+      "tropes": [
+        "Romantic relationships"
+      ],
+      "open_library_id": "OL24390422W",
+      "readinglog_count": 15133,
+      "want_to_read_count": 13702,
+      "currently_reading_count": 1036,
+      "already_read_count": 395,
+      "recent_readinglog_count": 10999,
+      "weighted_readinglog_count": 12377.0,
+      "ratings_count": 308,
+      "ratings_average": 3.7987,
+      "recent_ratings_count": 218,
+      "weighted_ratings_count": 248.0,
+      "weighted_rating_sum": 924.666667,
+      "reader_score": 60.7586,
+      "cover_id": 12940491
+    },
+    {
+      "title": "The Love Hypothesis",
+      "author": "Ali Hazelwood",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL24178205W"
+      ],
+      "shelves": [
+        "Romance"
+      ],
+      "moods": [
+        "Heartfelt"
+      ],
+      "tropes": [
+        "Romantic relationships"
+      ],
+      "open_library_id": "OL24178205W",
+      "readinglog_count": 9511,
+      "want_to_read_count": 8732,
+      "currently_reading_count": 453,
+      "already_read_count": 326,
+      "recent_readinglog_count": 3431,
+      "weighted_readinglog_count": 5457.666667,
+      "ratings_count": 260,
+      "ratings_average": 4.1269,
+      "recent_ratings_count": 91,
+      "weighted_ratings_count": 147.333333,
+      "weighted_rating_sum": 607.666667,
+      "reader_score": 60.5378,
+      "cover_id": 10601402
+    },
+    {
+      "title": "Icebreaker",
+      "author": "Hannah Grace",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL28952677W"
+      ],
+      "shelves": [
+        "Romance"
+      ],
+      "moods": [
+        "Heartfelt"
+      ],
+      "tropes": [
+        "Romantic relationships",
+        "Rivals in love",
+        "Family ties",
+        "Friendship"
+      ],
+      "open_library_id": "OL28952677W",
+      "readinglog_count": 10092,
+      "want_to_read_count": 9342,
+      "currently_reading_count": 537,
+      "already_read_count": 213,
+      "recent_readinglog_count": 7826,
+      "weighted_readinglog_count": 8581.333333,
+      "ratings_count": 181,
+      "ratings_average": 3.9392,
+      "recent_ratings_count": 154,
+      "weighted_ratings_count": 163.0,
+      "weighted_rating_sum": 633.666667,
+      "reader_score": 60.5016,
+      "cover_id": 13180728
+    },
+    {
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL17860744W"
+      ],
+      "shelves": [
+        "Romantasy"
+      ],
+      "moods": [
+        "Spellbinding"
+      ],
+      "tropes": [
+        "Love and magic"
+      ],
+      "open_library_id": "OL17860744W",
+      "readinglog_count": 9386,
+      "want_to_read_count": 8165,
+      "currently_reading_count": 668,
+      "already_read_count": 553,
+      "recent_readinglog_count": 3492,
+      "weighted_readinglog_count": 5456.666667,
+      "ratings_count": 452,
+      "ratings_average": 4.0265,
+      "recent_ratings_count": 210,
+      "weighted_ratings_count": 290.666667,
+      "weighted_rating_sum": 1184.0,
+      "reader_score": 60.3374,
+      "cover_id": 14315081
+    },
+    {
+      "title": "A Good Girl's Guide to Murder",
+      "author": "Holly Jackson",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL20646061W"
+      ],
+      "shelves": [
+        "Thriller"
+      ],
+      "moods": [
+        "Tense"
+      ],
+      "tropes": [
+        "Secrets and suspense"
+      ],
+      "open_library_id": "OL20646061W",
+      "readinglog_count": 6581,
+      "want_to_read_count": 5919,
+      "currently_reading_count": 375,
+      "already_read_count": 287,
+      "recent_readinglog_count": 4106,
+      "weighted_readinglog_count": 4931.0,
+      "ratings_count": 183,
+      "ratings_average": 4.0328,
+      "recent_ratings_count": 129,
+      "weighted_ratings_count": 147.0,
+      "weighted_rating_sum": 584.666667,
+      "reader_score": 57.909,
+      "cover_id": 13156188
+    },
+    {
+      "title": "The Silent Patient",
+      "author": "Alex Michaelides",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL19096402W"
+      ],
+      "shelves": [
+        "Thriller"
+      ],
+      "moods": [
+        "Tense"
+      ],
+      "tropes": [
+        "Secrets and suspense",
+        "Family ties"
+      ],
+      "open_library_id": "OL19096402W",
+      "readinglog_count": 5976,
+      "want_to_read_count": 5374,
+      "currently_reading_count": 323,
+      "already_read_count": 279,
+      "recent_readinglog_count": 3800,
+      "weighted_readinglog_count": 4525.333333,
+      "ratings_count": 215,
+      "ratings_average": 4.0512,
+      "recent_ratings_count": 124,
+      "weighted_ratings_count": 154.333333,
+      "weighted_rating_sum": 620.333333,
+      "reader_score": 57.9048,
+      "cover_id": 9407338
+    },
+    {
+      "title": "Twisted Games",
+      "author": "Ana Huang",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL25515697W"
+      ],
+      "shelves": [
+        "Romance"
+      ],
+      "moods": [
+        "Heartfelt"
+      ],
+      "tropes": [
+        "Romantic relationships",
+        "Rivals in love"
+      ],
+      "open_library_id": "OL25515697W",
+      "readinglog_count": 5865,
+      "want_to_read_count": 5302,
+      "currently_reading_count": 376,
+      "already_read_count": 187,
+      "recent_readinglog_count": 3798,
+      "weighted_readinglog_count": 4487.0,
+      "ratings_count": 126,
+      "ratings_average": 4.0556,
+      "recent_ratings_count": 86,
+      "weighted_ratings_count": 99.333333,
+      "weighted_rating_sum": 402.333333,
+      "reader_score": 57.8208,
+      "cover_id": 12821465
+    },
+    {
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL29226517W"
+      ],
+      "shelves": [
+        "Romantasy"
+      ],
+      "moods": [
+        "Spellbinding"
+      ],
+      "tropes": [
+        "Love and magic"
+      ],
+      "open_library_id": "OL29226517W",
+      "readinglog_count": 3465,
+      "want_to_read_count": 3081,
+      "currently_reading_count": 176,
+      "already_read_count": 208,
+      "recent_readinglog_count": 2937,
+      "weighted_readinglog_count": 3113.0,
+      "ratings_count": 112,
+      "ratings_average": 4.2589,
+      "recent_ratings_count": 101,
+      "weighted_ratings_count": 104.666667,
+      "weighted_rating_sum": 445.666667,
+      "reader_score": 57.7985,
+      "cover_id": 14407898
+    },
+    {
+      "title": "The Lord of the Rings",
+      "author": "J.R.R. Tolkien",
+      "mention_count": 4,
+      "sources": [
+        "https://openlibrary.org/works/OL27448W",
+        "https://literature.stackexchange.com/a/1395",
+        "https://scifi.stackexchange.com/a/15535",
+        "https://scifi.stackexchange.com/a/15536",
+        "https://scifi.stackexchange.com/a/98763"
+      ],
+      "shelves": [
+        "Fantasy"
+      ],
+      "moods": [
+        "Wondrous"
+      ],
+      "tropes": [
+        "Imagined worlds"
+      ],
+      "open_library_id": "OL27448W",
+      "readinglog_count": 2853,
+      "want_to_read_count": 2414,
+      "currently_reading_count": 201,
+      "already_read_count": 238,
+      "recent_readinglog_count": 1335,
+      "weighted_readinglog_count": 1841.0,
+      "ratings_count": 120,
+      "ratings_average": 4.4583,
+      "recent_ratings_count": 54,
+      "weighted_ratings_count": 76.0,
+      "weighted_rating_sum": 335.666667,
+      "reader_score": 57.5144,
+      "cover_id": 14625765
+    },
+    {
+      "title": "The Seven Husbands of Evelyn Hugo",
+      "author": "Taylor Jenkins Reid",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL18203673W"
+      ],
+      "shelves": [
+        "Romance",
+        "Book Club Picks"
+      ],
+      "moods": [
+        "Heartfelt",
+        "Thoughtful"
+      ],
+      "tropes": [
+        "Romantic relationships",
+        "Conversation starters",
+        "Family ties"
+      ],
+      "open_library_id": "OL18203673W",
+      "readinglog_count": 5436,
+      "want_to_read_count": 4988,
+      "currently_reading_count": 181,
+      "already_read_count": 267,
+      "recent_readinglog_count": 1825,
+      "weighted_readinglog_count": 3028.666667,
+      "ratings_count": 190,
+      "ratings_average": 4.1263,
+      "recent_ratings_count": 103,
+      "weighted_ratings_count": 132.0,
+      "weighted_rating_sum": 544.0,
+      "reader_score": 56.252,
+      "cover_id": 8354226
+    },
+    {
+      "title": "Red, White & Royal Blue",
+      "author": "Casey McQuiston",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL20090688W"
+      ],
+      "shelves": [
+        "Romance"
+      ],
+      "moods": [
+        "Heartfelt"
+      ],
+      "tropes": [
+        "Romantic relationships",
+        "Rivals in love",
+        "Family ties"
+      ],
+      "open_library_id": "OL20090688W",
+      "readinglog_count": 5060,
+      "want_to_read_count": 4691,
+      "currently_reading_count": 155,
+      "already_read_count": 214,
+      "recent_readinglog_count": 1635,
+      "weighted_readinglog_count": 2776.666667,
+      "ratings_count": 198,
+      "ratings_average": 4.1818,
+      "recent_ratings_count": 77,
+      "weighted_ratings_count": 117.333333,
+      "weighted_rating_sum": 489.333333,
+      "reader_score": 56.1019,
+      "cover_id": 9171544
+    },
+    {
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL17850410W"
+      ],
+      "shelves": [
+        "Romantasy"
+      ],
+      "moods": [
+        "Spellbinding"
+      ],
+      "tropes": [
+        "Love and magic"
+      ],
+      "open_library_id": "OL17850410W",
+      "readinglog_count": 5831,
+      "want_to_read_count": 5278,
+      "currently_reading_count": 285,
+      "already_read_count": 268,
+      "recent_readinglog_count": 2637,
+      "weighted_readinglog_count": 3701.666667,
+      "ratings_count": 173,
+      "ratings_average": 4.0058,
+      "recent_ratings_count": 77,
+      "weighted_ratings_count": 109.0,
+      "weighted_rating_sum": 435.0,
+      "reader_score": 55.8791,
+      "cover_id": 8361789
+    },
+    {
+      "title": "The Song of Achilles",
+      "author": "Madeline Miller",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL16509148W"
+      ],
+      "shelves": [
+        "Fantasy",
+        "Historical Fiction"
+      ],
+      "moods": [
+        "Wondrous",
+        "Immersive"
+      ],
+      "tropes": [
+        "Imagined worlds",
+        "Lives in the past",
+        "Mythic retelling",
+        "Friendship"
+      ],
+      "open_library_id": "OL16509148W",
+      "readinglog_count": 3844,
+      "want_to_read_count": 3394,
+      "currently_reading_count": 192,
+      "already_read_count": 258,
+      "recent_readinglog_count": 1388,
+      "weighted_readinglog_count": 2206.666667,
+      "ratings_count": 141,
+      "ratings_average": 4.2979,
+      "recent_ratings_count": 44,
+      "weighted_ratings_count": 76.333333,
+      "weighted_rating_sum": 326.666667,
+      "reader_score": 55.0766,
+      "cover_id": 7098465
+    },
+    {
+      "title": "King of Wrath",
+      "author": "Ana Huang",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL28744393W"
+      ],
+      "shelves": [
+        "Romance"
+      ],
+      "moods": [
+        "Heartfelt"
+      ],
+      "tropes": [
+        "Romantic relationships"
+      ],
+      "open_library_id": "OL28744393W",
+      "readinglog_count": 3723,
+      "want_to_read_count": 3414,
+      "currently_reading_count": 211,
+      "already_read_count": 98,
+      "recent_readinglog_count": 2058,
+      "weighted_readinglog_count": 2613.0,
+      "ratings_count": 66,
+      "ratings_average": 4.2576,
+      "recent_ratings_count": 38,
+      "weighted_ratings_count": 47.333333,
+      "weighted_rating_sum": 201.0,
+      "reader_score": 55.0152,
+      "cover_id": 13588136
+    },
+    {
+      "title": "A Thousand Splendid Suns",
+      "author": "Khaled Hosseini",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL5782000W"
+      ],
+      "shelves": [
+        "Book Club Picks"
+      ],
+      "moods": [
+        "Thoughtful"
+      ],
+      "tropes": [
+        "Conversation starters",
+        "Family ties",
+        "Friendship"
+      ],
+      "open_library_id": "OL5782000W",
+      "readinglog_count": 2675,
+      "want_to_read_count": 2274,
+      "currently_reading_count": 177,
+      "already_read_count": 224,
+      "recent_readinglog_count": 1661,
+      "weighted_readinglog_count": 1999.0,
+      "ratings_count": 136,
+      "ratings_average": 4.3529,
+      "recent_ratings_count": 52,
+      "weighted_ratings_count": 80.0,
+      "weighted_rating_sum": 343.333333,
+      "reader_score": 54.577,
+      "cover_id": 8579790
+    },
+    {
+      "title": "Ugly Love",
+      "author": "Colleen Hoover",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL20577143W"
+      ],
+      "shelves": [
+        "Romance"
+      ],
+      "moods": [
+        "Heartfelt"
+      ],
+      "tropes": [
+        "Romantic relationships"
+      ],
+      "open_library_id": "OL20577143W",
+      "readinglog_count": 7143,
+      "want_to_read_count": 6273,
+      "currently_reading_count": 516,
+      "already_read_count": 354,
+      "recent_readinglog_count": 2120,
+      "weighted_readinglog_count": 3794.333333,
+      "ratings_count": 186,
+      "ratings_average": 4.0054,
+      "recent_ratings_count": 39,
+      "weighted_ratings_count": 88.0,
+      "weighted_rating_sum": 341.0,
+      "reader_score": 54.4841,
+      "cover_id": 12856728
+    },
+    {
+      "title": "Powerless",
+      "author": "Lauren Roberts",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL34774028W"
+      ],
+      "shelves": [
+        "Romantasy"
+      ],
+      "moods": [
+        "Spellbinding"
+      ],
+      "tropes": [
+        "Love and magic"
+      ],
+      "open_library_id": "OL34774028W",
+      "readinglog_count": 3033,
+      "want_to_read_count": 2736,
+      "currently_reading_count": 192,
+      "already_read_count": 105,
+      "recent_readinglog_count": 3028,
+      "weighted_readinglog_count": 3029.666667,
+      "ratings_count": 69,
+      "ratings_average": 3.9855,
+      "recent_ratings_count": 69,
+      "weighted_ratings_count": 69.0,
+      "weighted_rating_sum": 275.0,
+      "reader_score": 53.9834,
+      "cover_id": 14567864
+    },
+    {
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL17352669W"
+      ],
+      "shelves": [
+        "Romantasy"
+      ],
+      "moods": [
+        "Spellbinding"
+      ],
+      "tropes": [
+        "Love and magic"
+      ],
+      "open_library_id": "OL17352669W",
+      "readinglog_count": 4540,
+      "want_to_read_count": 4013,
+      "currently_reading_count": 187,
+      "already_read_count": 340,
+      "recent_readinglog_count": 2622,
+      "weighted_readinglog_count": 3261.333333,
+      "ratings_count": 156,
+      "ratings_average": 3.9103,
+      "recent_ratings_count": 81,
+      "weighted_ratings_count": 106.0,
+      "weighted_rating_sum": 410.0,
+      "reader_score": 53.5395,
+      "cover_id": 15254465
+    },
+    {
+      "title": "Verity",
+      "author": "Colleen Hoover",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL20068530W"
+      ],
+      "shelves": [
+        "Thriller"
+      ],
+      "moods": [
+        "Tense"
+      ],
+      "tropes": [
+        "Secrets and suspense",
+        "Family ties"
+      ],
+      "open_library_id": "OL20068530W",
+      "readinglog_count": 5466,
+      "want_to_read_count": 5027,
+      "currently_reading_count": 166,
+      "already_read_count": 273,
+      "recent_readinglog_count": 1915,
+      "weighted_readinglog_count": 3098.666667,
+      "ratings_count": 132,
+      "ratings_average": 3.9015,
+      "recent_ratings_count": 51,
+      "weighted_ratings_count": 78.0,
+      "weighted_rating_sum": 304.333333,
+      "reader_score": 53.3435,
+      "cover_id": 8747160
+    },
+    {
+      "title": "The Kite Runner",
+      "author": "Khaled Hosseini",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL5781992W"
+      ],
+      "shelves": [
+        "Historical Fiction"
+      ],
+      "moods": [
+        "Immersive"
+      ],
+      "tropes": [
+        "Lives in the past",
+        "Friendship"
+      ],
+      "open_library_id": "OL5781992W",
+      "readinglog_count": 3084,
+      "want_to_read_count": 2579,
+      "currently_reading_count": 233,
+      "already_read_count": 272,
+      "recent_readinglog_count": 1671,
+      "weighted_readinglog_count": 2142.0,
+      "ratings_count": 150,
+      "ratings_average": 4.1133,
+      "recent_ratings_count": 59,
+      "weighted_ratings_count": 89.333333,
+      "weighted_rating_sum": 367.0,
+      "reader_score": 53.2557,
+      "cover_id": 14846827
+    },
+    {
+      "title": "And Then There Were None",
+      "author": "Agatha Christie",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL471565W"
+      ],
+      "shelves": [
+        "Thriller"
+      ],
+      "moods": [
+        "Tense"
+      ],
+      "tropes": [
+        "Secrets and suspense"
+      ],
+      "open_library_id": "OL471565W",
+      "readinglog_count": 2501,
+      "want_to_read_count": 2010,
+      "currently_reading_count": 144,
+      "already_read_count": 347,
+      "recent_readinglog_count": 1325,
+      "weighted_readinglog_count": 1717.0,
+      "ratings_count": 184,
+      "ratings_average": 4.25,
+      "recent_ratings_count": 80,
+      "weighted_ratings_count": 114.666667,
+      "weighted_rating_sum": 483.333333,
+      "reader_score": 53.1697,
+      "cover_id": 11172296
+    },
+    {
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL17332479W"
+      ],
+      "shelves": [
+        "Fantasy"
+      ],
+      "moods": [
+        "Wondrous"
+      ],
+      "tropes": [
+        "Imagined worlds"
+      ],
+      "open_library_id": "OL17332479W",
+      "readinglog_count": 2541,
+      "want_to_read_count": 2219,
+      "currently_reading_count": 131,
+      "already_read_count": 191,
+      "recent_readinglog_count": 807,
+      "weighted_readinglog_count": 1385.0,
+      "ratings_count": 95,
+      "ratings_average": 4.5368,
+      "recent_ratings_count": 29,
+      "weighted_ratings_count": 51.0,
+      "weighted_rating_sum": 229.0,
+      "reader_score": 52.9232,
+      "cover_id": 12667417
+    },
+    {
+      "title": "The Final Empire",
+      "author": "Brandon Sanderson",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL5738148W"
+      ],
+      "shelves": [
+        "Fantasy"
+      ],
+      "moods": [
+        "Wondrous"
+      ],
+      "tropes": [
+        "Imagined worlds"
+      ],
+      "open_library_id": "OL5738148W",
+      "readinglog_count": 1605,
+      "want_to_read_count": 1260,
+      "currently_reading_count": 70,
+      "already_read_count": 275,
+      "recent_readinglog_count": 950,
+      "weighted_readinglog_count": 1168.333333,
+      "ratings_count": 163,
+      "ratings_average": 4.4049,
+      "recent_ratings_count": 73,
+      "weighted_ratings_count": 103.0,
+      "weighted_rating_sum": 451.333333,
+      "reader_score": 52.0136,
+      "cover_id": 14658160
+    },
+    {
+      "title": "The Name of the Wind",
+      "author": "Patrick Rothfuss",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL8479867W"
+      ],
+      "shelves": [
+        "Fantasy"
+      ],
+      "moods": [
+        "Wondrous"
+      ],
+      "tropes": [
+        "Imagined worlds"
+      ],
+      "open_library_id": "OL8479867W",
+      "readinglog_count": 1715,
+      "want_to_read_count": 1285,
+      "currently_reading_count": 79,
+      "already_read_count": 351,
+      "recent_readinglog_count": 798,
+      "weighted_readinglog_count": 1103.666667,
+      "ratings_count": 260,
+      "ratings_average": 4.3385,
+      "recent_ratings_count": 82,
+      "weighted_ratings_count": 141.333333,
+      "weighted_rating_sum": 616.0,
+      "reader_score": 51.7601,
+      "cover_id": 11480483
+    },
+    {
+      "title": "The Book Thief",
+      "author": "Markus Zusak",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL5819456W"
+      ],
+      "shelves": [
+        "Historical Fiction"
+      ],
+      "moods": [
+        "Immersive"
+      ],
+      "tropes": [
+        "Lives in the past",
+        "Family ties",
+        "Wartime lives"
+      ],
+      "open_library_id": "OL5819456W",
+      "readinglog_count": 2983,
+      "want_to_read_count": 2554,
+      "currently_reading_count": 153,
+      "already_read_count": 276,
+      "recent_readinglog_count": 1376,
+      "weighted_readinglog_count": 1911.666667,
+      "ratings_count": 147,
+      "ratings_average": 4.1429,
+      "recent_ratings_count": 42,
+      "weighted_ratings_count": 77.0,
+      "weighted_rating_sum": 311.666667,
+      "reader_score": 51.6492,
+      "cover_id": 15267110
+    },
+    {
+      "title": "The Da Vinci Code",
+      "author": "Dan Brown",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL76837W"
+      ],
+      "shelves": [
+        "Thriller"
+      ],
+      "moods": [
+        "Tense"
+      ],
+      "tropes": [
+        "Secrets and suspense"
+      ],
+      "open_library_id": "OL76837W",
+      "readinglog_count": 3626,
+      "want_to_read_count": 3018,
+      "currently_reading_count": 223,
+      "already_read_count": 385,
+      "recent_readinglog_count": 1374,
+      "weighted_readinglog_count": 2124.666667,
+      "ratings_count": 197,
+      "ratings_average": 3.9188,
+      "recent_ratings_count": 73,
+      "weighted_ratings_count": 114.333333,
+      "weighted_rating_sum": 450.0,
+      "reader_score": 51.5225,
+      "cover_id": 9255229
+    },
+    {
+      "title": "The Deal",
+      "author": "Elle Kennedy",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL42430111W"
+      ],
+      "shelves": [
+        "Romance"
+      ],
+      "moods": [
+        "Heartfelt"
+      ],
+      "tropes": [
+        "Romantic relationships",
+        "Pretend relationships"
+      ],
+      "open_library_id": "OL42430111W",
+      "readinglog_count": 1958,
+      "want_to_read_count": 1709,
+      "currently_reading_count": 155,
+      "already_read_count": 94,
+      "recent_readinglog_count": 1417,
+      "weighted_readinglog_count": 1597.333333,
+      "ratings_count": 40,
+      "ratings_average": 4.375,
+      "recent_ratings_count": 20,
+      "weighted_ratings_count": 26.666667,
+      "weighted_rating_sum": 116.333333,
+      "reader_score": 51.1671,
+      "cover_id": 10201611
+    },
+    {
+      "title": "Good Girl, Bad Blood",
+      "author": "Holly Jackson",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL21084352W"
+      ],
+      "shelves": [
+        "Thriller"
+      ],
+      "moods": [
+        "Tense"
+      ],
+      "tropes": [
+        "Secrets and suspense",
+        "Family ties"
+      ],
+      "open_library_id": "OL21084352W",
+      "readinglog_count": 2184,
+      "want_to_read_count": 1928,
+      "currently_reading_count": 133,
+      "already_read_count": 123,
+      "recent_readinglog_count": 1269,
+      "weighted_readinglog_count": 1574.0,
+      "ratings_count": 74,
+      "ratings_average": 4.1486,
+      "recent_ratings_count": 45,
+      "weighted_ratings_count": 54.666667,
+      "weighted_rating_sum": 227.0,
+      "reader_score": 50.871,
+      "cover_id": 11466695
+    },
+    {
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL16607146W"
+      ],
+      "shelves": [
+        "Romantasy"
+      ],
+      "moods": [
+        "Spellbinding"
+      ],
+      "tropes": [
+        "Love and magic"
+      ],
+      "open_library_id": "OL16607146W",
+      "readinglog_count": 2248,
+      "want_to_read_count": 1956,
+      "currently_reading_count": 90,
+      "already_read_count": 202,
+      "recent_readinglog_count": 1255,
+      "weighted_readinglog_count": 1586.0,
+      "ratings_count": 87,
+      "ratings_average": 4.1839,
+      "recent_ratings_count": 32,
+      "weighted_ratings_count": 50.333333,
+      "weighted_rating_sum": 206.666667,
+      "reader_score": 50.3598,
+      "cover_id": 13312488
+    },
+    {
+      "title": "Better Than the Movies",
+      "author": "Lynn Painter",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL24542623W"
+      ],
+      "shelves": [
+        "Romance"
+      ],
+      "moods": [
+        "Heartfelt"
+      ],
+      "tropes": [
+        "Romantic relationships",
+        "Family ties",
+        "Friendship"
+      ],
+      "open_library_id": "OL24542623W",
+      "readinglog_count": 3474,
+      "want_to_read_count": 3166,
+      "currently_reading_count": 186,
+      "already_read_count": 122,
+      "recent_readinglog_count": 2309,
+      "weighted_readinglog_count": 2697.333333,
+      "ratings_count": 77,
+      "ratings_average": 3.7532,
+      "recent_ratings_count": 45,
+      "weighted_ratings_count": 55.666667,
+      "weighted_rating_sum": 206.333333,
+      "reader_score": 50.1212,
+      "cover_id": 11182600
+    },
+    {
+      "title": "One of Us Is Lying",
+      "author": "Karen M. McManus",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL17797857W"
+      ],
+      "shelves": [
+        "Thriller"
+      ],
+      "moods": [
+        "Tense"
+      ],
+      "tropes": [
+        "Secrets and suspense",
+        "Friendship"
+      ],
+      "open_library_id": "OL17797857W",
+      "readinglog_count": 2911,
+      "want_to_read_count": 2611,
+      "currently_reading_count": 157,
+      "already_read_count": 143,
+      "recent_readinglog_count": 1076,
+      "weighted_readinglog_count": 1687.666667,
+      "ratings_count": 100,
+      "ratings_average": 4.14,
+      "recent_ratings_count": 31,
+      "weighted_ratings_count": 54.0,
+      "weighted_rating_sum": 216.666667,
+      "reader_score": 50.0124,
+      "cover_id": 12503935
+    },
+    {
+      "title": "The Midnight Library",
+      "author": "Matt Haig",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL20965973W"
+      ],
+      "shelves": [
+        "Book Club Picks"
+      ],
+      "moods": [
+        "Thoughtful"
+      ],
+      "tropes": [
+        "Conversation starters"
+      ],
+      "open_library_id": "OL20965973W",
+      "readinglog_count": 2384,
+      "want_to_read_count": 2153,
+      "currently_reading_count": 84,
+      "already_read_count": 147,
+      "recent_readinglog_count": 1140,
+      "weighted_readinglog_count": 1554.666667,
+      "ratings_count": 87,
+      "ratings_average": 4.0115,
+      "recent_ratings_count": 50,
+      "weighted_ratings_count": 62.333333,
+      "weighted_rating_sum": 251.0,
+      "reader_score": 49.7784,
+      "cover_id": 10313767
+    },
+    {
+      "title": "Where the Crawdads Sing",
+      "author": "Delia Owens",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL18766691W"
+      ],
+      "shelves": [
+        "Book Club Picks"
+      ],
+      "moods": [
+        "Thoughtful"
+      ],
+      "tropes": [
+        "Conversation starters"
+      ],
+      "open_library_id": "OL18766691W",
+      "readinglog_count": 2855,
+      "want_to_read_count": 2621,
+      "currently_reading_count": 71,
+      "already_read_count": 163,
+      "recent_readinglog_count": 250,
+      "weighted_readinglog_count": 1118.333333,
+      "ratings_count": 104,
+      "ratings_average": 4.2981,
+      "recent_ratings_count": 29,
+      "weighted_ratings_count": 54.0,
+      "weighted_rating_sum": 231.0,
+      "reader_score": 49.6074,
+      "cover_id": 8362947
+    },
+    {
+      "title": "The Secret History",
+      "author": "Donna Tartt",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL4321141W"
+      ],
+      "shelves": [
+        "Thriller",
+        "Literary Fiction"
+      ],
+      "moods": [
+        "Tense",
+        "Reflective"
+      ],
+      "tropes": [
+        "Secrets and suspense",
+        "Inner lives"
+      ],
+      "open_library_id": "OL4321141W",
+      "readinglog_count": 2067,
+      "want_to_read_count": 1821,
+      "currently_reading_count": 92,
+      "already_read_count": 154,
+      "recent_readinglog_count": 839,
+      "weighted_readinglog_count": 1248.333333,
+      "ratings_count": 92,
+      "ratings_average": 4.0652,
+      "recent_ratings_count": 39,
+      "weighted_ratings_count": 56.666667,
+      "weighted_rating_sum": 232.0,
+      "reader_score": 48.7929,
+      "cover_id": 744854
+    },
+    {
+      "title": "Things Fall Apart",
+      "author": "Chinua Achebe",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL891786W"
+      ],
+      "shelves": [
+        "Historical Fiction"
+      ],
+      "moods": [
+        "Immersive"
+      ],
+      "tropes": [
+        "Lives in the past"
+      ],
+      "open_library_id": "OL891786W",
+      "readinglog_count": 2111,
+      "want_to_read_count": 1785,
+      "currently_reading_count": 180,
+      "already_read_count": 146,
+      "recent_readinglog_count": 1107,
+      "weighted_readinglog_count": 1441.666667,
+      "ratings_count": 97,
+      "ratings_average": 3.9381,
+      "recent_ratings_count": 44,
+      "weighted_ratings_count": 61.666667,
+      "weighted_rating_sum": 243.333333,
+      "reader_score": 48.4835,
+      "cover_id": 12816943
+    },
+    {
+      "title": "The Color Purple",
+      "author": "Alice Walker",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL273644W"
+      ],
+      "shelves": [
+        "Historical Fiction"
+      ],
+      "moods": [
+        "Immersive"
+      ],
+      "tropes": [
+        "Lives in the past",
+        "Family ties",
+        "Friendship"
+      ],
+      "open_library_id": "OL273644W",
+      "readinglog_count": 1982,
+      "want_to_read_count": 1705,
+      "currently_reading_count": 98,
+      "already_read_count": 179,
+      "recent_readinglog_count": 639,
+      "weighted_readinglog_count": 1086.666667,
+      "ratings_count": 91,
+      "ratings_average": 4.1868,
+      "recent_ratings_count": 22,
+      "weighted_ratings_count": 45.0,
+      "weighted_rating_sum": 188.333333,
+      "reader_score": 48.2725,
+      "cover_id": 8564628
+    },
+    {
+      "title": "All the Light We Cannot See",
+      "author": "Anthony Doerr",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL16821606W"
+      ],
+      "shelves": [
+        "Historical Fiction"
+      ],
+      "moods": [
+        "Immersive"
+      ],
+      "tropes": [
+        "Lives in the past",
+        "Friendship",
+        "Wartime lives"
+      ],
+      "open_library_id": "OL16821606W",
+      "readinglog_count": 1451,
+      "want_to_read_count": 1256,
+      "currently_reading_count": 59,
+      "already_read_count": 136,
+      "recent_readinglog_count": 658,
+      "weighted_readinglog_count": 922.333333,
+      "ratings_count": 87,
+      "ratings_average": 4.2644,
+      "recent_ratings_count": 32,
+      "weighted_ratings_count": 50.333333,
+      "weighted_rating_sum": 213.666667,
+      "reader_score": 47.8392,
+      "cover_id": 14559680
+    },
+    {
+      "title": "Normal People",
+      "author": "Sally Rooney",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL20150260W"
+      ],
+      "shelves": [
+        "Literary Fiction"
+      ],
+      "moods": [
+        "Reflective"
+      ],
+      "tropes": [
+        "Inner lives"
+      ],
+      "open_library_id": "OL20150260W",
+      "readinglog_count": 1966,
+      "want_to_read_count": 1782,
+      "currently_reading_count": 46,
+      "already_read_count": 138,
+      "recent_readinglog_count": 761,
+      "weighted_readinglog_count": 1162.666667,
+      "ratings_count": 85,
+      "ratings_average": 4.0235,
+      "recent_ratings_count": 37,
+      "weighted_ratings_count": 53.0,
+      "weighted_rating_sum": 214.666667,
+      "reader_score": 47.8213,
+      "cover_id": 8794265
+    },
+    {
+      "title": "The Nightingale",
+      "author": "Kristin Hannah",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL17116910W"
+      ],
+      "shelves": [
+        "Historical Fiction",
+        "Book Club Picks"
+      ],
+      "moods": [
+        "Immersive",
+        "Thoughtful"
+      ],
+      "tropes": [
+        "Lives in the past",
+        "Conversation starters",
+        "Wartime lives"
+      ],
+      "open_library_id": "OL17116910W",
+      "readinglog_count": 971,
+      "want_to_read_count": 814,
+      "currently_reading_count": 55,
+      "already_read_count": 102,
+      "recent_readinglog_count": 632,
+      "weighted_readinglog_count": 745.0,
+      "ratings_count": 46,
+      "ratings_average": 4.6304,
+      "recent_ratings_count": 22,
+      "weighted_ratings_count": 30.0,
+      "weighted_rating_sum": 137.666667,
+      "reader_score": 47.7258,
+      "cover_id": 8314147
+    },
+    {
+      "title": "Howl's Moving Castle",
+      "author": "Diana Wynne Jones",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL60149W"
+      ],
+      "shelves": [
+        "Fantasy"
+      ],
+      "moods": [
+        "Wondrous"
+      ],
+      "tropes": [
+        "Imagined worlds",
+        "Witchcraft"
+      ],
+      "open_library_id": "OL60149W",
+      "readinglog_count": 1365,
+      "want_to_read_count": 1107,
+      "currently_reading_count": 50,
+      "already_read_count": 208,
+      "recent_readinglog_count": 470,
+      "weighted_readinglog_count": 768.333333,
+      "ratings_count": 111,
+      "ratings_average": 4.3874,
+      "recent_ratings_count": 33,
+      "weighted_ratings_count": 59.0,
+      "weighted_rating_sum": 254.333333,
+      "reader_score": 47.3956,
+      "cover_id": 8783945
+    },
+    {
+      "title": "Romancing Mister Bridgerton",
+      "author": "Julia Quinn",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL554615W"
+      ],
+      "shelves": [
+        "Romance"
+      ],
+      "moods": [
+        "Heartfelt"
+      ],
+      "tropes": [
+        "Romantic relationships"
+      ],
+      "open_library_id": "OL554615W",
+      "readinglog_count": 1549,
+      "want_to_read_count": 1378,
+      "currently_reading_count": 82,
+      "already_read_count": 89,
+      "recent_readinglog_count": 941,
+      "weighted_readinglog_count": 1143.666667,
+      "ratings_count": 48,
+      "ratings_average": 4.1667,
+      "recent_ratings_count": 21,
+      "weighted_ratings_count": 30.0,
+      "weighted_rating_sum": 123.333333,
+      "reader_score": 47.3076,
+      "cover_id": 237493
+    },
+    {
+      "title": "The Housemaid",
+      "author": "Freida McFadden",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL27729743W"
+      ],
+      "shelves": [
+        "Thriller"
+      ],
+      "moods": [
+        "Tense"
+      ],
+      "tropes": [
+        "Secrets and suspense"
+      ],
+      "open_library_id": "OL27729743W",
+      "readinglog_count": 2327,
+      "want_to_read_count": 2119,
+      "currently_reading_count": 114,
+      "already_read_count": 94,
+      "recent_readinglog_count": 2185,
+      "weighted_readinglog_count": 2232.333333,
+      "ratings_count": 25,
+      "ratings_average": 3.52,
+      "recent_ratings_count": 25,
+      "weighted_ratings_count": 25.0,
+      "weighted_rating_sum": 88.0,
+      "reader_score": 47.0342,
+      "cover_id": 15105883
+    },
+    {
+      "title": "Once Upon a Broken Heart",
+      "author": "Stephanie Garber",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL24706481W"
+      ],
+      "shelves": [
+        "Romantasy"
+      ],
+      "moods": [
+        "Spellbinding"
+      ],
+      "tropes": [
+        "Love and magic"
+      ],
+      "open_library_id": "OL24706481W",
+      "readinglog_count": 1323,
+      "want_to_read_count": 1193,
+      "currently_reading_count": 66,
+      "already_read_count": 64,
+      "recent_readinglog_count": 1129,
+      "weighted_readinglog_count": 1193.666667,
+      "ratings_count": 53,
+      "ratings_average": 3.8868,
+      "recent_ratings_count": 47,
+      "weighted_ratings_count": 49.0,
+      "weighted_rating_sum": 191.333333,
+      "reader_score": 46.6195,
+      "cover_id": 11427092
+    },
+    {
+      "title": "Circe",
+      "author": "Madeline Miller",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL18012166W"
+      ],
+      "shelves": [
+        "Fantasy",
+        "Historical Fiction"
+      ],
+      "moods": [
+        "Wondrous",
+        "Immersive"
+      ],
+      "tropes": [
+        "Imagined worlds",
+        "Lives in the past",
+        "Witchcraft",
+        "Mythic retelling"
+      ],
+      "open_library_id": "OL18012166W",
+      "readinglog_count": 1161,
+      "want_to_read_count": 964,
+      "currently_reading_count": 28,
+      "already_read_count": 169,
+      "recent_readinglog_count": 518,
+      "weighted_readinglog_count": 732.333333,
+      "ratings_count": 114,
+      "ratings_average": 4.1579,
+      "recent_ratings_count": 54,
+      "weighted_ratings_count": 74.0,
+      "weighted_rating_sum": 311.333333,
+      "reader_score": 46.4951,
+      "cover_id": 8739376
+    },
+    {
+      "title": "Beloved",
+      "author": "Toni Morrison",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL50548W"
+      ],
+      "shelves": [
+        "Historical Fiction"
+      ],
+      "moods": [
+        "Immersive"
+      ],
+      "tropes": [
+        "Lives in the past",
+        "Family ties"
+      ],
+      "open_library_id": "OL50548W",
+      "readinglog_count": 1736,
+      "want_to_read_count": 1534,
+      "currently_reading_count": 84,
+      "already_read_count": 118,
+      "recent_readinglog_count": 626,
+      "weighted_readinglog_count": 996.0,
+      "ratings_count": 75,
+      "ratings_average": 3.9067,
+      "recent_ratings_count": 20,
+      "weighted_ratings_count": 38.333333,
+      "weighted_rating_sum": 154.333333,
+      "reader_score": 46.1285,
+      "cover_id": 8261367
+    },
+    {
+      "title": "The Spanish Love Deception",
+      "author": "Elena Armas",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL26345722W"
+      ],
+      "shelves": [
+        "Romance"
+      ],
+      "moods": [
+        "Heartfelt"
+      ],
+      "tropes": [
+        "Romantic relationships",
+        "Rivals in love",
+        "Pretend relationships"
+      ],
+      "open_library_id": "OL26345722W",
+      "readinglog_count": 2289,
+      "want_to_read_count": 2110,
+      "currently_reading_count": 106,
+      "already_read_count": 73,
+      "recent_readinglog_count": 447,
+      "weighted_readinglog_count": 1061.0,
+      "ratings_count": 60,
+      "ratings_average": 3.9333,
+      "recent_ratings_count": 6,
+      "weighted_ratings_count": 24.0,
+      "weighted_rating_sum": 97.333333,
+      "reader_score": 46.0338,
+      "cover_id": 14425253
+    },
+    {
+      "title": "Caraval",
+      "author": "Stephanie Garber",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL17715454W"
+      ],
+      "shelves": [
+        "Fantasy"
+      ],
+      "moods": [
+        "Wondrous"
+      ],
+      "tropes": [
+        "Imagined worlds"
+      ],
+      "open_library_id": "OL17715454W",
+      "readinglog_count": 1361,
+      "want_to_read_count": 1221,
+      "currently_reading_count": 62,
+      "already_read_count": 78,
+      "recent_readinglog_count": 1033,
+      "weighted_readinglog_count": 1142.333333,
+      "ratings_count": 57,
+      "ratings_average": 3.7895,
+      "recent_ratings_count": 45,
+      "weighted_ratings_count": 49.0,
+      "weighted_rating_sum": 186.666667,
+      "reader_score": 45.5032,
+      "cover_id": 7990753
+    },
+    {
+      "title": "The Duke and I",
+      "author": "Julia Quinn",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL554620W"
+      ],
+      "shelves": [
+        "Romance"
+      ],
+      "moods": [
+        "Heartfelt"
+      ],
+      "tropes": [
+        "Romantic relationships"
+      ],
+      "open_library_id": "OL554620W",
+      "readinglog_count": 1871,
+      "want_to_read_count": 1714,
+      "currently_reading_count": 80,
+      "already_read_count": 77,
+      "recent_readinglog_count": 1002,
+      "weighted_readinglog_count": 1291.666667,
+      "ratings_count": 45,
+      "ratings_average": 3.8444,
+      "recent_ratings_count": 17,
+      "weighted_ratings_count": 26.333333,
+      "weighted_rating_sum": 97.666667,
+      "reader_score": 45.0382,
+      "cover_id": 6492549
+    },
+    {
+      "title": "Outlander",
+      "author": "Diana Gabaldon",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL3261155W"
+      ],
+      "shelves": [
+        "Historical Fiction"
+      ],
+      "moods": [
+        "Immersive"
+      ],
+      "tropes": [
+        "Lives in the past"
+      ],
+      "open_library_id": "OL3261155W",
+      "readinglog_count": 1313,
+      "want_to_read_count": 1144,
+      "currently_reading_count": 70,
+      "already_read_count": 99,
+      "recent_readinglog_count": 496,
+      "weighted_readinglog_count": 768.333333,
+      "ratings_count": 66,
+      "ratings_average": 4.1061,
+      "recent_ratings_count": 24,
+      "weighted_ratings_count": 38.0,
+      "weighted_rating_sum": 154.333333,
+      "reader_score": 44.6518,
+      "cover_id": 14428230
+    },
+    {
+      "title": "The Help",
+      "author": "Kathryn Stockett",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL11999891W"
+      ],
+      "shelves": [
+        "Historical Fiction"
+      ],
+      "moods": [
+        "Immersive"
+      ],
+      "tropes": [
+        "Lives in the past",
+        "Small-town lives"
+      ],
+      "open_library_id": "OL11999891W",
+      "readinglog_count": 1137,
+      "want_to_read_count": 894,
+      "currently_reading_count": 55,
+      "already_read_count": 188,
+      "recent_readinglog_count": 306,
+      "weighted_readinglog_count": 583.0,
+      "ratings_count": 117,
+      "ratings_average": 4.2564,
+      "recent_ratings_count": 35,
+      "weighted_ratings_count": 62.333333,
+      "weighted_rating_sum": 260.666667,
+      "reader_score": 44.4418,
+      "cover_id": 8387264
+    },
+    {
+      "title": "The God of Small Things",
+      "author": "Arundhati Roy",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL1052133W"
+      ],
+      "shelves": [
+        "Literary Fiction"
+      ],
+      "moods": [
+        "Reflective"
+      ],
+      "tropes": [
+        "Inner lives",
+        "Family ties"
+      ],
+      "open_library_id": "OL1052133W",
+      "readinglog_count": 1458,
+      "want_to_read_count": 1253,
+      "currently_reading_count": 96,
+      "already_read_count": 109,
+      "recent_readinglog_count": 509,
+      "weighted_readinglog_count": 825.333333,
+      "ratings_count": 80,
+      "ratings_average": 3.8375,
+      "recent_ratings_count": 27,
+      "weighted_ratings_count": 44.666667,
+      "weighted_rating_sum": 173.666667,
+      "reader_score": 43.9678,
+      "cover_id": 10513792
+    },
+    {
+      "title": "Things We Never Got Over",
+      "author": "Lucy Score",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL26955716W"
+      ],
+      "shelves": [
+        "Romance"
+      ],
+      "moods": [
+        "Heartfelt"
+      ],
+      "tropes": [
+        "Romantic relationships",
+        "Small-town lives",
+        "Family ties"
+      ],
+      "open_library_id": "OL26955716W",
+      "readinglog_count": 1402,
+      "want_to_read_count": 1324,
+      "currently_reading_count": 42,
+      "already_read_count": 36,
+      "recent_readinglog_count": 517,
+      "weighted_readinglog_count": 812.0,
+      "ratings_count": 28,
+      "ratings_average": 4.1429,
+      "recent_ratings_count": 13,
+      "weighted_ratings_count": 18.0,
+      "weighted_rating_sum": 72.666667,
+      "reader_score": 43.7024,
+      "cover_id": 14418599
+    },
+    {
+      "title": "The Pillars of the Earth",
+      "author": "Ken Follett",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL1914022W"
+      ],
+      "shelves": [
+        "Historical Fiction"
+      ],
+      "moods": [
+        "Immersive"
+      ],
+      "tropes": [
+        "Lives in the past"
+      ],
+      "open_library_id": "OL1914022W",
+      "readinglog_count": 886,
+      "want_to_read_count": 747,
+      "currently_reading_count": 38,
+      "already_read_count": 101,
+      "recent_readinglog_count": 361,
+      "weighted_readinglog_count": 536.0,
+      "ratings_count": 74,
+      "ratings_average": 4.1892,
+      "recent_ratings_count": 25,
+      "weighted_ratings_count": 41.333333,
+      "weighted_rating_sum": 174.666667,
+      "reader_score": 43.5609,
+      "cover_id": 9269909
+    },
+    {
+      "title": "The Ballad of Never After",
+      "author": "Stephanie Garber",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL27090610W"
+      ],
+      "shelves": [
+        "Romantasy"
+      ],
+      "moods": [
+        "Spellbinding"
+      ],
+      "tropes": [
+        "Love and magic"
+      ],
+      "open_library_id": "OL27090610W",
+      "readinglog_count": 544,
+      "want_to_read_count": 484,
+      "currently_reading_count": 19,
+      "already_read_count": 41,
+      "recent_readinglog_count": 379,
+      "weighted_readinglog_count": 434.0,
+      "ratings_count": 20,
+      "ratings_average": 4.6,
+      "recent_ratings_count": 17,
+      "weighted_ratings_count": 18.0,
+      "weighted_rating_sum": 82.666667,
+      "reader_score": 42.401,
+      "cover_id": 12945180
+    },
+    {
+      "title": "A Court of Silver Flames",
+      "author": "Sarah J. Maas",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL21703979W"
+      ],
+      "shelves": [
+        "Romantasy"
+      ],
+      "moods": [
+        "Spellbinding"
+      ],
+      "tropes": [
+        "Love and magic"
+      ],
+      "open_library_id": "OL21703979W",
+      "readinglog_count": 698,
+      "want_to_read_count": 571,
+      "currently_reading_count": 28,
+      "already_read_count": 99,
+      "recent_readinglog_count": 367,
+      "weighted_readinglog_count": 477.333333,
+      "ratings_count": 44,
+      "ratings_average": 4.3182,
+      "recent_ratings_count": 27,
+      "weighted_ratings_count": 32.666667,
+      "weighted_rating_sum": 137.333333,
+      "reader_score": 42.1973,
+      "cover_id": 10643508
+    },
+    {
+      "title": "The Night Circus",
+      "author": "Erin Morgenstern",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL16086747W"
+      ],
+      "shelves": [
+        "Romantasy",
+        "Fantasy"
+      ],
+      "moods": [
+        "Spellbinding",
+        "Wondrous"
+      ],
+      "tropes": [
+        "Love and magic",
+        "Imagined worlds"
+      ],
+      "open_library_id": "OL16086747W",
+      "readinglog_count": 820,
+      "want_to_read_count": 691,
+      "currently_reading_count": 24,
+      "already_read_count": 105,
+      "recent_readinglog_count": 374,
+      "weighted_readinglog_count": 522.666667,
+      "ratings_count": 71,
+      "ratings_average": 4.0986,
+      "recent_ratings_count": 30,
+      "weighted_ratings_count": 43.666667,
+      "weighted_rating_sum": 175.666667,
+      "reader_score": 41.9674,
+      "cover_id": 8773134
+    },
+    {
+      "title": "The Bluest Eye",
+      "author": "Toni Morrison",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL50565W"
+      ],
+      "shelves": [
+        "Literary Fiction"
+      ],
+      "moods": [
+        "Reflective"
+      ],
+      "tropes": [
+        "Inner lives"
+      ],
+      "open_library_id": "OL50565W",
+      "readinglog_count": 899,
+      "want_to_read_count": 803,
+      "currently_reading_count": 23,
+      "already_read_count": 73,
+      "recent_readinglog_count": 378,
+      "weighted_readinglog_count": 551.666667,
+      "ratings_count": 31,
+      "ratings_average": 4.1935,
+      "recent_ratings_count": 9,
+      "weighted_ratings_count": 16.333333,
+      "weighted_rating_sum": 68.666667,
+      "reader_score": 41.8666,
+      "cover_id": 15152696
+    },
+    {
+      "title": "Kindred",
+      "author": "Octavia E. Butler",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL35616W"
+      ],
+      "shelves": [
+        "Historical Fiction",
+        "Book Club Picks"
+      ],
+      "moods": [
+        "Immersive",
+        "Thoughtful"
+      ],
+      "tropes": [
+        "Lives in the past",
+        "Conversation starters"
+      ],
+      "open_library_id": "OL35616W",
+      "readinglog_count": 669,
+      "want_to_read_count": 557,
+      "currently_reading_count": 20,
+      "already_read_count": 92,
+      "recent_readinglog_count": 242,
+      "weighted_readinglog_count": 384.333333,
+      "ratings_count": 53,
+      "ratings_average": 4.3962,
+      "recent_ratings_count": 19,
+      "weighted_ratings_count": 30.333333,
+      "weighted_rating_sum": 132.333333,
+      "reader_score": 41.5789,
+      "cover_id": 8745330
+    },
+    {
+      "title": "A Gentleman in Moscow",
+      "author": "Amor Towles",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL17797130W"
+      ],
+      "shelves": [
+        "Historical Fiction",
+        "Book Club Picks"
+      ],
+      "moods": [
+        "Immersive",
+        "Thoughtful"
+      ],
+      "tropes": [
+        "Lives in the past",
+        "Conversation starters"
+      ],
+      "open_library_id": "OL17797130W",
+      "readinglog_count": 1036,
+      "want_to_read_count": 894,
+      "currently_reading_count": 49,
+      "already_read_count": 93,
+      "recent_readinglog_count": 188,
+      "weighted_readinglog_count": 470.666667,
+      "ratings_count": 71,
+      "ratings_average": 3.8873,
+      "recent_ratings_count": 8,
+      "weighted_ratings_count": 29.0,
+      "weighted_rating_sum": 114.666667,
+      "reader_score": 40.3046,
+      "cover_id": 11326818
+    },
+    {
+      "title": "Half of a Yellow Sun",
+      "author": "Chimamanda Ngozi Adichie",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL5731542W"
+      ],
+      "shelves": [
+        "Historical Fiction",
+        "Literary Fiction"
+      ],
+      "moods": [
+        "Immersive",
+        "Reflective"
+      ],
+      "tropes": [
+        "Lives in the past",
+        "Inner lives"
+      ],
+      "open_library_id": "OL5731542W",
+      "readinglog_count": 640,
+      "want_to_read_count": 546,
+      "currently_reading_count": 41,
+      "already_read_count": 53,
+      "recent_readinglog_count": 281,
+      "weighted_readinglog_count": 400.666667,
+      "ratings_count": 36,
+      "ratings_average": 4.2778,
+      "recent_ratings_count": 11,
+      "weighted_ratings_count": 19.333333,
+      "weighted_rating_sum": 82.0,
+      "reader_score": 40.2496,
+      "cover_id": 8472660
+    },
+    {
+      "title": "The Princess Bride",
+      "author": "William Goldman",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL486967W"
+      ],
+      "shelves": [
+        "Fantasy"
+      ],
+      "moods": [
+        "Wondrous"
+      ],
+      "tropes": [
+        "Imagined worlds"
+      ],
+      "open_library_id": "OL486967W",
+      "readinglog_count": 524,
+      "want_to_read_count": 366,
+      "currently_reading_count": 18,
+      "already_read_count": 140,
+      "recent_readinglog_count": 160,
+      "weighted_readinglog_count": 281.333333,
+      "ratings_count": 103,
+      "ratings_average": 4.2427,
+      "recent_ratings_count": 29,
+      "weighted_ratings_count": 53.666667,
+      "weighted_rating_sum": 229.666667,
+      "reader_score": 39.8776,
+      "cover_id": 9284881
+    },
+    {
+      "title": "Behind Closed Doors",
+      "author": "B.A. Paris",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL19715138W"
+      ],
+      "shelves": [
+        "Thriller"
+      ],
+      "moods": [
+        "Tense"
+      ],
+      "tropes": [
+        "Secrets and suspense",
+        "Family ties"
+      ],
+      "open_library_id": "OL19715138W",
+      "readinglog_count": 622,
+      "want_to_read_count": 572,
+      "currently_reading_count": 20,
+      "already_read_count": 30,
+      "recent_readinglog_count": 249,
+      "weighted_readinglog_count": 373.333333,
+      "ratings_count": 25,
+      "ratings_average": 4.0,
+      "recent_ratings_count": 12,
+      "weighted_ratings_count": 16.333333,
+      "weighted_rating_sum": 69.333333,
+      "reader_score": 39.4724,
+      "cover_id": 9802299
+    },
+    {
+      "title": "Americanah",
+      "author": "Chimamanda Ngozi Adichie",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL16805415W"
+      ],
+      "shelves": [
+        "Literary Fiction"
+      ],
+      "moods": [
+        "Reflective"
+      ],
+      "tropes": [
+        "Inner lives"
+      ],
+      "open_library_id": "OL16805415W",
+      "readinglog_count": 806,
+      "want_to_read_count": 689,
+      "currently_reading_count": 45,
+      "already_read_count": 72,
+      "recent_readinglog_count": 255,
+      "weighted_readinglog_count": 438.666667,
+      "ratings_count": 47,
+      "ratings_average": 3.8723,
+      "recent_ratings_count": 10,
+      "weighted_ratings_count": 22.333333,
+      "weighted_rating_sum": 88.0,
+      "reader_score": 39.4595,
+      "cover_id": 8474037
+    },
+    {
+      "title": "A Discovery of Witches",
+      "author": "Deborah Harkness",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL15456729W"
+      ],
+      "shelves": [
+        "Romantasy"
+      ],
+      "moods": [
+        "Spellbinding"
+      ],
+      "tropes": [
+        "Love and magic",
+        "Witchcraft",
+        "Vampires"
+      ],
+      "open_library_id": "OL15456729W",
+      "readinglog_count": 614,
+      "want_to_read_count": 494,
+      "currently_reading_count": 39,
+      "already_read_count": 81,
+      "recent_readinglog_count": 282,
+      "weighted_readinglog_count": 392.666667,
+      "ratings_count": 51,
+      "ratings_average": 3.902,
+      "recent_ratings_count": 16,
+      "weighted_ratings_count": 27.666667,
+      "weighted_rating_sum": 111.0,
+      "reader_score": 39.4169,
+      "cover_id": 6998669
+    },
+    {
+      "title": "Stardust",
+      "author": "Neil Gaiman",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL15833328W"
+      ],
+      "shelves": [
+        "Fantasy"
+      ],
+      "moods": [
+        "Wondrous"
+      ],
+      "tropes": [
+        "Imagined worlds",
+        "Witchcraft"
+      ],
+      "open_library_id": "OL15833328W",
+      "readinglog_count": 598,
+      "want_to_read_count": 447,
+      "currently_reading_count": 13,
+      "already_read_count": 138,
+      "recent_readinglog_count": 205,
+      "weighted_readinglog_count": 336.0,
+      "ratings_count": 89,
+      "ratings_average": 3.9213,
+      "recent_ratings_count": 27,
+      "weighted_ratings_count": 47.666667,
+      "weighted_rating_sum": 191.0,
+      "reader_score": 38.9977,
+      "cover_id": 8216379
+    },
+    {
+      "title": "Sula",
+      "author": "Toni Morrison",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL50567W"
+      ],
+      "shelves": [
+        "Literary Fiction"
+      ],
+      "moods": [
+        "Reflective"
+      ],
+      "tropes": [
+        "Inner lives",
+        "Family ties",
+        "Friendship"
+      ],
+      "open_library_id": "OL50567W",
+      "readinglog_count": 822,
+      "want_to_read_count": 722,
+      "currently_reading_count": 31,
+      "already_read_count": 69,
+      "recent_readinglog_count": 199,
+      "weighted_readinglog_count": 406.666667,
+      "ratings_count": 44,
+      "ratings_average": 3.8409,
+      "recent_ratings_count": 8,
+      "weighted_ratings_count": 20.0,
+      "weighted_rating_sum": 78.333333,
+      "reader_score": 38.7195,
+      "cover_id": 8384008
+    },
+    {
+      "title": "Lightlark",
+      "author": "Alex Aster",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL27675299W"
+      ],
+      "shelves": [
+        "Romantasy"
+      ],
+      "moods": [
+        "Spellbinding"
+      ],
+      "tropes": [
+        "Love and magic",
+        "Rivals in love"
+      ],
+      "open_library_id": "OL27675299W",
+      "readinglog_count": 443,
+      "want_to_read_count": 396,
+      "currently_reading_count": 23,
+      "already_read_count": 24,
+      "recent_readinglog_count": 277,
+      "weighted_readinglog_count": 332.333333,
+      "ratings_count": 16,
+      "ratings_average": 4.3125,
+      "recent_ratings_count": 14,
+      "weighted_ratings_count": 14.666667,
+      "weighted_rating_sum": 63.0,
+      "reader_score": 38.7165,
+      "cover_id": 12917631
+    },
+    {
+      "title": "Atonement",
+      "author": "Ian McEwan",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL1855944W"
+      ],
+      "shelves": [
+        "Historical Fiction"
+      ],
+      "moods": [
+        "Immersive"
+      ],
+      "tropes": [
+        "Lives in the past",
+        "Family ties",
+        "Wartime lives"
+      ],
+      "open_library_id": "OL1855944W",
+      "readinglog_count": 730,
+      "want_to_read_count": 630,
+      "currently_reading_count": 24,
+      "already_read_count": 76,
+      "recent_readinglog_count": 292,
+      "weighted_readinglog_count": 438.0,
+      "ratings_count": 50,
+      "ratings_average": 3.74,
+      "recent_ratings_count": 16,
+      "weighted_ratings_count": 27.333333,
+      "weighted_rating_sum": 101.0,
+      "reader_score": 38.1855,
+      "cover_id": 8381043
+    },
+    {
+      "title": "Daisy Jones & the Six",
+      "author": "Taylor Jenkins Reid",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL19922194W"
+      ],
+      "shelves": [
+        "Book Club Picks"
+      ],
+      "moods": [
+        "Thoughtful"
+      ],
+      "tropes": [
+        "Conversation starters"
+      ],
+      "open_library_id": "OL19922194W",
+      "readinglog_count": 719,
+      "want_to_read_count": 639,
+      "currently_reading_count": 17,
+      "already_read_count": 63,
+      "recent_readinglog_count": 133,
+      "weighted_readinglog_count": 328.333333,
+      "ratings_count": 47,
+      "ratings_average": 3.8723,
+      "recent_ratings_count": 21,
+      "weighted_ratings_count": 29.666667,
+      "weighted_rating_sum": 116.0,
+      "reader_score": 37.7138,
+      "cover_id": 8742674
+    },
+    {
+      "title": "Shadow and Bone",
+      "author": "Leigh Bardugo",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL16239519W"
+      ],
+      "shelves": [
+        "Fantasy"
+      ],
+      "moods": [
+        "Wondrous"
+      ],
+      "tropes": [
+        "Imagined worlds"
+      ],
+      "open_library_id": "OL16239519W",
+      "readinglog_count": 1029,
+      "want_to_read_count": 877,
+      "currently_reading_count": 51,
+      "already_read_count": 101,
+      "recent_readinglog_count": 234,
+      "weighted_readinglog_count": 499.0,
+      "ratings_count": 39,
+      "ratings_average": 3.7949,
+      "recent_ratings_count": 13,
+      "weighted_ratings_count": 21.666667,
+      "weighted_rating_sum": 74.666667,
+      "reader_score": 37.4833,
+      "cover_id": 13816048
+    },
+    {
+      "title": "The Secret Life of Bees",
+      "author": "Sue Monk Kidd",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL2941508W"
+      ],
+      "shelves": [
+        "Historical Fiction"
+      ],
+      "moods": [
+        "Immersive"
+      ],
+      "tropes": [
+        "Lives in the past",
+        "Family ties"
+      ],
+      "open_library_id": "OL2941508W",
+      "readinglog_count": 509,
+      "want_to_read_count": 413,
+      "currently_reading_count": 24,
+      "already_read_count": 72,
+      "recent_readinglog_count": 199,
+      "weighted_readinglog_count": 302.333333,
+      "ratings_count": 45,
+      "ratings_average": 3.9778,
+      "recent_ratings_count": 15,
+      "weighted_ratings_count": 25.0,
+      "weighted_rating_sum": 98.333333,
+      "reader_score": 37.1369,
+      "cover_id": 402759
+    },
+    {
+      "title": "Big Little Lies",
+      "author": "Liane Moriarty",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL17116911W"
+      ],
+      "shelves": [
+        "Thriller",
+        "Book Club Picks"
+      ],
+      "moods": [
+        "Tense",
+        "Thoughtful"
+      ],
+      "tropes": [
+        "Secrets and suspense",
+        "Conversation starters",
+        "Family ties",
+        "Friendship"
+      ],
+      "open_library_id": "OL17116911W",
+      "readinglog_count": 341,
+      "want_to_read_count": 261,
+      "currently_reading_count": 23,
+      "already_read_count": 57,
+      "recent_readinglog_count": 189,
+      "weighted_readinglog_count": 239.666667,
+      "ratings_count": 36,
+      "ratings_average": 4.1944,
+      "recent_ratings_count": 16,
+      "weighted_ratings_count": 22.666667,
+      "weighted_rating_sum": 95.0,
+      "reader_score": 36.8375,
+      "cover_id": 7352410
+    },
+    {
+      "title": "The Boyfriend",
+      "author": "Freida McFadden",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL37889158W"
+      ],
+      "shelves": [
+        "Thriller"
+      ],
+      "moods": [
+        "Tense"
+      ],
+      "tropes": [
+        "Secrets and suspense"
+      ],
+      "open_library_id": "OL37889158W",
+      "readinglog_count": 328,
+      "want_to_read_count": 301,
+      "currently_reading_count": 8,
+      "already_read_count": 19,
+      "recent_readinglog_count": 328,
+      "weighted_readinglog_count": 328.0,
+      "ratings_count": 6,
+      "ratings_average": 4.1667,
+      "recent_ratings_count": 6,
+      "weighted_ratings_count": 6.0,
+      "weighted_rating_sum": 25.0,
+      "reader_score": 36.7898,
+      "cover_id": 14820506
+    },
+    {
+      "title": "The Kiss Quotient",
+      "author": "Helen Hoang",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL19744698W"
+      ],
+      "shelves": [
+        "Romance"
+      ],
+      "moods": [
+        "Heartfelt"
+      ],
+      "tropes": [
+        "Romantic relationships"
+      ],
+      "open_library_id": "OL19744698W",
+      "readinglog_count": 650,
+      "want_to_read_count": 599,
+      "currently_reading_count": 39,
+      "already_read_count": 12,
+      "recent_readinglog_count": 188,
+      "weighted_readinglog_count": 342.0,
+      "ratings_count": 11,
+      "ratings_average": 4.0,
+      "recent_ratings_count": 5,
+      "weighted_ratings_count": 7.0,
+      "weighted_rating_sum": 25.333333,
+      "reader_score": 35.8071,
+      "cover_id": 14635918
+    },
+    {
+      "title": "The Joy Luck Club",
+      "author": "Amy Tan",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL1843720W"
+      ],
+      "shelves": [
+        "Book Club Picks"
+      ],
+      "moods": [
+        "Thoughtful"
+      ],
+      "tropes": [
+        "Conversation starters",
+        "Family ties",
+        "Friendship"
+      ],
+      "open_library_id": "OL1843720W",
+      "readinglog_count": 591,
+      "want_to_read_count": 486,
+      "currently_reading_count": 35,
+      "already_read_count": 70,
+      "recent_readinglog_count": 109,
+      "weighted_readinglog_count": 269.666667,
+      "ratings_count": 45,
+      "ratings_average": 3.9556,
+      "recent_ratings_count": 3,
+      "weighted_ratings_count": 17.0,
+      "weighted_rating_sum": 65.333333,
+      "reader_score": 35.5881,
+      "cover_id": 6391793
+    },
+    {
+      "title": "Eleanor Oliphant Is Completely Fine",
+      "author": "Gail Honeyman",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL19781733W"
+      ],
+      "shelves": [
+        "Literary Fiction",
+        "Book Club Picks"
+      ],
+      "moods": [
+        "Reflective",
+        "Thoughtful"
+      ],
+      "tropes": [
+        "Inner lives",
+        "Conversation starters",
+        "Friendship"
+      ],
+      "open_library_id": "OL19781733W",
+      "readinglog_count": 351,
+      "want_to_read_count": 301,
+      "currently_reading_count": 5,
+      "already_read_count": 45,
+      "recent_readinglog_count": 113,
+      "weighted_readinglog_count": 192.333333,
+      "ratings_count": 34,
+      "ratings_average": 4.2059,
+      "recent_ratings_count": 9,
+      "weighted_ratings_count": 17.333333,
+      "weighted_rating_sum": 73.0,
+      "reader_score": 35.0295,
+      "cover_id": 8415055
+    },
+    {
+      "title": "The Teacher",
+      "author": "Freida McFadden",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL37534151W"
+      ],
+      "shelves": [
+        "Thriller"
+      ],
+      "moods": [
+        "Tense"
+      ],
+      "tropes": [
+        "Secrets and suspense"
+      ],
+      "open_library_id": "OL37534151W",
+      "readinglog_count": 290,
+      "want_to_read_count": 256,
+      "currently_reading_count": 11,
+      "already_read_count": 23,
+      "recent_readinglog_count": 290,
+      "weighted_readinglog_count": 290.0,
+      "ratings_count": 7,
+      "ratings_average": 3.5714,
+      "recent_ratings_count": 7,
+      "weighted_ratings_count": 7.0,
+      "weighted_rating_sum": 25.0,
+      "reader_score": 34.677,
+      "cover_id": 14570911
+    },
+    {
+      "title": "The Thursday Murder Club",
+      "author": "Richard Osman",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL20878311W"
+      ],
+      "shelves": [
+        "Cozy Mystery"
+      ],
+      "moods": [
+        "Curious"
+      ],
+      "tropes": [
+        "Amateur sleuths",
+        "Friendship"
+      ],
+      "open_library_id": "OL20878311W",
+      "readinglog_count": 433,
+      "want_to_read_count": 376,
+      "currently_reading_count": 13,
+      "already_read_count": 44,
+      "recent_readinglog_count": 249,
+      "weighted_readinglog_count": 310.333333,
+      "ratings_count": 20,
+      "ratings_average": 3.65,
+      "recent_ratings_count": 10,
+      "weighted_ratings_count": 13.333333,
+      "weighted_rating_sum": 45.666667,
+      "reader_score": 34.606,
+      "cover_id": 10201431
+    },
+    {
+      "title": "A Touch of Darkness",
+      "author": "Scarlett St. Clair",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL21370801W"
+      ],
+      "shelves": [
+        "Romantasy"
+      ],
+      "moods": [
+        "Spellbinding"
+      ],
+      "tropes": [
+        "Love and magic",
+        "Mythic retelling"
+      ],
+      "open_library_id": "OL21370801W",
+      "readinglog_count": 459,
+      "want_to_read_count": 427,
+      "currently_reading_count": 15,
+      "already_read_count": 17,
+      "recent_readinglog_count": 150,
+      "weighted_readinglog_count": 253.0,
+      "ratings_count": 8,
+      "ratings_average": 4.125,
+      "recent_ratings_count": 5,
+      "weighted_ratings_count": 6.0,
+      "weighted_rating_sum": 23.0,
+      "reader_score": 34.4076,
+      "cover_id": 10363130
+    },
+    {
+      "title": "The Perfect Marriage",
+      "author": "Jeneva Rose",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL24315820W"
+      ],
+      "shelves": [
+        "Thriller"
+      ],
+      "moods": [
+        "Tense"
+      ],
+      "tropes": [
+        "Secrets and suspense"
+      ],
+      "open_library_id": "OL24315820W",
+      "readinglog_count": 356,
+      "want_to_read_count": 322,
+      "currently_reading_count": 13,
+      "already_read_count": 21,
+      "recent_readinglog_count": 217,
+      "weighted_readinglog_count": 263.333333,
+      "ratings_count": 10,
+      "ratings_average": 3.6,
+      "recent_ratings_count": 10,
+      "weighted_ratings_count": 10.0,
+      "weighted_rating_sum": 36.0,
+      "reader_score": 34.2331,
+      "cover_id": 10833503
+    },
+    {
+      "title": "People We Meet on Vacation",
+      "author": "Emily Henry",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL22563730W"
+      ],
+      "shelves": [
+        "Romance"
+      ],
+      "moods": [
+        "Heartfelt"
+      ],
+      "tropes": [
+        "Romantic relationships"
+      ],
+      "open_library_id": "OL22563730W",
+      "readinglog_count": 610,
+      "want_to_read_count": 557,
+      "currently_reading_count": 17,
+      "already_read_count": 36,
+      "recent_readinglog_count": 205,
+      "weighted_readinglog_count": 340.0,
+      "ratings_count": 30,
+      "ratings_average": 3.4667,
+      "recent_ratings_count": 19,
+      "weighted_ratings_count": 22.666667,
+      "weighted_rating_sum": 74.0,
+      "reader_score": 34.1922,
+      "cover_id": 10476782
+    },
+    {
+      "title": "The Talented Mr. Ripley",
+      "author": "Patricia Highsmith",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL59434W"
+      ],
+      "shelves": [
+        "Thriller"
+      ],
+      "moods": [
+        "Tense"
+      ],
+      "tropes": [
+        "Secrets and suspense"
+      ],
+      "open_library_id": "OL59434W",
+      "readinglog_count": 292,
+      "want_to_read_count": 242,
+      "currently_reading_count": 9,
+      "already_read_count": 41,
+      "recent_readinglog_count": 131,
+      "weighted_readinglog_count": 184.666667,
+      "ratings_count": 18,
+      "ratings_average": 4.1111,
+      "recent_ratings_count": 5,
+      "weighted_ratings_count": 9.333333,
+      "weighted_rating_sum": 39.333333,
+      "reader_score": 33.8248,
+      "cover_id": 2198258
+    },
+    {
+      "title": "The Serpent & the Wings of Night",
+      "author": "Carissa Broadbent",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL28520883W"
+      ],
+      "shelves": [
+        "Romantasy"
+      ],
+      "moods": [
+        "Spellbinding"
+      ],
+      "tropes": [
+        "Love and magic",
+        "Rivals in love",
+        "Vampires"
+      ],
+      "open_library_id": "OL28520883W",
+      "readinglog_count": 319,
+      "want_to_read_count": 293,
+      "currently_reading_count": 12,
+      "already_read_count": 14,
+      "recent_readinglog_count": 206,
+      "weighted_readinglog_count": 243.666667,
+      "ratings_count": 8,
+      "ratings_average": 3.75,
+      "recent_ratings_count": 7,
+      "weighted_ratings_count": 7.333333,
+      "weighted_rating_sum": 26.666667,
+      "reader_score": 33.7896,
+      "cover_id": 13451855
+    },
+    {
+      "title": "Hannibal",
+      "author": "Thomas Harris",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL23478W"
+      ],
+      "shelves": [
+        "Thriller"
+      ],
+      "moods": [
+        "Tense"
+      ],
+      "tropes": [
+        "Secrets and suspense"
+      ],
+      "open_library_id": "OL23478W",
+      "readinglog_count": 275,
+      "want_to_read_count": 225,
+      "currently_reading_count": 11,
+      "already_read_count": 39,
+      "recent_readinglog_count": 127,
+      "weighted_readinglog_count": 176.333333,
+      "ratings_count": 14,
+      "ratings_average": 4.2857,
+      "recent_ratings_count": 4,
+      "weighted_ratings_count": 7.333333,
+      "weighted_rating_sum": 32.666667,
+      "reader_score": 33.7867,
+      "cover_id": 8384202
+    },
+    {
+      "title": "Demon Copperhead",
+      "author": "Barbara Kingsolver",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL27052926W"
+      ],
+      "shelves": [
+        "Literary Fiction",
+        "Book Club Picks"
+      ],
+      "moods": [
+        "Reflective",
+        "Thoughtful"
+      ],
+      "tropes": [
+        "Inner lives",
+        "Conversation starters",
+        "Small-town lives"
+      ],
+      "open_library_id": "OL27052926W",
+      "readinglog_count": 250,
+      "want_to_read_count": 221,
+      "currently_reading_count": 7,
+      "already_read_count": 22,
+      "recent_readinglog_count": 138,
+      "weighted_readinglog_count": 175.333333,
+      "ratings_count": 8,
+      "ratings_average": 4.5,
+      "recent_ratings_count": 7,
+      "weighted_ratings_count": 7.333333,
+      "weighted_rating_sum": 32.666667,
+      "reader_score": 33.7498,
+      "cover_id": 13141227
+    },
+    {
+      "title": "Shutter Island",
+      "author": "Dennis Lehane",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL17200W"
+      ],
+      "shelves": [
+        "Thriller"
+      ],
+      "moods": [
+        "Tense"
+      ],
+      "tropes": [
+        "Secrets and suspense"
+      ],
+      "open_library_id": "OL17200W",
+      "readinglog_count": 279,
+      "want_to_read_count": 235,
+      "currently_reading_count": 5,
+      "already_read_count": 39,
+      "recent_readinglog_count": 151,
+      "weighted_readinglog_count": 193.666667,
+      "ratings_count": 22,
+      "ratings_average": 4.0455,
+      "recent_ratings_count": 8,
+      "weighted_ratings_count": 12.666667,
+      "weighted_rating_sum": 49.666667,
+      "reader_score": 33.5451,
+      "cover_id": 28990
+    },
+    {
+      "title": "Legends & Lattes",
+      "author": "Travis Baldree",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL27591348W"
+      ],
+      "shelves": [
+        "Fantasy"
+      ],
+      "moods": [
+        "Wondrous"
+      ],
+      "tropes": [
+        "Imagined worlds"
+      ],
+      "open_library_id": "OL27591348W",
+      "readinglog_count": 236,
+      "want_to_read_count": 191,
+      "currently_reading_count": 11,
+      "already_read_count": 34,
+      "recent_readinglog_count": 151,
+      "weighted_readinglog_count": 179.333333,
+      "ratings_count": 14,
+      "ratings_average": 4.1429,
+      "recent_ratings_count": 12,
+      "weighted_ratings_count": 12.666667,
+      "weighted_rating_sum": 51.333333,
+      "reader_score": 33.5188,
+      "cover_id": 13028635
+    },
+    {
+      "title": "Assistant to the Villain",
+      "author": "Hannah Nicole Maehrer",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL34840408W"
+      ],
+      "shelves": [
+        "Romantasy"
+      ],
+      "moods": [
+        "Spellbinding"
+      ],
+      "tropes": [
+        "Love and magic"
+      ],
+      "open_library_id": "OL34840408W",
+      "readinglog_count": 163,
+      "want_to_read_count": 137,
+      "currently_reading_count": 8,
+      "already_read_count": 18,
+      "recent_readinglog_count": 152,
+      "weighted_readinglog_count": 155.666667,
+      "ratings_count": 18,
+      "ratings_average": 4.1667,
+      "recent_ratings_count": 18,
+      "weighted_ratings_count": 18.0,
+      "weighted_rating_sum": 75.0,
+      "reader_score": 33.5023,
+      "cover_id": 13620190
+    },
+    {
+      "title": "Homegoing",
+      "author": "Yaa Gyasi",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL17795349W"
+      ],
+      "shelves": [
+        "Literary Fiction",
+        "Book Club Picks",
+        "Historical Fiction"
+      ],
+      "moods": [
+        "Reflective",
+        "Thoughtful",
+        "Immersive"
+      ],
+      "tropes": [
+        "Inner lives",
+        "Conversation starters",
+        "Lives in the past"
+      ],
+      "open_library_id": "OL17795349W",
+      "readinglog_count": 354,
+      "want_to_read_count": 302,
+      "currently_reading_count": 14,
+      "already_read_count": 38,
+      "recent_readinglog_count": 96,
+      "weighted_readinglog_count": 182.0,
+      "ratings_count": 27,
+      "ratings_average": 4.1111,
+      "recent_ratings_count": 7,
+      "weighted_ratings_count": 13.666667,
+      "weighted_rating_sum": 54.333333,
+      "reader_score": 33.4216,
+      "cover_id": 8081171
+    },
+    {
+      "title": "I'm Thinking of Ending Things",
+      "author": "Iain Reid",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL20028344W"
+      ],
+      "shelves": [
+        "Thriller"
+      ],
+      "moods": [
+        "Tense"
+      ],
+      "tropes": [
+        "Secrets and suspense"
+      ],
+      "open_library_id": "OL20028344W",
+      "readinglog_count": 356,
+      "want_to_read_count": 316,
+      "currently_reading_count": 14,
+      "already_read_count": 26,
+      "recent_readinglog_count": 146,
+      "weighted_readinglog_count": 216.0,
+      "ratings_count": 11,
+      "ratings_average": 3.5455,
+      "recent_ratings_count": 4,
+      "weighted_ratings_count": 6.333333,
+      "weighted_rating_sum": 22.333333,
+      "reader_score": 32.7696,
+      "cover_id": 11205396
+    },
+    {
+      "title": "The Couple Next Door",
+      "author": "Shari Lapeña",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL19353453W"
+      ],
+      "shelves": [
+        "Thriller"
+      ],
+      "moods": [
+        "Tense"
+      ],
+      "tropes": [
+        "Secrets and suspense",
+        "Family ties"
+      ],
+      "open_library_id": "OL19353453W",
+      "readinglog_count": 295,
+      "want_to_read_count": 246,
+      "currently_reading_count": 14,
+      "already_read_count": 35,
+      "recent_readinglog_count": 108,
+      "weighted_readinglog_count": 170.333333,
+      "ratings_count": 16,
+      "ratings_average": 3.875,
+      "recent_ratings_count": 11,
+      "weighted_ratings_count": 12.666667,
+      "weighted_rating_sum": 49.333333,
+      "reader_score": 32.6414,
+      "cover_id": 8466573
+    },
+    {
+      "title": "My Sister, the Serial Killer",
+      "author": "Oyinkan Braithwaite",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL19761909W"
+      ],
+      "shelves": [
+        "Thriller",
+        "Book Club Picks"
+      ],
+      "moods": [
+        "Tense",
+        "Thoughtful"
+      ],
+      "tropes": [
+        "Secrets and suspense",
+        "Conversation starters",
+        "Family ties"
+      ],
+      "open_library_id": "OL19761909W",
+      "readinglog_count": 262,
+      "want_to_read_count": 220,
+      "currently_reading_count": 5,
+      "already_read_count": 37,
+      "recent_readinglog_count": 132,
+      "weighted_readinglog_count": 175.333333,
+      "ratings_count": 31,
+      "ratings_average": 3.6129,
+      "recent_ratings_count": 12,
+      "weighted_ratings_count": 18.333333,
+      "weighted_rating_sum": 68.0,
+      "reader_score": 32.3472,
+      "cover_id": 10721487
+    },
+    {
+      "title": "The Vanishing Half",
+      "author": "Brit Bennett",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL20799434W"
+      ],
+      "shelves": [
+        "Literary Fiction",
+        "Book Club Picks"
+      ],
+      "moods": [
+        "Reflective",
+        "Thoughtful"
+      ],
+      "tropes": [
+        "Inner lives",
+        "Conversation starters",
+        "Family ties"
+      ],
+      "open_library_id": "OL20799434W",
+      "readinglog_count": 279,
+      "want_to_read_count": 245,
+      "currently_reading_count": 6,
+      "already_read_count": 28,
+      "recent_readinglog_count": 80,
+      "weighted_readinglog_count": 146.333333,
+      "ratings_count": 19,
+      "ratings_average": 4.0,
+      "recent_ratings_count": 10,
+      "weighted_ratings_count": 13.0,
+      "weighted_rating_sum": 52.666667,
+      "reader_score": 32.2398,
+      "cover_id": 10095692
+    },
+    {
+      "title": "Seven Days in June",
+      "author": "Tia Williams",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL24695160W"
+      ],
+      "shelves": [
+        "Romance"
+      ],
+      "moods": [
+        "Heartfelt"
+      ],
+      "tropes": [
+        "Romantic relationships"
+      ],
+      "open_library_id": "OL24695160W",
+      "readinglog_count": 262,
+      "want_to_read_count": 250,
+      "currently_reading_count": 8,
+      "already_read_count": 4,
+      "recent_readinglog_count": 98,
+      "weighted_readinglog_count": 152.666667,
+      "ratings_count": 2,
+      "ratings_average": 5.0,
+      "recent_ratings_count": 2,
+      "weighted_ratings_count": 2.0,
+      "weighted_rating_sum": 10.0,
+      "reader_score": 31.8048,
+      "cover_id": 11408255
+    },
+    {
+      "title": "Room",
+      "author": "Emma Donoghue",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL15212619W"
+      ],
+      "shelves": [
+        "Literary Fiction"
+      ],
+      "moods": [
+        "Reflective"
+      ],
+      "tropes": [
+        "Inner lives",
+        "Family ties"
+      ],
+      "open_library_id": "OL15212619W",
+      "readinglog_count": 283,
+      "want_to_read_count": 228,
+      "currently_reading_count": 12,
+      "already_read_count": 43,
+      "recent_readinglog_count": 93,
+      "weighted_readinglog_count": 156.333333,
+      "ratings_count": 19,
+      "ratings_average": 4.0526,
+      "recent_ratings_count": 7,
+      "weighted_ratings_count": 11.0,
+      "weighted_rating_sum": 41.0,
+      "reader_score": 31.4641,
+      "cover_id": 8364817
+    },
+    {
+      "title": "James",
+      "author": "Percival L. Everett",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL36506504W"
+      ],
+      "shelves": [
+        "Literary Fiction",
+        "Book Club Picks"
+      ],
+      "moods": [
+        "Reflective",
+        "Thoughtful"
+      ],
+      "tropes": [
+        "Inner lives",
+        "Conversation starters",
+        "Friendship"
+      ],
+      "open_library_id": "OL36506504W",
+      "readinglog_count": 129,
+      "want_to_read_count": 103,
+      "currently_reading_count": 8,
+      "already_read_count": 18,
+      "recent_readinglog_count": 129,
+      "weighted_readinglog_count": 129.0,
+      "ratings_count": 12,
+      "ratings_average": 4.0833,
+      "recent_ratings_count": 12,
+      "weighted_ratings_count": 12.0,
+      "weighted_rating_sum": 49.0,
+      "reader_score": 31.4449,
+      "cover_id": 15094964
+    },
+    {
+      "title": "Before We Were Yours",
+      "author": "Lisa Wingate",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL18147689W"
+      ],
+      "shelves": [
+        "Historical Fiction",
+        "Book Club Picks"
+      ],
+      "moods": [
+        "Immersive",
+        "Thoughtful"
+      ],
+      "tropes": [
+        "Lives in the past",
+        "Conversation starters",
+        "Family ties"
+      ],
+      "open_library_id": "OL18147689W",
+      "readinglog_count": 207,
+      "want_to_read_count": 183,
+      "currently_reading_count": 6,
+      "already_read_count": 18,
+      "recent_readinglog_count": 35,
+      "weighted_readinglog_count": 92.333333,
+      "ratings_count": 9,
+      "ratings_average": 4.7778,
+      "recent_ratings_count": 7,
+      "weighted_ratings_count": 7.666667,
+      "weighted_rating_sum": 36.333333,
+      "reader_score": 30.2863,
+      "cover_id": 8315369
+    },
+    {
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL37862524W"
+      ],
+      "shelves": [
+        "Romantasy"
+      ],
+      "moods": [
+        "Spellbinding"
+      ],
+      "tropes": [
+        "Love and magic"
+      ],
+      "open_library_id": "OL37862524W",
+      "readinglog_count": 128,
+      "want_to_read_count": 112,
+      "currently_reading_count": 9,
+      "already_read_count": 7,
+      "recent_readinglog_count": 128,
+      "weighted_readinglog_count": 128.0,
+      "ratings_count": 9,
+      "ratings_average": 3.6667,
+      "recent_ratings_count": 9,
+      "weighted_ratings_count": 9.0,
+      "weighted_rating_sum": 33.0,
+      "reader_score": 29.9849,
+      "cover_id": 14842920
+    },
+    {
+      "title": "The Guernsey Literary and Potato Peel Pie Society",
+      "author": "Mary Ann Shaffer; Annie Barrows",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL9334371W"
+      ],
+      "shelves": [
+        "Historical Fiction",
+        "Book Club Picks"
+      ],
+      "moods": [
+        "Immersive",
+        "Thoughtful"
+      ],
+      "tropes": [
+        "Lives in the past",
+        "Conversation starters",
+        "Friendship"
+      ],
+      "open_library_id": "OL9334371W",
+      "readinglog_count": 180,
+      "want_to_read_count": 130,
+      "currently_reading_count": 4,
+      "already_read_count": 46,
+      "recent_readinglog_count": 56,
+      "weighted_readinglog_count": 97.333333,
+      "ratings_count": 23,
+      "ratings_average": 4.087,
+      "recent_ratings_count": 7,
+      "weighted_ratings_count": 12.333333,
+      "weighted_rating_sum": 49.333333,
+      "reader_score": 29.418,
+      "cover_id": 14859218
+    },
+    {
+      "title": "The No. 1 Ladies' Detective Agency",
+      "author": "Alexander McCall Smith",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL2435522W"
+      ],
+      "shelves": [
+        "Cozy Mystery"
+      ],
+      "moods": [
+        "Curious"
+      ],
+      "tropes": [
+        "Amateur sleuths"
+      ],
+      "open_library_id": "OL2435522W",
+      "readinglog_count": 182,
+      "want_to_read_count": 135,
+      "currently_reading_count": 8,
+      "already_read_count": 39,
+      "recent_readinglog_count": 79,
+      "weighted_readinglog_count": 113.333333,
+      "ratings_count": 24,
+      "ratings_average": 3.5,
+      "recent_ratings_count": 10,
+      "weighted_ratings_count": 14.666667,
+      "weighted_rating_sum": 52.666667,
+      "reader_score": 29.1311,
+      "cover_id": 213299
+    },
+    {
+      "title": "Intermezzo",
+      "author": "Sally Rooney",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL37949460W"
+      ],
+      "shelves": [
+        "Literary Fiction"
+      ],
+      "moods": [
+        "Reflective"
+      ],
+      "tropes": [
+        "Inner lives",
+        "Family ties"
+      ],
+      "open_library_id": "OL37949460W",
+      "readinglog_count": 123,
+      "want_to_read_count": 107,
+      "currently_reading_count": 3,
+      "already_read_count": 13,
+      "recent_readinglog_count": 123,
+      "weighted_readinglog_count": 123.0,
+      "ratings_count": 10,
+      "ratings_average": 3.2,
+      "recent_ratings_count": 10,
+      "weighted_ratings_count": 10.0,
+      "weighted_rating_sum": 32.0,
+      "reader_score": 28.4705,
+      "cover_id": 15248784
+    },
+    {
+      "title": "Belladonna",
+      "author": "Adalyn Grace",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL26602235W"
+      ],
+      "shelves": [
+        "Romantasy"
+      ],
+      "moods": [
+        "Spellbinding"
+      ],
+      "tropes": [
+        "Love and magic"
+      ],
+      "open_library_id": "OL26602235W",
+      "readinglog_count": 151,
+      "want_to_read_count": 131,
+      "currently_reading_count": 5,
+      "already_read_count": 15,
+      "recent_readinglog_count": 71,
+      "weighted_readinglog_count": 97.666667,
+      "ratings_count": 9,
+      "ratings_average": 3.5556,
+      "recent_ratings_count": 6,
+      "weighted_ratings_count": 7.0,
+      "weighted_rating_sum": 26.0,
+      "reader_score": 28.3615,
+      "cover_id": 12905843
+    },
+    {
+      "title": "Our Wives Under the Sea",
+      "author": "Julia Armfield",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL25323647W"
+      ],
+      "shelves": [
+        "Literary Fiction"
+      ],
+      "moods": [
+        "Reflective"
+      ],
+      "tropes": [
+        "Inner lives"
+      ],
+      "open_library_id": "OL25323647W",
+      "readinglog_count": 107,
+      "want_to_read_count": 96,
+      "currently_reading_count": 3,
+      "already_read_count": 8,
+      "recent_readinglog_count": 63,
+      "weighted_readinglog_count": 77.666667,
+      "ratings_count": 6,
+      "ratings_average": 4.3333,
+      "recent_ratings_count": 5,
+      "weighted_ratings_count": 5.333333,
+      "weighted_rating_sum": 24.0,
+      "reader_score": 28.1375,
+      "cover_id": 12861479
+    },
+    {
+      "title": "The Very Secret Society of Irregular Witches",
+      "author": "Sangu Mandanna",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL28775218W"
+      ],
+      "shelves": [
+        "Fantasy"
+      ],
+      "moods": [
+        "Wondrous"
+      ],
+      "tropes": [
+        "Imagined worlds"
+      ],
+      "open_library_id": "OL28775218W",
+      "readinglog_count": 120,
+      "want_to_read_count": 96,
+      "currently_reading_count": 5,
+      "already_read_count": 19,
+      "recent_readinglog_count": 80,
+      "weighted_readinglog_count": 93.333333,
+      "ratings_count": 7,
+      "ratings_average": 3.8571,
+      "recent_ratings_count": 6,
+      "weighted_ratings_count": 6.333333,
+      "weighted_rating_sum": 23.666667,
+      "reader_score": 28.0952,
+      "cover_id": 14656782
+    },
+    {
+      "title": "When the Moon Hatched",
+      "author": "Sarah A. Parker",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL38010057W"
+      ],
+      "shelves": [
+        "Romantasy"
+      ],
+      "moods": [
+        "Spellbinding"
+      ],
+      "tropes": [
+        "Love and magic",
+        "Dragons"
+      ],
+      "open_library_id": "OL38010057W",
+      "readinglog_count": 92,
+      "want_to_read_count": 79,
+      "currently_reading_count": 8,
+      "already_read_count": 5,
+      "recent_readinglog_count": 92,
+      "weighted_readinglog_count": 92.0,
+      "ratings_count": 3,
+      "ratings_average": 4.0,
+      "recent_ratings_count": 3,
+      "weighted_ratings_count": 3.0,
+      "weighted_rating_sum": 12.0,
+      "reader_score": 28.0723,
+      "cover_id": 15161976
+    },
+    {
+      "title": "Shuggie Bain",
+      "author": "Douglas Stuart",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL20645179W"
+      ],
+      "shelves": [
+        "Literary Fiction"
+      ],
+      "moods": [
+        "Reflective"
+      ],
+      "tropes": [
+        "Inner lives",
+        "Family ties"
+      ],
+      "open_library_id": "OL20645179W",
+      "readinglog_count": 130,
+      "want_to_read_count": 107,
+      "currently_reading_count": 3,
+      "already_read_count": 20,
+      "recent_readinglog_count": 42,
+      "weighted_readinglog_count": 71.333333,
+      "ratings_count": 15,
+      "ratings_average": 4.2,
+      "recent_ratings_count": 5,
+      "weighted_ratings_count": 8.333333,
+      "weighted_rating_sum": 34.333333,
+      "reader_score": 27.387,
+      "cover_id": 9271540
+    },
+    {
+      "title": "The Bullet That Missed",
+      "author": "Richard Osman",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL26347330W"
+      ],
+      "shelves": [
+        "Cozy Mystery"
+      ],
+      "moods": [
+        "Curious"
+      ],
+      "tropes": [
+        "Amateur sleuths",
+        "Friendship"
+      ],
+      "open_library_id": "OL26347330W",
+      "readinglog_count": 96,
+      "want_to_read_count": 74,
+      "currently_reading_count": 1,
+      "already_read_count": 21,
+      "recent_readinglog_count": 57,
+      "weighted_readinglog_count": 70.0,
+      "ratings_count": 7,
+      "ratings_average": 4.2857,
+      "recent_ratings_count": 5,
+      "weighted_ratings_count": 5.666667,
+      "weighted_rating_sum": 24.666667,
+      "reader_score": 27.3121,
+      "cover_id": 12929475
+    },
+    {
+      "title": "The Man Who Died Twice",
+      "author": "Richard Osman",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL24662687W"
+      ],
+      "shelves": [
+        "Cozy Mystery"
+      ],
+      "moods": [
+        "Curious"
+      ],
+      "tropes": [
+        "Amateur sleuths",
+        "Friendship"
+      ],
+      "open_library_id": "OL24662687W",
+      "readinglog_count": 92,
+      "want_to_read_count": 75,
+      "currently_reading_count": 0,
+      "already_read_count": 17,
+      "recent_readinglog_count": 46,
+      "weighted_readinglog_count": 61.333333,
+      "ratings_count": 5,
+      "ratings_average": 4.2,
+      "recent_ratings_count": 2,
+      "weighted_ratings_count": 3.0,
+      "weighted_rating_sum": 13.0,
+      "reader_score": 25.9064,
+      "cover_id": 11358314
+    },
+    {
+      "title": "Young Mungo",
+      "author": "Douglas Stuart",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL25345147W"
+      ],
+      "shelves": [
+        "Literary Fiction"
+      ],
+      "moods": [
+        "Reflective"
+      ],
+      "tropes": [
+        "Inner lives",
+        "Friendship"
+      ],
+      "open_library_id": "OL25345147W",
+      "readinglog_count": 103,
+      "want_to_read_count": 97,
+      "currently_reading_count": 2,
+      "already_read_count": 4,
+      "recent_readinglog_count": 43,
+      "weighted_readinglog_count": 63.0,
+      "ratings_count": 2,
+      "ratings_average": 4.5,
+      "recent_ratings_count": 1,
+      "weighted_ratings_count": 1.333333,
+      "weighted_rating_sum": 5.666667,
+      "reader_score": 25.6252,
+      "cover_id": 12715939
+    },
+    {
+      "title": "The Girl with the Louding Voice",
+      "author": "Abi Daré",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL20642154W"
+      ],
+      "shelves": [
+        "Literary Fiction"
+      ],
+      "moods": [
+        "Reflective"
+      ],
+      "tropes": [
+        "Inner lives"
+      ],
+      "open_library_id": "OL20642154W",
+      "readinglog_count": 110,
+      "want_to_read_count": 101,
+      "currently_reading_count": 4,
+      "already_read_count": 5,
+      "recent_readinglog_count": 40,
+      "weighted_readinglog_count": 63.333333,
+      "ratings_count": 3,
+      "ratings_average": 3.6667,
+      "recent_ratings_count": 3,
+      "weighted_ratings_count": 3.0,
+      "weighted_rating_sum": 11.0,
+      "reader_score": 25.4754,
+      "cover_id": 9261646
+    },
+    {
+      "title": "Trust",
+      "author": "Hernán Díaz",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL25916696W"
+      ],
+      "shelves": [
+        "Literary Fiction"
+      ],
+      "moods": [
+        "Reflective"
+      ],
+      "tropes": [
+        "Inner lives",
+        "Family ties"
+      ],
+      "open_library_id": "OL25916696W",
+      "readinglog_count": 69,
+      "want_to_read_count": 57,
+      "currently_reading_count": 1,
+      "already_read_count": 11,
+      "recent_readinglog_count": 52,
+      "weighted_readinglog_count": 57.666667,
+      "ratings_count": 4,
+      "ratings_average": 4.0,
+      "recent_ratings_count": 4,
+      "weighted_ratings_count": 4.0,
+      "weighted_rating_sum": 16.0,
+      "reader_score": 25.3469,
+      "cover_id": 12742248
+    },
+    {
+      "title": "The Cat Who Could Read Backwards",
+      "author": "Lilian Jackson Braun",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL457916W"
+      ],
+      "shelves": [
+        "Cozy Mystery"
+      ],
+      "moods": [
+        "Curious"
+      ],
+      "tropes": [
+        "Amateur sleuths",
+        "Feline companions",
+        "Small-town lives"
+      ],
+      "open_library_id": "OL457916W",
+      "readinglog_count": 105,
+      "want_to_read_count": 82,
+      "currently_reading_count": 8,
+      "already_read_count": 15,
+      "recent_readinglog_count": 48,
+      "weighted_readinglog_count": 67.0,
+      "ratings_count": 8,
+      "ratings_average": 3.75,
+      "recent_ratings_count": 1,
+      "weighted_ratings_count": 3.333333,
+      "weighted_rating_sum": 10.666667,
+      "reader_score": 25.341,
+      "cover_id": 1262021
+    },
+    {
+      "title": "A Wizard's Guide to Defensive Baking",
+      "author": "T. Kingfisher",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL20924196W"
+      ],
+      "shelves": [
+        "Fantasy"
+      ],
+      "moods": [
+        "Wondrous"
+      ],
+      "tropes": [
+        "Imagined worlds"
+      ],
+      "open_library_id": "OL20924196W",
+      "readinglog_count": 67,
+      "want_to_read_count": 44,
+      "currently_reading_count": 0,
+      "already_read_count": 23,
+      "recent_readinglog_count": 39,
+      "weighted_readinglog_count": 48.333333,
+      "ratings_count": 13,
+      "ratings_average": 4.2308,
+      "recent_ratings_count": 7,
+      "weighted_ratings_count": 9.0,
+      "weighted_rating_sum": 37.0,
+      "reader_score": 24.9884,
+      "cover_id": 10296774
+    },
+    {
+      "title": "Daughter of No Worlds",
+      "author": "Carissa Broadbent",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL24134718W"
+      ],
+      "shelves": [
+        "Romantasy"
+      ],
+      "moods": [
+        "Spellbinding"
+      ],
+      "tropes": [
+        "Love and magic"
+      ],
+      "open_library_id": "OL24134718W",
+      "readinglog_count": 87,
+      "want_to_read_count": 82,
+      "currently_reading_count": 2,
+      "already_read_count": 3,
+      "recent_readinglog_count": 42,
+      "weighted_readinglog_count": 57.0,
+      "ratings_count": 1,
+      "ratings_average": 5.0,
+      "recent_ratings_count": 0,
+      "weighted_ratings_count": 0.333333,
+      "weighted_rating_sum": 1.666667,
+      "reader_score": 24.8614,
+      "cover_id": 10530863
+    },
+    {
+      "title": "A Morbid Taste for Bones",
+      "author": "Edith Pargeter",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL40218W"
+      ],
+      "shelves": [
+        "Cozy Mystery"
+      ],
+      "moods": [
+        "Curious"
+      ],
+      "tropes": [
+        "Amateur sleuths"
+      ],
+      "open_library_id": "OL40218W",
+      "readinglog_count": 77,
+      "want_to_read_count": 49,
+      "currently_reading_count": 1,
+      "already_read_count": 27,
+      "recent_readinglog_count": 32,
+      "weighted_readinglog_count": 47.0,
+      "ratings_count": 12,
+      "ratings_average": 4.3333,
+      "recent_ratings_count": 4,
+      "weighted_ratings_count": 6.666667,
+      "weighted_rating_sum": 28.0,
+      "reader_score": 24.7142,
+      "cover_id": 285597
+    },
+    {
+      "title": "Sing, Unburied, Sing",
+      "author": "Jesmyn Ward",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL17826879W"
+      ],
+      "shelves": [
+        "Book Club Picks"
+      ],
+      "moods": [
+        "Thoughtful"
+      ],
+      "tropes": [
+        "Conversation starters",
+        "Family ties"
+      ],
+      "open_library_id": "OL17826879W",
+      "readinglog_count": 117,
+      "want_to_read_count": 101,
+      "currently_reading_count": 5,
+      "already_read_count": 11,
+      "recent_readinglog_count": 25,
+      "weighted_readinglog_count": 55.666667,
+      "ratings_count": 7,
+      "ratings_average": 3.7143,
+      "recent_ratings_count": 0,
+      "weighted_ratings_count": 2.333333,
+      "weighted_rating_sum": 8.666667,
+      "reader_score": 24.7036,
+      "cover_id": 8205752
+    },
+    {
+      "title": "Bookshops & Bonedust",
+      "author": "Travis Baldree",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL34143972W"
+      ],
+      "shelves": [
+        "Fantasy"
+      ],
+      "moods": [
+        "Wondrous"
+      ],
+      "tropes": [
+        "Imagined worlds"
+      ],
+      "open_library_id": "OL34143972W",
+      "readinglog_count": 51,
+      "want_to_read_count": 30,
+      "currently_reading_count": 1,
+      "already_read_count": 20,
+      "recent_readinglog_count": 47,
+      "weighted_readinglog_count": 48.333333,
+      "ratings_count": 9,
+      "ratings_average": 3.8889,
+      "recent_ratings_count": 9,
+      "weighted_ratings_count": 9.0,
+      "weighted_rating_sum": 35.0,
+      "reader_score": 24.5213,
+      "cover_id": 14835507
+    },
+    {
+      "title": "The Last Devil to Die",
+      "author": "Richard Osman",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL28804417W"
+      ],
+      "shelves": [
+        "Cozy Mystery"
+      ],
+      "moods": [
+        "Curious"
+      ],
+      "tropes": [
+        "Amateur sleuths",
+        "Friendship"
+      ],
+      "open_library_id": "OL28804417W",
+      "readinglog_count": 53,
+      "want_to_read_count": 38,
+      "currently_reading_count": 1,
+      "already_read_count": 14,
+      "recent_readinglog_count": 42,
+      "weighted_readinglog_count": 45.666667,
+      "ratings_count": 3,
+      "ratings_average": 4.6667,
+      "recent_ratings_count": 3,
+      "weighted_ratings_count": 3.0,
+      "weighted_rating_sum": 14.0,
+      "reader_score": 24.382,
+      "cover_id": 13603213
+    },
+    {
+      "title": "A Woman Is No Man",
+      "author": "Etaf Rum",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL20152974W"
+      ],
+      "shelves": [
+        "Literary Fiction",
+        "Book Club Picks"
+      ],
+      "moods": [
+        "Reflective",
+        "Thoughtful"
+      ],
+      "tropes": [
+        "Inner lives",
+        "Conversation starters",
+        "Family ties"
+      ],
+      "open_library_id": "OL20152974W",
+      "readinglog_count": 93,
+      "want_to_read_count": 84,
+      "currently_reading_count": 3,
+      "already_read_count": 6,
+      "recent_readinglog_count": 44,
+      "weighted_readinglog_count": 60.333333,
+      "ratings_count": 4,
+      "ratings_average": 3.25,
+      "recent_ratings_count": 1,
+      "weighted_ratings_count": 2.0,
+      "weighted_rating_sum": 5.0,
+      "reader_score": 24.3777,
+      "cover_id": 8797803
+    },
+    {
+      "title": "A Dawn of Onyx",
+      "author": "Kate Golden",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL31088557W"
+      ],
+      "shelves": [
+        "Romantasy"
+      ],
+      "moods": [
+        "Spellbinding"
+      ],
+      "tropes": [
+        "Love and magic",
+        "Rivals in love",
+        "Dragons"
+      ],
+      "open_library_id": "OL31088557W",
+      "readinglog_count": 95,
+      "want_to_read_count": 92,
+      "currently_reading_count": 3,
+      "already_read_count": 0,
+      "recent_readinglog_count": 31,
+      "weighted_readinglog_count": 52.333333,
+      "ratings_count": 1,
+      "ratings_average": 4.0,
+      "recent_ratings_count": 1,
+      "weighted_ratings_count": 1.0,
+      "weighted_rating_sum": 4.0,
+      "reader_score": 24.3425,
+      "cover_id": 14716466
+    },
+    {
+      "title": "The Spellshop",
+      "author": "Sarah Beth Durst",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL37576316W"
+      ],
+      "shelves": [
+        "Fantasy"
+      ],
+      "moods": [
+        "Wondrous"
+      ],
+      "tropes": [
+        "Imagined worlds"
+      ],
+      "open_library_id": "OL37576316W",
+      "readinglog_count": 40,
+      "want_to_read_count": 24,
+      "currently_reading_count": 1,
+      "already_read_count": 15,
+      "recent_readinglog_count": 40,
+      "weighted_readinglog_count": 40.0,
+      "ratings_count": 8,
+      "ratings_average": 4.375,
+      "recent_ratings_count": 8,
+      "weighted_ratings_count": 8.0,
+      "weighted_rating_sum": 35.0,
+      "reader_score": 24.1918,
+      "cover_id": 15202687
+    },
+    {
+      "title": "Murder at the Bookstore",
+      "author": "Sue Minix",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL28024630W"
+      ],
+      "shelves": [
+        "Cozy Mystery"
+      ],
+      "moods": [
+        "Curious"
+      ],
+      "tropes": [
+        "Amateur sleuths",
+        "Bookshop setting"
+      ],
+      "open_library_id": "OL28024630W",
+      "readinglog_count": 57,
+      "want_to_read_count": 50,
+      "currently_reading_count": 6,
+      "already_read_count": 1,
+      "recent_readinglog_count": 56,
+      "weighted_readinglog_count": 56.333333,
+      "ratings_count": 1,
+      "ratings_average": 2.0,
+      "recent_ratings_count": 1,
+      "weighted_ratings_count": 1.0,
+      "weighted_rating_sum": 2.0,
+      "reader_score": 24.1153,
+      "cover_id": 13223506
+    },
+    {
+      "title": "Vera Wong's Unsolicited Advice for Murderers",
+      "author": "Jesse Q. Sutanto",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL28420475W"
+      ],
+      "shelves": [
+        "Cozy Mystery"
+      ],
+      "moods": [
+        "Curious"
+      ],
+      "tropes": [
+        "Amateur sleuths"
+      ],
+      "open_library_id": "OL28420475W",
+      "readinglog_count": 38,
+      "want_to_read_count": 27,
+      "currently_reading_count": 0,
+      "already_read_count": 11,
+      "recent_readinglog_count": 29,
+      "weighted_readinglog_count": 32.0,
+      "ratings_count": 9,
+      "ratings_average": 4.3333,
+      "recent_ratings_count": 9,
+      "weighted_ratings_count": 9.0,
+      "weighted_rating_sum": 39.0,
+      "reader_score": 22.8301,
+      "cover_id": 13186806
+    },
+    {
+      "title": "Chocolate Chip Cookie Murder",
+      "author": "Joanne Fluke",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL515929W"
+      ],
+      "shelves": [
+        "Cozy Mystery"
+      ],
+      "moods": [
+        "Curious"
+      ],
+      "tropes": [
+        "Amateur sleuths"
+      ],
+      "open_library_id": "OL515929W",
+      "readinglog_count": 64,
+      "want_to_read_count": 46,
+      "currently_reading_count": 6,
+      "already_read_count": 12,
+      "recent_readinglog_count": 30,
+      "weighted_readinglog_count": 41.333333,
+      "ratings_count": 3,
+      "ratings_average": 3.6667,
+      "recent_ratings_count": 2,
+      "weighted_ratings_count": 2.333333,
+      "weighted_rating_sum": 7.666667,
+      "reader_score": 22.6279,
+      "cover_id": 829061
+    },
+    {
+      "title": "Can't Spell Treason Without Tea",
+      "author": "Rebecca Thorne",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL28852218W"
+      ],
+      "shelves": [
+        "Fantasy"
+      ],
+      "moods": [
+        "Wondrous"
+      ],
+      "tropes": [
+        "Imagined worlds"
+      ],
+      "open_library_id": "OL28852218W",
+      "readinglog_count": 36,
+      "want_to_read_count": 26,
+      "currently_reading_count": 0,
+      "already_read_count": 10,
+      "recent_readinglog_count": 25,
+      "weighted_readinglog_count": 28.666667,
+      "ratings_count": 6,
+      "ratings_average": 4.3333,
+      "recent_ratings_count": 6,
+      "weighted_ratings_count": 6.0,
+      "weighted_rating_sum": 26.0,
+      "reader_score": 21.7443,
+      "cover_id": 15001373
+    },
+    {
+      "title": "Fudge Cupcake Murder",
+      "author": "Joanne Fluke",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL515927W"
+      ],
+      "shelves": [
+        "Cozy Mystery"
+      ],
+      "moods": [
+        "Curious"
+      ],
+      "tropes": [
+        "Amateur sleuths"
+      ],
+      "open_library_id": "OL515927W",
+      "readinglog_count": 48,
+      "want_to_read_count": 32,
+      "currently_reading_count": 2,
+      "already_read_count": 14,
+      "recent_readinglog_count": 23,
+      "weighted_readinglog_count": 31.333333,
+      "ratings_count": 3,
+      "ratings_average": 3.3333,
+      "recent_ratings_count": 1,
+      "weighted_ratings_count": 1.666667,
+      "weighted_rating_sum": 4.666667,
+      "reader_score": 20.81,
+      "cover_id": 505273
+    },
+    {
+      "title": "The Cat Who Ate Danish Modern (A Jim Qwilleran Feline Whodunnit)",
+      "author": "Lilian Jackson Braun",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL457912W"
+      ],
+      "shelves": [
+        "Cozy Mystery"
+      ],
+      "moods": [
+        "Curious"
+      ],
+      "tropes": [
+        "Amateur sleuths",
+        "Feline companions",
+        "Small-town lives"
+      ],
+      "open_library_id": "OL457912W",
+      "readinglog_count": 56,
+      "want_to_read_count": 43,
+      "currently_reading_count": 3,
+      "already_read_count": 10,
+      "recent_readinglog_count": 14,
+      "weighted_readinglog_count": 28.0,
+      "ratings_count": 6,
+      "ratings_average": 4.0,
+      "recent_ratings_count": 1,
+      "weighted_ratings_count": 2.666667,
+      "weighted_rating_sum": 10.0,
+      "reader_score": 20.6456,
+      "cover_id": 485296
+    },
+    {
+      "title": "Blueberry Muffin Murder",
+      "author": "Joanne Fluke",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL515923W"
+      ],
+      "shelves": [
+        "Cozy Mystery"
+      ],
+      "moods": [
+        "Curious"
+      ],
+      "tropes": [
+        "Amateur sleuths"
+      ],
+      "open_library_id": "OL515923W",
+      "readinglog_count": 47,
+      "want_to_read_count": 30,
+      "currently_reading_count": 4,
+      "already_read_count": 13,
+      "recent_readinglog_count": 20,
+      "weighted_readinglog_count": 29.0,
+      "ratings_count": 4,
+      "ratings_average": 3.25,
+      "recent_ratings_count": 3,
+      "weighted_ratings_count": 3.333333,
+      "weighted_rating_sum": 10.333333,
+      "reader_score": 20.3421,
+      "cover_id": 506031
+    },
+    {
+      "title": "Strawberry Shortcake Murder",
+      "author": "Joanne Fluke",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL515928W"
+      ],
+      "shelves": [
+        "Cozy Mystery"
+      ],
+      "moods": [
+        "Curious"
+      ],
+      "tropes": [
+        "Amateur sleuths"
+      ],
+      "open_library_id": "OL515928W",
+      "readinglog_count": 44,
+      "want_to_read_count": 30,
+      "currently_reading_count": 2,
+      "already_read_count": 12,
+      "recent_readinglog_count": 18,
+      "weighted_readinglog_count": 26.666667,
+      "ratings_count": 4,
+      "ratings_average": 2.75,
+      "recent_ratings_count": 3,
+      "weighted_ratings_count": 3.333333,
+      "weighted_rating_sum": 8.333333,
+      "reader_score": 19.3634,
+      "cover_id": 829056
+    },
+    {
+      "title": "Arsenic and Adobo",
+      "author": "Mia P. Manansala",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL24340224W"
+      ],
+      "shelves": [
+        "Cozy Mystery"
+      ],
+      "moods": [
+        "Curious"
+      ],
+      "tropes": [
+        "Amateur sleuths"
+      ],
+      "open_library_id": "OL24340224W",
+      "readinglog_count": 29,
+      "want_to_read_count": 24,
+      "currently_reading_count": 0,
+      "already_read_count": 5,
+      "recent_readinglog_count": 13,
+      "weighted_readinglog_count": 18.333333,
+      "ratings_count": 3,
+      "ratings_average": 3.6667,
+      "recent_ratings_count": 2,
+      "weighted_ratings_count": 2.333333,
+      "weighted_rating_sum": 8.333333,
+      "reader_score": 18.0467,
+      "cover_id": 10863067
+    },
+    {
+      "title": "The Mystery Guest",
+      "author": "Nita Prose",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL35844638W"
+      ],
+      "shelves": [
+        "Cozy Mystery"
+      ],
+      "moods": [
+        "Curious"
+      ],
+      "tropes": [
+        "Amateur sleuths"
+      ],
+      "open_library_id": "OL35844638W",
+      "readinglog_count": 17,
+      "want_to_read_count": 12,
+      "currently_reading_count": 1,
+      "already_read_count": 4,
+      "recent_readinglog_count": 16,
+      "weighted_readinglog_count": 16.333333,
+      "ratings_count": 1,
+      "ratings_average": 3.0,
+      "recent_ratings_count": 1,
+      "weighted_ratings_count": 1.0,
+      "weighted_rating_sum": 3.0,
+      "reader_score": 17.2264,
+      "cover_id": 15126331
+    },
+    {
+      "title": "On What Grounds",
+      "author": "Cleo Coyle",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL5725485W"
+      ],
+      "shelves": [
+        "Cozy Mystery"
+      ],
+      "moods": [
+        "Curious"
+      ],
+      "tropes": [
+        "Amateur sleuths"
+      ],
+      "open_library_id": "OL5725485W",
+      "readinglog_count": 19,
+      "want_to_read_count": 12,
+      "currently_reading_count": 2,
+      "already_read_count": 5,
+      "recent_readinglog_count": 7,
+      "weighted_readinglog_count": 11.0,
+      "ratings_count": 3,
+      "ratings_average": 4.0,
+      "recent_ratings_count": 2,
+      "weighted_ratings_count": 2.333333,
+      "weighted_rating_sum": 8.666667,
+      "reader_score": 15.2052,
+      "cover_id": 272587
+    },
+    {
+      "title": "Secondhand Spirits",
+      "author": "Juliet Blackwell",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL15511283W"
+      ],
+      "shelves": [
+        "Cozy Mystery"
+      ],
+      "moods": [
+        "Curious"
+      ],
+      "tropes": [
+        "Amateur sleuths",
+        "Witchcraft"
+      ],
+      "open_library_id": "OL15511283W",
+      "readinglog_count": 15,
+      "want_to_read_count": 13,
+      "currently_reading_count": 0,
+      "already_read_count": 2,
+      "recent_readinglog_count": 2,
+      "weighted_readinglog_count": 6.333333,
+      "ratings_count": 1,
+      "ratings_average": 5.0,
+      "recent_ratings_count": 0,
+      "weighted_ratings_count": 0.333333,
+      "weighted_rating_sum": 1.666667,
+      "reader_score": 12.1993,
+      "cover_id": 8773144
+    },
+    {
+      "title": "Peril in Paris",
+      "author": "Rhys Bowen",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL27288643W"
+      ],
+      "shelves": [
+        "Cozy Mystery"
+      ],
+      "moods": [
+        "Curious"
+      ],
+      "tropes": [
+        "Amateur sleuths"
+      ],
+      "open_library_id": "OL27288643W",
+      "readinglog_count": 12,
+      "want_to_read_count": 11,
+      "currently_reading_count": 0,
+      "already_read_count": 1,
+      "recent_readinglog_count": 0,
+      "weighted_readinglog_count": 4.0,
+      "ratings_count": 1,
+      "ratings_average": 4.0,
+      "recent_ratings_count": 0,
+      "weighted_ratings_count": 0.333333,
+      "weighted_rating_sum": 1.333333,
+      "reader_score": 9.8085,
+      "cover_id": 12616297
+    },
+    {
+      "title": "Crime and Poetry",
+      "author": "Amanda Flower",
+      "mention_count": 0,
+      "sources": [
+        "https://openlibrary.org/works/OL19641802W"
+      ],
+      "shelves": [
+        "Cozy Mystery"
+      ],
+      "moods": [
+        "Curious"
+      ],
+      "tropes": [
+        "Amateur sleuths",
+        "Feline companions"
+      ],
+      "open_library_id": "OL19641802W",
+      "readinglog_count": 9,
+      "want_to_read_count": 6,
+      "currently_reading_count": 0,
+      "already_read_count": 3,
+      "recent_readinglog_count": 1,
+      "weighted_readinglog_count": 3.666667,
+      "ratings_count": 0,
+      "ratings_average": null,
+      "recent_ratings_count": 0,
+      "weighted_ratings_count": 0.0,
+      "weighted_rating_sum": 0.0,
+      "reader_score": 9.3661,
+      "cover_id": 8558415
+    }
+  ]
+}
