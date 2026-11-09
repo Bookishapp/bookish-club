@@ -4,6 +4,8 @@ import {readFile} from 'node:fs/promises';
 import {PGlite} from '@electric-sql/pglite';
 import {loadAnonymousVote} from '../../app/src/votes.ts';
 
+import {buildPacket} from '../../scripts/stage-dedicated-sql.mjs';
+const packet=buildPacket().files;
 const host='82000000-0000-0000-0000-000000000001',reader='82000000-0000-0000-0000-000000000002',outsider='82000000-0000-0000-0000-000000000003';
 let db,patch;
 const q=async(sql,args=[])=>(await db.query(sql,args)).rows;
@@ -25,9 +27,9 @@ before(async()=>{
  grant usage on schema auth to authenticated;grant execute on function auth.uid() to authenticated;
  create schema vault;create table vault.test_secrets(name text,decrypted_secret text);create view vault.decrypted_secrets as select * from vault.test_secrets;
  set bookish.target_ref='tkrsrnlasinmlftkcufi';`);
- for(let i=1;i<=19;i++)await db.exec((await readFile(`.ted/apply-${String(i).padStart(2,'0')}.sql`,'utf8')).replace(/^create extension if not exists supabase_vault with schema vault;$/m,'-- Test-only hosted Vault shim.'));
- try{patch=await readFile('.ted/apply-20.sql','utf8');}catch(e){if(e.code!=='ENOENT')throw e;}
- if(patch){await db.exec(patch);await db.exec(patch);}
+ for(let i=1;i<=19;i++)await db.exec(packet[`apply-${String(i).padStart(2,'0')}.sql`].replace(/^create extension if not exists supabase_vault with schema vault;$/m,'-- Test-only hosted Vault shim.'));
+ patch=await readFile('supabase/packets/apply-20.sql','utf8');
+ await db.exec(patch);await db.exec(patch);
  for(const [i,id] of [host,reader,outsider].entries()){
   await q(`insert into auth.users(id,email,raw_app_meta_data) values($1,$2,'{"app":"bookish"}')`,[id,`review${i}@example.test`]);
   await rpc(id,'bookish_accept_terms',['2026-10-15',true]);
@@ -122,7 +124,7 @@ test('chunk 20 has target and predecessor guards, is repeatable, and rollback re
  await db.exec("set bookish.target_ref='tkrsrnlasinmlftkcufi'");
  await q("delete from bookish_release_20261101.state where version='dedicated-chunk-19'");await assert.rejects(db.exec(patch),/Apply earlier Bookish chunks/);await db.exec('rollback');
  await q("insert into bookish_release_20261101.state values('dedicated-chunk-19',now())");await db.exec(patch);await db.exec(patch);
- await db.exec(await readFile('.ted/rollback.sql','utf8'));
+ await db.exec(await readFile('supabase/packets/rollback.sql','utf8'));
  await assert.rejects(rpc(reader,'bookish_my_vote',[crypto.randomUUID()]),/permission denied/);
  await assert.rejects(role('service_role','select * from bookish_content_report_queue(null::uuid)'),/permission denied/);
  await db.exec(patch);

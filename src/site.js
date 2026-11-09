@@ -1,4 +1,3 @@
-// Bookish Club client script: city/ZIP search, genre filter, forms. No dependencies.
 (() => {
   const BASE = document.documentElement.dataset.base || "";
   const API = document.documentElement.dataset.api || "";
@@ -7,7 +6,6 @@
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
   const norm = (s) => s.toLowerCase().normalize("NFKD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
 
-  // ---------- search ----------
   const loadCities = () => window.bookishDiscovery('cities').catch(()=>[]);
   const clearDiscovery = () => { for(const id of ['suggest','results']) {const el=document.getElementById(id);if(el)el.innerHTML='';} };
   window.addEventListener('focus', clearDiscovery);
@@ -113,10 +111,6 @@ ${shown.length ? `<div class="grid cols-3">${shown.map(({ c, n, v }) =>
     }
   }
 
-  // ---------- "On Bookish" / "Listed from public calendars" toggle ----------
-  // Verified clubs (a host claimed it and is on Bookish) vs unclaimed clubs
-  // (listed from public calendars). Works with the genre chips: a card shows
-  // only when it matches both the mode and the genre.
   const seg = $(".seg-wrap");
   const fb = $("#filter");
   const state = { mode: seg ? seg.dataset.mode : null, genre: "" };
@@ -153,7 +147,6 @@ ${shown.length ? `<div class="grid cols-3">${shown.map(({ c, n, v }) =>
     $$(".seg-empty").forEach((e) => (e.hidden = !(e.dataset.empty === state.mode && modeTotal === 0)));
     const fe = $("#filter-empty");
     if (fe) fe.hidden = !(modeTotal > 0 && mainShown === 0);
-    // Genre hub city tiles follow the mode too.
     $$("[data-seg-tiles] .city-tile").forEach((t) => {
       const n = +t.dataset.n, v = +t.dataset.v, k = state.mode === "on" ? v : n - v;
       t.hidden = !k;
@@ -179,11 +172,8 @@ ${shown.length ? `<div class="grid cols-3">${shown.map(({ c, n, v }) =>
     if (seg || fb) applyAll();
   }
 
-  // Remember the last city page opened (this device only) so Read next can show
-  // "Clubs in <city> loved" when that city has enough clubs behind the number.
   { const cm = $("#club-map[data-city]"); if (cm) try { localStorage.setItem("bk_city", JSON.stringify(cm.dataset.city)); } catch {} }
 
-  // ---------- forms ----------
   const params = new URLSearchParams(location.search);
   const invite = new URLSearchParams(location.hash.slice(1));
   if (invite.has('club')) params.set('club_id',invite.get('club'));
@@ -196,8 +186,6 @@ ${shown.length ? `<div class="grid cols-3">${shown.map(({ c, n, v }) =>
       const el = f.elements[k];
       if (el && "value" in el && el.type !== "radio" && el.type !== "checkbox" && !el.value) el.value = v.slice(0, 200);
     }
-    // "List my club in <city>": on by default for public venues, OFF by
-    // default for home-based clubs, n/a for online. Never an address.
     const toggle = f.elements.show_on_map, note = $(".map-note", f), lc = $(".list-city", f);
     const cityIn = f.elements.city || f.elements.club_city;
     const syncCity = () => { if (lc) lc.textContent = (cityIn && cityIn.value.trim()) || "my city"; };

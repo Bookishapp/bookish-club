@@ -1,5 +1,5 @@
 # Dedicated Bookish project: tkrsrnlasinmlftkcufi. Deploy reviewed functions individually.
-# Use the reviewed .ted SQL packet, not db push. Never change Fictora Auth.
+# Generate the reviewed SQL packet with scripts/stage-dedicated-sql.mjs, rather than db push.
 [functions.bookish-directory]
 verify_jwt = false
 [functions.bookish-club-settings]

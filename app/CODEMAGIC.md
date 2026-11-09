@@ -4,19 +4,17 @@ Android internal testing is documented in [ANDROID.md](ANDROID.md). The iOS work
 
 ## Original iOS TestFlight setup
 
-The repository-root `codemagic.yaml` mirrors the `ios-release` workflow in
-`/Users/vahallo/Claude Code - Fictora/codemagic.yaml`, which was read for this task:
+The repository-root `codemagic.yaml` defines the `ios-release` workflow:
 Mac mini M2, Node 24, latest Xcode, CocoaPods, the `codemagic` App Store Connect
 integration, `code-signing` environment group, CLI keychain/signing setup,
-`xcode-project build-ipa`, IPA/log artifacts, then TestFlight publication.
+`xcode-project build-ipa`, IPA/log artifacts, and TestFlight publication.
 It is iOS only and has no automatic trigger. Nothing was uploaded or activated.
 
 Bookish’s steps run in `app/` where appropriate, with workspace
 `app/ios/App/App.xcworkspace`, shared scheme `App`, and bundle ID
 `com.meetbookish.app`. `LANG` and `LC_ALL` are `en_US.UTF-8`; `cap sync ios`
 performs CocoaPods installation after the web bundle exists. There is no redundant
-pre-sync `pod install` step. There are no Fictora analytics, purchases, Android,
-backend service credentials, or Fictora app identifiers in this app.
+pre-sync `pod install` step. Keep analytics, purchases, Android configuration, backend service credentials, and unrelated app identifiers out of this workflow.
 
 ## Prepare once
 
@@ -24,7 +22,7 @@ backend service credentials, or Fictora app identifiers in this app.
    the intended developer team. Connect that team’s API key as `codemagic`, or
    change the integration name in the draft. Configure the existing CLI-style
    `code-signing` group (including its certificate private key) for that team.
-   Use the same signing mechanism as Fictora, without adding a second managed
+   Use the CLI signing mechanism described above, without adding a second managed
    `ios_signing` configuration.
 2. On a network-enabled machine run `cd app && npm install`, verify all Capacitor
    dependencies resolve to major 7, and retain the resulting `package-lock.json`.

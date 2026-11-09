@@ -1,9 +1,7 @@
-// Public discovery always revalidates against the server. No disk or stale fallback.
 (() => {
  const base=document.documentElement.dataset.base||'';
  const api=document.documentElement.dataset.directoryApi;
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- // The build injects the same checked replacements used by the app.
  const sourceURLUpgrades=new Map(/* __SOURCE_URL_UPGRADES__ */ []);
  const safe=s=>{try{const u=new URL(s);return u.protocol==='https:'?u.href:null;}catch{return null;}};
  window.bookishDiscovery=async format=>{

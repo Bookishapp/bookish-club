@@ -47,7 +47,7 @@ class AlertsTests(unittest.TestCase):
         with patch.object(alerts.subprocess,'run') as call:
             alerts.create_card(report())
             args=call.call_args.args[0]
-            self.assertIn('/Users/vahallo/ted-ops/ted-board/card.py',args)
+            self.assertIn(str(alerts.ROOT/'ted-board/card.py'),args)
             self.assertEqual(args[args.index('--project')+1],'Bookish')
             self.assertEqual(args[args.index('--card-id')+1],'bookish-report-'+report()['id'])
             self.assertNotIn('--engine',args)
