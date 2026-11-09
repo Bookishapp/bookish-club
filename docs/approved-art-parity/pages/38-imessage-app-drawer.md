@@ -16,4 +16,4 @@ Bundled icon preview in an isolated native review host. Apple’s Messages drawe
 
 Additional actual native states: [drawer icon](../native/actual/drawer-icon.png).
 
-Original source: `/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/38-imessage-app-drawer.html`.
+Original source: `external/approved-art/full-app-1016/html/38-imessage-app-drawer.html`.

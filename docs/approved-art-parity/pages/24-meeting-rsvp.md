@@ -12,7 +12,7 @@ Oct 18 batch reference; individual approval not recorded in decisions 111-143.
 
 Existing app has meeting details, with calendar reminders in public detail. It has no in-app RSVP action.
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/24-meeting.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/24-meeting.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -20,4 +20,4 @@ Existing app has meeting details, with calendar reminders in public detail. It h
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 
-Original source: `/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/24-meeting-rsvp.html`.
+Original source: `external/approved-art/full-app-1016/html/24-meeting-rsvp.html`.

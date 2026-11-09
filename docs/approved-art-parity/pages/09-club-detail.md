@@ -12,7 +12,7 @@ Oct 18 approval receipt verified.
 
 Only available directory fields are shown. The directory response has no member count, host name, or past-read history.
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/09-club-detail.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/09-club-detail.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -24,7 +24,7 @@ Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: no
 
 Long fixture data exercises the existing app layout.
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/long-club-name.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/long-club-name.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -42,4 +42,4 @@ Additional narrow-device stress capture; this one intentionally uses a 320 by 84
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 
-Original source: `/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/09-club-detail.html`.
+Original source: `external/approved-art/full-app-1016/html/09-club-detail.html`.

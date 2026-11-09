@@ -16,4 +16,4 @@ Actual CardRenderer output hosted in UIKit. Apple’s Messages transcript chrome
 
 Additional actual native states: [transcript vote](../native/actual/transcript-vote.png).
 
-Original source: `/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/41-imessage-live-vote.html`.
+Original source: `external/approved-art/full-app-1016/html/41-imessage-live-vote.html`.

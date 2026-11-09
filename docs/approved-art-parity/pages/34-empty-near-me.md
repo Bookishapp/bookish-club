@@ -12,7 +12,7 @@ Oct 18 approval receipt verified.
 
 
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/34-empty-near.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/34-empty-near.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -24,7 +24,7 @@ Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: no
 
 Scrolled to the actual empty state and retry action.
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/34-empty-near-card.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/34-empty-near-card.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -36,7 +36,7 @@ Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: no
 
 Scrolled to the actual network error and retry action.
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/directory-error.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/directory-error.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -44,4 +44,4 @@ Scrolled to the actual network error and retry action.
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 
-Original source: `/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/34-empty-near-me.html`.
+Original source: `external/approved-art/full-app-1016/html/34-empty-near-me.html`.

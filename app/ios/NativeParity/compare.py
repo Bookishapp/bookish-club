@@ -1,8 +1,9 @@
 from pathlib import Path
 from PIL import Image
 import os
-base=Path(os.environ.get('BOOKISH_NATIVE_EVIDENCE','/Users/vahallo/ted-ops/oneshots/1106-bookish-v3art'))
-approved=Path('/Users/vahallo/biz/bookish/design/approved-v3-1021')
+root=Path(__file__).resolve().parents[3]
+base=Path(os.environ.get('BOOKISH_NATIVE_EVIDENCE',root/'.cache/review-evidence/v3'))
+approved=Path(os.environ.get('BOOKISH_V3_SOURCE',root/'.cache/approved-art/approved-v3-1021'))
 destination=base/'parity/comparisons'
 destination.mkdir(parents=True,exist_ok=True)
 for number in range(20,25):

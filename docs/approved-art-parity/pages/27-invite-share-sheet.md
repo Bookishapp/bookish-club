@@ -12,7 +12,7 @@ Oct 18 approval receipt verified.
 
 The existing flow uses an invite-code form. Share invitation is captured separately.
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/27-redeem-invite.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/27-redeem-invite.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -24,7 +24,7 @@ Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: no
 
 The real browser share action is not triggered; it would hand off to the operating system.
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/27-share-invite.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/27-share-invite.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -32,4 +32,4 @@ The real browser share action is not triggered; it would hand off to the operati
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 
-Original source: `/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/27-invite-share-sheet.html`.
+Original source: `external/approved-art/full-app-1016/html/27-invite-share-sheet.html`.

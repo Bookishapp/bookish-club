@@ -12,7 +12,7 @@ Oct 19 approved v2 override.
 
 The app combines its current book, meeting details, and safety controls in club home. No Tea feed has been added.
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/17-club-home.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/17-club-home.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -24,7 +24,7 @@ Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: no
 
 The member fixture has no Host desk controls.
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/member-club-home.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/member-club-home.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -32,4 +32,4 @@ The member fixture has no Host desk controls.
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 
-Original source: `/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/17-the-tea.html`.
+Original source: `external/approved-art/full-app-1016/html/17-the-tea.html`.

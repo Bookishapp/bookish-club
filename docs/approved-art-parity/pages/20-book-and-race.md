@@ -12,7 +12,7 @@ Oct 19 approved v2 override.
 
 The real Book view also serves club home. Reading-progress tracking is absent.
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/20-current-book.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/20-current-book.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -20,4 +20,4 @@ The real Book view also serves club home. Reading-progress tracking is absent.
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 
-Original source: `/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/20-book-and-race.html`.
+Original source: `external/approved-art/full-app-1016/html/20-book-and-race.html`.

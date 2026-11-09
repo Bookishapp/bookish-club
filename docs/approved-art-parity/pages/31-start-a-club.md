@@ -12,7 +12,7 @@ Oct 18 approval receipt verified.
 
 The existing create RPC accepts name, city, state, and visibility. Genre and cadence controls are absent because those values have no existing storage or payload fields.
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/31-create-club.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/31-create-club.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -20,4 +20,4 @@ The existing create RPC accepts name, city, state, and visibility. Genre and cad
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 
-Original source: `/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/31-start-a-club.html`.
+Original source: `external/approved-art/full-app-1016/html/31-start-a-club.html`.

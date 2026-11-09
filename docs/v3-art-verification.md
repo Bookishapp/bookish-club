@@ -45,4 +45,4 @@ The first 19 captures use the shipped web bundle with every hosted call intercep
 
 Actual OS screenshots additionally show all three populated WidgetKit surfaces on SpringBoard. The production App Group file handoff was exercised with a validated local fixture through an optional DEBUG-only environment hook. No default seed, release fixture hook, hosted write, or message send was used. Physical-device provisioning and live Messages interaction remain release checks.
 
-The full screen map, SQL order, original test logs, parity images, source and binary hashes, and independent reports are at `/Users/vahallo/ted-ops/oneshots/1106-bookish-v3art/RESULT.md`. Native capture reproduction and scope are documented in `app/ios/NativeParity/README.md`; Chrome reproduction uses `node app/scripts/capture-v3.mjs` after building.
+The full screen map, SQL order, original test logs, parity images, source and binary hashes, and independent reports are at `external/review-evidence/1106-bookish-v3art/RESULT.md`. Native capture reproduction and scope are documented in `app/ios/NativeParity/README.md`; Chrome reproduction uses `node app/scripts/capture-v3.mjs` after building.

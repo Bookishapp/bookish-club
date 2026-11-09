@@ -16,4 +16,4 @@ Actual communal bookmarks card and editor follow the v2 reading-together referen
 
 Additional actual native states: [transcript bookmarks](../native/actual/transcript-bookmarks.png), [editor bookmarks](../native/actual/editor-bookmarks.png), [transcript bookmarks empty](../native/actual/transcript-bookmarks-empty.png).
 
-Original source: `/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/43-imessage-reading-race.html`.
+Original source: `external/approved-art/full-app-1016/html/43-imessage-reading-race.html`.

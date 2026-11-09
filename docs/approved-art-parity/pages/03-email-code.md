@@ -12,7 +12,7 @@ Oct 18 approval receipt verified.
 
 The frontend input and layout support four digits. Authentication is intercepted locally; deployed server acceptance is not established by this capture.
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/03-code-four.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/03-code-four.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -24,7 +24,7 @@ Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: no
 
 
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/03-code-six.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/03-code-six.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -36,7 +36,7 @@ Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: no
 
 
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/03-code-error.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/03-code-error.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -44,4 +44,4 @@ Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: no
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 
-Original source: `/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/03-email-code.html`.
+Original source: `external/approved-art/full-app-1016/html/03-email-code.html`.

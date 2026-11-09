@@ -1,12 +1,14 @@
 # Bookish approved art comparisons
 
+Paths beginning with `external/` are portable labels for privately retained reference art and review evidence, not files bundled in this repository. Capture hashes and review results below are historical records.
+
 53 actual app captures through the working UI in Google Chrome. The normal viewport is 390 by 844, with additional 320 by 844 stress cases. Capture run: complete. Visual scores below are the November 5 review baseline. Inspected statuses record manual visual review and documented data adaptations, and do not assign a new parity score.
 
 References from the 47-screen batch and actual existing app surfaces are shown side by side. Individual approval receipts are recorded for 33 original screens and eight v2 overrides. Other source screens are labeled as references. All 34 flagged existing surfaces were rebuilt and visually inspected, with data adaptations documented. The full 47-reference catalog also includes excluded, unimplemented concepts, which remain marked absent. Exact pixel parity is not claimed.
 
 Captured 2026-11-06T08:02:01.562Z, using Chrome 156.0.8078.81 on Teds-Mac-mini.local.
 
-[Capture manifest and checks](manifest.json), [34 inspected side-by-side PNG hashes](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/side-by-side-manifest.json), [individual approval receipts](approved/approval-receipts.json), [v2 provenance](approved/v2-sources.json), [additional loading and resource states](pages/additional-states.md), [native evidence and limitations](native/README.md), [native image dimensions and hashes](native/capture-manifest.json), and [HTML comparison index](index.html).
+[Capture manifest and checks](manifest.json), [34 inspected side-by-side PNG hashes](external/review-evidence/1105-bookish40-fix/parity/side-by-side-manifest.json), [individual approval receipts](approved/approval-receipts.json), [v2 provenance](approved/v2-sources.json), [additional loading and resource states](pages/additional-states.md), [native evidence and limitations](native/README.md), [native image dimensions and hashes](native/capture-manifest.json), and [HTML comparison index](index.html).
 
 | Source screen | Status | Actual existing app coverage |
 | --- | --- | --- |
@@ -77,4 +79,4 @@ node app/scripts/capture-parity.mjs
 
 Set `PLAYWRIGHT_MODULE` to an installed Playwright module if needed, and `BOOKISH_APPROVED_SOURCE` if the approved source directory differs. The script launches installed Google Chrome, serves the production bundle on loopback, and intercepts all external requests. No request reaches an external write service. Regenerate companion pages without recapture with `node app/scripts/capture-parity.mjs --pages-only`.
 
-Source of truth: `/Users/vahallo/biz/bookish/design/APPROVED-ART.md`. October 19 v2 images take precedence where present. Working behavior, legal text, and privacy rules take precedence over approved mock data.
+Source of truth: `external/approved-art/APPROVED-ART.md`. October 19 v2 images take precedence where present. Working behavior, legal text, and privacy rules take precedence over approved mock data.

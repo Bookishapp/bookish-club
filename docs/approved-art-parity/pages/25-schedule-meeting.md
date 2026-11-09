@@ -12,7 +12,7 @@ Oct 18 approval receipt verified.
 
 Calendar and time controls update the existing date/time field. Bring lists, chat posting, and group notification toggles have no existing app payload and are omitted.
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/25-schedule-meeting.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/25-schedule-meeting.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -24,7 +24,7 @@ Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: no
 
 A fixture rejects the save, and the real form retains the draft.
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/25-schedule-error.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/25-schedule-error.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -32,4 +32,4 @@ A fixture rejects the save, and the real form retains the draft.
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 
-Original source: `/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/25-schedule-meeting.html`.
+Original source: `external/approved-art/full-app-1016/html/25-schedule-meeting.html`.
