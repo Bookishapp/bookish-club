@@ -112,7 +112,7 @@ ${body}
 </main>
 ${landing ? "" : `<footer class="foot-site"><div class="wrap cols">
 <div><a class="wordmark" href="${url("/")}">${WORDMARK(false)}</a>
-<p>Your book club, just more fun. Find your people, choose your next read, and keep your favorites close on Bookish.</p>
+<p>Your book club, just more fun. RSVPs, book hot takes, votes, and more, with cards and links to share in your group chat.</p>
 <p class="credit">Book covers and book details from <a href="https://openlibrary.org/" rel="noopener">Open Library</a>.</p></div>
 <div><p class="h">Find</p><ul><li><a href="${url("/book-clubs/")}">All cities</a></li><li><a href="${url("/read-next/")}">What to read next</a></li>${["romance", "mystery-thriller", "fantasy", "nonfiction"].filter((g) => genreTotals[g] >= 5).map((g) => `<li><a href="${url(`/genres/${g}/`)}">${GENRES[g]} clubs</a></li>`).join("")}</ul></div>
 <div><p class="h">Your club</p><ul><li><a href="${url("/start/")}">Bring my club</a></li><li><a href="${url("/start/")}">List your club</a></li><li><a href="${url("/claim/")}">Claim your listing</a></li><li><a href="${url("/resources/")}">Resources</a></li><li><a href="${url("/press/")}">Press</a></li><li><a href="${url("/about/")}">About &amp; sources</a></li><li><a href="${url("/support/")}">Support</a></li><li><a href="${url("/privacy/")}">Privacy</a> · <a href="${url("/terms/")}">Terms</a></li></ul></div>
@@ -150,7 +150,7 @@ const searchBox = (sel = "", placeholder = "Sacramento, or a ZIP code", extra = 
 // Geographic shells never embed club facts, ids, counts, or structured listings.
 const hostCallout = () => `<section><div class="wrap"><div class="callout-card"><h2>A seat for your club.</h2><p>Choose Open, Private, or Hidden, and bring your readers together.</p><a class="btn" href="${url('/start/')}">Start a club</a> <a href="${url('/club-settings/')}">Club settings</a></div></div></section>`;
 function discoveryPage(p,title,scope={}) {
- const body=`<div class="wrap"><header class="page-head"><p class="eyebrow">Good books. Your people.</p><h1>${esc(title)}</h1><p class="lede">Open clubs welcome anyone. Private clubs ask the host to approve. Hosts share meeting details with their members.</p></header>${searchBox()}<div id="club-map" class="club-map" role="region" aria-label="Book clubs by city"></div><section id="live-directory" data-city="${esc(scope.city||'')}" data-state="${esc(scope.state||'')}" data-genre="${esc(scope.genre||'')}"><h2>Find your people</h2><label>Search clubs<input id="live-query" type="search" placeholder="Club name, city, or genre"></label><p id="live-status" role="status">Loading current clubs…</p><ul class="clubs" id="live-clubs"></ul><button class="btn" id="live-more" hidden>More clubs</button></section></div>${hostCallout()}`;
+ const body=`<div class="wrap"><header class="page-head"><p class="eyebrow">Your book club, just more fun.</p><h1>${esc(title)}</h1><p class="lede">Open clubs welcome anyone. Private clubs ask the host to approve. Hosts share meeting details with their members.</p></header>${searchBox()}<div id="club-map" class="club-map" role="region" aria-label="Book clubs by city"></div><section id="live-directory" data-city="${esc(scope.city||'')}" data-state="${esc(scope.state||'')}" data-genre="${esc(scope.genre||'')}"><h2>Find your people</h2><label>Search clubs<input id="live-query" type="search" placeholder="Club name, city, or genre"></label><p id="live-status" role="status">Loading current clubs…</p><ul class="clubs" id="live-clubs"></ul><button class="btn" id="live-more" hidden>More clubs</button></section></div>${hostCallout()}`;
  write(p==='/'?'index.html':`${p.slice(1)}index.html`,layout({title:`${title} | Bookish`,desc:'Find Open and Private book clubs. Club listings are checked live so hosts control who can find their club.',path:p,body}));
  page(p,p==='/'?1:0.6);
 }
@@ -174,15 +174,15 @@ const clubFun = () => `<section class="club-story" aria-labelledby="club-fun"><d
 </div>
 <div class="story-notes">
 <div><h3>Hot takes, with the spoilers tucked away.</h3><p>Spoiler-safe conversations and where-is-everyone-at check-ins leave room for readers at different places in the book. Read together, at your own pace.</p></div>
-<div><h3>A meeting worth remembering.</h3><p>Keep the conversation going with post-meeting superlatives: Hottest Take, Cried First, and Defended the Villain. Little club memories, lovingly named.</p></div>
-<div><h3>Your year, all wrapped up.</h3><p>Club Wrapped gathers the books, the moments, and the hot takes into a keepsake of your reading year together.</p></div>
+<div><h3>A meeting worth remembering.</h3><p>Keep the conversation going with anonymous takes about the book. Sip a favorite take, or add your own.</p></div>
+<div><h3>Your reading, all together.</h3><p>Browse the Library for your next read, save favorites on this device, and keep track of your page with your club.</p></div>
 </div></div></div></section>`;
 
 const clubHost = () => `<section class="club-story" aria-labelledby="club-host"><div class="wrap"><div class="host-story">
 <div>${lunair("lunair-reading", 200, 201, 400, 402, "Lunair peeking over a book", "host-story-art")}<h2 id="club-host">Less herding. More book club.</h2>
 <p class="lede">For the person who always ends up asking, &ldquo;So, who's coming?&rdquo;</p>
-<p>RSVPs, reminders, book votes, the bring-list, and the next meeting all happen in the thread. Keep your club's plans beside the conversation, right inside iMessage.</p></div>
-<div class="paper meeting-paper"><h3>Next on the club calendar</h3><dl><div><dt>The next meeting</dt><dd>Thursday at 7. Same lovely people.</dd></div><div><dt>The RSVP</dt><dd>A quick yes, no, or maybe.</dd></div><div><dt>The bring-list</dt><dd>Someone's got the snacks. Someone's got the tea.</dd></div><div><dt>The next book</dt><dd>Put a few on the table. Let the club vote.</dd></div></dl><p class="example-note">A little peek at what we're building.</p></div>
+<p>Keep RSVPs, reminders, book votes, the bring list, and the next meeting together in Bookish. Share a Messages card on iPhone or a link on Android, then open Bookish for private club actions.</p></div>
+<div class="paper meeting-paper"><h3>Next on the club calendar</h3><dl><div><dt>The next meeting</dt><dd>Thursday at 7. Same lovely people.</dd></div><div><dt>The RSVP</dt><dd>A quick yes, no, or maybe.</dd></div><div><dt>The bring-list</dt><dd>Someone's got the snacks. Someone's got the tea.</dd></div><div><dt>The next book</dt><dd>Put a few on the table. Let the club vote.</dd></div></dl><p class="example-note">An example of meeting plans in Bookish.</p></div>
 </div></div></section>`;
 
 const clubRules = () => `<section class="club-story" aria-labelledby="club-rules"><div class="wrap">
@@ -198,12 +198,12 @@ ${withSearch ? `<details><summary>Search by city, ZIP, or genre</summary>${searc
 
 const clubIntro = ({ press = false } = {}) => `<section class="lander club-lander"><div class="wrap">
 <div class="l-sheet"><p class="l-tag">${press ? "Meet Bookish" : "Bring the club you already have"}</p>
-<div class="hsheet"><h1>${press ? "The group chat for book clubs." : "Your book club, just more fun."}</h1>
-<p class="sub">Preview the shared club experience: RSVPs, book votes, anonymous hot takes, and reading check-ins in iMessage. These features are not available in the current guest app.</p>
-<p class="launch-note">Find your people, or bring the club you already have.</p>
+<div class="hsheet"><h1>Your book club, just more fun.</h1>
+<p class="sub">RSVPs, book hot takes, votes, and more, with cards and links to share in your group chat.</p>
+<p class="launch-note">Bookish 1.1.1 brings shared club features to your account. Private actions open in Bookish.</p>
 <a class="btn" href="${url("/start/")}">Add your club ${ARROW}</a>
 </div>${prop("prop-sun-240.webp", 240, 243, "l-sun", true)}</div>
-<div class="l-art">${lunair("lunair-hug", 300, 252, 600, 503, "Lunair hugging a book", "", true)}<p class="bubble">Same people. A little more plot.</p>${prop("prop-daisy-240.webp", 240, 243, "daisy", true)}</div>
+<div class="l-art">${lunair("lunair-hug", 300, 252, 600, 503, "Lunair hugging a book", "", true)}<p class="bubble">Your book club, just more fun.</p>${prop("prop-daisy-240.webp", 240, 243, "daisy", true)}</div>
 </div></section>`;
 
 // ---------- home ----------
@@ -212,7 +212,7 @@ const clubIntro = ({ press = false } = {}) => `<section class="lander club-lande
     .replace("__SEARCH__", searchBox()).replaceAll("__BASE__", BASE);
   write("index.html", layout({
     title: "Bookish: Book Club Night | Your book club, just more fun",
-    desc: "Bring the club you already have. Bookish is bringing anonymous hot takes, book votes, RSVPs, and easier hosting to your iMessage group chat. Explore the club finder, reading suggestions, and resources.",
+    desc: "Your book club, just more fun. RSVPs, book hot takes, votes, and more, with cards and links to share in your group chat.",
     path: "/", body, landing: true,
     jsonld: [{ "@context": "https://schema.org", "@type": "WebSite", name: "Bookish: Book Club Night", alternateName: "Bookish", url: abs("/"),
       potentialAction: { "@type": "SearchAction", target: { "@type": "EntryPoint", urlTemplate: `${abs("/")}?q={search_term_string}` }, "query-input": "required name=search_term_string" } },
@@ -225,11 +225,11 @@ const clubIntro = ({ press = false } = {}) => `<section class="lander club-lande
 {
   const body = `${clubIntro({ press: true })}${clubFun()}${clubHost()}${clubRules()}
 <section class="club-story"><div class="wrap"><div class="paper press-notes"><h2>Bookish, in a few words.</h2>
-<h3>The short version</h3><p>Bookish is building the group chat for book clubs: more fun for the club you already have, and less herding for the host. Anonymous comments, the DNF confessional, spoiler-safe hot takes, post-meeting superlatives, and Club Wrapped sit alongside RSVPs, reminders, book votes, and meeting plans, right inside iMessage.</p>
-<h3 id="creators">Availability</h3><p>Explore the <a href="${url("/app/")}">Bookish web app</a> for club discovery, reading suggestions, and saved favorites. The social club screens shown on this page are feature previews; shared clubs and interactive iMessage cards are not available in the current release.</p>
+<h3>The short version</h3><p>Your book club, just more fun. Anonymous Tea, DNF check-ins, spoiler-safe hot takes, RSVPs, reminders, book votes, and meeting plans live in Bookish. Share cards and links with your group chat.</p>
+<h3 id="creators">Availability</h3><p>Explore the <a href="${url("/app/")}">Bookish web app</a> for club discovery, reading suggestions, and saved favorites. Bookish 1.1.1 includes shared clubs, Tea, and hosting tools. Messages cards on iPhone and shared links on Android open Bookish for private actions.</p>
 <h3>Art and press questions</h3><p><a href="${url("/img/bookish-wordmark.png")}" download>Download the Bookish wordmark</a>. For press questions, write to <a href="mailto:hello@meetbookish.com">hello@meetbookish.com</a>.</p>
 </div></div></section>${clubFinder()}`;
-  write("press/index.html", layout({ title: "Bookish Press | The group chat for book clubs", desc: "Bookish is building the group chat for book clubs. Anonymous hot takes, club memories, and easier hosting for the club you already have, right inside iMessage.", path: "/press/", body }));
+  write("press/index.html", layout({ title: "Bookish Press | Your book club, just more fun", desc: "Your book club, just more fun. RSVPs, book hot takes, votes, and more, with cards and links to share in your group chat.", path: "/press/", body }));
   page("/press/", 0.5);
 }
 
@@ -298,13 +298,13 @@ ${hp}${consent}
 page("/start/", 0.6);
 
 write("hosts/index.html", layout({
-  title: "Bring Your Book Club to iMessage | Bookish", desc: "More fun for your existing book club, and less herding for the host. List your book club, claim your existing listing, and explore reading resources.", path: "/hosts/",
+  title: "Bring Your Book Club to iMessage | Bookish", desc: "Your book club, just more fun. RSVPs, book hot takes, votes, and more, with cards and links to share in your group chat.", path: "/hosts/",
   body: `${clubIntro()}${clubFun()}${clubHost()}${clubRules()}
 <section id="bring-your-club" class="club-story"><div class="wrap"><h2>Bring your club.</h2>
 <p class="lede">Add your club to the finder, or claim the listing your library or bookstore already has.</p>
 <a class="btn" href="${url("/start/")}">Add your club ${ARROW}</a>
 <a class="btn" href="${url("/claim/")}">Claim your listing ${ARROW}</a>
-<p><a href="${url("/app/")}">Open Bookish</a> for club discovery, reading suggestions, and saved favorites. Shared club features and interactive iMessage cards shown above are feature previews.</p>
+<p><a href="${url("/app/")}">Open Bookish</a> for club discovery, reading suggestions, and saved favorites. Bookish 1.1.1 includes shared clubs and hosting tools. Share a card or link, then open Bookish to join in.</p>
 </div></section>${clubFinder()}`,
 }));
 page("/hosts/", 0.6);
@@ -345,9 +345,9 @@ write("confirmed/index.html", layout({
 }));
 
 const prose = (p, title, desc, h, html) => { write(`${p.slice(1)}index.html`, layout({ title, desc, path: p, body: `<div class="wrap">${crumbs([["Home", "/"], [h, null]])}<header class="page-head"><h1>${h}</h1></header><section class="prose">${html}</section></div>` })); page(p, 0.3); };
-prose("/about/", "About Bookish and Our Sources", "More fun for the book club you already have, plus the sources behind the Bookish club finder.", "About Bookish", `
-<p>Your book club, just more fun. Bookish is bringing anonymous hot takes, the DNF confessional, spoiler-safe conversations, post-meeting superlatives, and Club Wrapped to the club you already have, right inside iMessage.</p>
-<p>For the host, that means RSVPs, reminders, book votes, the bring-list, and the next meeting in the thread. The social club screens are feature previews. <a href="${url("/app/")}">Open Bookish on the web</a> for the club finder, reading suggestions, and saved favorites.</p>
+prose("/about/", "About Bookish and Our Sources", "Your book club, just more fun.", "About Bookish", `
+<p>Your book club, just more fun. RSVPs, book hot takes, votes, and more, with cards and links to share in your group chat.</p>
+<p>For the host, that means RSVPs, reminder emails, book votes, the bring list, and the next meeting together in Bookish. Share cards and links in your chat, then open Bookish for private actions. <a href="${url("/app/")}">Open Bookish on the web</a> for the club finder, reading suggestions, and saved favorites.</p>
 <h2>Your club, your rules</h2><p>Club listings have three visibility settings: Open is on the map and anyone can join, Private is on the map and the host approves requests, and Hidden is off the map and requires an invite code or link.</p>
 <h2>Looking for a club?</h2><p>The <a href="${url("/book-clubs/")}">web finder</a> is already here, with book clubs across the United States gathered from public library and bookstore calendars.</p>
 <h2>Where listings come from</h2>
@@ -380,7 +380,7 @@ prose("/privacy/", "Privacy | Bookish", "What Bookish collects and why.", "Priva
 <h2>Book covers, maps, and external links</h2>
 <p>Bookish requests its directory and club data from Bookish services. Book covers load from Open Library, which receives normal image-request information, such as your IP address and requested cover. Maps and links you choose to open are handled by Apple Maps or the destination website under their own policies. Bookish does not attach your saved books, recommendation preferences, or device coordinates to cover requests.</p>
 <h2>Messages</h2>
-<p>When you send a Bookish sticker in Messages, the sticker is visible to the conversation's participants. Apple handles delivery. Bookish does not read your conversation transcript or upload your conversation to Bookish servers. Illustrations of interactive iMessage club features on our website are previews, and are not part of the current sticker extension.</p>
+<p>When you send a Bookish sticker in Messages, the sticker is visible to the conversation's participants. Apple handles delivery. Bookish does not read your conversation transcript or upload your conversation to Bookish servers. Messages cards can share public book and meeting details. Private club actions open Bookish and require membership.</p>
 <h2>Your choices and deletion</h2>
 <p>In an account-enabled version, open Me, choose Account settings, and choose Delete my account. Read the confirmation, type DELETE, and confirm. This removes your Bookish account, profile, memberships, join requests, ballots, authored comments, and related personal club records. Blocks and reports attached to your account are removed. If you own a club, hosting passes to a remaining member when possible; a club with no remaining members is removed. Shared club records that continue for other members may remain. Bookish deletion affects only Bookish data and a Bookish-marked sign-in identity. It does not delete a Fictora account or another service's data.</p>
 <p>Remove local saved clubs, saved books, and reminders in the app. Deleting an installed app removes its local storage; clear the site's browser data to remove website preferences. Removing an app alone does not delete a server account. Copies already shared or retained by other people are outside Bookish's control.</p>
@@ -413,7 +413,7 @@ prose("/terms/", "Terms | Bookish", "Terms of use for Bookish.", "Terms", `
 <p>Our <a href="${url("/privacy/")}">privacy policy</a> explains account, club, and device data. You can delete a Bookish account in Me under Account settings. Local favorites stay on the device until removed. Features and availability may change, and website illustrations may show clearly labelled previews. This release has no Bookish payments or subscriptions.</p>`);
 
 write("404.html", layout({ title: "Page not found | Bookish", desc: "This page has wandered off the shelf.", path: "/404.html", noindex: true,
-  body: `<div class="wrap"><header class="page-head" style="padding-top:60px"><p class="eyebrow">404</p>${lunair("lunair-shrug", 260, 279, 520, 553, "Bookish host shrugging", "shrug", true)}<h1>This page has wandered <em>off the shelf</em>.</h1><p class="lede">Try searching for your city instead.</p>${searchBox()}</header></div>` }));
+  body: `<div class="wrap"><header class="page-head" style="padding-top:60px"><p class="eyebrow">404</p>${lunair("lunair-shrug", 260, 279, 520, 553, "Bookish host shrugging", "shrug", true)}<h1>This page has wandered <em>off the shelf</em>.</h1><p class="lede">Try searching for your city instead.</p>${searchBox()}</header></div><script src="${url('/message-route.js')}" defer></script>` }));
 
 // ---------- read next ("Stuck on what to read next?") ----------
 // Catalog: data/books.json (scripts/catalog.mjs, Open Library metadata +
@@ -551,7 +551,7 @@ fs.rmSync(path.join(OUT, "lunair/checkout.json"), { force: true });
 write("data/cities.json", "[]");
 write("data/clubs.json", "[]");
 write("data/clubs.geojson", JSON.stringify({type:"FeatureCollection",features:[]}));
-for (const file of ["site.js","discovery.js","club-settings.js","join-respond.js","read-next.js","map.js"]) {
+for (const file of ["site.js","message-route.js","discovery.js","club-settings.js","join-respond.js","read-next.js","map.js"]) {
  let source=fs.readFileSync(path.join(ROOT,`src/${file}`),"utf8");
  if(file==='discovery.js'){
   const marker='/* __SOURCE_URL_UPGRADES__ */ []';

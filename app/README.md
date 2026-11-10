@@ -1,7 +1,8 @@
-# Bookish for iOS
+# Bookish for iOS and Android
 
 An independent Vite/TypeScript app UI backed by Capacitor 7, with an iOS 16 native
-project in `ios/`. The app loads its own local bundle; there is no remote website
+project in `ios/` and an Android project in `android/`. See [ANDROID.md](ANDROID.md)
+for Android builds, internal distribution, signing, and platform QA. The app loads its own local bundle; there is no remote website
 as the application UI and no `server.url` setting.
 
 ```sh

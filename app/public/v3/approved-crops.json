@@ -1,0 +1,285 @@
+{
+  "door-open.png": {
+    "source": "app-14-11-club-privacy.png",
+    "normalizedCrop390x844": [
+      25,
+      284,
+      91,
+      354
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "door-private.png": {
+    "source": "app-14-11-club-privacy.png",
+    "normalizedCrop390x844": [
+      25,
+      388,
+      91,
+      457
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "door-hidden.png": {
+    "source": "app-14-11-club-privacy.png",
+    "normalizedCrop390x844": [
+      25,
+      491,
+      91,
+      562
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "bring-wine.png": {
+    "source": "app-08-08-meeting-rsvp.png",
+    "normalizedCrop390x844": [
+      25,
+      516,
+      52,
+      543
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "bring-cheese.png": {
+    "source": "app-08-08-meeting-rsvp.png",
+    "normalizedCrop390x844": [
+      25,
+      565,
+      52,
+      591
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "bring-cookie.png": {
+    "source": "app-08-08-meeting-rsvp.png",
+    "normalizedCrop390x844": [
+      25,
+      612,
+      52,
+      639
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "bring-pretzel.png": {
+    "source": "app-08-08-meeting-rsvp.png",
+    "normalizedCrop390x844": [
+      25,
+      660,
+      52,
+      687
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "rule-tea.png": {
+    "source": "app-03-03-house-rules.png",
+    "normalizedCrop390x844": [
+      35,
+      270,
+      73,
+      311
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "rule-seal.png": {
+    "source": "app-03-03-house-rules.png",
+    "normalizedCrop390x844": [
+      35,
+      368,
+      74,
+      410
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "rule-heart.png": {
+    "source": "app-03-03-house-rules.png",
+    "normalizedCrop390x844": [
+      35,
+      461,
+      74,
+      501
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "rule-home.png": {
+    "source": "app-03-03-house-rules.png",
+    "normalizedCrop390x844": [
+      35,
+      555,
+      74,
+      597
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "cover-anne-of-green-gables.png": {
+    "source": "app-11-09c-our-shelf.png",
+    "normalizedCrop390x844": [
+      27,
+      229,
+      75,
+      298
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "cover-little-women.png": {
+    "source": "app-11-09c-our-shelf.png",
+    "normalizedCrop390x844": [
+      84,
+      229,
+      132,
+      298
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "cover-the-secret-garden.png": {
+    "source": "app-11-09c-our-shelf.png",
+    "normalizedCrop390x844": [
+      143,
+      229,
+      189,
+      298
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "cover-jane-eyre.png": {
+    "source": "app-11-09c-our-shelf.png",
+    "normalizedCrop390x844": [
+      201,
+      229,
+      245,
+      298
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "cover-persuasion.png": {
+    "source": "app-11-09c-our-shelf.png",
+    "normalizedCrop390x844": [
+      257,
+      229,
+      306,
+      298
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "cover-pride-and-prejudice.png": {
+    "source": "app-11-09c-our-shelf.png",
+    "normalizedCrop390x844": [
+      318,
+      227,
+      365,
+      299
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "cover-emma.png": {
+    "source": "app-09-09-book-vote.png",
+    "normalizedCrop390x844": [
+      29,
+      247,
+      70,
+      311
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "cover-wuthering-heights.png": {
+    "source": "app-09-09-book-vote.png",
+    "normalizedCrop390x844": [
+      29,
+      478,
+      71,
+      547
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "cover-north-and-south.png": {
+    "source": "app-09-09-book-vote.png",
+    "normalizedCrop390x844": [
+      29,
+      618,
+      70,
+      686
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "cover-sense-and-sensibility.png": {
+    "source": "app-12-09d-up-next-for-you.png",
+    "normalizedCrop390x844": [
+      29,
+      548,
+      78,
+      642
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "welcome-sun.png": {
+    "source": "app-01-01-welcome.png",
+    "normalizedCrop390x844": [
+      315,
+      99,
+      387,
+      173
+    ],
+    "background": "Border-connected pixels outside the approved white silhouette removed",
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "welcome-heart.png": {
+    "source": "app-01-01-welcome.png",
+    "normalizedCrop390x844": [
+      94,
+      378,
+      127,
+      413
+    ],
+    "background": "Border-connected pixels outside the approved white silhouette removed",
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "welcome-flower.png": {
+    "source": "app-01-01-welcome.png",
+    "normalizedCrop390x844": [
+      22,
+      559,
+      84,
+      616
+    ],
+    "background": "Border-connected pixels outside the approved white silhouette removed",
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "menu-books.png": {
+    "source": "app-19-16-menu.png",
+    "normalizedCrop390x844": [
+      96,
+      341,
+      124,
+      375
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "menu-map.png": {
+    "source": "app-19-16-menu.png",
+    "normalizedCrop390x844": [
+      96,
+      488,
+      125,
+      522
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "menu-spark.png": {
+    "source": "app-19-16-menu.png",
+    "normalizedCrop390x844": [
+      96,
+      391,
+      124,
+      423
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  },
+  "bring-chat.png": {
+    "source": "app-02-02-bring-your-club.png",
+    "normalizedCrop390x844": [
+      27,
+      466,
+      89,
+      516
+    ],
+    "approvedBatch": "Bookish final: full app v3 (pin 295)"
+  }
+}

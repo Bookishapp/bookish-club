@@ -1,0 +1,401 @@
+{
+  "purpose": "Book identification thumbnails for the existing bundled catalog.",
+  "sources": [
+    {
+      "id": "fourth-wing",
+      "title": "Fourth Wing",
+      "url": "https://covers.openlibrary.org/b/id/14407898-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "iron-flame",
+      "title": "Iron Flame",
+      "url": "https://covers.openlibrary.org/b/id/14405746-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "onyx-storm",
+      "title": "Onyx Storm",
+      "url": "https://covers.openlibrary.org/b/id/14826089-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "yellowface",
+      "title": "Yellowface",
+      "url": "https://covers.openlibrary.org/b/id/13195421-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "babel",
+      "title": "Babel",
+      "url": "https://covers.openlibrary.org/b/id/12468631-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "the-god-of-the-woods",
+      "title": "The God of the Woods",
+      "url": "https://covers.openlibrary.org/b/id/14645734-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "the-housemaid",
+      "title": "The Housemaid",
+      "url": "https://covers.openlibrary.org/b/id/15105883-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "funny-story",
+      "title": "Funny Story",
+      "url": "https://covers.openlibrary.org/b/id/14625690-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "book-lovers",
+      "title": "Book Lovers",
+      "url": "https://covers.openlibrary.org/b/id/11567819-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "beach-read",
+      "title": "Beach Read",
+      "url": "https://covers.openlibrary.org/b/id/9426296-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "james",
+      "title": "James",
+      "url": "https://covers.openlibrary.org/b/id/15094964-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "remarkably-bright-creatures",
+      "title": "Remarkably Bright Creatures",
+      "url": "https://covers.openlibrary.org/b/id/12019989-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "lessons-in-chemistry",
+      "title": "Lessons in Chemistry",
+      "url": "https://covers.openlibrary.org/b/id/12725772-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "tomorrow-and-tomorrow-and-tomorrow",
+      "title": "Tomorrow, and Tomorrow, and Tomorrow",
+      "url": "https://covers.openlibrary.org/b/id/12859975-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "the-seven-husbands-of-evelyn-hugo",
+      "title": "The Seven Husbands of Evelyn Hugo",
+      "url": "https://covers.openlibrary.org/b/id/8354226-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "daisy-jones-and-the-six",
+      "title": "Daisy Jones & The Six",
+      "url": "https://covers.openlibrary.org/b/id/8742674-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "url": "https://covers.openlibrary.org/b/id/15254465-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "url": "https://covers.openlibrary.org/b/id/14315081-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "the-silent-patient",
+      "title": "The Silent Patient",
+      "url": "https://covers.openlibrary.org/b/id/9407338-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "gone-girl",
+      "title": "Gone Girl",
+      "url": "https://covers.openlibrary.org/b/id/8368314-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "where-the-crawdads-sing",
+      "title": "Where the Crawdads Sing",
+      "url": "https://covers.openlibrary.org/b/id/8362947-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "the-thursday-murder-club",
+      "title": "The Thursday Murder Club",
+      "url": "https://covers.openlibrary.org/b/id/10201431-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "the-man-who-died-twice",
+      "title": "The Man Who Died Twice",
+      "url": "https://covers.openlibrary.org/b/id/11358314-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "the-love-hypothesis",
+      "title": "The Love Hypothesis",
+      "url": "https://covers.openlibrary.org/b/id/10601402-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "normal-people",
+      "title": "Normal People",
+      "url": "https://covers.openlibrary.org/b/id/8794265-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "intermezzo",
+      "title": "Intermezzo",
+      "url": "https://covers.openlibrary.org/b/id/14836043-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "pride-and-prejudice",
+      "title": "Pride and Prejudice",
+      "url": "https://covers.openlibrary.org/b/id/14348537-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "jane-eyre",
+      "title": "Jane Eyre",
+      "url": "https://covers.openlibrary.org/b/id/8235363-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "rebecca",
+      "title": "Rebecca",
+      "url": "https://covers.openlibrary.org/b/id/8238729-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "a-little-life",
+      "title": "A Little Life",
+      "url": "https://covers.openlibrary.org/b/id/12065783-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "the-kite-runner",
+      "title": "The Kite Runner",
+      "url": "https://covers.openlibrary.org/b/id/14846827-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "klara-and-the-sun",
+      "title": "Klara and the Sun",
+      "url": "https://covers.openlibrary.org/b/id/10648686-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "never-let-me-go",
+      "title": "Never Let Me Go",
+      "url": "https://covers.openlibrary.org/b/id/1047334-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "the-midnight-library",
+      "title": "The Midnight Library",
+      "url": "https://covers.openlibrary.org/b/id/10313767-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "circe",
+      "title": "Circe",
+      "url": "https://covers.openlibrary.org/b/id/8739376-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "the-song-of-achilles",
+      "title": "The Song of Achilles",
+      "url": "https://covers.openlibrary.org/b/id/7098465-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "the-night-circus",
+      "title": "The Night Circus",
+      "url": "https://covers.openlibrary.org/b/id/8773134-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "the-name-of-the-wind",
+      "title": "The Name of the Wind",
+      "url": "https://covers.openlibrary.org/b/id/11480483-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "mistborn-the-final-empire",
+      "title": "Mistborn: The Final Empire",
+      "url": "https://covers.openlibrary.org/b/id/None-M.jpg?default=false",
+      "bundled": false
+    },
+    {
+      "id": "tress-of-the-emerald-sea",
+      "title": "Tress of the Emerald Sea",
+      "url": "https://covers.openlibrary.org/b/id/13143232-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "the-priory-of-the-orange-tree",
+      "title": "The Priory of the Orange Tree",
+      "url": "https://covers.openlibrary.org/b/id/8802446-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "the-invisible-life-of-addie-larue",
+      "title": "The Invisible Life of Addie LaRue",
+      "url": "https://covers.openlibrary.org/b/id/10092261-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "project-hail-mary",
+      "title": "Project Hail Mary",
+      "url": "https://covers.openlibrary.org/b/id/11200092-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "big-little-lies",
+      "title": "Big Little Lies",
+      "url": "https://covers.openlibrary.org/b/id/7352410-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "and-then-there-were-none",
+      "title": "And Then There Were None",
+      "url": "https://covers.openlibrary.org/b/id/11172296-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "the-guest-list",
+      "title": "The Guest List",
+      "url": "https://covers.openlibrary.org/b/id/None-M.jpg?default=false",
+      "bundled": false
+    },
+    {
+      "id": "mexican-gothic",
+      "title": "Mexican Gothic",
+      "url": "https://covers.openlibrary.org/b/id/10239163-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "piranesi",
+      "title": "Piranesi",
+      "url": "https://covers.openlibrary.org/b/id/10226290-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "verity",
+      "title": "Verity",
+      "url": "https://covers.openlibrary.org/b/id/8747160-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "it-ends-with-us",
+      "title": "It Ends with Us",
+      "url": "https://covers.openlibrary.org/b/id/10473609-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "educated",
+      "title": "Educated",
+      "url": "https://covers.openlibrary.org/b/id/8314077-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "demon-copperhead",
+      "title": "Demon Copperhead",
+      "url": "https://covers.openlibrary.org/b/id/13141227-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "small-things-like-these",
+      "title": "Small Things Like These",
+      "url": "https://covers.openlibrary.org/b/id/10507091-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "convenience-store-woman",
+      "title": "Convenience Store Woman",
+      "url": "https://covers.openlibrary.org/b/id/9315164-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "the-vegetarian",
+      "title": "The Vegetarian",
+      "url": "https://covers.openlibrary.org/b/id/None-M.jpg?default=false",
+      "bundled": false
+    },
+    {
+      "id": "before-the-coffee-gets-cold",
+      "title": "Before the Coffee Gets Cold",
+      "url": "https://covers.openlibrary.org/b/id/10138333-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "the-house-in-the-cerulean-sea",
+      "title": "The House in the Cerulean Sea",
+      "url": "https://covers.openlibrary.org/b/id/9312772-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "legends-and-lattes",
+      "title": "Legends & Lattes",
+      "url": "https://covers.openlibrary.org/b/id/13028635-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "the-women",
+      "title": "The Women",
+      "url": "https://covers.openlibrary.org/b/id/14631595-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "the-nightingale",
+      "title": "The Nightingale",
+      "url": "https://covers.openlibrary.org/b/id/8314147-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "hello-beautiful",
+      "title": "Hello Beautiful",
+      "url": "https://covers.openlibrary.org/b/id/14359793-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "the-covenant-of-water",
+      "title": "The Covenant of Water",
+      "url": "https://covers.openlibrary.org/b/id/13190092-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "crying-in-h-mart",
+      "title": "Crying in H Mart",
+      "url": "https://covers.openlibrary.org/b/id/10462708-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "killers-of-the-flower-moon",
+      "title": "Killers of the Flower Moon",
+      "url": "https://covers.openlibrary.org/b/id/8055064-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "the-wedding-people",
+      "title": "The Wedding People",
+      "url": "https://covers.openlibrary.org/b/id/15127690-M.jpg?default=false",
+      "bundled": true
+    },
+    {
+      "id": "sandwich",
+      "title": "Sandwich",
+      "url": "https://covers.openlibrary.org/b/id/14749853-M.jpg?default=false",
+      "bundled": true
+    }
+  ]
+}

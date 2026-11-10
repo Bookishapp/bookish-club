@@ -1,0 +1,97 @@
+{
+  "generatedAt": "2026-11-06T01:46:49.997Z",
+  "browser": "156.0.8078.80",
+  "channel": "chrome",
+  "host": "Teds-Mac-mini.local",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016",
+  "appBuild": [
+    {
+      "file": "index.html",
+      "sha256": "351360fc489cee605cbf84c328607879bc2e043247eaea7fefb8214a42391173"
+    },
+    {
+      "file": "assets/index-D2jG5zfR.js",
+      "sha256": "261b017a6feb947fab28944a3306678a8bffc9ba1dfa17877c6632b1f493f503"
+    },
+    {
+      "file": "assets/index-HixcZL8d.css",
+      "sha256": "6e4545dc3f3386e0d9b3af51fb6d7f3702d81fcdd321f15d6051691831b9da45"
+    }
+  ],
+  "captureComplete": true,
+  "captures": [
+    {
+      "id": "29-profile-long-email",
+      "title": "Account profile with a long email",
+      "approved": "29",
+      "note": "A valid 64-character email local part exercises the account greeting beside approved art.",
+      "image": "built/29-profile-long-email.jpg",
+      "checks": {
+        "horizontalOverflow": true,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 390,
+        "height": 844,
+        "innerWidth": 551,
+        "documentWidth": 551,
+        "scrollHeight": 2310,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": false,
+        "focus": "BODY"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    },
+    {
+      "id": "29-profile-long-email-narrow",
+      "title": "Account profile with a long email at 320 pixels",
+      "approved": "29",
+      "note": "Additional narrow-device stress capture at 320 by 844.",
+      "image": "built/29-profile-long-email-narrow.jpg",
+      "checks": {
+        "horizontalOverflow": true,
+        "brokenImages": [],
+        "emDash": false,
+        "emoji": false,
+        "width": 320,
+        "height": 844,
+        "innerWidth": 550,
+        "documentWidth": 550,
+        "scrollHeight": 2656,
+        "codeLayout": null,
+        "codeValid": null,
+        "dialog": false,
+        "focus": "BODY"
+      },
+      "errors": [],
+      "missing": [],
+      "expectedNetworkMessages": []
+    }
+  ],
+  "checks": [],
+  "limitations": [
+    "Four-digit code evidence establishes frontend input and layout support only. Authentication uses intercepted fixtures. The current server accepts six to ten digits; four-digit backend delivery and acceptance are pending separate PR 36.",
+    "390 by 844 is a CSS viewport in Google Chrome on the Mac mini, not a native iPhone simulator or a system keyboard capture.",
+    "The bundle is served unchanged from app/dist. Fixture identities, intercepted RPC responses, and local cover mirrors exist only in this Node capture process.",
+    "Book covers found in the approved source are served as local mirrors. Unmapped covers receive a one-pixel response and exercise the existing typographic-cover fallback.",
+    "Welcome, notification prime, book detail, join approved, club started, meeting RSVP, and invite share sheet are combined flows or lack a separate existing app screen. Captures disclose the actual equivalent; they do not establish exact screen parity.",
+    "Tea composer, Tea thread, page logging, notification inbox, and widgets do not exist in this app and were not added. Reading scores and races are prohibited.",
+    "Native Messages evidence is separate from these Chrome captures. Browser evidence cannot establish Messages transport or accessibility behavior."
+  ],
+  "blockedExternal": [],
+  "validation": {
+    "complete": true,
+    "unexpectedExternalRequests": 0,
+    "failedCaptures": [
+      "29-profile-long-email",
+      "29-profile-long-email-narrow"
+    ]
+  }
+}
