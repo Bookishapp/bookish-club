@@ -1,5 +1,6 @@
 import UIKit
 import Capacitor
+import WidgetKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -7,7 +8,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        #if DEBUG
+        // Local simulator parity is opt-in. Release builds contain no fixture launch path.
+        if let raw = ProcessInfo.processInfo.environment["BOOKISH_WIDGET_FIXTURE_JSON"],
+           let data = raw.data(using: .utf8),
+           let snapshot = try? WidgetSnapshot.decode(data) {
+            do {
+                try WidgetSnapshotStore.save(snapshot)
+                WidgetCenter.shared.reloadAllTimelines()
+            } catch { NSLog("Bookish local widget fixture could not be saved.") }
+        }
+        #endif
         return true
     }
 

@@ -1,0 +1,23 @@
+/* Approved art tokens. See app/DESIGN.md before adding another visual value. */
+@font-face{font-family:Manrope;src:url('/fonts/manrope-400_800.woff2') format('woff2');font-weight:400 800;font-display:swap}
+@font-face{font-family:'Young Serif';src:url('/fonts/youngserif-400.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Unbounded;src:url('/fonts/unbounded-400_900.woff2') format('woff2');font-weight:400 900;font-display:swap}
+@font-face{font-family:'Courier Prime';src:url('/fonts/courierprime-700.woff2') format('woff2');font-weight:700;font-display:swap}
+:root{
+  --paper:#f5ead8;--card:#fffaf1;--ink:#2a0f15;--mut:#6b4c46;--faint:#9a8279;--line:rgba(74,20,32,.12);
+  --wine:#7a1a2a;--wine2:#4a1420;--wineS:#f3d9d9;--mus:#ecb74e;--musS:#f9e6b8;--brass:#c08a26;
+  --pink:#f4a6bf;--pinkS:#fbe1e8;--green:#1d5a46;--green2:#133b31;--greenS:#dcebe1;
+  --ui:Manrope,-apple-system,BlinkMacSystemFont,sans-serif;--title:'Young Serif',Georgia,serif;--display:Unbounded,sans-serif;--mono:'Courier Prime',monospace;
+  --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-10:40px;
+  --radius-small:8px;--radius-card:14px;--radius-sheet:22px;--radius-pill:999px;
+  --shadow-card:0 0 0 1px rgba(74,20,32,.07),0 10px 22px -16px rgba(74,20,32,.45);
+  --shadow-button:0 10px 20px -12px rgba(74,20,32,.8);--shadow-sheet:0 -10px 30px -10px rgba(42,15,21,.35);
+  --paper-tx:var(--paper-texture);--paper-texture:url('/img/tx-paper-900.webp');--wine-texture:url('/img/bg-oxblood-m.webp');
+  --paper-glow:radial-gradient(70% 30% at 100% 0%,rgba(244,166,191,.28),transparent 70%),radial-gradient(60% 30% at 0% 100%,rgba(236,183,78,.16),transparent 70%);
+  --font-body:14px;--font-small:12px;--font-title:34px;--font-heading:25px;--font-card:19px;
+  --control-height:52px;--target:44px;--content-width:600px;
+  /* Compatibility aliases for existing app and map components. */
+  --ink-2:var(--mut);--note:var(--card);--card-2:#efdfca;--rule:var(--line);--off-rule:var(--line);--rose:var(--pink);--sage:var(--greenS);
+  --green-on:#f6eedc;--on-dark:var(--ink);--on-dark-2:var(--mut);--shadow:var(--shadow-card);
+  color-scheme:light;
+}

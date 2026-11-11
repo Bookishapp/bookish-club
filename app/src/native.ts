@@ -1,14 +1,16 @@
 import { Capacitor, CapacitorHttp, registerPlugin } from '@capacitor/core';
-import type { PluginListenerHandle } from '@capacitor/core';
+import type { AppPlugin } from '@capacitor/app';
 import type { LocalNotificationsPlugin } from '@capacitor/local-notifications';
 export const isNative = Capacitor.isNativePlatform();
+export const isIOS = Capacitor.getPlatform() === 'ios';
+export const isAndroid = Capacitor.getPlatform() === 'android';
 // Typed native proxies. Plugins are installed by cap sync from package.json.
 // Browser previews deliberately use local equivalents and never pretend to schedule iOS reminders.
 const Preferences = registerPlugin<{ get(o: {key:string}):Promise<{value:string|null}>; set(o:{key:string;value:string}):Promise<void>; remove(o:{key:string}):Promise<void> }>('Preferences');
-const Geolocation = registerPlugin<{ requestPermissions():Promise<{location:string}>; getCurrentPosition(o:object):Promise<{coords:{latitude:number;longitude:number}}> }>('Geolocation');
+const Geolocation = registerPlugin<{ requestPermissions():Promise<{location:string;coarseLocation?:string}>; getCurrentPosition(o:object):Promise<{coords:{latitude:number;longitude:number}}> }>('Geolocation');
 const Share = registerPlugin<{ share(o:{title:string;text:string;url:string;dialogTitle:string}):Promise<void> }>('Share');
 export const Notifications = registerPlugin<LocalNotificationsPlugin>('LocalNotifications');
-export const NativeApp = registerPlugin<{ addListener(event:string, cb:()=>void):Promise<PluginListenerHandle> }>('App');
+export const NativeApp = registerPlugin<AppPlugin>('App');
 export const CityMap = registerPlugin<{ present(o:{cities:{key:string;name:string;count:number;lat:number;lng:number}[];selected?:string}):Promise<{cityKey?:string}> }>('BookishMap');
 export async function readStore<T>(key:string, fallback:T):Promise<T> {
   try { const raw = isNative ? (await Preferences.get({key:`bookish.${key}`})).value : localStorage.getItem(`bookish.${key}`); return raw == null ? fallback : JSON.parse(raw); } catch { return fallback; }
@@ -21,7 +23,7 @@ export async function writeStore(key:string, value:unknown) {
 export async function locate() {
   if (isNative) {
     const p = await Geolocation.requestPermissions();
-    if (p.location !== 'granted') throw new Error('Pick a city below to find your next book club. Location can be enabled in Settings.');
+    if (p.location !== 'granted' && !(isAndroid && p.coarseLocation === 'granted')) throw new Error('Pick a city below to find your next book club. Location can be enabled in Settings.');
     const { coords } = await Geolocation.getCurrentPosition({enableHighAccuracy:false,timeout:12000,maximumAge:300000});
     return {lat:coords.latitude,lng:coords.longitude};
   }
@@ -47,4 +49,38 @@ export async function requestJSON(url:string,options:{method:string;body?:unknow
  if(isNative){const r=await CapacitorHttp.request({url,method:options.method,headers,...(options.body===undefined?{}:{data:options.body}),responseType:'json',connectTimeout:12000,readTimeout:15000});return {ok:r.status>=200&&r.status<300,status:r.status,data:r.data};}
  const r=await fetch(url,{method:options.method,headers,cache:'no-store',...(options.body===undefined?{}:{body:JSON.stringify(options.body)}),signal:AbortSignal.timeout(15000)});
  const raw=await r.text();return {ok:r.ok,status:r.status,data:raw?JSON.parse(raw):null};
+}
+
+export const MessageCards=registerPlugin<{share(o:{card:Record<string,unknown>}):Promise<void>;saveCalendar(o:{content:string;fileName:string}):Promise<void>;updateWidgets(o:{snapshot:Record<string,unknown>}):Promise<void>;clearWidgets():Promise<void>}>('BookishMessages');
+export async function requestText(url:string,headers:Record<string,string>){
+ if(isNative){const r=await CapacitorHttp.request({url,method:'GET',headers,responseType:'text',connectTimeout:12000,readTimeout:15000});return {ok:r.status>=200&&r.status<300,status:r.status,data:r.data};}
+ const r=await fetch(url,{method:'GET',headers,cache:'no-store',signal:AbortSignal.timeout(15000)});return{ok:r.ok,status:r.status,data:await r.text()};
+}
+export async function saveCalendarFile(content:string){
+ if(isNative){await MessageCards.saveCalendar({content,fileName:'bookish-meeting.ics'});return;}
+ const url=URL.createObjectURL(new Blob([content],{type:'text/calendar;charset=utf-8'}));const link=document.createElement('a');link.href=url;link.download='bookish-meeting.ics';link.click();setTimeout(()=>URL.revokeObjectURL(url),60000);
+}
+
+export async function shareBookSuggestion(title:string){
+ const url=`https://openlibrary.org/search?q=${encodeURIComponent(title)}`,text=`Would you read ${title} with us?`;
+ if(isNative)await Share.share({title:'A book for our club',text,url,dialogTitle:'Suggest a book'});
+ else if(navigator.share)await navigator.share({title,text,url});
+ else await navigator.clipboard.writeText(`${text} ${url}`);
+}
+
+// Capacitor Share rejects when Android's chooser is dismissed. Other failures
+// still reach the reader so they can retry or use another sharing destination.
+export function isShareCancellation(error:unknown){
+ const e=error as {name?:string;message?:string}|null;
+ return e?.name==='AbortError'||typeof e?.message==='string'&&/^Share cancel(?:ed|led)\.?$/i.test(e.message);
+}
+export async function shareCard(kind:'take'|'vote'|'meeting',url:string){
+ const copy={
+  take:{title:'The Tea on Bookish',text:'A sealed book take is waiting in Bookish.',dialogTitle:'Share a sealed take'},
+  vote:{title:'Our next read on Bookish',text:'Open Bookish to choose our next book.',dialogTitle:'Share a book vote'},
+  meeting:{title:'Bookish club night',text:'Open Bookish to RSVP and see the bring list.',dialogTitle:'Share club night'},
+ }[kind];
+ if(isNative)await Share.share({...copy,url});
+ else if(navigator.share)await navigator.share({title:copy.title,text:copy.text,url});
+ else await navigator.clipboard.writeText(url);
 }

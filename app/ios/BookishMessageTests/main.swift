@@ -35,7 +35,106 @@ func untrustedURL(_ state: MessageState, edit: (inout [String: Any]) -> Void) th
     return URL(string: "https://meetbookish.com/imessage/v1#payload=" + payload)!
 }
 
+let teaJSON = """
+{"kind":"take","id":"11111111-1111-4111-8111-111111111111","page":388,"did_not_finish":false,"sealed":true,"label":"Anonymous","body":"PRIVATE BODY","author_id":"PRIVATE AUTHOR","book":{"id":"fourth","title":"Fourth Wing","cover_url":"https://private.invalid/secret","author":"PRIVATE AUTHOR"}}
+"""
+
 let tests: [(String, () throws -> Void)] = [
+    ("widget cache survives a fresh file read and clears signed-out data", {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let cache = WidgetSnapshotCache(url: directory.appendingPathComponent("summary.json"))
+        let raw = #"{"readingTitle":"Pride","page":212,"totalPages":480,"friendsReading":3,"going":false,"newTakes":6,"sealedTakes":2}"#
+        let value = try WidgetSnapshot.decode(Data(raw.utf8))
+        try cache.save(value)
+        try expect(WidgetSnapshotCache(url: cache.url).read() == value, "A fresh widget process could not read the saved summary")
+        try cache.clear()
+        try expect(cache.read() == nil, "Signed-out widget data remained cached")
+    }),
+    ("widget cache rejects corrupted display files", {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: url) }
+        try Data("invalid json".utf8).write(to: url)
+        try expect(WidgetSnapshotCache(url: url).read() == nil, "Corrupted widget data was displayed")
+    }),
+    ("a shared native poll strips every named ballot", {
+        var state = MessageState.sample(kind: .vote)
+        try state.respond(participantID: "private-member", name: "Private reader", voteID: state.candidates[0].id, now: firstTime)
+        let poll = try state.pollSnapshot(candidateIDs: Set(state.candidates.prefix(2).map { $0.id }))
+        let transported = try MessageState.decode(url: poll.messageURL())
+        try expect(transported.responses.isEmpty, "Named ballots entered the shared poll")
+        try expect(transported.candidates.map { $0.id } == Array(state.candidates.prefix(2)).map { $0.id }, "Public poll options changed")
+        try expect(state.responses.count == 1, "Preparing a poll changed the local snapshot")
+    }),
+    ("native polls require two or three known options", {
+        let state = MessageState.sample(kind: .vote)
+        try expectThrows({ _ = try state.pollSnapshot(candidateIDs: [state.candidates[0].id]) }, "A one-book poll was accepted")
+        try expectThrows({ _ = try state.pollSnapshot(candidateIDs: [state.candidates[0].id, "unknown"]) }, "An unknown book entered a poll")
+    }),
+    ("widget summaries retain display counts and strip private fields", {
+        let raw = #"{"readingTitle":"Pride and Prejudice","page":212,"totalPages":432,"stopPage":247,"friendsReading":3,"meetingTitle":"7:30 at Jess's","meetingDetail":"Up to ch. 30","meetingDay":"Thursday","going":true,"newTakes":6,"sealedTakes":2,"chapter":34,"body":"PRIVATE","token":"SECRET"}"#
+        let snapshot = try WidgetSnapshot.decode(Data(raw.utf8))
+        try expect(snapshot.page == 212 && snapshot.remainingPages == 35, "Widget progress lost its reading stop")
+        let encoded = String(data: try JSONEncoder().encode(snapshot), encoding: .utf8)!
+        try expect(!encoded.contains("PRIVATE") && !encoded.contains("SECRET"), "Private fields entered the widget cache")
+    }),
+    ("widget summaries reject invalid counts and oversized titles", {
+        let raw = #"{"readingTitle":"Pride","page":212,"totalPages":432,"friendsReading":3,"going":false,"newTakes":6,"sealedTakes":2}"#
+        for invalid in [raw.replacingOccurrences(of: "212", with: "433"), raw.replacingOccurrences(of: "Pride", with: String(repeating: "x", count: 161)), raw.replacingOccurrences(of: "\"newTakes\":6", with: "\"newTakes\":-1")] {
+            try expectThrows({ _ = try WidgetSnapshot.decode(Data(invalid.utf8)) }, "Invalid widget data was accepted")
+        }
+    }),
+    ("resource links reject encoded route aliases", {
+        try expectThrows({ _ = try MessageResource.decode(url: URL(string: "https://meetbookish.com/imessage/v2/%74ake/11111111-1111-4111-8111-111111111111")!) }, "Encoded route alias was accepted")
+    }),
+    ("server Tea strips body, identity, and remote image fields before sharing", {
+        let card = try ServerMessageCard.decode(data: Data(teaJSON.utf8))
+        let output = String(data: try JSONEncoder().encode(card), encoding: .utf8)!
+        for forbidden in ["PRIVATE", "body", "author", "cover_url", "secret"] {
+            try expect(!output.contains(forbidden), "Unsafe field survived allowlisting: " + forbidden)
+        }
+        try expect(card.title == "Fourth Wing" && card.pageMarker == "p. 388", "Safe Tea metadata was lost")
+        try expect(card.summary.contains("Sealed"), "Tea preview did not stay sealed")
+    }),
+    ("server links carry resource identifiers only and reject extra payloads", {
+        let card = try ServerMessageCard.decode(data: Data(teaJSON.utf8))
+        let url = card.resource.url
+        try expect(url.absoluteString == "https://meetbookish.com/imessage/v2/take/11111111-1111-4111-8111-111111111111", "Shared URL contains metadata or an access token")
+        try expect(try MessageResource.decode(url: url) == card.resource, "Resource route did not round trip")
+        try expect(card.resource.appURL.absoluteString == "bookish://message/take/11111111-1111-4111-8111-111111111111", "Native app route differs")
+        for suffix in ["?token=secret", "#body=secret", "/extra"] {
+            try expectThrows({ _ = try MessageResource.decode(url: URL(string: url.absoluteString + suffix)!) }, "Resource route accepted extra payload")
+        }
+        try expectThrows({ _ = try MessageResource.decode(url: URL(string: "https://evil.invalid/imessage/v2/take/11111111-1111-4111-8111-111111111111")!) }, "Foreign resource route was accepted")
+    }),
+    ("server Tea rejects unsealed or inconsistent spoiler markers", {
+        for json in [teaJSON.replacingOccurrences(of: "\"sealed\":true", with: "\"sealed\":false"),
+                     teaJSON.replacingOccurrences(of: "\"page\":388", with: "\"page\":-1"),
+                     teaJSON.replacingOccurrences(of: "\"did_not_finish\":false", with: "\"did_not_finish\":true")] {
+            try expectThrows({ _ = try ServerMessageCard.decode(data: Data(json.utf8)) }, "Unsafe spoiler marker was accepted")
+        }
+        let dnf = teaJSON.replacingOccurrences(of: "\"page\":388", with: "\"page\":null").replacingOccurrences(of: "\"did_not_finish\":false", with: "\"did_not_finish\":true")
+        try expect(try ServerMessageCard.decode(data: Data(dnf.utf8)).pageMarker == "DNF", "DNF marker was lost")
+    }),
+    ("server vote and meeting keep aggregates without members or addresses", {
+        let vote = #"{"kind":"vote","id":"11111111-1111-4111-8111-111111111111","status":"open","closes_at":"2026-11-10T20:00:00Z","options":[{"option_id":"22222222-2222-4222-8222-222222222222","book_id":"pride","ballots":4,"voters":["PRIVATE"]}]}"#
+        let meeting = #"{"kind":"meeting","id":"11111111-1111-4111-8111-111111111111","title":"Club night","starts_at":"2026-11-10T20:00:00Z","status":"scheduled","counts":{"yes":9,"maybe":2,"cant":1,"members":["PRIVATE"]},"open_items":[{"id":"22222222-2222-4222-8222-222222222222","label":"Salty snacks","claimed_by":"PRIVATE"}],"location":"PRIVATE ADDRESS"}"#
+        let v = try ServerMessageCard.decode(data: Data(vote.utf8))
+        let m = try ServerMessageCard.decode(data: Data(meeting.utf8))
+        try expect(v.options.first?.ballots == 4 && m.counts?.yes == 9 && m.openItems.first?.label == "Salty snacks", "Aggregate metadata was lost")
+        for card in [v, m] {
+            try expect(!String(data: try JSONEncoder().encode(card), encoding: .utf8)!.contains("PRIVATE"), "Private meeting or vote data survived")
+        }
+    }),
+    ("server cards bound counts, size, text, and kind", {
+        for json in [teaJSON.replacingOccurrences(of: "\"kind\":\"take\"", with: "\"kind\":\"admin\""),
+                     teaJSON.replacingOccurrences(of: "Fourth Wing", with: String(repeating: "x", count: 200)),
+                     teaJSON.replacingOccurrences(of: "\"page\":388", with: "\"page\":true")] {
+            try expectThrows({ _ = try ServerMessageCard.decode(data: Data(json.utf8)) }, "Malformed card was accepted")
+        }
+        try expectThrows({ _ = try ServerMessageCard.decode(data: Data(repeating: 32, count: 65_537)) }, "Oversized envelope was accepted")
+    }),
     ("pending selected draft preserves the last committed snapshot", {
         var committed = MessageState.sample(kind: .rsvp)
         try committed.respond(participantID: "local", name: "Reader", rsvp: .yes, now: firstTime)

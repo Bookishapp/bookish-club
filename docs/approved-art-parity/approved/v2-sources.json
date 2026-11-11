@@ -1,0 +1,44 @@
+[
+  {
+    "id": "4d16706c-0fb0-4d3e-81ef-fc693e24eb50",
+    "title": "11 Join: request sent",
+    "verdict": "approved",
+    "preview_url": "https://wqnrortftkffmbeugjky.supabase.co/storage/v1/object/public/ted-mockups/46d0f5a8-73d1-4499-9378-733e3ec4893d.jpg",
+    "full_url": "https://wqnrortftkffmbeugjky.supabase.co/storage/v1/object/public/ted-mockup-detail/full/da7898e3-43a1-4d9d-bd5b-03f199a18412.webp"
+  },
+  {
+    "id": "97e9e5b6-e941-423b-a33a-a20960ecbcbc",
+    "title": "04 House rules",
+    "verdict": "approved",
+    "preview_url": "https://wqnrortftkffmbeugjky.supabase.co/storage/v1/object/public/ted-mockups/be22e297-9105-499f-ab8b-ee7ca47cac10.jpg",
+    "full_url": "https://wqnrortftkffmbeugjky.supabase.co/storage/v1/object/public/ted-mockup-detail/full/7d95db4b-663d-42d7-9a29-775277647a70.webp"
+  },
+  {
+    "id": "de28115a-a436-4b5b-b396-ed89ca0e3ed2",
+    "title": "17 The Tea: club home",
+    "verdict": "approved",
+    "preview_url": "https://wqnrortftkffmbeugjky.supabase.co/storage/v1/object/public/ted-mockups/583e3231-4392-452f-b49c-fb81c39faf28.jpg",
+    "full_url": "https://wqnrortftkffmbeugjky.supabase.co/storage/v1/object/public/ted-mockup-detail/full/f2437ec7-153e-49c8-9419-d6365e2e1f91.webp"
+  },
+  {
+    "id": "5349d0d2-c210-47ad-8146-f98b6a6c69b2",
+    "title": "20 Current book and reading together",
+    "verdict": "approved",
+    "preview_url": "https://wqnrortftkffmbeugjky.supabase.co/storage/v1/object/public/ted-mockups/9d2f2993-f752-42ac-8a6a-088323724cac.jpg",
+    "full_url": "https://wqnrortftkffmbeugjky.supabase.co/storage/v1/object/public/ted-mockup-detail/full/16b10713-c802-4af4-82ef-aa392850bb9f.webp"
+  },
+  {
+    "id": "cf742dd3-9841-4c92-9bec-0214ad0c0c5a",
+    "title": "26 Member list",
+    "verdict": "approved",
+    "preview_url": "https://wqnrortftkffmbeugjky.supabase.co/storage/v1/object/public/ted-mockups/cfaa6c3a-6a73-458c-907e-fd684dc979e1.jpg",
+    "full_url": "https://wqnrortftkffmbeugjky.supabase.co/storage/v1/object/public/ted-mockup-detail/full/3d59ba76-cbb9-47aa-ab84-69160549bdf5.webp"
+  },
+  {
+    "id": "f7d1ea3e-fa7b-4de5-b5ef-6bd2d7b206c5",
+    "title": "30 Settings and privacy",
+    "verdict": "approved",
+    "preview_url": "https://wqnrortftkffmbeugjky.supabase.co/storage/v1/object/public/ted-mockups/fa5fe99c-a5c7-449d-a355-f384dc915c24.jpg",
+    "full_url": "https://wqnrortftkffmbeugjky.supabase.co/storage/v1/object/public/ted-mockup-detail/full/e73982b9-2145-480d-97d9-7cdf373f678c.webp"
+  }
+]

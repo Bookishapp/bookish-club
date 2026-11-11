@@ -21,3 +21,9 @@ __pycache__/
 
 # Internal working notes stay local.
 .ted/
+
+# Android upload signing material never belongs in Git.
+*.jks
+*.keystore
+*.p12
+key.properties

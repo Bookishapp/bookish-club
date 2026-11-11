@@ -1,4 +1,8 @@
-# Bookish TestFlight draft
+# Bookish CI
+
+Android internal testing is documented in [ANDROID.md](ANDROID.md). The iOS workflow below retains its original manual trigger and signing behavior.
+
+## Original iOS TestFlight setup
 
 The repository-root `codemagic.yaml` defines the `ios-release` workflow:
 Mac mini M2, Node 24, latest Xcode, CocoaPods, the `codemagic` App Store Connect
