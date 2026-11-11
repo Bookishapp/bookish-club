@@ -20,7 +20,7 @@ test('release builds an accessible artwork showcase without prices or checkout',
   assert.match(document.querySelector('h1').textContent, /Lunair.*Midnight/s);
   assert.equal(document.querySelector('[data-checkout]'), null);
   assert.equal(document.querySelector('.price'), null);
-  assert.doesNotMatch(document.body.textContent, /\$\d|payment|lifetime access|coming soon/i);
+  assert.doesNotMatch(document.body.textContent.replace('Android is coming soon.', ''), /\$\d|payment|lifetime access|coming soon/i);
   assert.ok(document.querySelector('a[href$="/app/"]'));
   assert.equal(document.querySelectorAll('.posters img').length, 3, 'approved artwork remains');
   const base = new URL(document.querySelector('link[rel="canonical"]').href).pathname.replace(/\/lunair\/$/, '');

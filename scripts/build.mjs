@@ -3,6 +3,8 @@
 // SITE_URL decides canonical URLs and the base path (e.g. /bookish-club on
 // a GitHub Pages project URL, empty on a custom domain).
 import fs from "node:fs";
+import { renderStoreDownloads, STORE_CSS } from "./store-downloads.mjs";
+import { checkStorePages } from "./check-store-pages.mjs";
 import path from "node:path";
 import { GENRES_LIST, STATE_NAMES } from "./lib.mjs";
 import { renderMostRecommended } from "./most-recommended.mjs";
@@ -75,7 +77,7 @@ function layout({ title, desc, path: p, body, jsonld = [], noindex = false, land
   const canonical = abs(p);
   const landingCSS = landing ? fs.readFileSync(path.join(ROOT, "src/landing.css"), "utf8").replaceAll("__BASE__", BASE) : "";
   const mostRecommended = body.includes('class="wrap mr"');
-  const pageCSS = `${landing ? landingCSS : CSS}${extraCSS}`;
+  const pageCSS = `${landing ? landingCSS : CSS}${extraCSS}${STORE_CSS}`;
   const inlineCSS = mostRecommended ? pageCSS.replace(/\/\*[\s\S]*?\*\//g, "") : pageCSS;
   return `<!doctype html>
 <html lang="en" data-base="${BASE}" data-api="${API}" data-join-api="${JOIN_API}" data-directory-api="${DIRECTORY_API}">
@@ -114,6 +116,7 @@ ${landing ? "" : `<header class="mast"><div class="wrap">
 <main id="main" tabindex="-1">
 ${body}
 </main>
+${landing ? "" : renderStoreDownloads(BASE)}
 ${landing ? "" : `<footer class="foot-site"><div class="wrap cols">
 <div><a class="wordmark" href="${url("/")}">${WORDMARK(false)}</a>
 <p>Your book club, just more fun. RSVPs, book hot takes, votes, and more, with cards and links to share in your group chat.</p>
@@ -214,7 +217,7 @@ const clubIntro = ({ press = false } = {}) => `<section class="lander club-lande
 // ---------- home ----------
 {
   const body = fs.readFileSync(path.join(ROOT, "src/landing.html"), "utf8")
-    .replace("__SEARCH__", searchBox()).replaceAll("__BASE__", BASE);
+    .replace("__SEARCH__", searchBox()).replace("__STORE_DOWNLOADS__", renderStoreDownloads(BASE)).replaceAll("__BASE__", BASE);
   write("index.html", layout({
     title: "Bookish: Book Club Night | Your book club, just more fun",
     desc: "Your book club, just more fun. RSVPs, book hot takes, votes, and more, with cards and links to share in your group chat.",
@@ -587,3 +590,5 @@ write(".nojekyll", "");
 if (process.env.CUSTOM_DOMAIN) write("CNAME", process.env.CUSTOM_DOMAIN + "\n");
 
 console.log(`built ${sitemap.length} geographic and resource pages; club discovery is live and never bundled.`);
+
+checkStorePages(OUT);

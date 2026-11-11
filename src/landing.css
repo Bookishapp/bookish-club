@@ -177,9 +177,5 @@ main:focus{outline:none}
 
 .hero-actions{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
 .hero-actions>.row{width:100%;flex-wrap:wrap}
-.hero-actions>.app-store-badge{align-self:flex-start}
 
-.app-store-badge{display:inline-flex;flex:none;align-self:center;padding:12px;line-height:0}
-.app-store-badge img{display:block;height:48px;width:auto;max-width:none}
-.app-store-badge:focus-visible{outline:2px solid var(--on);outline-offset:2px}
-@media(max-width:900px){.app-store-badge{align-self:flex-start}}
+.hero-actions>.get-app-link{color:var(--on);font-weight:700;text-underline-offset:3px;padding:8px 0}

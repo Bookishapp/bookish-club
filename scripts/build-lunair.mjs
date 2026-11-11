@@ -1,3 +1,4 @@
+import { renderStoreDownloads, STORE_CSS } from "./store-downloads.mjs";
 // The shop uses provider-hosted checkout and delivery. Empty URLs stay unavailable.
 const esc = value => String(value).replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
 
@@ -42,6 +43,7 @@ export function renderLunair({ siteUrl, checkout, showcaseOnly = false }) {
 <link rel="preload" href="${asset('/fonts/youngserif-400.woff2')}" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${asset('/lunair.css')}">
 <script src="${asset('/lunair.js')}" defer></script>
+<style>${STORE_CSS}</style>
 </head>
 <body>
 <a class="skip" href="#shop">Skip to the artwork</a>
@@ -95,6 +97,7 @@ export function renderLunair({ siteUrl, checkout, showcaseOnly = false }) {
     <a href="https://www.instagram.com/lunairandmidnight/"><span class="link-title">Find us on Instagram</span><span class="link-detail">@lunairandmidnight</span></a>
     <a data-pass-utm href="https://fictora.co/?utm_source=instagram&amp;utm_campaign=lunairandmidnight"><span class="link-title">Lunair’s day job: talk to your favorite book characters</span><span class="link-detail">Step into Fictora</span></a>
   </nav>
+  ${renderStoreDownloads(base)}
   <footer>
     <p>A grown-up witch and her deeply unimpressed cat.</p>
     <p>© Fictora. Wallpapers are for personal use only.<br>No resale or reuploading.</p>
@@ -105,6 +108,6 @@ export function renderLunair({ siteUrl, checkout, showcaseOnly = false }) {
 </html>`;
   const target = asset('/lunair/');
   // A normal link remains usable with scripting disabled. JS preserves attribution.
-  const redirect = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Lunair &amp; Midnight</title><link rel="canonical" href="${esc(canonical)}"><meta name="robots" content="noindex"></head><body><p>Find Lunair &amp; Midnight at <a href="${target}">their new home</a>.</p><script>location.replace(${JSON.stringify(target)} + location.search + location.hash);</script></body></html>`;
+  const redirect = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Lunair &amp; Midnight</title><link rel="canonical" href="${esc(canonical)}"><meta name="robots" content="noindex"><style>${STORE_CSS}</style></head><body><p>Find Lunair &amp; Midnight at <a href="${target}">their new home</a>.</p>${renderStoreDownloads(base)}<script>location.replace(${JSON.stringify(target)} + location.search + location.hash);</script></body></html>`;
   return { html, redirect };
 }
