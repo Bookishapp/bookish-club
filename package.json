@@ -9,7 +9,7 @@
     "build": "node scripts/build.mjs",
     "seed": "node scripts/sources/library-other.mjs; node scripts/sources/bookstores.mjs; node scripts/merge.mjs",
     "build:web": "npm run build && node scripts/build-web.mjs",
-    "test:web": "node --test scripts/test-site.mjs scripts/test-lunair.mjs scripts/test-web.mjs scripts/test-message-route.mjs",
+    "test:web": "node --test scripts/test-site.mjs scripts/test-lunair.mjs scripts/test-web.mjs scripts/test-message-route.mjs scripts/test-most-recommended.mjs",
     "test": "npm run test:backend && npm run test:confirmation && npm run test:server && npm run test:ops",
     "check:edge": "deno check --config supabase/functions/deno.json supabase/functions/bookish-*/index.ts",
     "test:backend": "node --test tests/backend/*.test.mjs",
