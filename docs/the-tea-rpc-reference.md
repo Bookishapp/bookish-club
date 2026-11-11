@@ -56,7 +56,7 @@ Only the service role can call `bookish_claim_reminders()`, `bookish_prepare_rem
 
 ## Approved Screen Sources
 
-Reviewed `/Users/vahallo/biz/bookish/design/APPROVED-ART.md`, the HTML sources for 18, 19, 24, 33, 41, 42, and 44 under `full-app-1016/html`, and the approved v2 renderings from Ted Board:
+Reviewed `external/approved-art/APPROVED-ART.md`, the HTML sources for 18, 19, 24, 33, 41, 42, and 44 under `full-app-1016/html`, and the approved v2 renderings from Ted Board:
 
 - 17 The Tea: `de28115a-a436-4b5b-b396-ed89ca0e3ed2`.
 - 20 Reading Together: `5349d0d2-c210-47ad-8146-f98b6a6c69b2`.

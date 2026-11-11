@@ -12,7 +12,7 @@ Oct 18 approval receipt verified.
 
 
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/14-read-next.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/14-read-next.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -20,4 +20,4 @@ Oct 18 approval receipt verified.
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 
-Original source: `/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/14-read-next.html`.
+Original source: `external/approved-art/full-app-1016/html/14-read-next.html`.

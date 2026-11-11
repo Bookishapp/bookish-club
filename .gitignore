@@ -24,3 +24,5 @@ __pycache__/
 *.keystore
 *.p12
 key.properties
+# Internal working notes stay local.
+.ted/

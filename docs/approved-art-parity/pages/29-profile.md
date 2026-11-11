@@ -12,7 +12,7 @@ Oct 18 approval receipt verified.
 
 Local Saved-book preferences are seeded fixtures. No reading scores or streaks are added.
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/29-profile.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/29-profile.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -24,7 +24,7 @@ Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: no
 
 A valid 64-character email local part exercises the account greeting beside approved art.
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/29-profile-long-email.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/29-profile-long-email.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -42,4 +42,4 @@ Additional narrow-device stress capture at 320 by 844.
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 
-Original source: `/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/29-profile.html`.
+Original source: `external/approved-art/full-app-1016/html/29-profile.html`.

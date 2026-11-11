@@ -12,7 +12,7 @@ Oct 19 approved v2 override.
 
 
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/30-settings.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/30-settings.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -24,7 +24,7 @@ Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: no
 
 Existing destructive-action confirmation is retained.
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/delete-account.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/delete-account.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -32,4 +32,4 @@ Existing destructive-action confirmation is retained.
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 
-Original source: `/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/30-settings.html`.
+Original source: `external/approved-art/full-app-1016/html/30-settings.html`.

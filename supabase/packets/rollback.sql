@@ -3,7 +3,7 @@
 -- Confirm the Dashboard target, then prefix this session with:
 -- set bookish.target_ref='tkrsrnlasinmlftkcufi';
 -- This disables normal access and preserves traffic accepted after apply.
--- Ted must disable Bookish intake and serve a maintenance app before execution.
+-- The operator must disable Bookish intake and serve a maintenance app before execution.
 begin;
 do $guard$ begin
  if current_setting('bookish.target_ref',true) is distinct from 'tkrsrnlasinmlftkcufi' then raise exception 'Confirm the Bookish dedicated project tkrsrnlasinmlftkcufi and set bookish.target_ref first.';end if;

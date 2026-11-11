@@ -12,4 +12,4 @@ No existing app surface is implemented for this approved concept. No app screens
 
 Reference only. No existing app surface is implemented for this approved concept. No app screenshot was fabricated.
 
-Original source: `/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/46-widgets-home-screen.html`.
+Original source: `external/approved-art/full-app-1016/html/46-widgets-home-screen.html`.

@@ -7,7 +7,7 @@
     "width": 390,
     "height": 844
   },
-  "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016",
+  "source": "external/approved-art/full-app-1016",
   "fixtureState": {
     "reminders": {
       "after-hours-chicago": {
@@ -116,7 +116,7 @@
       "errors": [],
       "missing": [],
       "expectedNetworkMessages": [],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/01-welcome.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/01-welcome.png"
     },
     {
       "id": "07-near-me-list",
@@ -195,7 +195,7 @@
       "errors": [],
       "missing": [],
       "expectedNetworkMessages": [],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/07-near-me-list.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/07-near-me-list.png"
     },
     {
       "id": "08-near-me-map",
@@ -274,7 +274,7 @@
       "errors": [],
       "missing": [],
       "expectedNetworkMessages": [],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/08-near-me-map.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/08-near-me-map.png"
     },
     {
       "id": "09-club-detail",
@@ -337,7 +337,7 @@
       "errors": [],
       "missing": [],
       "expectedNetworkMessages": [],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/09-club-detail.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/09-club-detail.png"
     },
     {
       "id": "06-notifications-prime",
@@ -400,7 +400,7 @@
       "errors": [],
       "missing": [],
       "expectedNetworkMessages": [],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/06-notifications-prime.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/06-notifications-prime.png"
     },
     {
       "id": "13-public-calendar",
@@ -447,7 +447,7 @@
       "errors": [],
       "missing": [],
       "expectedNetworkMessages": [],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/13-public-calendar.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/13-public-calendar.png"
     },
     {
       "id": "resources",
@@ -556,7 +556,7 @@
       "errors": [],
       "missing": [],
       "expectedNetworkMessages": [],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/02-sign-in.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/02-sign-in.png"
     },
     {
       "id": "02-password",
@@ -603,7 +603,7 @@
       "errors": [],
       "missing": [],
       "expectedNetworkMessages": [],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/02-password.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/02-password.png"
     },
     {
       "id": "02-sign-in-error",
@@ -652,7 +652,7 @@
       "expectedNetworkMessages": [
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/02-sign-in-error.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/02-sign-in-error.png"
     },
     {
       "id": "03-code-four",
@@ -701,7 +701,7 @@
       "expectedNetworkMessages": [
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/03-code-four.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/03-code-four.png"
     },
     {
       "id": "03-code-six",
@@ -750,7 +750,7 @@
       "expectedNetworkMessages": [
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/03-code-six.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/03-code-six.png"
     },
     {
       "id": "03-code-error",
@@ -800,7 +800,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/03-code-error.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/03-code-error.png"
     },
     {
       "id": "04-house-rules",
@@ -850,7 +850,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/04-house-rules.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/04-house-rules.png"
     },
     {
       "id": "29-profile",
@@ -980,7 +980,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/29-profile.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/29-profile.png"
     },
     {
       "id": "30-settings",
@@ -1013,7 +1013,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/30-settings.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/30-settings.png"
     },
     {
       "id": "delete-account",
@@ -1063,7 +1063,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/delete-account.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/delete-account.png"
     },
     {
       "id": "31-create-club",
@@ -1113,7 +1113,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/31-create-club.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/31-create-club.png"
     },
     {
       "id": "27-redeem-invite",
@@ -1163,7 +1163,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/27-redeem-invite.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/27-redeem-invite.png"
     },
     {
       "id": "10-join-request",
@@ -1213,7 +1213,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/10-join-request.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/10-join-request.png"
     },
     {
       "id": "11-join-sent",
@@ -1263,7 +1263,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/11-join-sent.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/11-join-sent.png"
     },
     {
       "id": "17-club-home",
@@ -1345,7 +1345,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/17-club-home.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/17-club-home.png"
     },
     {
       "id": "20-current-book",
@@ -1427,7 +1427,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/20-current-book.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/20-current-book.png"
     },
     {
       "id": "24-meeting",
@@ -1477,7 +1477,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/24-meeting.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/24-meeting.png"
     },
     {
       "id": "26-members",
@@ -1510,7 +1510,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/26-members.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/26-members.png"
     },
     {
       "id": "safety",
@@ -1560,7 +1560,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/safety.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/safety.png"
     },
     {
       "id": "22-vote",
@@ -1658,7 +1658,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/22-vote.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/22-vote.png"
     },
     {
       "id": "22-vote-selected",
@@ -1756,7 +1756,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/22-vote-selected.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/22-vote-selected.png"
     },
     {
       "id": "23-vote-winner",
@@ -1822,7 +1822,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/23-vote-winner.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/23-vote-winner.png"
     },
     {
       "id": "22-open-vote",
@@ -1920,7 +1920,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/22-open-vote.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/22-open-vote.png"
     },
     {
       "id": "host-desk",
@@ -1970,7 +1970,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/host-desk.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/host-desk.png"
     },
     {
       "id": "27-share-invite",
@@ -2020,7 +2020,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/27-share-invite.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/27-share-invite.png"
     },
     {
       "id": "25-schedule-meeting",
@@ -2053,7 +2053,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/25-schedule-meeting.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/25-schedule-meeting.png"
     },
     {
       "id": "25-schedule-error",
@@ -2087,7 +2087,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/25-schedule-error.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/25-schedule-error.png"
     },
     {
       "id": "05-taste",
@@ -2202,7 +2202,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/05-taste.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/05-taste.png"
     },
     {
       "id": "14-read-next",
@@ -2413,7 +2413,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/14-read-next.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/14-read-next.png"
     },
     {
       "id": "15-book-detail",
@@ -2480,7 +2480,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/15-book-detail.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/15-book-detail.png"
     },
     {
       "id": "16-saved",
@@ -2547,7 +2547,7 @@
         "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
         "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/16-saved.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/16-saved.png"
     },
     {
       "id": "34-empty-near",
@@ -2610,7 +2610,7 @@
       "errors": [],
       "missing": [],
       "expectedNetworkMessages": [],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/34-empty-near.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/34-empty-near.png"
     },
     {
       "id": "34-empty-near-card",
@@ -2673,7 +2673,7 @@
       "errors": [],
       "missing": [],
       "expectedNetworkMessages": [],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/34-empty-near-card.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/34-empty-near-card.png"
     },
     {
       "id": "35-empty-saved",
@@ -2736,7 +2736,7 @@
       "errors": [],
       "missing": [],
       "expectedNetworkMessages": [],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/35-empty-saved.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/35-empty-saved.png"
     },
     {
       "id": "directory-error",
@@ -2801,7 +2801,7 @@
       "expectedNetworkMessages": [
         "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
       ],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/directory-error.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/directory-error.png"
     },
     {
       "id": "loading",
@@ -2926,7 +2926,7 @@
       "errors": [],
       "missing": [],
       "expectedNetworkMessages": [],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/37-no-club.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/37-no-club.png"
     },
     {
       "id": "12-join-approved",
@@ -2989,7 +2989,7 @@
       "errors": [],
       "missing": [],
       "expectedNetworkMessages": [],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/12-join-approved.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/12-join-approved.png"
     },
     {
       "id": "33-empty-club",
@@ -3052,7 +3052,7 @@
       "errors": [],
       "missing": [],
       "expectedNetworkMessages": [],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/33-empty-club.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/33-empty-club.png"
     },
     {
       "id": "empty-votes",
@@ -3131,7 +3131,7 @@
       "errors": [],
       "missing": [],
       "expectedNetworkMessages": [],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/empty-votes.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/empty-votes.png"
     },
     {
       "id": "member-club-home",
@@ -3210,7 +3210,7 @@
       "errors": [],
       "missing": [],
       "expectedNetworkMessages": [],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/member-club-home.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/member-club-home.png"
     },
     {
       "id": "32-club-started",
@@ -3257,7 +3257,7 @@
       "errors": [],
       "missing": [],
       "expectedNetworkMessages": [],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/32-club-started.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/32-club-started.png"
     },
     {
       "id": "long-club-name",
@@ -3336,7 +3336,7 @@
       "errors": [],
       "missing": [],
       "expectedNetworkMessages": [],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/long-club-name.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/long-club-name.png"
     },
     {
       "id": "narrow-long-club-name",
@@ -3493,7 +3493,7 @@
       "errors": [],
       "missing": [],
       "expectedNetworkMessages": [],
-      "comparison": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/29-profile-long-email.png"
+      "comparison": "external/review-evidence/1105-bookish40-fix/parity/29-profile-long-email.png"
     },
     {
       "id": "29-profile-long-email-narrow",
@@ -3589,441 +3589,441 @@
     {
       "book": "fourth-wing",
       "request": "https://covers.openlibrary.org/b/id/14407898-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/fourth-wing.jpg",
+      "local": "app/public/covers/fourth-wing.jpg",
       "sha256": "f9869a2794ff0c821e960e22e74d02c450c352c966f61784ec136a620fb1327a",
       "provenance": "Production bundled cover"
     },
     {
       "book": "iron-flame",
       "request": "https://covers.openlibrary.org/b/id/14405746-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/iron-flame.jpg",
+      "local": "app/public/covers/iron-flame.jpg",
       "sha256": "f3fa5dc2c0c5279d0c3593a4dbaac32c1b0417fd75e25c913d9aaa17fc852bf0",
       "provenance": "Production bundled cover"
     },
     {
       "book": "onyx-storm",
       "request": "https://covers.openlibrary.org/b/id/14826089-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/onyx-storm.jpg",
+      "local": "app/public/covers/onyx-storm.jpg",
       "sha256": "a2fa987d5bc104efbae760b6a54a2c6dae82e1c47cda5479b44efb552e9e7529",
       "provenance": "Production bundled cover"
     },
     {
       "book": "yellowface",
       "request": "https://covers.openlibrary.org/b/id/13195421-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/yellowface.jpg",
+      "local": "app/public/covers/yellowface.jpg",
       "sha256": "ef58e5f8f29cc2bcfc61d7f3480d87b4e520b8ddf0c43589cf6ac770004db310",
       "provenance": "Production bundled cover"
     },
     {
       "book": "babel",
       "request": "https://covers.openlibrary.org/b/id/12468631-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/babel.jpg",
+      "local": "app/public/covers/babel.jpg",
       "sha256": "ad303e1fff5238afeeedbea93568f95b1ed6dac0c9aa6bb3fbd939cb735e1689",
       "provenance": "Production bundled cover"
     },
     {
       "book": "the-god-of-the-woods",
       "request": "https://covers.openlibrary.org/b/id/14645734-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/the-god-of-the-woods.jpg",
+      "local": "app/public/covers/the-god-of-the-woods.jpg",
       "sha256": "b50a2cf7f921eefbf260557d98707c9dedf4415a8f0c4a9ebfacfb80c0623ac5",
       "provenance": "Production bundled cover"
     },
     {
       "book": "the-housemaid",
       "request": "https://covers.openlibrary.org/b/id/15105883-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/the-housemaid.jpg",
+      "local": "app/public/covers/the-housemaid.jpg",
       "sha256": "2e6b8ae273f75d0ccf1beaa4a9fe0563e3f8efb56c193ae392f5939d97ce0b41",
       "provenance": "Production bundled cover"
     },
     {
       "book": "funny-story",
       "request": "https://covers.openlibrary.org/b/id/14625690-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/funny-story.jpg",
+      "local": "app/public/covers/funny-story.jpg",
       "sha256": "d80a909c011756fefcc7bb2fa16b7891cebabfd07431e111af18628e1616ae4a",
       "provenance": "Production bundled cover"
     },
     {
       "book": "book-lovers",
       "request": "https://covers.openlibrary.org/b/id/11567819-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/book-lovers.jpg",
+      "local": "app/public/covers/book-lovers.jpg",
       "sha256": "72b26ab568d07a3f5aa6bbe04b360d607517e9c503869e0f0ba962b93f13b709",
       "provenance": "Production bundled cover"
     },
     {
       "book": "beach-read",
       "request": "https://covers.openlibrary.org/b/id/9426296-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/beach-read.jpg",
+      "local": "app/public/covers/beach-read.jpg",
       "sha256": "b06027297562d648ee0ab7efcb766f99f145f16e259a17c431e13f31dff87df5",
       "provenance": "Production bundled cover"
     },
     {
       "book": "james",
       "request": "https://covers.openlibrary.org/b/id/15094964-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/james.jpg",
+      "local": "app/public/covers/james.jpg",
       "sha256": "b56da908f7d71737aa151f50f66d03f666e8960f47d36026429ff179ba66c2cd",
       "provenance": "Production bundled cover"
     },
     {
       "book": "remarkably-bright-creatures",
       "request": "https://covers.openlibrary.org/b/id/12019989-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/remarkably-bright-creatures.jpg",
+      "local": "app/public/covers/remarkably-bright-creatures.jpg",
       "sha256": "9ea81d245fff2178c823a7d95d87f96da29598cdff83f6875cd8d6d361d0f98a",
       "provenance": "Production bundled cover"
     },
     {
       "book": "lessons-in-chemistry",
       "request": "https://covers.openlibrary.org/b/id/12725772-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/lessons-in-chemistry.jpg",
+      "local": "app/public/covers/lessons-in-chemistry.jpg",
       "sha256": "ff090d775b919d50c989f799d22fc4d9a3b4a79a5947a7d546acca6dd2590e0d",
       "provenance": "Production bundled cover"
     },
     {
       "book": "tomorrow-and-tomorrow-and-tomorrow",
       "request": "https://covers.openlibrary.org/b/id/12859975-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/tomorrow-and-tomorrow-and-tomorrow.jpg",
+      "local": "app/public/covers/tomorrow-and-tomorrow-and-tomorrow.jpg",
       "sha256": "cd6ed63c7347f7de410daa74bc5ee82da9c4064e5dec91429c596926610f4288",
       "provenance": "Production bundled cover"
     },
     {
       "book": "the-seven-husbands-of-evelyn-hugo",
       "request": "https://covers.openlibrary.org/b/id/8354226-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/the-seven-husbands-of-evelyn-hugo.jpg",
+      "local": "app/public/covers/the-seven-husbands-of-evelyn-hugo.jpg",
       "sha256": "315464bd696c86f286ac8dcd15f553328b4f85b01d13edc5fb3f8c155c92d86e",
       "provenance": "Production bundled cover"
     },
     {
       "book": "daisy-jones-and-the-six",
       "request": "https://covers.openlibrary.org/b/id/8742674-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/daisy-jones-and-the-six.jpg",
+      "local": "app/public/covers/daisy-jones-and-the-six.jpg",
       "sha256": "b9886abf1dbd688304b6b569950376a811b030edb2ac6979b64732e1c58e460e",
       "provenance": "Production bundled cover"
     },
     {
       "book": "a-court-of-thorns-and-roses",
       "request": "https://covers.openlibrary.org/b/id/15254465-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/a-court-of-thorns-and-roses.jpg",
+      "local": "app/public/covers/a-court-of-thorns-and-roses.jpg",
       "sha256": "4db78bd7799cc6ef95023d3448e3b5fcd582c25a5991019b226b755dc2f5fb25",
       "provenance": "Production bundled cover"
     },
     {
       "book": "a-court-of-mist-and-fury",
       "request": "https://covers.openlibrary.org/b/id/14315081-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/a-court-of-mist-and-fury.jpg",
+      "local": "app/public/covers/a-court-of-mist-and-fury.jpg",
       "sha256": "4f367bfcac900ab5d31de36966c0df143400d42a78e0241c04331b066c52d012",
       "provenance": "Production bundled cover"
     },
     {
       "book": "the-silent-patient",
       "request": "https://covers.openlibrary.org/b/id/9407338-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/the-silent-patient.jpg",
+      "local": "app/public/covers/the-silent-patient.jpg",
       "sha256": "7c18199bc163948f6fd1451f6118d9204b92958028d5e94801330a1c41bcf069",
       "provenance": "Production bundled cover"
     },
     {
       "book": "gone-girl",
       "request": "https://covers.openlibrary.org/b/id/8368314-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/gone-girl.jpg",
+      "local": "app/public/covers/gone-girl.jpg",
       "sha256": "cebea6a7adc2bfa2a2c6f85f60af0813fe2e2f284547ba73072adfb6eba46b30",
       "provenance": "Production bundled cover"
     },
     {
       "book": "where-the-crawdads-sing",
       "request": "https://covers.openlibrary.org/b/id/8362947-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/where-the-crawdads-sing.jpg",
+      "local": "app/public/covers/where-the-crawdads-sing.jpg",
       "sha256": "fc8d0e4d1b1f1c684212f40c9b15d86a56d1db0c268856db30665895fa4e1c55",
       "provenance": "Production bundled cover"
     },
     {
       "book": "the-thursday-murder-club",
       "request": "https://covers.openlibrary.org/b/id/10201431-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/the-thursday-murder-club.jpg",
+      "local": "app/public/covers/the-thursday-murder-club.jpg",
       "sha256": "902b1e4d12dfd2a93138bf550d0e3aae3cbfc5b4a48900a9ea86d696ed0cccd6",
       "provenance": "Production bundled cover"
     },
     {
       "book": "the-man-who-died-twice",
       "request": "https://covers.openlibrary.org/b/id/11358314-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/the-man-who-died-twice.jpg",
+      "local": "app/public/covers/the-man-who-died-twice.jpg",
       "sha256": "2e2f37d02e6ba0f53b86827c9997d298959a0eadbffc4698664a1d378732a9b0",
       "provenance": "Production bundled cover"
     },
     {
       "book": "the-love-hypothesis",
       "request": "https://covers.openlibrary.org/b/id/10601402-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/the-love-hypothesis.jpg",
+      "local": "app/public/covers/the-love-hypothesis.jpg",
       "sha256": "fcbfa324f55141740305aa6ca934a908ac8c5ed5569c893fd0382bea2ebfc6b2",
       "provenance": "Production bundled cover"
     },
     {
       "book": "normal-people",
       "request": "https://covers.openlibrary.org/b/id/8794265-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/normal-people.jpg",
+      "local": "app/public/covers/normal-people.jpg",
       "sha256": "868a6d595e1076749fe252139d5dc1f0cb0983c95e362f8cbd84d6b497505839",
       "provenance": "Production bundled cover"
     },
     {
       "book": "intermezzo",
       "request": "https://covers.openlibrary.org/b/id/14836043-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/intermezzo.jpg",
+      "local": "app/public/covers/intermezzo.jpg",
       "sha256": "817c45983c013e789a147e3b18e79f8c5ef81fe135ce931a56f3b54919849a03",
       "provenance": "Production bundled cover"
     },
     {
       "book": "pride-and-prejudice",
       "request": "https://covers.openlibrary.org/b/id/14348537-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/pride-and-prejudice.jpg",
+      "local": "app/public/covers/pride-and-prejudice.jpg",
       "sha256": "6664f7defaa23d4a768d3a702582a29dab504fe0a55cde0bc0ca2b9909133c21",
       "provenance": "Production bundled cover"
     },
     {
       "book": "jane-eyre",
       "request": "https://covers.openlibrary.org/b/id/8235363-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/jane-eyre.jpg",
+      "local": "app/public/covers/jane-eyre.jpg",
       "sha256": "522b69f6fc7fec0cd58877aa0a27ef92a1b42a832ffeed3bceeace8b81ac921d",
       "provenance": "Production bundled cover"
     },
     {
       "book": "rebecca",
       "request": "https://covers.openlibrary.org/b/id/8238729-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/rebecca.jpg",
+      "local": "app/public/covers/rebecca.jpg",
       "sha256": "dd179731e7db8fb34082c243c3850e8927423a413e234b69fcccd2d7d16c089b",
       "provenance": "Production bundled cover"
     },
     {
       "book": "a-little-life",
       "request": "https://covers.openlibrary.org/b/id/12065783-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/a-little-life.jpg",
+      "local": "app/public/covers/a-little-life.jpg",
       "sha256": "009a2f1dc95835c9a4a8d393eb9eb3debd40d6904c0d21d606ab8b1a5bcb9fe6",
       "provenance": "Production bundled cover"
     },
     {
       "book": "the-kite-runner",
       "request": "https://covers.openlibrary.org/b/id/14846827-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/the-kite-runner.jpg",
+      "local": "app/public/covers/the-kite-runner.jpg",
       "sha256": "766799224d0731fd055ecb5dbbc65f76b79933bb191c41e8cfb3d89943e03d2d",
       "provenance": "Production bundled cover"
     },
     {
       "book": "klara-and-the-sun",
       "request": "https://covers.openlibrary.org/b/id/10648686-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/klara-and-the-sun.jpg",
+      "local": "app/public/covers/klara-and-the-sun.jpg",
       "sha256": "2dd2bc2d9ede83dff01ec776d229545ddae0b4a9447ab337f9bc878d4ce4e4f6",
       "provenance": "Production bundled cover"
     },
     {
       "book": "never-let-me-go",
       "request": "https://covers.openlibrary.org/b/id/1047334-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/never-let-me-go.jpg",
+      "local": "app/public/covers/never-let-me-go.jpg",
       "sha256": "6ad85df4cec208629ae7b86f605a7011c7dc37f29c57cfcd735c108985e5535a",
       "provenance": "Production bundled cover"
     },
     {
       "book": "the-midnight-library",
       "request": "https://covers.openlibrary.org/b/id/10313767-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/the-midnight-library.jpg",
+      "local": "app/public/covers/the-midnight-library.jpg",
       "sha256": "55124d4a45336bdf7ec2158c65aef0f54b81de467247e2a6076439fbc09a875e",
       "provenance": "Production bundled cover"
     },
     {
       "book": "circe",
       "request": "https://covers.openlibrary.org/b/id/8739376-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/circe.jpg",
+      "local": "app/public/covers/circe.jpg",
       "sha256": "675b84d3c43d04701d5b5bfbfc2013d33363c532ba123520b3963fff00c38053",
       "provenance": "Production bundled cover"
     },
     {
       "book": "the-song-of-achilles",
       "request": "https://covers.openlibrary.org/b/id/7098465-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/the-song-of-achilles.jpg",
+      "local": "app/public/covers/the-song-of-achilles.jpg",
       "sha256": "75986038b9ef825aa37e1f57112b717d423257337c427841d9c484bf2054f7d8",
       "provenance": "Production bundled cover"
     },
     {
       "book": "the-night-circus",
       "request": "https://covers.openlibrary.org/b/id/8773134-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/the-night-circus.jpg",
+      "local": "app/public/covers/the-night-circus.jpg",
       "sha256": "0a0ec49dddb380e5860c1daa97fc9cf4fe7a38a9d538deca6ea671965e599ec4",
       "provenance": "Production bundled cover"
     },
     {
       "book": "the-name-of-the-wind",
       "request": "https://covers.openlibrary.org/b/id/11480483-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/the-name-of-the-wind.jpg",
+      "local": "app/public/covers/the-name-of-the-wind.jpg",
       "sha256": "54633457d4e17630d669386d5fe2f9445f1a22853165a9c8a1c5c6b975e363ed",
       "provenance": "Production bundled cover"
     },
     {
       "book": "tress-of-the-emerald-sea",
       "request": "https://covers.openlibrary.org/b/id/13143232-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/tress-of-the-emerald-sea.jpg",
+      "local": "app/public/covers/tress-of-the-emerald-sea.jpg",
       "sha256": "92d74ba3590ed797e0a1a4ea5db6c7e7de64b23598787cd29778e8d9896bbed6",
       "provenance": "Production bundled cover"
     },
     {
       "book": "the-priory-of-the-orange-tree",
       "request": "https://covers.openlibrary.org/b/id/8802446-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/the-priory-of-the-orange-tree.jpg",
+      "local": "app/public/covers/the-priory-of-the-orange-tree.jpg",
       "sha256": "1d4dcf623c57345aea19dfec55c7c91888edbba8ecceba145e1cc9c6be234f90",
       "provenance": "Production bundled cover"
     },
     {
       "book": "the-invisible-life-of-addie-larue",
       "request": "https://covers.openlibrary.org/b/id/10092261-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/the-invisible-life-of-addie-larue.jpg",
+      "local": "app/public/covers/the-invisible-life-of-addie-larue.jpg",
       "sha256": "9138d1480a6b195db1e87e3673f5b8ed18a1f262040a95ec624cc2e40e7e8705",
       "provenance": "Production bundled cover"
     },
     {
       "book": "project-hail-mary",
       "request": "https://covers.openlibrary.org/b/id/11200092-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/project-hail-mary.jpg",
+      "local": "app/public/covers/project-hail-mary.jpg",
       "sha256": "8f5e830dce50d4d47324d24f2eaaa9f1bf13e445f21a80d3cdd5af8840e98e96",
       "provenance": "Production bundled cover"
     },
     {
       "book": "big-little-lies",
       "request": "https://covers.openlibrary.org/b/id/7352410-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/big-little-lies.jpg",
+      "local": "app/public/covers/big-little-lies.jpg",
       "sha256": "5f880533366b9db600d429c73e75d6e6af27092549c49f04ca6af7640ff08761",
       "provenance": "Production bundled cover"
     },
     {
       "book": "and-then-there-were-none",
       "request": "https://covers.openlibrary.org/b/id/11172296-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/and-then-there-were-none.jpg",
+      "local": "app/public/covers/and-then-there-were-none.jpg",
       "sha256": "ef1e78254df7de5934fbebb6d1f6e9faa8e9c31311e852683f362167ec000567",
       "provenance": "Production bundled cover"
     },
     {
       "book": "mexican-gothic",
       "request": "https://covers.openlibrary.org/b/id/10239163-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/mexican-gothic.jpg",
+      "local": "app/public/covers/mexican-gothic.jpg",
       "sha256": "3202cda707fa6902a965fa7f400290a17d404078b135f7898e2ce3b60c74a6eb",
       "provenance": "Production bundled cover"
     },
     {
       "book": "piranesi",
       "request": "https://covers.openlibrary.org/b/id/10226290-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/piranesi.jpg",
+      "local": "app/public/covers/piranesi.jpg",
       "sha256": "b8ae2ec100211f4b9145c75f5e327d3c77af75a33ce17733aa8184c2d63f61d8",
       "provenance": "Production bundled cover"
     },
     {
       "book": "verity",
       "request": "https://covers.openlibrary.org/b/id/8747160-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/verity.jpg",
+      "local": "app/public/covers/verity.jpg",
       "sha256": "e736f6dc958a093863ea4aa2739477e392a71c8b38f2ff9ef03c588217d36cd6",
       "provenance": "Production bundled cover"
     },
     {
       "book": "it-ends-with-us",
       "request": "https://covers.openlibrary.org/b/id/10473609-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/it-ends-with-us.jpg",
+      "local": "app/public/covers/it-ends-with-us.jpg",
       "sha256": "7c15ead67dd0cf3b48c6da56dada075156147a1f5517520eba36e8953e9eb33f",
       "provenance": "Production bundled cover"
     },
     {
       "book": "educated",
       "request": "https://covers.openlibrary.org/b/id/8314077-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/educated.jpg",
+      "local": "app/public/covers/educated.jpg",
       "sha256": "fe5d11f715eb3f6b843699f65d17bd6df78efa62d895bac19505ec76946643c6",
       "provenance": "Production bundled cover"
     },
     {
       "book": "demon-copperhead",
       "request": "https://covers.openlibrary.org/b/id/13141227-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/demon-copperhead.jpg",
+      "local": "app/public/covers/demon-copperhead.jpg",
       "sha256": "6d67226e6b6c8d1bcbb9c4bc0024c7ff062501005fbbd92e42b4ad1448d52e86",
       "provenance": "Production bundled cover"
     },
     {
       "book": "small-things-like-these",
       "request": "https://covers.openlibrary.org/b/id/10507091-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/small-things-like-these.jpg",
+      "local": "app/public/covers/small-things-like-these.jpg",
       "sha256": "7ec4fca225ebfd7111a954c68e4a92ab1b2e95d6ddfcf7c4224baeda2e277b95",
       "provenance": "Production bundled cover"
     },
     {
       "book": "convenience-store-woman",
       "request": "https://covers.openlibrary.org/b/id/9315164-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/convenience-store-woman.jpg",
+      "local": "app/public/covers/convenience-store-woman.jpg",
       "sha256": "0d0c921ccb1069ad2f6b015471aa6458b55a93ba20f2f5646b5706a4d460f8a8",
       "provenance": "Production bundled cover"
     },
     {
       "book": "before-the-coffee-gets-cold",
       "request": "https://covers.openlibrary.org/b/id/10138333-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/before-the-coffee-gets-cold.jpg",
+      "local": "app/public/covers/before-the-coffee-gets-cold.jpg",
       "sha256": "53a2de320d5b2cb8a81fde5203915517f42f0622bad94c4291099ad5ccf7ea65",
       "provenance": "Production bundled cover"
     },
     {
       "book": "the-house-in-the-cerulean-sea",
       "request": "https://covers.openlibrary.org/b/id/9312772-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/the-house-in-the-cerulean-sea.jpg",
+      "local": "app/public/covers/the-house-in-the-cerulean-sea.jpg",
       "sha256": "e9ee0977d7ce490933136f63601a8b36c6ae70b291c704674fcd954ffcc78940",
       "provenance": "Production bundled cover"
     },
     {
       "book": "legends-and-lattes",
       "request": "https://covers.openlibrary.org/b/id/13028635-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/legends-and-lattes.jpg",
+      "local": "app/public/covers/legends-and-lattes.jpg",
       "sha256": "d7227b5ca1a9c161d5130953027f06aad3d350f9a173f83454dc3d2ba71693ee",
       "provenance": "Production bundled cover"
     },
     {
       "book": "the-women",
       "request": "https://covers.openlibrary.org/b/id/14631595-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/the-women.jpg",
+      "local": "app/public/covers/the-women.jpg",
       "sha256": "ceff7bf8e3db2871c1b5d6265166de6ba59f6b2ebca51fc4beb56f88f288bedf",
       "provenance": "Production bundled cover"
     },
     {
       "book": "the-nightingale",
       "request": "https://covers.openlibrary.org/b/id/8314147-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/the-nightingale.jpg",
+      "local": "app/public/covers/the-nightingale.jpg",
       "sha256": "10bcf82d3a80cbad890857480e33f3a72cdf79f5cffcb94729fb55e036baf36a",
       "provenance": "Production bundled cover"
     },
     {
       "book": "hello-beautiful",
       "request": "https://covers.openlibrary.org/b/id/14359793-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/hello-beautiful.jpg",
+      "local": "app/public/covers/hello-beautiful.jpg",
       "sha256": "bf72b965e8e9f285a21e356ecf6639cb5d3c76881d78abeb83fb8f4b1a202b7e",
       "provenance": "Production bundled cover"
     },
     {
       "book": "the-covenant-of-water",
       "request": "https://covers.openlibrary.org/b/id/13190092-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/the-covenant-of-water.jpg",
+      "local": "app/public/covers/the-covenant-of-water.jpg",
       "sha256": "ade1e3a0c3e0997311d3897b0838e029c155c6f1204b941a104b8d03e0309c4b",
       "provenance": "Production bundled cover"
     },
     {
       "book": "crying-in-h-mart",
       "request": "https://covers.openlibrary.org/b/id/10462708-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/crying-in-h-mart.jpg",
+      "local": "app/public/covers/crying-in-h-mart.jpg",
       "sha256": "02907fde793d3986aea33590cca92adff2a0be6a33c9bd2e353562fcf8caff74",
       "provenance": "Production bundled cover"
     },
     {
       "book": "killers-of-the-flower-moon",
       "request": "https://covers.openlibrary.org/b/id/8055064-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/killers-of-the-flower-moon.jpg",
+      "local": "app/public/covers/killers-of-the-flower-moon.jpg",
       "sha256": "5cb6b33ee3b1cbaab2e709a2f942cdfe9c6081d20d3e0c59647f561912ed2eae",
       "provenance": "Production bundled cover"
     },
     {
       "book": "the-wedding-people",
       "request": "https://covers.openlibrary.org/b/id/15127690-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/the-wedding-people.jpg",
+      "local": "app/public/covers/the-wedding-people.jpg",
       "sha256": "92ec0f99c4b710321c52be2608abb0b13197a348d998b147d1fee4d1ce809221",
       "provenance": "Production bundled cover"
     },
     {
       "book": "sandwich",
       "request": "https://covers.openlibrary.org/b/id/14749853-M.jpg?default=false",
-      "local": "/Users/vahallo/.codex/worktrees/bookish-reskin/app/public/covers/sandwich.jpg",
+      "local": "app/public/covers/sandwich.jpg",
       "sha256": "03f27fe5d379fa44939663adb3e034c6a3ab3bb71d66ec946fb1192b9320d6f2",
       "provenance": "Production bundled cover"
     }
@@ -4032,7 +4032,7 @@
     {
       "id": "01",
       "title": "welcome",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/01-welcome.html",
+      "source": "external/approved-art/full-app-1016/html/01-welcome.html",
       "image": "approved/01.jpg",
       "override": false,
       "receipt": null,
@@ -4042,7 +4042,7 @@
     {
       "id": "02",
       "title": "Sign in",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/02-sign-in.html",
+      "source": "external/approved-art/full-app-1016/html/02-sign-in.html",
       "image": "approved/02.jpg",
       "override": false,
       "receipt": {
@@ -4058,7 +4058,7 @@
     {
       "id": "03",
       "title": "Email code",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/03-email-code.html",
+      "source": "external/approved-art/full-app-1016/html/03-email-code.html",
       "image": "approved/03.jpg",
       "override": false,
       "receipt": {
@@ -4074,7 +4074,7 @@
     {
       "id": "04",
       "title": "House rules",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/04-house-rules.html",
+      "source": "external/approved-art/full-app-1016/html/04-house-rules.html",
       "image": "approved/04-v2.webp",
       "override": true,
       "receipt": {
@@ -4090,7 +4090,7 @@
     {
       "id": "05",
       "title": "Taste picker",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/05-taste.html",
+      "source": "external/approved-art/full-app-1016/html/05-taste.html",
       "image": "approved/05.jpg",
       "override": false,
       "receipt": {
@@ -4106,7 +4106,7 @@
     {
       "id": "06",
       "title": "Reminders permission",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/06-notifications-prime.html",
+      "source": "external/approved-art/full-app-1016/html/06-notifications-prime.html",
       "image": "approved/06.jpg",
       "override": false,
       "receipt": {
@@ -4122,7 +4122,7 @@
     {
       "id": "07",
       "title": "Near me: list",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/07-near-me-list.html",
+      "source": "external/approved-art/full-app-1016/html/07-near-me-list.html",
       "image": "approved/07.jpg",
       "override": false,
       "receipt": {
@@ -4138,7 +4138,7 @@
     {
       "id": "08",
       "title": "Near me: map",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/08-near-me-map.html",
+      "source": "external/approved-art/full-app-1016/html/08-near-me-map.html",
       "image": "approved/08.jpg",
       "override": false,
       "receipt": {
@@ -4154,7 +4154,7 @@
     {
       "id": "09",
       "title": "Club detail",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/09-club-detail.html",
+      "source": "external/approved-art/full-app-1016/html/09-club-detail.html",
       "image": "approved/09.jpg",
       "override": false,
       "receipt": {
@@ -4170,7 +4170,7 @@
     {
       "id": "10",
       "title": "Join: request sheet",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/10-join-request.html",
+      "source": "external/approved-art/full-app-1016/html/10-join-request.html",
       "image": "approved/10.jpg",
       "override": false,
       "receipt": {
@@ -4186,7 +4186,7 @@
     {
       "id": "11",
       "title": "Join: request sent",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/11-join-sent.html",
+      "source": "external/approved-art/full-app-1016/html/11-join-sent.html",
       "image": "approved/11-v2.webp",
       "override": true,
       "receipt": {
@@ -4202,7 +4202,7 @@
     {
       "id": "12",
       "title": "Join: approved",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/12-join-approved.html",
+      "source": "external/approved-art/full-app-1016/html/12-join-approved.html",
       "image": "approved/12.jpg",
       "override": false,
       "receipt": {
@@ -4218,7 +4218,7 @@
     {
       "id": "13",
       "title": "Unclaimed club",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/13-unclaimed-club.html",
+      "source": "external/approved-art/full-app-1016/html/13-unclaimed-club.html",
       "image": "approved/13.jpg",
       "override": false,
       "receipt": {
@@ -4234,7 +4234,7 @@
     {
       "id": "14",
       "title": "Read next",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/14-read-next.html",
+      "source": "external/approved-art/full-app-1016/html/14-read-next.html",
       "image": "approved/14.jpg",
       "override": false,
       "receipt": {
@@ -4250,7 +4250,7 @@
     {
       "id": "15",
       "title": "Book detail",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/15-book-detail.html",
+      "source": "external/approved-art/full-app-1016/html/15-book-detail.html",
       "image": "approved/15.jpg",
       "override": false,
       "receipt": {
@@ -4266,7 +4266,7 @@
     {
       "id": "16",
       "title": "Saved",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/16-saved.html",
+      "source": "external/approved-art/full-app-1016/html/16-saved.html",
       "image": "approved/16.jpg",
       "override": false,
       "receipt": {
@@ -4282,7 +4282,7 @@
     {
       "id": "17",
       "title": "The Tea: club home",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/17-the-tea.html",
+      "source": "external/approved-art/full-app-1016/html/17-the-tea.html",
       "image": "approved/17-v2.webp",
       "override": true,
       "receipt": {
@@ -4298,7 +4298,7 @@
     {
       "id": "18",
       "title": "Take composer",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/18-take-composer.html",
+      "source": "external/approved-art/full-app-1016/html/18-take-composer.html",
       "image": "approved/18.jpg",
       "override": false,
       "receipt": {
@@ -4314,7 +4314,7 @@
     {
       "id": "19",
       "title": "Take thread, reactions, and report",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/19-take-thread.html",
+      "source": "external/approved-art/full-app-1016/html/19-take-thread.html",
       "image": "approved/19.jpg",
       "override": false,
       "receipt": {
@@ -4330,7 +4330,7 @@
     {
       "id": "20",
       "title": "Current book and reading together (v2)",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/20-book-and-race.html",
+      "source": "external/approved-art/full-app-1016/html/20-book-and-race.html",
       "image": "approved/20-v2.webp",
       "override": true,
       "receipt": {
@@ -4346,7 +4346,7 @@
     {
       "id": "21",
       "title": "Log my page",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/21-log-page.html",
+      "source": "external/approved-art/full-app-1016/html/21-log-page.html",
       "image": "approved/21.jpg",
       "override": false,
       "receipt": {
@@ -4362,7 +4362,7 @@
     {
       "id": "22",
       "title": "Vote: pick the next book",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/22-vote.html",
+      "source": "external/approved-art/full-app-1016/html/22-vote.html",
       "image": "approved/22.jpg",
       "override": false,
       "receipt": {
@@ -4378,7 +4378,7 @@
     {
       "id": "23",
       "title": "Vote: winner",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/23-vote-winner.html",
+      "source": "external/approved-art/full-app-1016/html/23-vote-winner.html",
       "image": "approved/23.jpg",
       "override": false,
       "receipt": {
@@ -4394,7 +4394,7 @@
     {
       "id": "24",
       "title": "meeting rsvp",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/24-meeting-rsvp.html",
+      "source": "external/approved-art/full-app-1016/html/24-meeting-rsvp.html",
       "image": "approved/24.jpg",
       "override": false,
       "receipt": null,
@@ -4404,7 +4404,7 @@
     {
       "id": "25",
       "title": "Schedule a meeting (host)",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/25-schedule-meeting.html",
+      "source": "external/approved-art/full-app-1016/html/25-schedule-meeting.html",
       "image": "approved/25.jpg",
       "override": false,
       "receipt": {
@@ -4420,7 +4420,7 @@
     {
       "id": "26",
       "title": "Member list",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/26-members.html",
+      "source": "external/approved-art/full-app-1016/html/26-members.html",
       "image": "approved/26-v2.webp",
       "override": true,
       "receipt": {
@@ -4436,7 +4436,7 @@
     {
       "id": "27",
       "title": "Invite: native share sheet",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/27-invite-share-sheet.html",
+      "source": "external/approved-art/full-app-1016/html/27-invite-share-sheet.html",
       "image": "approved/27.jpg",
       "override": false,
       "receipt": {
@@ -4452,7 +4452,7 @@
     {
       "id": "28",
       "title": "Notifications",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/28-notifications.html",
+      "source": "external/approved-art/full-app-1016/html/28-notifications.html",
       "image": "approved/28.jpg",
       "override": false,
       "receipt": {
@@ -4468,7 +4468,7 @@
     {
       "id": "29",
       "title": "Profile",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/29-profile.html",
+      "source": "external/approved-art/full-app-1016/html/29-profile.html",
       "image": "approved/29.jpg",
       "override": false,
       "receipt": {
@@ -4484,7 +4484,7 @@
     {
       "id": "30",
       "title": "Settings and privacy",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/30-settings.html",
+      "source": "external/approved-art/full-app-1016/html/30-settings.html",
       "image": "approved/30-v2.webp",
       "override": true,
       "receipt": {
@@ -4500,7 +4500,7 @@
     {
       "id": "31",
       "title": "Start a club",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/31-start-a-club.html",
+      "source": "external/approved-art/full-app-1016/html/31-start-a-club.html",
       "image": "approved/31.jpg",
       "override": false,
       "receipt": {
@@ -4516,7 +4516,7 @@
     {
       "id": "32",
       "title": "Club started",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/32-club-started.html",
+      "source": "external/approved-art/full-app-1016/html/32-club-started.html",
       "image": "approved/32.jpg",
       "override": false,
       "receipt": {
@@ -4532,7 +4532,7 @@
     {
       "id": "33",
       "title": "Empty: The Tea",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/33-empty-the-tea.html",
+      "source": "external/approved-art/full-app-1016/html/33-empty-the-tea.html",
       "image": "approved/33.jpg",
       "override": false,
       "receipt": {
@@ -4548,7 +4548,7 @@
     {
       "id": "34",
       "title": "Empty: no clubs nearby",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/34-empty-near-me.html",
+      "source": "external/approved-art/full-app-1016/html/34-empty-near-me.html",
       "image": "approved/34.jpg",
       "override": false,
       "receipt": {
@@ -4564,7 +4564,7 @@
     {
       "id": "35",
       "title": "Empty: Saved",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/35-empty-saved.html",
+      "source": "external/approved-art/full-app-1016/html/35-empty-saved.html",
       "image": "approved/35.jpg",
       "override": false,
       "receipt": {
@@ -4580,7 +4580,7 @@
     {
       "id": "36",
       "title": "Empty: notifications",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/36-empty-notifications.html",
+      "source": "external/approved-art/full-app-1016/html/36-empty-notifications.html",
       "image": "approved/36.jpg",
       "override": false,
       "receipt": {
@@ -4596,7 +4596,7 @@
     {
       "id": "37",
       "title": "Empty: not in a club yet",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/37-empty-no-club.html",
+      "source": "external/approved-art/full-app-1016/html/37-empty-no-club.html",
       "image": "approved/37.jpg",
       "override": false,
       "receipt": {
@@ -4612,7 +4612,7 @@
     {
       "id": "38",
       "title": "iMessage: app drawer (+ menu)",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/38-imessage-app-drawer.html",
+      "source": "external/approved-art/full-app-1016/html/38-imessage-app-drawer.html",
       "image": "approved/38.jpg",
       "override": false,
       "receipt": {
@@ -4628,7 +4628,7 @@
     {
       "id": "39",
       "title": "imessage sticker pack",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/39-imessage-sticker-pack.html",
+      "source": "external/approved-art/full-app-1016/html/39-imessage-sticker-pack.html",
       "image": "approved/39.jpg",
       "override": false,
       "receipt": null,
@@ -4638,7 +4638,7 @@
     {
       "id": "40",
       "title": "imessage extension send vote",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/40-imessage-extension-send-vote.html",
+      "source": "external/approved-art/full-app-1016/html/40-imessage-extension-send-vote.html",
       "image": "approved/40.jpg",
       "override": false,
       "receipt": null,
@@ -4648,7 +4648,7 @@
     {
       "id": "41",
       "title": "iMessage: live vote bubble",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/41-imessage-live-vote.html",
+      "source": "external/approved-art/full-app-1016/html/41-imessage-live-vote.html",
       "image": "approved/41.jpg",
       "override": false,
       "receipt": {
@@ -4664,7 +4664,7 @@
     {
       "id": "42",
       "title": "iMessage: meeting RSVP bubble",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/42-imessage-rsvp.html",
+      "source": "external/approved-art/full-app-1016/html/42-imessage-rsvp.html",
       "image": "approved/42.jpg",
       "override": false,
       "receipt": {
@@ -4680,7 +4680,7 @@
     {
       "id": "43",
       "title": "Reading together (v2)",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/43-imessage-reading-race.html",
+      "source": "external/approved-art/full-app-1016/html/43-imessage-reading-race.html",
       "image": "approved/20-v2.webp",
       "override": true,
       "receipt": null,
@@ -4690,7 +4690,7 @@
     {
       "id": "44",
       "title": "iMessage: take bubble with spoiler blur",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/44-imessage-tea-spoiler.html",
+      "source": "external/approved-art/full-app-1016/html/44-imessage-tea-spoiler.html",
       "image": "approved/44.jpg",
       "override": false,
       "receipt": {
@@ -4706,7 +4706,7 @@
     {
       "id": "45",
       "title": "iMessage: invite link preview",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/45-imessage-invite-link.html",
+      "source": "external/approved-art/full-app-1016/html/45-imessage-invite-link.html",
       "image": "approved/45.jpg",
       "override": false,
       "receipt": {
@@ -4722,7 +4722,7 @@
     {
       "id": "46",
       "title": "widgets home screen",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/46-widgets-home-screen.html",
+      "source": "external/approved-art/full-app-1016/html/46-widgets-home-screen.html",
       "image": "approved/46.jpg",
       "override": false,
       "receipt": null,
@@ -4732,7 +4732,7 @@
     {
       "id": "47",
       "title": "Widgets: lock screen",
-      "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/47-widgets-lock-screen.html",
+      "source": "external/approved-art/full-app-1016/html/47-widgets-lock-screen.html",
       "image": "approved/47.jpg",
       "override": false,
       "receipt": {
@@ -4909,6 +4909,6 @@
     "total": 34,
     "web": 29,
     "native": 5,
-    "hashManifest": "/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/side-by-side-manifest.json"
+    "hashManifest": "external/review-evidence/1105-bookish40-fix/parity/side-by-side-manifest.json"
   }
 }

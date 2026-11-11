@@ -23,7 +23,7 @@ Regenerate Android artwork with `python3 scripts/android-artwork.py` from the re
 
 ## Signing
 
-The upload keystore, certificate, and password files live only in `/Users/vahallo/ted-ops/keys/bookish-android/` on the Mac mini. The directory is mode 700, and files are mode 600. Never copy them into the repo, log their contents, or pass passwords as command-line arguments.
+Keep the upload keystore, certificate, and password files in private storage outside the repository. Restrict directory access to mode 700, and file access to mode 600. Never copy them into the repo, log their contents, or pass passwords as command-line arguments.
 
 Gradle release tasks require all four environment variables:
 
@@ -70,6 +70,6 @@ The requested existing publisher is `(service account, kept private)`. Grant onl
 
 The Android-adapted iOS listing is in `release/android/listing-en-US.json`. Apple privacy evidence, data-safety mapping, content-rating draft, and audience notes are in `release/android/app-content-draft.md`. The live privacy policy is `https://meetbookish.com/privacy/`.
 
-The result file and screenshots for this task are outside the repository in `/Users/vahallo/ted-ops/oneshots/1105-bookish-android-RESULT.md` and its sibling evidence directory. Keep prod demo credentials and signed binaries out of Git. Do not create production or closed releases, submit for review, merge, or deploy the site or functions as part of this ticket.
+Keep task reports and screenshots in an external evidence directory. Keep prod demo credentials and signed binaries out of Git. Do not create production or closed releases, submit for review, merge, or deploy the site or functions as part of this ticket.
 
 References: [Capacitor 7 Android](https://capacitorjs.com/docs/v7/android), [Play API 36 requirement](https://support.google.com/googleplay/android-developer/answer/11926878), and [Codemagic publishing](https://docs.codemagic.io/yaml-publishing/google-play/).

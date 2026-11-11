@@ -12,7 +12,7 @@ Oct 18 approval receipt verified.
 
 
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/22-vote.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/22-vote.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -24,7 +24,7 @@ Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: no
 
 
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/22-vote-selected.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/22-vote-selected.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -36,7 +36,7 @@ Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: no
 
 Existing host form opens after the previous vote closes.
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/22-open-vote.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/22-open-vote.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -48,7 +48,7 @@ Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: no
 
 
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/empty-votes.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/empty-votes.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -56,4 +56,4 @@ Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: no
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 
-Original source: `/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/22-vote.html`.
+Original source: `external/approved-art/full-app-1016/html/22-vote.html`.

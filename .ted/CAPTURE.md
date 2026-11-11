@@ -1,3 +1,0 @@
-These captures use Google Chrome on the Mac mini at 390 by 844 pixels, with the local app and network interception from app/tests/fixtures.mjs. Every Supabase request is fulfilled locally. The named club, readers, code, requests, and ballots are local review fixtures, not production records. The captures establish the rendered UI and client transitions. PGlite and edge-handler tests separately verify backend behavior. Production delivery and native device behavior require Ted's deployment and device checks.
-
-The capture script is .ted/capture.mjs. It expects a local Vite app on 127.0.0.1:4331 and Playwright installed in /tmp/bookish-browser. No fixture or demo credential is compiled into the release app.

@@ -2,6 +2,9 @@ name: Site checks
 on:
   pull_request:
     paths:
+      - "REPORT.md"
+      - "PLAN.md"
+      - "BRIEF.md"
       - "src/**"
       - "scripts/**"
       - "public/**"
@@ -12,6 +15,9 @@ on:
   push:
     branches: [main]
     paths:
+      - "REPORT.md"
+      - "PLAN.md"
+      - "BRIEF.md"
       - "src/**"
       - "scripts/**"
       - "public/**"

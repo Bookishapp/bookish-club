@@ -10,15 +10,15 @@ import {execFileSync} from 'node:child_process';
 import {createFixtureAPI,ids} from '../tests/fixtures.mjs';
 import {comparisonHTML} from './parity-evidence.mjs';
 const root=fileURLToPath(new URL('../../',import.meta.url));
-const out=process.env.BOOKISH_TEA_EVIDENCE||'/Users/vahallo/ted-ops/oneshots/1106-bookish-newscreens';
+const out=process.env.BOOKISH_TEA_EVIDENCE||path.join(root,'.cache/review-evidence/tea');
 const viewport={width:390,height:844};
-const playwright=await import(process.env.PLAYWRIGHT_MODULE||'/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/browser/node_modules/playwright/index.mjs');
+const playwright=await import(process.env.PLAYWRIGHT_MODULE||'playwright');
 assert.match(os.hostname(),/mini/i,'Browser capture must run on the Mac mini.');
 for(const dir of ['built','parity'])await fs.mkdir(path.join(out,dir),{recursive:true});
 try{const previous=JSON.parse(await fs.readFile(path.join(out,'tea-hosting-manifest.json'),'utf8'));for(const capture of previous.captures||[])for(const file of [capture.image,capture.comparison].filter(Boolean))if(/^(built|parity)\/[^/]+\.png$/.test(file))await fs.rm(path.join(out,file),{force:true});}catch(e){if(e.code!=='ENOENT')throw e;}
 const sha=async file=>crypto.createHash('sha256').update(await fs.readFile(file)).digest('hex');
 const manifest={generatedAt:new Date().toISOString(),host:os.hostname(),channel:'chrome',viewport,captures:[],smoke:[],build:[],unexpectedExternal:[],complete:false,limitations:['Screens are the production web bundle in installed Google Chrome, with intercepted local fixtures. They do not establish native keyboard, iMessage transport, deployed RPC behavior, or device calendar delivery.','Approved art governs composition, and the current RPC contract governs privacy and available fields. No visual parity score is assigned.','Host reports and empty notifications have no individual v2 approval. Reports use screen 26 for host context, and empty notifications use original screen 36.','Browser message previews are in-app metadata previews. Native UIKit renderer captures are separate evidence.']};
-manifest.sourceOfTruth={approvedArt:'/Users/vahallo/biz/bookish/design/APPROVED-ART.md',storyboard:'/Users/vahallo/biz/bookish/design/appstore-shots-1105/STORYBOARD.md',rpcReference:'docs/the-tea-rpc-reference.md'};
+manifest.sourceOfTruth={approvedArt:'external/approved-art/APPROVED-ART.md',storyboard:'external/approved-art/STORYBOARD.md',rpcReference:'docs/the-tea-rpc-reference.md'};
 manifest.fixtureIdentities={club:ids.club,reader:ids.reader,clubName:'The After Hours Readers',readerName:'Alex',initialBook:'The Midnight Library',initialPage:212};
 manifest.fixtureAdaptations=['Known parent reply responses retain page 180 even after a newly posted page-zero fixture take, matching the stronger-parent-marker RPC contract.'];
 manifest.captureScript={file:'app/scripts/capture-tea-hosting.mjs',sha256:await sha(fileURLToPath(import.meta.url))};

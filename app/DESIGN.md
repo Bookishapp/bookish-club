@@ -1,6 +1,6 @@
 # Bookish design system
 
-The app follows the approved October 21 batch, Bookish final: full app v3 (pin 295). The 24 screen references, Notes card, and review card live in `/Users/vahallo/biz/bookish/design/approved-v3-1021/`. Sebastian corrected the previous art reference on November 6. The October 16 and October 19 compositions are superseded.
+The app follows the approved October 21 batch, Bookish final: full app v3 (pin 295). The 24 screen references, Notes card, and review card live in `external/approved-art/approved-v3-1021/`. Sebastian corrected the previous art reference on November 6. The October 16 and October 19 compositions are superseded.
 
 Working behavior and CANON.md govern fields, legal acceptance, access, privacy, and supported operations. The approved images govern composition, color, typography, artwork, and voice. The landing and the separate tagline sweep are outside this branch.
 

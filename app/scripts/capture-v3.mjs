@@ -11,8 +11,8 @@ import { fileURLToPath } from 'node:url';
 import { createV3FixtureAPI, ids } from '../tests/v3-fixtures.mjs';
 
 const root=fileURLToPath(new URL('../../',import.meta.url));
-const source=process.env.BOOKISH_V3_SOURCE||'/Users/vahallo/biz/bookish/design/approved-v3-1021';
-const out=process.env.BOOKISH_V3_OUT||'/Users/vahallo/ted-ops/oneshots/1106-bookish-v3art/parity';
+const source=process.env.BOOKISH_V3_SOURCE||path.join(root,'.cache/approved-art/approved-v3-1021');
+const out=process.env.BOOKISH_V3_OUT||path.join(root,'.cache/review-evidence/v3/parity');
 const chrome='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const viewport={width:390,height:844};
 const definitions=[['welcome','01-welcome'],['bring-your-club','02-bring-your-club'],['house-rules','03-house-rules'],['the-tea','04-the-tea'],['spill-a-take','05-spill-a-take'],['reading-together','06-reading-together'],['log-my-page','07-log-my-page'],['meeting-rsvp','08-meeting-rsvp'],['book-vote','09-book-vote'],['rate-the-book','09b-rate-the-book'],['our-shelf','09c-our-shelf'],['up-next-for-you','09d-up-next-for-you'],['members','10-members'],['club-privacy','11-club-privacy'],['notifications','12-notifications'],['settings','13-settings'],['join-sent','14-join-sent'],['find-a-club','15-find-a-club'],['menu','16-menu']].map(([name,sourceSuffix],i)=>({id:String(i+1).padStart(2,'0'),name,source:`app-${String(i+1).padStart(2,'0')}-${sourceSuffix}.png`}));
@@ -23,7 +23,7 @@ if(process.argv.includes('--list')){console.log(definitions.map(d=>`${d.id} ${d.
 assert.match(os.hostname(),/mini/i,'All browser capture must run on the Mac mini.');
 await fs.access(chrome);
 let playwright;
-for(const module of [process.env.PLAYWRIGHT_MODULE,'playwright','/tmp/bookish-browser/node_modules/playwright/index.mjs','/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/browser/node_modules/playwright/index.mjs','/tmp/wcdprobe/node_modules/playwright/index.mjs'].filter(Boolean)){try{playwright=await import(module);break;}catch{}}
+for(const module of [process.env.PLAYWRIGHT_MODULE,'playwright','/tmp/bookish-browser/node_modules/playwright/index.mjs','/tmp/wcdprobe/node_modules/playwright/index.mjs'].filter(Boolean)){try{playwright=await import(module);break;}catch{}}
 assert.ok(playwright,'Set PLAYWRIGHT_MODULE to an installed Playwright index.mjs.');
 await fs.mkdir(path.join(out,'built'),{recursive:true});
 const sha=async file=>crypto.createHash('sha256').update(await fs.readFile(file)).digest('hex');

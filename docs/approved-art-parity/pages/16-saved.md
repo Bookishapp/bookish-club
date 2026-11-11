@@ -12,7 +12,7 @@ Oct 18 approval receipt verified.
 
 Local reminder and saved-book preferences are seeded fixtures. Browser capture never schedules a native notification.
 
-[Side-by-side PNG](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/16-saved.png)
+[Side-by-side PNG](external/review-evidence/1105-bookish40-fix/parity/16-saved.png)
 
 | Approved reference | Actual app, 390 by 844 |
 | --- | --- |
@@ -20,4 +20,4 @@ Local reminder and saved-book preferences are seeded fixtures. Browser capture n
 
 Overflow: none. Missing local assets: 0. Browser errors: 0. Em dash or emoji: none.
 
-Original source: `/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/16-saved.html`.
+Original source: `external/approved-art/full-app-1016/html/16-saved.html`.
