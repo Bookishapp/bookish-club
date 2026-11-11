@@ -19,6 +19,9 @@ supabase/.env
 __pycache__/
 *.pyc
 
+# Internal working notes stay local.
+.ted/
+
 # Android upload signing material never belongs in Git.
 *.jks
 *.keystore

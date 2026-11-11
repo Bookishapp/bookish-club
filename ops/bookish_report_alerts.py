@@ -10,7 +10,7 @@ import subprocess
 import sys
 import urllib.request
 
-ROOT=Path('/Users/vahallo/ted-ops')
+ROOT=Path(os.environ.get('TED_OPS_DIR',Path(__file__).resolve().parent.parent))
 ENDPOINT='https://tkrsrnlasinmlftkcufi.supabase.co/functions/v1/bookish-report-alerts'
 PUBLIC_KEY='sb_publishable_F-QcIZM0MFy5ovyrn_rIVg_fwe-7mTd'
 UUID=re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')

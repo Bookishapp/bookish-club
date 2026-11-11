@@ -1,4 +1,3 @@
-// Only campaign attribution crosses to Fictora, never unrelated query values.
 (() => {
   const inbound = new URLSearchParams(location.search);
   const attribution = new URLSearchParams({ utm_source: 'instagram', utm_campaign: 'lunairandmidnight' });

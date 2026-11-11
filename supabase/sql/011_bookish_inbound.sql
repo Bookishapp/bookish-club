@@ -1,5 +1,5 @@
 -- REVIEW ONLY. This file has not been applied to a hosted database.
--- Apply only after .ted/apply-20.sql in the dedicated Bookish project.
+-- Apply only after supabase/packets/apply-20.sql in the dedicated Bookish project.
 -- Confirm the Dashboard target, then prefix EVERY execution/session with:
 -- set bookish.target_ref='tkrsrnlasinmlftkcufi';
 -- The setting is an operator confirmation, not independent project detection.
@@ -12,10 +12,10 @@ do $guard$ begin
   raise exception 'Expected Supabase Auth schema is missing.';
  end if;
  if to_regclass('bookish_release_20261101.state') is null then
-  raise exception 'Apply .ted/apply-20.sql and all earlier Bookish chunks first.';
+  raise exception 'Apply supabase/packets/apply-20.sql and all earlier Bookish chunks first.';
  end if;
  if not exists(select 1 from bookish_release_20261101.state where version='dedicated-chunk-20') then
-  raise exception 'Apply .ted/apply-20.sql and all earlier Bookish chunks first.';
+  raise exception 'Apply supabase/packets/apply-20.sql and all earlier Bookish chunks first.';
  end if;
 end $guard$;
 

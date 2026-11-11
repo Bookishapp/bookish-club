@@ -1,7 +1,3 @@
-// Bookish club map: CITY LEVEL ONLY. One point per city (Census centroid)
-// with a club count; tapping opens that city's list. No venue, address or
-// neighborhood is ever plotted. MapLibre GL + free OpenFreeMap tiles (no key),
-// loaded only when the map scrolls into view.
 (() => {
   const el = document.getElementById("club-map");
   if (!el) return;
@@ -48,7 +44,6 @@
         "circle-color": ["case", ["==", ["get", "u"], focus || ""], CLUSTER, PIN], "circle-stroke-color": ["case", [">", ["get", "v"], 0], ON, "#fff"], "circle-stroke-width": ["case", [">", ["get", "v"], 0], 3, 2],
         "circle-radius": ["interpolate", ["linear"], ["get", "n"], 1, 7, 10, 11, 50, 16] } });
       map.addLayer({ id: "city-label", type: "symbol", source: "cities", filter: ["!", ["has", "point_count"]],
-        // "Folsom, CA · 4 clubs · 1 on Bookish"
         layout: { "text-field": ["concat", ["get", "c"], " · ", ["to-string", ["get", "n"]], ["case", ["==", ["get", "n"], 1], " club", " clubs"],
           ["case", [">", ["get", "v"], 0], ["concat", " · ", ["to-string", ["get", "v"]], " on Bookish"], ""]], "text-size": 12, "text-font": ["Noto Sans Bold"],
           "text-offset": [0, 1.4], "text-anchor": "top", "text-optional": true },
@@ -59,9 +54,6 @@
         const z = await map.getSource("cities").getClusterExpansionZoom(f.properties.cluster_id);
         map.easeTo({ center: f.geometry.coordinates, zoom: z + 0.3 });
       });
-      // City sheet (opens under the map): the same "On Bookish" / "Listed
-      // from public calendars" toggle as the city page, defaulting to
-      // verified when any exist. City-level only: club names, no venues.
       const sheet = document.createElement("section");
       sheet.className = "map-sheet"; sheet.hidden = true; sheet.setAttribute("aria-live", "polite");
       el.insertAdjacentElement("afterend", sheet);

@@ -1,4 +1,3 @@
-// Reading an email link only prepares this native form. Only its button posts.
 (() => {
  const form=document.querySelector('#join-decision');if(!form)return;
  const params=new URLSearchParams(location.hash.slice(1));
