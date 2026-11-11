@@ -49,6 +49,8 @@ body{background:var(--oxd) var(--tile) top center/100% auto repeat-y;overflow-x:
 .lead{font:500 20px/1.5 Manrope;color:var(--on2)}
 .p{font:500 16px/1.55 Manrope;color:var(--on2)}
 .sm{font:600 13.5px/1.4 Manrope;color:var(--on)}
+.sm a{color:var(--on);text-decoration-thickness:1px;text-underline-offset:3px}
+.sm a:hover{color:var(--butter)}
 :is(.card,.sheet,.light,.imcard,.im,.paper){color:var(--ink)} :is(.card,.sheet,.light,.imcard,.im,.paper) .lead,:is(.card,.sheet,.light,.imcard,.im,.paper) .p,:is(.card,.sheet,.light,.imcard,.im,.paper) .sm{color:var(--mut)}
 .card{background:var(--card);border-radius:14px;box-shadow:0 22px 40px -24px rgba(0,0,0,.7),0 2px 0 rgba(0,0,0,.12)}
 .phone{width:300px;height:649px;border-radius:46px;padding:10px;background:#1d1214;box-shadow:0 0 0 2px #3a2a2c,0 40px 60px -30px rgba(0,0,0,.75);flex:none}
@@ -176,7 +178,8 @@ h1,h2,h3,h4{font-size:inherit;font-weight:inherit}
 
 .hero-actions{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
 .hero-actions>.row{width:100%;flex-wrap:wrap}
-.hero-actions>.app-store-badge{align-self:flex-start}
+/* The padding below is the badge's clear space; pull it left so the artwork lines up with the buttons. */
+.hero-actions>.app-store-badge{align-self:flex-start;margin-left:-12px}
 /* Apple requires 40 px minimum height and clear space of one-quarter badge height. */
 .app-store-badge{display:inline-flex;flex:none;align-self:center;padding:12px;line-height:0}
 .app-store-badge img{display:block;height:48px;width:auto;max-width:none}
