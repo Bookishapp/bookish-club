@@ -5,6 +5,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { GENRES_LIST, STATE_NAMES } from "./lib.mjs";
+import { renderMostRecommended } from "./most-recommended.mjs";
 import { renderLunair } from "./build-lunair.mjs";
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
@@ -70,9 +71,12 @@ const page = (p, prio = 0.6) => sitemap.push({ loc: abs(p), prio });
 const WORDMARK = (eager) => `<img src="${url("/img/wordmark-160.webp")}" srcset="${url("/img/wordmark-160.webp")} 1x, ${url("/img/wordmark-320.webp")} 2x, ${url("/img/wordmark-480.webp")} 3x" width="160" height="62" alt="Bookish"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`;
 const CSS = (fs.readFileSync(path.join(ROOT, "src/theme.css"), "utf8") + fs.readFileSync(path.join(ROOT, "src/styles.css"), "utf8")).replaceAll("__BASE__", BASE).replace(/\n\s*/g, "\n");
 
-function layout({ title, desc, path: p, body, jsonld = [], noindex = false, landing = false, referrerPolicy = "no-referrer" }) {
+function layout({ title, desc, path: p, body, jsonld = [], noindex = false, landing = false, referrerPolicy = "no-referrer", extraCSS = "" }) {
   const canonical = abs(p);
   const landingCSS = landing ? fs.readFileSync(path.join(ROOT, "src/landing.css"), "utf8").replaceAll("__BASE__", BASE) : "";
+  const mostRecommended = body.includes('class="wrap mr"');
+  const pageCSS = `${landing ? landingCSS : CSS}${extraCSS}`;
+  const inlineCSS = mostRecommended ? pageCSS.replace(/\/\*[\s\S]*?\*\//g, "") : pageCSS;
   return `<!doctype html>
 <html lang="en" data-base="${BASE}" data-api="${API}" data-join-api="${JOIN_API}" data-directory-api="${DIRECTORY_API}">
 <head>
@@ -98,7 +102,7 @@ ${noindex ? '<meta name="robots" content="noindex">' : ""}
 <link rel="preload" href="${url("/fonts/manrope-400_800.woff2")}" as="font" type="font/woff2" crossorigin>
 ${landing ? `<link rel="preload" href="${url("/img/landing/fonts/BricolageGrotesque-var.woff2")}" as="font" type="font/woff2" crossorigin>` : `<link rel="preload" href="${url("/fonts/unbounded-400_900.woff2")}" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="${url("/fonts/youngserif-400.woff2")}" as="font" type="font/woff2" crossorigin>`}
-<style>${landing ? landingCSS : CSS}</style>
+<style>${inlineCSS}</style>
 ${jsonld.map((j) => `<script type="application/ld+json">${JSON.stringify(j).replace(/</g, "\\u003c")}</script>`).join("\n")}
 </head>
 <body>
@@ -107,20 +111,21 @@ ${landing ? "" : `<header class="mast"><div class="wrap">
 <a class="wordmark" href="${url("/")}">${WORDMARK(true)}</a>
 <nav class="nav" aria-label="Main"><a class="hide-sm" href="${url("/app/")}">Open Bookish</a><a class="hide-sm" href="${url("/hosts/")}">For your club</a><a class="hide-sm" href="${url("/read-next/")}">Read next</a><a class="hide-sm" href="${url("/resources/")}">Resources</a><a class="btn-sm" href="${url("/start/")}">Bring my club</a></nav>
 </div></header>`}
-<main id="main">
+<main id="main" tabindex="-1">
 ${body}
 </main>
 ${landing ? "" : `<footer class="foot-site"><div class="wrap cols">
 <div><a class="wordmark" href="${url("/")}">${WORDMARK(false)}</a>
 <p>Your book club, just more fun. RSVPs, book hot takes, votes, and more, with cards and links to share in your group chat.</p>
 <p class="credit">Book covers and book details from <a href="https://openlibrary.org/" rel="noopener">Open Library</a>.</p></div>
-<div><p class="h">Find</p><ul><li><a href="${url("/book-clubs/")}">All cities</a></li><li><a href="${url("/read-next/")}">What to read next</a></li>${["romance", "mystery-thriller", "fantasy", "nonfiction"].filter((g) => genreTotals[g] >= 5).map((g) => `<li><a href="${url(`/genres/${g}/`)}">${GENRES[g]} clubs</a></li>`).join("")}</ul></div>
+<div><p class="h">Find</p><ul><li><a href="${url("/book-clubs/")}">All cities</a></li><li><a href="${url("/read-next/")}">What to read next</a></li><li><a href="${url("/most-recommended/")}">Most saved books</a></li>${["romance", "mystery-thriller", "fantasy", "nonfiction"].filter((g) => genreTotals[g] >= 5).map((g) => `<li><a href="${url(`/genres/${g}/`)}">${GENRES[g]} clubs</a></li>`).join("")}</ul></div>
 <div><p class="h">Your club</p><ul><li><a href="${url("/start/")}">Bring my club</a></li><li><a href="${url("/start/")}">List your club</a></li><li><a href="${url("/claim/")}">Claim your listing</a></li><li><a href="${url("/resources/")}">Resources</a></li><li><a href="${url("/press/")}">Press</a></li><li><a href="${url("/about/")}">About &amp; sources</a></li><li><a href="${url("/support/")}">Support</a></li><li><a href="${url("/privacy/")}">Privacy</a> · <a href="${url("/terms/")}">Terms</a></li></ul></div>
 </div></footer>`}
 
 <script src="${url("/discovery.js")}" defer></script>
 <script src="${url("/site.js")}" defer></script>
 ${body.includes('id="club-map"') ? `<script src="${url("/map.js")}" defer></script>` : ""}
+${body.includes('class="wrap mr"') ? `<script src="${url("/most-recommended.js")}" defer></script>` : ""}
 ${body.includes('id="rn"') ? `<script src="${url("/read-next.js")}" defer></script>` : ""}
 </body>
 </html>`;
@@ -459,6 +464,20 @@ async function loadCommunity() { return {city:[],state:[],national:[],next:[]}; 
     path: "/read-next/", body,
   }));
   page("/read-next/", 0.7);
+}
+
+// ---------- reader discovery ----------
+{
+  const snapshot = JSON.parse(fs.readFileSync(path.join(ROOT, "data/most-recommended.json"), "utf8"));
+  write("most-recommended/index.html", layout({
+    title: "Most Saved by Readers | Bookish",
+    desc: "Browse romance, romantasy, cozy mysteries, and more, with Open Library reader activity and original Bookish mood labels.",
+    path: "/most-recommended/",
+    body: renderMostRecommended(snapshot, { esc, fmt, url }),
+    extraCSS: fs.readFileSync(path.join(ROOT, "src/most-recommended.css"), "utf8"),
+  }));
+  write("most-recommended.js", fs.readFileSync(path.join(ROOT, "src/most-recommended.js"), "utf8"));
+  page("/most-recommended/", 0.7);
 }
 
 // ---------- resources ----------

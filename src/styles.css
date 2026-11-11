@@ -9,6 +9,7 @@ img{max-width:100%}
 .wrap{max-width:var(--wrap);margin:0 auto;padding:0 20px}
 .skip{position:absolute;left:-999px}.skip:focus{left:12px;top:12px;background:var(--note);color:var(--ink);padding:8px 12px;z-index:9}
 :focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+main:focus{outline:none}
 
 
 .paper,.club,.city-tile,.res,.tool,.note,.empty,.callout-card,.search,.suggest,.map-sheet,.form,.prose,.hsheet,.step,.own{color:var(--ink);background:var(--card);border-radius:var(--r);position:relative}
