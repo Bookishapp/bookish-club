@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import test from 'node:test';
 import { JSDOM } from '../app/node_modules/jsdom/lib/api.js';
+import { STORE_URLS } from './store-downloads.mjs';
 const root = new URL('../dist/', import.meta.url);
 
 test('every generated Bookish page offers working routes without launch placeholders', () => {
@@ -9,21 +10,23 @@ test('every generated Bookish page offers working routes without launch placehol
     if (!entry.endsWith('.html')) continue;
     const body = fs.readFileSync(new URL(entry, root), 'utf8');
     const content = body.replace(/<(style|script)\b[^>]*>[\s\S]*?<\/\1>/gi, '');
-    assert.equal(content.match(/coming soon|waitlist/i)?.[0] ?? null, null, entry);
+    const withoutAndroid = content.replace(/Android is coming soon\./g, '');
+    assert.equal(withoutAndroid.match(/coming soon|waitlist/i)?.[0] ?? null, null, entry);
     assert.doesNotMatch(content, /\$\d|data-checkout|stripe\.com|buy\.stripe/i, entry);
   }
   const doc = new JSDOM(fs.readFileSync(new URL('index.html', root), 'utf8')).window.document;
   assert.ok(doc.querySelector('a[href$="/app/"]'), 'landing must open the functional web app');
   const storeLinks = [...doc.querySelectorAll('a[href*="apps.apple.com"]')];
-  assert.equal(storeLinks.length, 2, 'offer the released iOS app in the hero and footer');
+  assert.equal(storeLinks.length, 2, 'homepage preserves the hero badge and shared download block');
   for (const link of storeLinks) {
     assert.equal(link.href, 'https://apps.apple.com/us/app/bookish-book-club-night/id6823470101');
     assert.equal(link.querySelector('img')?.alt, 'Download on the App Store');
   }
-  assert.ok(storeLinks[0].closest('.hero-actions'), 'download belongs next to the main action');
-  assert.ok(storeLinks[1].closest('footer'), 'download is also available in the footer');
+  assert.ok(storeLinks[0].closest('.hero-actions'), 'first download badge belongs in the hero');
+  assert.ok(storeLinks[1].closest('[data-store-downloads]'), 'second download belongs in the shared block');
+  assert.ok(doc.querySelector('[data-store-downloads] + footer'), 'download appears above the footer');
   assert.equal(doc.querySelector('meta[name="apple-itunes-app"]')?.content, 'app-id=6823470101');
-  assert.equal(doc.querySelector('a[href*="play.google.com"]'), null, 'no Android app is available');
+  assert.equal(doc.querySelector('a[href*="play.google.com"]')?.href ?? '', STORE_URLS.googlePlay, 'Android availability follows config');
 });
 
 test('deployed web app has its own bundle and all local assets resolve under its prefix', () => {
