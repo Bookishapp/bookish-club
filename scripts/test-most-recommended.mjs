@@ -11,7 +11,7 @@ test('reader discovery route preserves the frozen shelves and public evidence', 
   const doc = new JSDOM(html).window.document;
   const base = doc.documentElement.dataset.base;
   const canonical = `${process.env.SITE_URL || 'https://meetbookish.com'}/most-recommended/`;
-  assert.equal(doc.querySelector('h1').textContent.replace(/\s+/g, ' ').trim(), 'Most Recommended by Real Readers');
+  assert.equal(doc.querySelector('h1').textContent.replace(/\s+/g, ' ').trim(), 'Most Saved by Readers');
   assert.equal(doc.querySelector('link[rel=canonical]').href, canonical);
   for (const key of ['title', 'description', 'url']) assert.ok(doc.querySelector(`meta[property="og:${key}"]`).content);
   assert.equal(doc.querySelector('meta[property="og:url"]').content, canonical);

@@ -118,7 +118,7 @@ ${landing ? "" : `<footer class="foot-site"><div class="wrap cols">
 <div><a class="wordmark" href="${url("/")}">${WORDMARK(false)}</a>
 <p>Your book club, just more fun. RSVPs, book hot takes, votes, and more, with cards and links to share in your group chat.</p>
 <p class="credit">Book covers and book details from <a href="https://openlibrary.org/" rel="noopener">Open Library</a>.</p></div>
-<div><p class="h">Find</p><ul><li><a href="${url("/book-clubs/")}">All cities</a></li><li><a href="${url("/read-next/")}">What to read next</a></li><li><a href="${url("/most-recommended/")}">Most recommended books</a></li>${["romance", "mystery-thriller", "fantasy", "nonfiction"].filter((g) => genreTotals[g] >= 5).map((g) => `<li><a href="${url(`/genres/${g}/`)}">${GENRES[g]} clubs</a></li>`).join("")}</ul></div>
+<div><p class="h">Find</p><ul><li><a href="${url("/book-clubs/")}">All cities</a></li><li><a href="${url("/read-next/")}">What to read next</a></li><li><a href="${url("/most-recommended/")}">Most saved books</a></li>${["romance", "mystery-thriller", "fantasy", "nonfiction"].filter((g) => genreTotals[g] >= 5).map((g) => `<li><a href="${url(`/genres/${g}/`)}">${GENRES[g]} clubs</a></li>`).join("")}</ul></div>
 <div><p class="h">Your club</p><ul><li><a href="${url("/start/")}">Bring my club</a></li><li><a href="${url("/start/")}">List your club</a></li><li><a href="${url("/claim/")}">Claim your listing</a></li><li><a href="${url("/resources/")}">Resources</a></li><li><a href="${url("/press/")}">Press</a></li><li><a href="${url("/about/")}">About &amp; sources</a></li><li><a href="${url("/support/")}">Support</a></li><li><a href="${url("/privacy/")}">Privacy</a> · <a href="${url("/terms/")}">Terms</a></li></ul></div>
 </div></footer>`}
 
@@ -470,7 +470,7 @@ async function loadCommunity() { return {city:[],state:[],national:[],next:[]}; 
 {
   const snapshot = JSON.parse(fs.readFileSync(path.join(ROOT, "data/most-recommended.json"), "utf8"));
   write("most-recommended/index.html", layout({
-    title: "Most Recommended by Real Readers | Bookish",
+    title: "Most Saved by Readers | Bookish",
     desc: "Browse romance, romantasy, cozy mysteries, and more, with Open Library reader activity and original Bookish mood labels.",
     path: "/most-recommended/",
     body: renderMostRecommended(snapshot, { esc, fmt, url }),

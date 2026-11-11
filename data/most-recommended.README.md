@@ -1,4 +1,4 @@
-# Most Recommended snapshot
+# Most Saved by Readers snapshot
 
 `most-recommended.json` is a frozen conversion of the approved research CSV, collected November 7, 2026. It contains 128 unique Open Library works across eight editorial shelves. Every retained work has at least 50 reading-list additions. Six shelves have 20 selections each, Fantasy has 18, and Cozy Mystery has 10. Twelve works below the minimum were removed from the approved selection. Counts come from the official October 31, 2026, reading-log and ratings exports. Recent counts cover October 31, 2023, through October 31, 2026. Each exported shelf record counts once, and totals are not distinct people or verified recommendations. The JSON contains book facts, aggregates, original editorial labels, source links, scores, and catalog cover IDs.
 
