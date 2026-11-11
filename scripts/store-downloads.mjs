@@ -1,4 +1,4 @@
-// Release destinations are configured here. Keep Google Play empty until public.
+// Keep Google Play empty until public; add verified badge artwork with its launch.
 export const STORE_URLS = Object.freeze({
   appStore: 'https://apps.apple.com/us/app/bookish-book-club-night/id6823470101',
   googlePlay: '',

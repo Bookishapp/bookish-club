@@ -17,13 +17,13 @@ test('every generated Bookish page offers working routes without launch placehol
   const doc = new JSDOM(fs.readFileSync(new URL('index.html', root), 'utf8')).window.document;
   assert.ok(doc.querySelector('a[href$="/app/"]'), 'landing must open the functional web app');
   const storeLinks = [...doc.querySelectorAll('a[href*="apps.apple.com"]')];
-  assert.equal(storeLinks.length, 1, 'one official badge per layout');
+  assert.equal(storeLinks.length, 2, 'homepage preserves the hero badge and shared download block');
   for (const link of storeLinks) {
     assert.equal(link.href, 'https://apps.apple.com/us/app/bookish-book-club-night/id6823470101');
     assert.equal(link.querySelector('img')?.alt, 'Download on the App Store');
   }
-  assert.ok(doc.querySelector('.hero-actions a[href="#get-app"]'), 'hero reaches the shared app block');
-  assert.ok(storeLinks[0].closest('[data-store-downloads]'), 'download belongs in the shared block');
+  assert.ok(storeLinks[0].closest('.hero-actions'), 'first download badge belongs in the hero');
+  assert.ok(storeLinks[1].closest('[data-store-downloads]'), 'second download belongs in the shared block');
   assert.ok(doc.querySelector('[data-store-downloads] + footer'), 'download appears above the footer');
   assert.equal(doc.querySelector('meta[name="apple-itunes-app"]')?.content, 'app-id=6823470101');
   assert.equal(doc.querySelector('a[href*="play.google.com"]')?.href ?? '', STORE_URLS.googlePlay, 'Android availability follows config');
