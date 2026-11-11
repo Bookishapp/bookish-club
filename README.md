@@ -165,7 +165,7 @@ Current theme (locked 2026-10-14): palette 05 **Oxblood Reading Room** on a goua
 
 `public/img/lunair-*.webp` come from `scripts/stickers.py`. The script works on the existing cut-outs in `~/ted-screenshots/fictora-official/lunair-bible/`. It only scales them. It never mirrors, repaints or regenerates them. The Oxblood theme uses them without the white die-cut border, matching the locked renders; the soft shadow is added in CSS.
 
-- `lunair-hug`: fangirl-06, hugging a book (home hero, "Pull up a chair").
+- `lunair-hug`: fangirl-06, hugging a book (home hero, "Your book club, just more fun").
 - `lunair-gossip`: gossip-01, whispering (home "Start your own").
 - `lunair-reading`: reading-01, peeking over a book (the "Hosting a club?" card on every list page).
 - `lunair-wave`, `lunair-peek`, `lunair-shrug`: start page, empty states, 404.

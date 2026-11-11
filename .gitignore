@@ -18,3 +18,9 @@ supabase/.env
 # Python migration guard caches
 __pycache__/
 *.pyc
+
+# Android upload signing material never belongs in Git.
+*.jks
+*.keystore
+*.p12
+key.properties

@@ -1,0 +1,9 @@
+{
+  "tea-cup.png": {
+    "source": "approved-v3-1021/app-24-21-widgets.png",
+    "approvedBatch": "Bookish final: full app v3 (pin 295)",
+    "derivedBy": "app/ios/NativeParity/prepare-v3-assets.py",
+    "copiedFrom": "app/ios/App/BookishMessages/Assets.xcassets/TeaCup.imageset/TeaCup.png",
+    "use": "Approved decorative spot art, with no newly generated character artwork"
+  }
+}

@@ -1,73 +1,167 @@
 import UIKit
+import CoreText
 
 /// All extension colors, type choices, and art names live here or in Assets.xcassets.
 enum BookishTheme {
     enum TypeStyle { case title, heading, body, caption, button }
     static let stickerAssets: [(name: String, label: String)] = [
-        ("lunair-sticker-01-hi-book-club", "hi book club"),
+        ("lunair-sticker-01-hi-book-club", "Hi, book club"),
         ("lunair-sticker-02-im-in", "I'm in"),
-        ("lunair-sticker-03-see-you-thursday", "see you thursday"),
-        ("lunair-sticker-04-no-spoilers", "no spoilers"),
+        ("lunair-sticker-03-see-you-thursday", "See you Thursday"),
+        ("lunair-sticker-04-no-spoilers", "No spoilers"),
         ("lunair-sticker-05-i-cannot", "I cannot"),
-        ("lunair-sticker-06-swooning", "swooning"),
-        ("lunair-sticker-07-not-crying", "not crying"),
-        ("lunair-sticker-08-spill-it", "spill it"),
-        ("lunair-sticker-09-plot-twist", "plot twist"),
-        ("lunair-sticker-10-one-more-chapter", "one more chapter"),
-        ("lunair-sticker-11-youre-invited", "you're invited"),
-        ("lunair-sticker-12-your-turn-to-host", "your turn to host"),
-        ("lunair-sticker-13-on-my-way", "on my way"),
-        ("lunair-sticker-14-no-peeking", "no peeking")
+        ("lunair-sticker-06-swooning", "Swooning"),
+        ("lunair-sticker-07-not-crying", "Not crying"),
+        ("lunair-sticker-08-spill-it", "Spill it"),
+        ("lunair-sticker-09-plot-twist", "Plot twist"),
+        ("lunair-sticker-10-one-more-chapter", "One more chapter"),
+        ("lunair-sticker-11-youre-invited", "You're invited"),
+        ("lunair-sticker-12-your-turn-to-host", "Your turn to host"),
+        ("lunair-sticker-13-on-my-way", "On my way"),
+        ("lunair-sticker-14-no-peeking", "No peeking")
     ]
-    static var cream: UIColor { color("Paper", 0xFFF8EC) }
-    static var wine: UIColor { color("Ink", 0x6F2940) }
-    static var pink: UIColor { color("Pink", 0xF8CADB) }
-    static var butter: UIColor { color("Butter", 0xF8E7A4) }
-    static var mint: UIColor { color("Mint", 0xD2E9D9) }
-    static var sky: UIColor { color("Sky", 0xCCE5F1) }
-    static var lilac: UIColor { color("Lilac", 0xDFD2EC) }
-    private static func color(_ name: String, _ hex: UInt32) -> UIColor {
-        UIColor(named: name) ?? UIColor(red: CGFloat((hex >> 16) & 255) / 255,
-                                      green: CGFloat((hex >> 8) & 255) / 255,
-                                      blue: CGFloat(hex & 255) / 255, alpha: 1)
+    // Approved Oxblood Reading Room tokens from full-app-1016/src/base.py.
+    static var cream: UIColor { color("Paper", 0xF5EAD8) }
+    static var ink: UIColor { color("Ink", 0x2A0F15) }
+    static var wine: UIColor { hex(0x7A1A2A) }
+    static var muted: UIColor { hex(0x6B4C46) }
+    static var card: UIColor { hex(0xFFFAF1) }
+    static var green: UIColor { hex(0x1D5A46) }
+    static var deepGreen: UIColor { hex(0x133B31) }
+    static var pink: UIColor { color("Pink", 0xF4A6BF) }
+    static var butter: UIColor { hex(0xF9D865) }
+    static var mint: UIColor { color("Mint", 0xDCEBE1) }
+    static var sky: UIColor { color("Sky", 0xF3D9D9) }
+    static var lilac: UIColor { color("Lilac", 0xFBE1E8) }
+    static var line: UIColor { hex(0x4A1420).withAlphaComponent(0.14) }
+    static func hex(_ value: UInt32) -> UIColor {
+        UIColor(red: CGFloat((value >> 16) & 255) / 255,
+                green: CGFloat((value >> 8) & 255) / 255,
+                blue: CGFloat(value & 255) / 255, alpha: 1)
     }
+    private static func color(_ name: String, _ fallback: UInt32) -> UIColor {
+        UIColor(named: name) ?? hex(fallback)
+    }
+    private static let registeredFonts: Void = {
+        // Registration also supports the isolated simulator parity harness.
+        for name in ["YoungSerif-Regular", "Manrope-SemiBold", "Manrope-ExtraBold"] {
+            if let url = Bundle.main.url(forResource: name, withExtension: "ttf", subdirectory: "Fonts") {
+                CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
+            }
+        }
+    }()
     static func font(_ style: TypeStyle, scalable: Bool = true) -> UIFont {
+        _ = registeredFonts
         let size: CGFloat
         let textStyle: UIFont.TextStyle
-        let weight: UIFont.Weight
+        let name: String
         switch style {
-        case .title: size = 28; textStyle = .title1; weight = .bold
-        case .heading: size = 21; textStyle = .title3; weight = .semibold
-        case .body: size = 17; textStyle = .body; weight = .regular
-        case .caption: size = 14; textStyle = .caption1; weight = .regular
-        case .button: size = 17; textStyle = .headline; weight = .semibold
+        case .title: size = 26; textStyle = .title1; name = "YoungSerif-Regular"
+        case .heading: size = 19; textStyle = .title3; name = "YoungSerif-Regular"
+        case .body: size = 15; textStyle = .body; name = "Manrope-SemiBold"
+        case .caption: size = 12; textStyle = .caption1; name = "Manrope-SemiBold"
+        case .button: size = 15; textStyle = .headline; name = "Manrope-ExtraBold"
         }
-        let base = UIFont.systemFont(ofSize: size, weight: weight)
-        let descriptor = style == .title || style == .heading
-            ? (base.fontDescriptor.withDesign(.serif) ?? base.fontDescriptor) : base.fontDescriptor
-        let font = UIFont(descriptor: descriptor, size: size)
-        return scalable ? UIFontMetrics(forTextStyle: textStyle).scaledFont(for: font) : font
+        let base = UIFont(name: name, size: size) ?? UIFont.systemFont(ofSize: size)
+        return scalable ? UIFontMetrics(forTextStyle: textStyle).scaledFont(for: base) : base
     }
     static func transcriptFont(_ style: TypeStyle) -> UIFont {
-        let base = font(style, scalable: false)
         let size: CGFloat
         switch style {
-        case .title: size = 40
-        case .heading: size = 32
-        case .body: size = 26
-        case .caption: size = 22
-        case .button: size = 26
+        case .title: size = 38
+        case .heading: size = 31
+        case .body: size = 25
+        case .caption: size = 21
+        case .button: size = 25
         }
-        return base.withSize(size)
+        return font(style, scalable: false).withSize(size)
+    }
+    static func paperBackground(in view: UIView, oxblood: Bool = false) {
+        let paper = UIImageView(image: UIImage(named: oxblood ? "BookishOxblood" : "BookishPaper"))
+        paper.contentMode = .scaleAspectFill
+        paper.alpha = oxblood ? 1 : 0.45
+        paper.clipsToBounds = true
+        paper.isUserInteractionEnabled = false
+        paper.isAccessibilityElement = false
+        paper.translatesAutoresizingMaskIntoConstraints = false
+        view.insertSubview(paper, at: 0)
+        NSLayoutConstraint.activate([
+            paper.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            paper.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            paper.topAnchor.constraint(equalTo: view.topAnchor),
+            paper.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
     }
     static func accent(for kind: CardKind) -> UIColor {
         switch kind { case .rsvp: return pink; case .vote: return butter; case .bookmarks: return mint }
     }
     static func title(for kind: CardKind) -> String {
-        switch kind { case .rsvp: return "Club night"; case .vote: return "Our next read"; case .bookmarks: return "Our bookmarks" }
+        switch kind { case .rsvp: return "Club night"; case .vote: return "Our next read"; case .bookmarks: return "Reading together" }
     }
     static func label(for choice: RSVPChoice) -> String {
-        switch choice { case .yes: return "Yes"; case .maybe: return "Maybe"; case .cant: return "Can't" }
+        switch choice { case .yes: return "I'm in"; case .maybe: return "Maybe"; case .cant: return "Can't" }
+    }
+    /// Approved square check, drawn as native vector geometry at every display scale.
+    static func selectionMark(selected: Bool) -> UIImage {
+        UIGraphicsImageRenderer(size: CGSize(width: 24, height: 24)).image { _ in
+            let box = UIBezierPath(roundedRect: CGRect(x: 1, y: 1, width: 22, height: 22), cornerRadius: 6)
+            if selected { green.setFill(); box.fill() }
+            else { line.setStroke(); box.lineWidth = 1.5; box.stroke() }
+            if selected {
+                let tick = UIBezierPath(); tick.move(to: CGPoint(x: 6, y: 12))
+                tick.addLine(to: CGPoint(x: 10, y: 16)); tick.addLine(to: CGPoint(x: 18, y: 7))
+                tick.lineWidth = 2.5; tick.lineCapStyle = .round; tick.lineJoinStyle = .round
+                card.setStroke(); tick.stroke()
+            }
+        }
+    }
+    /// Bundled covers correspond only to the existing sample books. Unknown books stay text-only.
+    static func cover(for book: CandidateBook) -> UIImage? {
+        let classics = ["emma": "Emma", "wuthering": "Wuthering Heights", "anne": "Anne of Green Gables"]
+        if classics[book.id] == book.title {
+            let colors: [String: UInt32] = ["emma": 0xF8E1E8, "wuthering": 0xC7B2E4, "anne": 0xF49A60]
+            return UIGraphicsImageRenderer(size: CGSize(width: 100, height: 148)).image { _ in
+                hex(colors[book.id]!).setFill(); UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 100, height: 148), cornerRadius: 4).fill()
+                ink.withAlphaComponent(0.12).setFill(); UIBezierPath(rect: CGRect(x: 0, y: 0, width: 8, height: 148)).fill()
+                (book.title as NSString).draw(in: CGRect(x: 15, y: 9, width: 79, height: 76), withAttributes: [.font: font(.heading, scalable: false).withSize(book.id == "wuthering" ? 14 : 17), .foregroundColor: ink])
+                let icon = UIBezierPath()
+                if book.id == "emma" {
+                    icon.move(to: CGPoint(x: 37, y: 116)); icon.addLine(to: CGPoint(x: 61, y: 116))
+                    icon.addCurve(to: CGPoint(x: 49, y: 132), controlPoint1: CGPoint(x: 61, y: 128), controlPoint2: CGPoint(x: 57, y: 132))
+                    icon.addCurve(to: CGPoint(x: 37, y: 116), controlPoint1: CGPoint(x: 41, y: 132), controlPoint2: CGPoint(x: 37, y: 128))
+                    icon.move(to: CGPoint(x: 61, y: 118)); icon.addCurve(to: CGPoint(x: 61, y: 126), controlPoint1: CGPoint(x: 71, y: 115), controlPoint2: CGPoint(x: 71, y: 128))
+                    icon.move(to: CGPoint(x: 35, y: 136)); icon.addQuadCurve(to: CGPoint(x: 65, y: 136), controlPoint: CGPoint(x: 50, y: 140))
+                    for x in [43, 50, 57] { icon.move(to: CGPoint(x: x, y: 112)); icon.addCurve(to: CGPoint(x: x, y: 104), controlPoint1: CGPoint(x: x-3, y: 109), controlPoint2: CGPoint(x: x+3, y: 107)) }
+                } else if book.id == "wuthering" {
+                    icon.move(to: CGPoint(x: 50, y: 106)); icon.addQuadCurve(to: CGPoint(x: 64, y: 123), controlPoint: CGPoint(x: 52, y: 121))
+                    icon.addQuadCurve(to: CGPoint(x: 50, y: 140), controlPoint: CGPoint(x: 52, y: 125))
+                    icon.addQuadCurve(to: CGPoint(x: 36, y: 123), controlPoint: CGPoint(x: 48, y: 125))
+                    icon.addQuadCurve(to: CGPoint(x: 50, y: 106), controlPoint: CGPoint(x: 48, y: 121)); icon.close()
+                    butter.setFill(); icon.fill()
+                } else {
+                    icon.move(to: CGPoint(x: 35, y: 121)); icon.addLine(to: CGPoint(x: 50, y: 108)); icon.addLine(to: CGPoint(x: 65, y: 121))
+                    icon.move(to: CGPoint(x: 39, y: 118)); icon.addLine(to: CGPoint(x: 39, y: 138)); icon.addLine(to: CGPoint(x: 61, y: 138)); icon.addLine(to: CGPoint(x: 61, y: 118))
+                    icon.append(UIBezierPath(rect: CGRect(x: 47, y: 126, width: 7, height: 12)))
+                }
+                ink.setStroke(); icon.lineWidth = 1.5; icon.lineCapStyle = .round; icon.lineJoinStyle = .round; icon.stroke()
+            }
+        }
+        let assets = ["pride": ("Pride and Prejudice", "Jane Austen"),
+                      "frankenstein": ("Frankenstein", "Mary Shelley"),
+                      "jane-eyre": ("Jane Eyre", "Charlotte Brontë")]
+        guard let known = assets[book.id], known.0 == book.title, known.1 == book.author else { return nil }
+        return UIImage(named: "Cover-" + book.id)
+    }
+    /// The URL model has no calendar date. Show a known weekday, without inventing a month or day.
+    static func meetingDay(_ state: MessageState) -> String? {
+        ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+            .first { state.meetingTitle.localizedCaseInsensitiveContains($0) }.map { String($0.prefix(3)).uppercased() }
+    }
+    static func editorArt(for kind: CardKind) -> UIImage {
+        let full = art(for: kind)
+        guard let source = full.cgImage,
+              let crop = source.cropping(to: CGRect(x: 0, y: 0, width: source.width, height: Int(CGFloat(source.height) * 0.55))) else { return full }
+        return UIImage(cgImage: crop, scale: full.scale, orientation: full.imageOrientation)
     }
     static func art(for kind: CardKind) -> UIImage {
         let name: String
@@ -76,17 +170,7 @@ enum BookishTheme {
         case .vote: name = "LunairVote"
         case .bookmarks: name = "LunairBookmarks"
         }
-        if let asset = UIImage(named: name) { return asset }
-        // Drawn book placeholder. Replace the named image set with final Lunair art.
-        return UIGraphicsImageRenderer(size: CGSize(width: 200, height: 120)).image { _ in
-            accent(for: kind).setFill()
-            UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 200, height: 120), cornerRadius: 20).fill()
-            cream.setFill()
-            let book = UIBezierPath(roundedRect: CGRect(x: 44, y: 22, width: 112, height: 76), cornerRadius: 9)
-            book.fill(); wine.setStroke(); book.lineWidth = 3; book.stroke()
-            let spine = UIBezierPath(); spine.move(to: CGPoint(x: 100, y: 24)); spine.addLine(to: CGPoint(x: 100, y: 96))
-            spine.lineWidth = 3; spine.stroke()
-            pink.setFill(); UIBezierPath(rect: CGRect(x: 122, y: 23, width: 12, height: 30)).fill()
-        }
+        // All three approved cutouts are bundled in the extension asset catalog.
+        return UIImage(named: name) ?? UIImage()
     }
 }
