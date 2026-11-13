@@ -326,6 +326,11 @@
 .meeting-time-chips{display:flex;gap:6px;flex-wrap:wrap;margin:17px 0 2px}
 #detail[data-community] .meeting-time-chips button{min-height:34px;border:1px solid var(--line);border-radius:20px;font-size:10px;font-weight:800;background:var(--card);padding:8px 10px}
 #detail[data-community] .meeting-time-chips button[aria-pressed=true]{background:var(--wine);color:var(--card)}
+/* 1.1.2: new-meeting form uses v3 ink (was inherited cream and system blue), and the native date field stays inside the page */
+#detail[data-community] .calendar-heading,#detail[data-community] .calendar-heading button{color:var(--ink)}
+#detail[data-community] .meeting-time-chips button:not([aria-pressed=true]){color:var(--ink)}
+#detail[data-community] #meeting-starts{-webkit-appearance:none;appearance:none;display:block;box-sizing:border-box;width:100%;min-width:0;max-width:100%;text-align:left}
+#meeting-starts::-webkit-date-and-time-value{text-align:left}
 #detail[data-community] .invite-panel{padding:14px 0 0!important}
 #detail[data-community] .invite-panel h2,#detail[data-community] .invite-panel>p{max-width:100%}
 #detail[data-community] .invite-ticket{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin:16px 0 6px}

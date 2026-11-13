@@ -8,3 +8,10 @@
 .tabs{grid-template-columns:repeat(5,1fr)}
 .near-empty .full-empty-art{width:250px;height:296px}
 #detail[data-community] .moment-art,#detail[data-community] .request-sent .sent-art,.empty-club-art .lunair{filter:drop-shadow(3px 0 0 #fffaf1) drop-shadow(-3px 0 0 #fffaf1) drop-shadow(0 3px 0 #fffaf1) drop-shadow(0 -3px 0 #fffaf1) drop-shadow(0 8px 10px #3c0a1438)}
+/* Keep light iOS status icons legible above the full-screen paper surfaces. */
+.full-map::after,.book-detail-sheet::after,.notifications-prime::after,.public-club-detail::after{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:#571c2b;pointer-events:none;z-index:10000}
+.book-detail-sheet{padding-top:max(48px,calc(env(safe-area-inset-top,0px) + 12px))}
+.map-mode .map-toolbar{top:max(54px,calc(env(safe-area-inset-top,0px) + 12px))}
+.map-mode .map-privacy{top:max(108px,calc(env(safe-area-inset-top,0px) + 62px))}
+
+.public-club-detail .detail-head{top:max(48px,calc(env(safe-area-inset-top,0px) + 12px))}

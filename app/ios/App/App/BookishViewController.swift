@@ -3,7 +3,8 @@ import Capacitor
 import WebKit
 
 final class BookishViewController: CAPBridgeViewController {
-    override var preferredStatusBarStyle: UIStatusBarStyle { .darkContent }
+    // Dark screen backgrounds and safe-area strips keep light status icons readable.
+    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     override func capacitorDidLoad() {
         bridge?.registerPluginInstance(BookishMapPlugin())
         bridge?.registerPluginInstance(BookishMessagesPlugin())

@@ -61,6 +61,12 @@ jobs:
             xcrun simctl io "$UDID" screenshot "../screenshots/ios/$tab.png"
           done
           ls -la ../screenshots/ios
+      - name: Check light status icons over unverified club detail
+        run: |
+          SIMCTL_CHILD_BOOKISH_QA_SCRIPT="$PWD/tests/status-bar-fixture.js" xcrun simctl launch --terminate-running-process "$UDID" com.meetbookish.app
+          sleep 12
+          xcrun simctl io "$UDID" screenshot ../screenshots/ios/unverified-detail.png
+          swift tests/status-bar-contrast.swift --paper-detail ../screenshots/ios/unverified-detail.png
       - uses: actions/upload-artifact@v4
         if: always()
         with:
