@@ -3,7 +3,8 @@ import Capacitor
 import WebKit
 
 final class BookishViewController: CAPBridgeViewController {
-    override var preferredStatusBarStyle: UIStatusBarStyle { .darkContent }
+    // v3 is oxblood on every screen, so the status bar uses light content.
+    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     override func capacitorDidLoad() {
         bridge?.registerPluginInstance(BookishMapPlugin())
         bridge?.registerPluginInstance(BookishMessagesPlugin())
