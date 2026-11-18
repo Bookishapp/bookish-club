@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.meetbookish.app",
+      "sha256_cert_fingerprints": ["43:3E:DC:0E:EC:2A:E3:89:E3:79:50:48:FF:34:91:40:88:7C:DC:E8:EE:7F:2C:86:DC:C4:ED:1E:17:6C:69:16"]
+    }
+  }
+]

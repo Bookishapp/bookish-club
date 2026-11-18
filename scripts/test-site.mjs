@@ -121,3 +121,17 @@ test('root worker notes are never tracked', async () => {
   });
   assert.equal(tracked, '', 'Keep worker notes outside the repository');
 });
+
+test('Android app links: the site vouches for the Play-signed Bookish app', () => {
+  const links = JSON.parse(fs.readFileSync(new URL('.well-known/assetlinks.json', root), 'utf8'));
+  const manifest = fs.readFileSync(new URL('../app/android/app/src/main/AndroidManifest.xml', import.meta.url), 'utf8');
+  const gradle = fs.readFileSync(new URL('../app/android/app/build.gradle', import.meta.url), 'utf8');
+  const pkg = gradle.match(/applicationId\s+"([^"]+)"/)[1];
+  const entry = links.find(l => l.target?.package_name === pkg);
+  assert.ok(entry, `assetlinks.json must name ${pkg}`);
+  assert.deepEqual(entry.relation, ['delegate_permission/common.handle_all_urls']);
+  assert.equal(entry.target.namespace, 'android_app');
+  assert.ok(entry.target.sha256_cert_fingerprints.every(f => /^([0-9A-F]{2}:){31}[0-9A-F]{2}$/.test(f)));
+  assert.match(manifest, /android:autoVerify="true"/);
+  assert.match(manifest, /android:host="meetbookish\.com"/);
+});
