@@ -131,7 +131,14 @@ test('Android app links: the site vouches for the Play-signed Bookish app', () =
   assert.ok(entry, `assetlinks.json must name ${pkg}`);
   assert.deepEqual(entry.relation, ['delegate_permission/common.handle_all_urls']);
   assert.equal(entry.target.namespace, 'android_app');
-  assert.ok(entry.target.sha256_cert_fingerprints.every(f => /^([0-9A-F]{2}:){31}[0-9A-F]{2}$/.test(f)));
+  const fingerprints = entry.target.sha256_cert_fingerprints;
+  assert.ok(Array.isArray(fingerprints) && fingerprints.length > 0, 'at least one signing fingerprint');
+  assert.ok(fingerprints.every(f => /^([0-9A-F]{2}:){31}[0-9A-F]{2}$/.test(f)));
   assert.match(manifest, /android:autoVerify="true"/);
   assert.match(manifest, /android:host="meetbookish\.com"/);
+  // upload-pages-artifact v4+ drops dot folders unless told to keep them, which would silently unpublish this file.
+  const deploy = fs.readFileSync(new URL('../.github/workflows/deploy.yml', import.meta.url), 'utf8');
+  const action = deploy.match(/actions\/upload-pages-artifact@v(\d+)/);
+  assert.ok(action, 'deploy uses upload-pages-artifact');
+  assert.ok(Number(action[1]) <= 3 || /include-hidden-files:\s*true/.test(deploy), 'deploy must keep .well-known in the Pages artifact');
 });
