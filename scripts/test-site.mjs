@@ -121,3 +121,25 @@ test('root worker notes are never tracked', async () => {
   });
   assert.equal(tracked, '', 'Keep worker notes outside the repository');
 });
+
+test('Android app links: the site vouches for the Play-signed Bookish app', () => {
+  const links = JSON.parse(fs.readFileSync(new URL('.well-known/assetlinks.json', root), 'utf8'));
+  const manifest = fs.readFileSync(new URL('../app/android/app/src/main/AndroidManifest.xml', import.meta.url), 'utf8');
+  const gradle = fs.readFileSync(new URL('../app/android/app/build.gradle', import.meta.url), 'utf8');
+  const pkg = gradle.match(/applicationId\s+"([^"]+)"/)[1];
+  const entry = links.find(l => l.target?.package_name === pkg);
+  assert.ok(entry, `assetlinks.json must name ${pkg}`);
+  assert.deepEqual(entry.relation, ['delegate_permission/common.handle_all_urls']);
+  assert.equal(entry.target.namespace, 'android_app');
+  const fingerprints = entry.target.sha256_cert_fingerprints;
+  assert.ok(Array.isArray(fingerprints) && fingerprints.length > 0, 'at least one signing fingerprint');
+  assert.ok(fingerprints.every(f => /^([0-9A-F]{2}:){31}[0-9A-F]{2}$/.test(f)));
+  assert.match(manifest, /android:autoVerify="true"/);
+  assert.match(manifest, /android:host="meetbookish\.com"/);
+  // upload-pages-artifact v4 drops dot folders with no way to keep them; v5+ keeps them only with include-hidden-files.
+  const deploy = fs.readFileSync(new URL('../.github/workflows/deploy.yml', import.meta.url), 'utf8');
+  const action = deploy.match(/actions\/upload-pages-artifact@v(\d+)/);
+  assert.ok(action, 'deploy uses upload-pages-artifact');
+  const major = Number(action[1]);
+  assert.ok(major <= 3 || (major >= 5 && /include-hidden-files:\s*true/.test(deploy)), 'deploy must keep .well-known in the Pages artifact');
+});
