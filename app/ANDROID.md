@@ -46,7 +46,7 @@ Approximate-only Android location grants are sufficient for on-device city sorti
 
 ## Verified HTTPS app links
 
-The site serves `https://meetbookish.com/.well-known/assetlinks.json` from `public/.well-known/assetlinks.json`, with the Play app signing certificate SHA-256 fingerprint for `com.meetbookish.app` (copied from Play Console, App signing). Do not use the upload certificate as a substitute for Google's signing certificate. `scripts/test-site.mjs` checks the built file against the manifest and `applicationId`, and that the deploy keeps dot folders (`actions/upload-pages-artifact@v4` drops them by default).
+The site serves `https://meetbookish.com/.well-known/assetlinks.json` from `public/.well-known/assetlinks.json`, with the Play app signing certificate SHA-256 fingerprint for `com.meetbookish.app` (copied from Play Console, App signing). Do not use the upload certificate as a substitute for Google's signing certificate. `scripts/test-site.mjs` checks the built file against the manifest and `applicationId`, and that the deploy keeps dot folders (`actions/upload-pages-artifact@v4` always drops them; v5 and later keep them only with `include-hidden-files: true`).
 
 Builds installed from Play are signed with that key, so links verify for them. Local debug builds are signed differently and will not verify; test those with an explicit app-targeted Android VIEW intent, or select Bookish under Android Settings, Open supported links.
 

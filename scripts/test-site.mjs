@@ -136,9 +136,10 @@ test('Android app links: the site vouches for the Play-signed Bookish app', () =
   assert.ok(fingerprints.every(f => /^([0-9A-F]{2}:){31}[0-9A-F]{2}$/.test(f)));
   assert.match(manifest, /android:autoVerify="true"/);
   assert.match(manifest, /android:host="meetbookish\.com"/);
-  // upload-pages-artifact v4+ drops dot folders unless told to keep them, which would silently unpublish this file.
+  // upload-pages-artifact v4 drops dot folders with no way to keep them; v5+ keeps them only with include-hidden-files.
   const deploy = fs.readFileSync(new URL('../.github/workflows/deploy.yml', import.meta.url), 'utf8');
   const action = deploy.match(/actions\/upload-pages-artifact@v(\d+)/);
   assert.ok(action, 'deploy uses upload-pages-artifact');
-  assert.ok(Number(action[1]) <= 3 || /include-hidden-files:\s*true/.test(deploy), 'deploy must keep .well-known in the Pages artifact');
+  const major = Number(action[1]);
+  assert.ok(major <= 3 || (major >= 5 && /include-hidden-files:\s*true/.test(deploy)), 'deploy must keep .well-known in the Pages artifact');
 });
