@@ -2,12 +2,12 @@
   "generatedAt": "2026-11-06T01:46:49.997Z",
   "browser": "156.0.8078.80",
   "channel": "chrome",
-  "host": "Teds-Mac-mini.local",
+  "host": "Mac mini",
   "viewport": {
     "width": 390,
     "height": 844
   },
-  "source": "/Users/vahallo/ted-screenshots/bookish-club/full-app-1016",
+  "source": "external/approved-art/full-app-1016",
   "appBuild": [
     {
       "file": "index.html",

@@ -18,7 +18,7 @@ Additional native states: [empty bookmarks](actual/transcript-bookmarks-empty.pn
 
 ## Source provenance
 
-Approved palette and layout: `/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/src/base.py`, native references 38 through 42, and the October 19 reading-together override. The extension now uses paper `#f5ead8`, card `#fffaf1`, ink `#2a0f15`, wine `#7a1a2a`, mustard `#ecb74e`, pink `#f4a6bf`, and bottle green `#133b31`.
+Approved palette and layout: `external/approved-art/full-app-1016/src/base.py`, native references 38 through 42, and the October 19 reading-together override. The extension now uses paper `#f5ead8`, card `#fffaf1`, ink `#2a0f15`, wine `#7a1a2a`, mustard `#ecb74e`, pink `#f4a6bf`, and bottle green `#133b31`.
 
 Character images come only from the approved batch's `assets/lunair/b-*.png` cutouts. The native icon, wordmark, and paper are exact approved assets resized for native use. No generated replacement character or drawn placeholder is used. Sticker captions use larger Manrope type on white pills baked into each transparent PNG, and retain the exact existing labels. The interactive browser uses regular-sized native stickers in two scrolling columns, keeping both the figures and captions legible at actual phone size. Both the interactive extension and the embedded standalone BookishStickers pack use the same approved 14 sticker images and drawer icons. Existing catalog identifiers and native behavior are preserved. They retain the current 14 stickers, rather than advertising the 24 mock stickers.
 
@@ -41,7 +41,7 @@ The capture script creates and removes its own iPhone 13 Pro simulator, and its 
 
 ```sh
 python3 docs/approved-art-parity/native/prepare-assets.py \
-  /Users/vahallo/ted-screenshots/bookish-club/full-app-1016
+  external/approved-art/full-app-1016
 ```
 
 ## Verification and limits
@@ -54,13 +54,13 @@ Working sample club data remains visibly labeled as sample data. The extension s
 
 ## November 5 blocker fixes and data adaptations
 
-Screens 39 to 43 were compared again with the approved sources. Screen 43 follows decision 175, the approved screen 20 v2 reading-together shelf. The original screen 43 competitive copy is superseded. The generated native card shows member names in their existing shared order, uses the same pink bookmark ribbons for every reader, and shows `Done` for a completed bookmark without ranking readers.
+Screens 39 to 43 were compared again with the approved sources. Screen 43 follows the approved screen 20 v2 reading-together shelf. The original screen 43 competitive copy is superseded. The generated native card shows member names in their existing shared order, uses the same pink bookmark ribbons for every reader, and shows `Done` for a completed bookmark without ranking readers.
 
 The vote editor retains the existing three sample candidates and single-choice behavior. It now groups their cover rows in one card and uses the approved square selection check. The transcript uses the same real covers, compact ribbons, and a quieter heading. Bundled covers use existing catalog cover IDs for [Pride and Prejudice](https://covers.openlibrary.org/b/id/14348537-M.jpg) and [Jane Eyre](https://covers.openlibrary.org/b/id/8235363-M.jpg), plus the [Frankenstein ISBN cover](https://covers.openlibrary.org/b/isbn/9780141439471-M.jpg). Unknown or changed candidates remain text-only, so a bundled cover can never represent a different book.
 
 The v1 message payload has no date field. The RSVP calendar block therefore uses `CLUB / THU / NIGHT`, deriving `THU` from the existing meeting title. It does not invent the mockup's October 23 date. The known meeting time, reading title, meeting details, and RSVP counts remain visible, and the three RSVP pills are taller. Missing weekdays use `MEET`.
 
-Side-by-side evidence, with approved art on the left and the actual simulator review host on the right, is in `/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/39-native.png` through `43-native.png`. These compare content adaptations, and do not claim Apple's conversation chrome or exact fixture content. The selected vote state is also captured separately. Recreate the comparisons with `python3 docs/approved-art-parity/native/make-comparisons.py /Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity` in an environment with Pillow installed.
+Side-by-side evidence, with approved art on the left and the actual simulator review host on the right, is in `<local evidence folder>/parity/39-native.png` through `43-native.png`. These compare content adaptations, and do not claim Apple's conversation chrome or exact fixture content. The selected vote state is also captured separately. Recreate the comparisons with `python3 docs/approved-art-parity/native/make-comparisons.py "$BOOKISH_PARITY_OUT"` in an environment with Pillow installed.
 
 ## Required device release checklist
 

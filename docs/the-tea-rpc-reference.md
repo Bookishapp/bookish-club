@@ -1,6 +1,6 @@
 # Bookish 1.1.1 Server RPC Reference
 
-All screen RPCs execute with the signed-in reader's bearer session. Never use the service role in app or iMessage code. UUIDs below are resource IDs, not access tokens. SQL parameter names are the PostgREST JSON keys. New migrations extend the staged `supabase/sql/001` through `011` baseline and must be reviewed and applied separately by the release operator. This PR does not apply them. Before apply, Ted must run `supabase/checks/bookish-tea-preflight.sql` and review the counts. The migrations preserve original take fields and reactions in the private, RLS-protected `tea_migration_backup_20261105` table. Ted owns restoration, retention, and eventual removal of that snapshot.
+All screen RPCs execute with the signed-in reader's bearer session. Never use the service role in app or iMessage code. UUIDs below are resource IDs, not access tokens. SQL parameter names are the PostgREST JSON keys. New migrations extend the staged `supabase/sql/001` through `011` baseline and must be reviewed and applied separately by the release operator. This PR does not apply them. Before apply, the database owner must run `supabase/checks/bookish-tea-preflight.sql` and review the counts. The migrations preserve original take fields and reactions in the private, RLS-protected `tea_migration_backup_20261105` table. The database owner is responsible for restoration, retention, and eventual removal of that snapshot.
 
 ## The Tea
 
@@ -56,11 +56,11 @@ Only the service role can call `bookish_claim_reminders()`, `bookish_prepare_rem
 
 ## Approved Screen Sources
 
-Reviewed `/Users/vahallo/biz/bookish/design/APPROVED-ART.md`, the HTML sources for 18, 19, 24, 33, 41, 42, and 44 under `full-app-1016/html`, and the approved v2 renderings from Ted Board:
+Reviewed `external/approved-art/APPROVED-ART.md`, the HTML sources for 18, 19, 24, 33, 41, 42, and 44 under `full-app-1016/html`, and the approved v2 renderings from the design review:
 
-- 17 The Tea: `de28115a-a436-4b5b-b396-ed89ca0e3ed2`.
-- 20 Reading Together: `5349d0d2-c210-47ad-8146-f98b6a6c69b2`.
-- 21 Log My Page: `e4ba9d05-d3ef-4f3d-a1a4-6635954bc1cd`.
-- 28 Notifications: `1d3ed44e-11f9-4844-9af5-6e6f1f33cd34`.
+- 17 The Tea.
+- 20 Reading Together.
+- 21 Log My Page.
+- 28 Notifications.
 
 The ticket overrides older Signed choices, reaction categories, reveal-on-tap hints, and competitive language in the art. This server exposes anonymous takes, one sip, strict page gates, and communal shared reading.

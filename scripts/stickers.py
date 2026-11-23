@@ -7,7 +7,8 @@ Usage: python3 scripts/stickers.py
 import os
 from PIL import Image, ImageFilter
 
-SRC = os.path.expanduser("~/ted-screenshots/fictora-official/lunair-bible")
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SRC = os.path.expanduser(os.environ.get("BOOKISH_LUNAIR_SOURCE", os.path.join(ROOT, ".cache", "approved-art", "lunair-bible")))
 OUT = os.path.join(os.path.dirname(__file__), "..", "public", "img")
 JOBS = [  # (source, output name, [target heights])
     ("expressions/fangirl/fangirl-06-hugging-a-book-tightly-ecstatic.webp", "lunair-hug", [300, 600]),

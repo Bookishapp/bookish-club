@@ -1,6 +1,6 @@
 # Bookish app icon
 
-Sebastian selected `round3/11a-bubble.png` on October 15, 2026. The original
+The app icon uses `round3/11a-bubble.png`. The original
 1024 x 1024 RGB PNG is checked in at `../assets/icon-only.png`, the Capacitor
 asset source. It has no alpha channel and must remain opaque.
 

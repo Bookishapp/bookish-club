@@ -26,7 +26,7 @@ function fixture(outcomes, options = {}) {
   const attempts = [], completed = [], logs = [];
   const deps = {
     secret: async () => secret, apiKey: async () => 'fixture-api-key',
-    forwardTo: async () => 'hello@getkres.com', now: () => timestamp * 1000,
+    forwardTo: async () => 'forward@example.test', now: () => timestamp * 1000,
     begin: async () => options.expired ? 'expired' : completed.length ? 'done' : 'send',
     complete: async emailId => { completed.push(emailId); },
     logError: message => { logs.push(message); },
@@ -70,7 +70,7 @@ test('two permanent rejections send a plain-text notice with the original messag
   const notice = f.attempts[2];
   assert.equal(notice.key, `bookish-inbound/${id}/notice`);
   assert.equal(notice.payload.from, 'Bookish Inbox <inbox@meetbookish.com>');
-  assert.deepEqual(notice.payload.to, ['hello@getkres.com']);
+  assert.deepEqual(notice.payload.to, ['forward@example.test']);
   assert.equal(notice.payload.subject, '[Bookish] Inbound delivery notice');
   assert.equal(notice.payload.reply_to, undefined);
   assert.equal(notice.payload.html, undefined);

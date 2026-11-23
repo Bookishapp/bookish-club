@@ -32,7 +32,7 @@ function fixture(overrides = {}) {
   const calls = [], sent = [], completed = new Set();
   const deps = {
     secret: async () => secret, apiKey: async () => 'fixture-api-key',
-    forwardTo: async () => 'hello@getkres.com', now: () => timestamp * 1000,
+    forwardTo: async () => 'forward@example.test', now: () => timestamp * 1000,
     begin: async emailId => { calls.push(['begin', emailId]); return completed.has(emailId) ? 'done' : 'send'; },
     complete: async emailId => { calls.push(['complete', emailId]); completed.add(emailId); },
     fetcher: async (url, options = {}) => {
@@ -88,7 +88,7 @@ test('forwards fetched text and HTML with original reply address, recipients, su
   const { handler, calls, sent } = fixture();
   assert.equal((await handler(request())).status, 200);
   assert.deepEqual(sent[0], {
-    from: 'Bookish Inbox <inbox@meetbookish.com>', to: ['hello@getkres.com'],
+    from: 'Bookish Inbox <inbox@meetbookish.com>', to: ['forward@example.test'],
     reply_to: 'reader@example.test', subject: '[Bookish] A book question',
     text: 'From: Reader <reader@example.test> To: hello@meetbookish.com, help@meetbookish.com\n\nOriginal text',
     html: '<p>From: Reader &lt;reader@example.test&gt; To: hello@meetbookish.com, help@meetbookish.com</p>\n<p>Original HTML</p>',
@@ -100,7 +100,7 @@ test('forwards fetched text and HTML with original reply address, recipients, su
 });
 
 test('drops own-domain, subdomain, and forward-target senders case-insensitively', async () => {
-  for (const from of ['Bookish <INBOX@MEETBOOKISH.COM>', 'test@send.meetbookish.com', 'Sebastian <HELLO@GETKRES.COM>']) {
+  for (const from of ['Bookish <INBOX@MEETBOOKISH.COM>', 'test@send.meetbookish.com', 'Owner <FORWARD@EXAMPLE.TEST>']) {
     const { handler, calls, sent } = fixture({
       fetcher: async () => Response.json({ ...email, from }),
     });
@@ -285,7 +285,7 @@ test('a lost completion marker retries the identical provider request before rec
 
 test('deployed entrypoint reads allowed inbound secrets and wires service RPCs to the received ID', async () => {
   const base = fixture(), reads = [], rpc = [];
-  const env = { RESEND_INBOUND_WEBHOOK_SECRET: secret, RESEND_API_KEY: 'fixture-api-key', BOOKISH_INBOX_FORWARD_TO: 'hello@getkres.com' };
+  const env = { RESEND_INBOUND_WEBHOOK_SECRET: secret, RESEND_API_KEY: 'fixture-api-key', BOOKISH_INBOX_FORWARD_TO: 'forward@example.test' };
   const reader = createSecretReader({ env: name => { reads.push(name); return env[name]; }, fetcher: () => assert.fail('Environment configuration must avoid Vault') });
   let handler;
   const source = await readFile(new URL('../../supabase/functions/bookish-inbound/index.ts', import.meta.url), 'utf8');
@@ -305,7 +305,7 @@ test('deployed entrypoint reads allowed inbound secrets and wires service RPCs t
     { name: 'bookish_inbound_begin', args: { p_email_id: id } },
     { name: 'bookish_inbound_complete', args: { p_email_id: id } },
   ]);
-  assert.equal(base.sent[0].to[0], 'hello@getkres.com');
+  assert.equal(base.sent[0].to[0], 'forward@example.test');
 });
 
 test('forwards Bcc-only and Cc deliveries using the original Bookish recipient', async () => {

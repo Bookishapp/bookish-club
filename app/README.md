@@ -51,7 +51,7 @@ npm run test:ui          # shipped bundle in a DOM + mocked native bridge
 npm run check:release    # major-7 packages, lockfile and real icon required
 ```
 
-See [RESULT.md](../RESULT.md) for tested behavior and environment limitations, and
+See [backend reference](../docs/backend-reference.md) for tested behavior and environment limitations, and
 [CODEMAGIC.md](CODEMAGIC.md) for the draft TestFlight pipeline.
 
 

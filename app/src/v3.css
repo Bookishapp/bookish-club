@@ -1,4 +1,4 @@
-/* Bookish final full app v3, pin 295. Approved art sets presentation. */
+/* Bookish final full app v3. Approved art sets presentation. */
 :root{--title:Georgia,'Times New Roman',serif;--card:#f3dfab;--paper:#f2dfac;--ink:#2d231b;--mut:#64564a;--radius-card:12px;--paper-glow:none;--on-dark:#fff4dd;--on-dark-2:#ecd8c6}
 html,body{background:#571c2b;color:var(--on-dark)}
 body{background:var(--wine-texture) center/cover fixed}

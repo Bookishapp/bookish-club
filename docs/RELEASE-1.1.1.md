@@ -6,7 +6,7 @@ Includes PRs #36, #38, #39, #40, #41, #42, and #43. The release branch starts fr
 
 All iOS targets use 1.1.1 (7). App Store Connect read-only inspection found maximum build 6. The widget now matches the iPhone-only containing app. Android uses 1.1.1 (2), minimum API 24, and target API 36.
 
-## Backend handoff for Ted
+## Backend deployment
 
 Target only hosted Bookish project `tkrsrnlasinmlftkcufi`. Existing foundation SQL 001 through 011 is a prerequisite. Review `supabase/checks/bookish-tea-preflight.sql` and back up the relevant production data first. Apply each currently absent file once, in this exact order:
 

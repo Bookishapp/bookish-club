@@ -1,6 +1,6 @@
 """Build the Oxblood Reading Room theme assets in public/ (fonts, gouache
 backgrounds, paper grain, props). Sources are the locked colour pass r2
-(~/ted-screenshots/bookish-club/color-1014-r2). Lunair art comes from
+in .cache/approved-art/color-1014-r2/assets, or BOOKISH_THEME_SOURCE. Lunair art comes from
 scripts/stickers.py; the wordmark from scripts/wordmark.mjs.
 Usage: python3 scripts/theme-assets.py   (needs Pillow + numpy)
 """
@@ -8,7 +8,8 @@ import os, shutil
 import numpy as np
 from PIL import Image
 
-R2 = os.path.expanduser("~/ted-screenshots/bookish-club/color-1014-r2/assets")
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+R2 = os.path.expanduser(os.environ.get("BOOKISH_THEME_SOURCE", os.path.join(ROOT, ".cache", "approved-art", "color-1014-r2", "assets")))
 PUB = os.path.join(os.path.dirname(__file__), "..", "public")
 FONTS = ["Unbounded-400_900.woff2", "YoungSerif-400.woff2", "Manrope-400_800.woff2"]
 PROPS = ["prop-sun-240.webp", "prop-daisy-240.webp", "prop-washi2-240.webp", "prop-washi3-240.webp"]

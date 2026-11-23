@@ -16,4 +16,4 @@ Actual RSVP card and editor in the native review host. Apple’s host, incoming 
 
 Additional actual native states: [transcript rsvp](../native/actual/transcript-rsvp.png), [editor rsvp](../native/actual/editor-rsvp.png), [transcript rsvp long](../native/actual/transcript-rsvp-long.png).
 
-Original source: `/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/42-imessage-rsvp.html`.
+Original source: `external/approved-art/full-app-1016/html/42-imessage-rsvp.html`.

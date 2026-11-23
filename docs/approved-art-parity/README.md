@@ -31,3 +31,7 @@ node app/scripts/capture-parity.mjs
 ```
 
 Set `PLAYWRIGHT_MODULE` to an installed Playwright module if needed, and `BOOKISH_APPROVED_SOURCE` if the approved source directory differs. The capture script uses the installed Google Chrome channel. Native capture prerequisites and commands are documented in the native report.
+
+## Historical source labels
+
+Paths beginning with `external/approved-art/` and `<local evidence folder>/` identify historical sources retained outside this repository. They are provenance labels, rather than repository links. Historical capture, source, and build hashes are preserved. Configure local reference and evidence directories as described in [portable capture configuration](../../app/ios/NativeParity/README.md#portable-capture-configuration).
