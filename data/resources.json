@@ -26,6 +26,7 @@
 
     { "id": "hosting-tips", "category": "host", "title": "How to host a book club that lasts", "blurb": "Our short guide: picking books, setting the rhythm, keeping the talk going and welcoming new faces.", "url": "/resources/hosting-tips/", "internal": true, "affiliate_url": null, "featured": true, "label": null, "sponsored": false, "status": "live" },
     { "id": "pairings", "category": "host", "title": "Snack and wine pairings by genre", "blurb": "Easy themed menus for mystery nights, romance picks, fantasy epics and more.", "url": "/resources/pairings/", "internal": true, "affiliate_url": null, "featured": false, "label": null, "sponsored": false, "status": "live" },
+    { "id": "book-club-night-ideas", "category": "host", "title": "Book club night ideas for any book", "blurb": "Openers, games, themed nights, and food ideas that work with any book.", "url": "/resources/book-club-night-ideas/", "internal": true, "affiliate_url": null, "featured": false, "label": null, "sponsored": false, "status": "live" },
     { "id": "slot-host-1", "category": "host", "title": "", "blurb": "", "url": "", "affiliate_url": null, "featured": false, "label": "Sponsored", "sponsored": true, "status": "slot" },
 
     { "id": "printables", "category": "printables", "title": "Printable bookmarks and RSVP cards", "blurb": "Fill in your club's next date and book, print at home, cut along the lines.", "url": "/resources/printables/", "internal": true, "affiliate_url": null, "featured": false, "label": null, "sponsored": false, "status": "live" },

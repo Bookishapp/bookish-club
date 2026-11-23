@@ -520,7 +520,7 @@ ${R.categories.map(([id, name, intro]) => {
 <h2>Pick books people can actually finish</h2>
 <p>Under 400 pages is a kind default. Alternate heavier picks with lighter ones, and check that the book is easy to borrow from the library. Choose the next two books ahead of time so people can start early.</p>
 <h2>Have three questions ready</h2>
-<p>You don't need a guide, just a way in: What surprised you? Who did you trust, and when did that change? What would you have done differently? Free guides on our <a href="${url("/resources/")}">resources page</a> help with harder books.</p>
+<p>You don't need a guide, just a way in: What surprised you? Who did you trust, and when did that change? What would you have done differently? Free guides on our <a href="${url("/resources/")}">resources page</a> help with harder books. Stuck for a format? Try our <a href="${url("/resources/book-club-night-ideas/")}">book club night ideas</a>.</p>
 <h2>Let people come unfinished</h2>
 <p>Say it out loud: come even if you didn't finish. Agree on how spoilers work (most clubs talk about the whole book). People who feel welcome half-read come back fully read.</p>
 <h2>Keep the group a good size</h2>
@@ -544,6 +544,75 @@ ${R.categories.map(([id, name, intro]) => {
 <h2>Nonfiction &amp; memoir</h2>
 <p>Whatever the author would eat. If the book is set somewhere specific, order from a restaurant from that region.</p>
 <p class="small">Always have a good non-alcoholic option, and drink responsibly.</p>`);
+
+  // ---------- search page: book club night ideas ----------
+  {
+    const p = "/resources/book-club-night-ideas/";
+    const h = "Book club night ideas <em>for any book</em>";
+    const title = "Book Club Night Ideas: Openers, Games, and Themes | Bookish";
+    const desc = "Book club night ideas for any book: easy openers, discussion formats, themed nights, food and drink, games, and simple ways to keep your club going.";
+    const cr = [["Home", "/"], ["Resources", "/resources/"], ["Book club night ideas", null]];
+    const faq = [
+      ["How long should a book club night be?", "Two to three hours is typical: about half an hour to arrive and eat, an hour or so on the book, and a little time to plan the next meeting. Keep the book talk in the middle of the night, when everyone has arrived and nobody is leaving yet."],
+      ["What if half the club didn't finish the book?", "Agree on spoilers before you start. Many clubs talk about the whole book and let unfinished readers decide whether to stay for the ending. Ideas that don't depend on the ending, like the one-word verdict or the casting call, keep everyone in the conversation."],
+      ["How many people make a good book club night?", "Six to twelve is a comfortable size for one conversation. With more than that, split into small tables for part of the night so everyone gets a turn to talk."],
+    ];
+    const html = `
+<p class="lede">A good book club night is mostly the people, plus one or two small ideas that get everyone talking. Here are ideas you can use tonight, whatever the book and whoever finished it.</p>
+<h2>Ways to open the night</h2>
+<p>The first ten minutes set the tone, and nobody wants to go first. Give everyone something small and easy to say.</p>
+<ul>
+<li><strong>The one-word verdict.</strong> Everyone sums up the book in a single word, no explaining yet. The words that don't match are where the conversation starts.</li>
+<li><strong>Stars on three.</strong> On three, everyone holds up one to five fingers at once, so nobody anchors on the loudest reader. Then ask whoever is furthest from the middle to go first.</li>
+<li><strong>Where you read it.</strong> The bath, the bus, a waiting room, the last ten minutes before bed. It's an easy warm-up, and everyone has an answer.</li>
+<li><strong>The dog-eared page.</strong> Ask everyone to bring one page they marked, folded, or photographed, and to say in a sentence or two why it stuck.</li>
+</ul>
+<h2>Discussion formats that keep everyone talking</h2>
+<p>An open discussion is lovely when it flows. When it stalls, a little structure helps the quieter members get a word in.</p>
+<ul>
+<li><strong>The question jar.</strong> A few days before, ask each member to text you one question about the book. Fold them into a jar and pull one out whenever the room goes quiet. People tend to answer a friend's question more honestly than one from a printed guide.</li>
+<li><strong>Put a character on trial.</strong> Pick whoever the group argued about most. One person defends, one prosecutes, and everyone else is the jury. Ten minutes, then a vote.</li>
+<li><strong>The hot seat.</strong> A volunteer answers questions in a character's voice for five minutes, then hands the seat to someone else.</li>
+<li><strong>The casting call.</strong> If the book became a movie, who plays whom? Arguing over it shows you how everyone pictured them.</li>
+</ul>
+<h2>Themed nights</h2>
+<p>Borrow one thing from the book's setting: the food, the music, or the weather. A playlist from the right decade, or candles for a gloomy book, does more than decorations. If people want to dress up, ask for one detail, a hat or a scarf, and guess who everyone came as.</p>
+<p>Once a year, skip the assigned book. Everyone wraps a book they love in plain paper, writes three words on the front, and swaps at random. December suits it, and so does the month after a heavy pick.</p>
+<h2>Food and drink</h2>
+<p>If a meal shows up in the book, make the simple version. If not, cook something from where the book is set. Give the potluck a prompt instead of "bring a snack," and keep it to food that needs no forks. One drink named after the book, with a non-alcoholic version in the same color, is plenty.</p>
+<p>For menus by genre, see our <a href="${url("/resources/pairings/")}">snack and wine pairings</a>.</p>
+<h2>Games that work with any book</h2>
+<ul>
+<li><strong>Book club bingo.</strong> Make cards with squares like "someone cried," "saw the twist coming," "the dog was the best character," and "someone admits they skimmed." Mark them off as the night goes, and read the best squares aloud at the end.</li>
+<li><strong>Guess who wrote it.</strong> Everyone writes their favorite moment on a slip of paper, no names. Read them out one at a time and guess whose is whose.</li>
+<li><strong>Sketch the scene.</strong> Any drawing game works if every drawing has to be a scene from the book. Terrible drawings are encouraged.</li>
+<li><strong>Would you rather.</strong> Write a few questions set in the book's world: live in this setting or the last book's, be friends with the hero or the villain. They take five minutes to write, and anyone can play, finished or not.</li>
+</ul>
+<h2>Keep the club going</h2>
+<ul>
+<li><strong>Set the next date before anyone leaves.</strong> The easiest time to plan the next night is while everyone is still in the room. Settle a date, a host, and a short list of books before the dishes.</li>
+<li><strong>Vote on the next book.</strong> Three options, no more. Any more and the thread goes on for a week. If your club already plans in a group text, Bookish keeps the date, the RSVPs, and the next-book vote in one place, with a card you can drop into that chat. It's free for iPhone on the <a href="#get-app">App Store</a>.</li>
+<li><strong>Start a tradition.</strong> A shared notebook where each host writes one line about the night, a jar of past picks, or a photo of the group with every book.</li>
+<li><strong>Welcome the unfinished.</strong> Put it in every invite: come even if you didn't finish. The person who shows up half-read this month is often the one with the most to say next month.</li>
+</ul>
+<p>For the longer view, read <a href="${url("/resources/hosting-tips/")}">how to host a book club that lasts</a>, or print our free <a href="${url("/resources/printables/")}">bookmarks and RSVP cards</a>.</p>
+<h2>Quick answers</h2>
+${faq.map(([q, a]) => `<h3>${esc(q)}</h3>\n<p>${esc(a)}</p>`).join("\n")}`;
+    const articleLd = {
+      "@context": "https://schema.org", "@type": "Article",
+      headline: "Book club night ideas for any book", description: desc,
+      mainEntityOfPage: abs(p),
+      datePublished: "2026-11-24",
+      author: { "@type": "Organization", name: "Bookish", url: abs("/") },
+      publisher: { "@type": "Organization", name: "Bookish", url: abs("/") },
+    };
+    const faqLd = {
+      "@context": "https://schema.org", "@type": "FAQPage",
+      mainEntity: faq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })),
+    };
+    write(`${p.slice(1)}index.html`, layout({ title, desc, path: p, jsonld: [crumbsLd(cr), articleLd, faqLd], body: `<div class="wrap">${crumbs(cr)}<header class="page-head"><p class="eyebrow">Resources</p><h1>${h}</h1></header><section class="prose">${html}<p><a href="${url("/resources/")}">← All resources</a></p></section></div>${hostCallout()}` }));
+    page(p, 0.6);
+  }
 
   // printables (print-optimised)
   const bm = Array.from({ length: 4 }, () => `<div class="bm"><div class="pw"><img src="${url("/img/wordmark-320.webp")}" width="120" height="47" alt="Bookish"></div><p class="pl">Our next book</p><span class="ln"></span><span class="ln"></span><p class="pl">Meeting</p><span class="ln"></span><p class="pl">Where</p><span class="ln"></span><p class="pq">"Come even if you didn't finish."</p></div>`).join("");
