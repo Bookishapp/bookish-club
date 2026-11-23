@@ -1,6 +1,6 @@
 # Verification record
 
-Verified on November 5, 2026, on `Teds-Mac-mini.local`, using Xcode 27.1, Google Chrome 156, and iOS Simulator. UTC capture timestamps fall on November 6.
+Verified on November 5, 2026, on `Mac mini`, using Xcode 27.1, Google Chrome 156, and iOS Simulator. UTC capture timestamps fall on November 6.
 
 | Check | Result |
 | --- | --- |

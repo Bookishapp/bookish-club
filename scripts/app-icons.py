@@ -1,4 +1,4 @@
-"""Regenerate native and web icons from Sebastian's selected 11a artwork.
+"""Regenerate native and web icons from the selected 11a artwork.
 
 Run with Python 3 and Pillow: python3 scripts/app-icons.py
 The checked-in outputs let web and release builds run without Pillow.

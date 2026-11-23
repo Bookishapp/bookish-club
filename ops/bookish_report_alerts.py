@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Poll Bookish safety reports on the Mac mini, and create one Ted card per report."""
+"""Poll Bookish safety reports on the Mac mini, and create one moderation alert per report."""
 import argparse
 import fcntl
 import json

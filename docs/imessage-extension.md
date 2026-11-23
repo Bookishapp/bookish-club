@@ -149,7 +149,7 @@ Known revisions are merged per participant within the current extension process 
 
 Sample data is deliberately labeled `Sample Bookish club`, with no seeded member responses. The host has no App Group entitlement or shared native club snapshot, so there is no data bridge to enable yet. `ClubDataStore.swift` is the narrow future integration point. No App Group identifier or entitlement has been invented.
 
-## Theme and art handoff
+## Theme and art reference
 
 `BookishMessages/BookishTheme.swift` owns every font choice, palette reference, and illustration asset name. The `Paper`, `Ink`, `Pink`, `Butter`, `Mint`, `Sky`, and `Lilac` color sets in `BookishMessages/Assets.xcassets` own the replaceable colors. Add approved art to the empty `LunairRSVP`, `LunairVote`, and `LunairBookmarks` image sets using those exact names. The neutral drawn-book fallback disappears automatically when a named image is present. These are placeholders, not final Lunair mascot art.
 

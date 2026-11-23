@@ -1,6 +1,6 @@
 # Approved v3 verification
 
-Implemented against October 21, Bookish final: full app v3, pin 295, all 26 approved images. All 24 app surfaces are implemented. The Notes and checker cards remain source documentation. The website landing and separate tagline sweep are outside this branch.
+Implemented against October 21, Bookish final: full app v3, all 26 approved images. All 24 app surfaces are implemented. The design notes remain source documentation. The website landing and separate tagline sweep are outside this branch.
 
 The app uses approved oxblood texture, cream paper, green actions, serif hierarchy, four club sections, existing approved Lunair poses, distinct approved cover motifs, ribbon bookmarks, illustrated bring items, and dedicated menu, privacy, rating, shelf, recommendations, and widgets surfaces. Existing host, auth, legal, safety, discovery, saved-content, reminder, sharing, and Messages flows remain accessible.
 
@@ -37,7 +37,7 @@ All 24 surfaces have approved-left and built-right comparisons at 390 by 844 per
 
 ## Data and release boundary
 
-This branch adds `supabase/migrations/20261106000100_bookish_library.sql`. Apply it only after the existing numbered 001 through 011 foundation and the three November 5 Tea, hosting, and reminder migrations. SQL is committed for Ted to apply. No hosted SQL, merge, or deployment was performed.
+This branch adds `supabase/migrations/20261106000100_bookish_library.sql`. Apply it only after the existing numbered 001 through 011 foundation and the three November 5 Tea, hosting, and reminder migrations. SQL is committed for the database owner to review and apply. No hosted SQL, merge, or deployment was performed.
 
 Personal hearts remain private, aggregates need five opted-in raters, recommendations need qualifying independent clubs, and anonymous rating moderation does not reveal authors through roster changes. Missing evidence produces honest empty states.
 

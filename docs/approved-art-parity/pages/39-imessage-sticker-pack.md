@@ -2,7 +2,7 @@
 
 # 39. imessage sticker pack
 
-Oct 18 batch reference; individual approval not recorded in decisions 111-143.
+Oct 18 batch reference; individual approval not recorded in the reference catalog.
 
 **Rebuilt and inspected, native review host (prior score 6/10)**
 

@@ -11,12 +11,12 @@
 -- PRIVACY FLOOR: the ONE place the community threshold lives.
 -- A community stat ("clubs near you loved this", "N clubs went here next") is
 -- shown or used only when at least this many distinct clubs are behind it.
--- Sebastian 10-15: 3 for launch. TODO: raise to 5 once there are enough active
+-- Use 3 for launch. TODO: raise to 5 once there are enough active
 -- clubs (the original spec's k=5); every view below reads this function.
 create or replace function public.bookish_privacy_floor() returns int
   language sql immutable parallel safe as $$ select 3 $$;
 comment on function public.bookish_privacy_floor() is
-  'Min distinct clubs behind any community stat. 3 at launch; raise to 5 later (Sebastian 10-15).';
+  'Min distinct clubs behind any community stat. 3 at launch; raise to 5 later.';
 
 -- ---------------------------------------------------------------------------
 -- Catalog (Open Library metadata + Bookish mood tags). Mirrors data/books.json.

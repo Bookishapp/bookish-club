@@ -78,7 +78,7 @@ Use the Supabase public key plus the signed-in reader's bearer token. Never embe
 
 ### Auth and account
 
-- Auth onboarding is gated pending a trusted Bookish signup path that creates a new Auth identity with `raw_app_meta_data.app = "bookish"` at creation. Direct shared-project Apple and email OTP signup cannot create a usable Bookish account because they do not set trusted app metadata. A Fictora identity must never be upgraded or reused for Bookish. Sebastian must move Bookish to a separate Supabase project before the native signup flow ships.
+- Auth onboarding is gated pending a trusted Bookish signup path that creates a new Auth identity with `raw_app_meta_data.app = "bookish"` at creation. Direct shared-project Apple and email OTP signup cannot create a usable Bookish account because they do not set trusted app metadata. A Fictora identity must never be upgraded or reused for Bookish. The database owner must move Bookish to a separate Supabase project before the native signup flow ships.
 - `GET /functions/v1/bookish-house-rules`: published contact, terms/privacy URLs, terms version, 18+ minimum, and acceptance/report copy. Returns 503 until policy URLs and contact are configured.
 - `bookish_accept_terms(p_version text, p_adult boolean) -> void`: current version `2026-10-15`; must accept before creating/joining a club or posting/reacting.
 - `bookish_my_account() -> JSON`: own profile plus acceptance status.

@@ -2,11 +2,11 @@
 
 53 actual app captures through the working UI in Google Chrome. The normal viewport is 390 by 844, with additional 320 by 844 stress cases. Capture run: complete. Visual scores below are the November 5 review baseline. Inspected statuses record manual visual review and documented data adaptations, and do not assign a new parity score.
 
-References from the 47-screen batch and actual existing app surfaces are shown side by side. Individual approval receipts are recorded for 33 original screens and eight v2 overrides. Other source screens are labeled as references. All 34 flagged existing surfaces were rebuilt and visually inspected, with data adaptations documented. The full 47-reference catalog also includes excluded, unimplemented concepts, which remain marked absent. Exact pixel parity is not claimed.
+References from the 47-screen batch and actual existing app surfaces are shown side by side. The screen reference catalog covers 33 original screens and eight v2 overrides. Other source screens are labeled as references. All 34 flagged existing surfaces were rebuilt and visually inspected, with data adaptations documented. The full 47-reference catalog also includes excluded, unimplemented concepts, which remain marked absent. Exact pixel parity is not claimed.
 
-Captured 2026-11-06T08:02:01.562Z, using Chrome 156.0.8078.81 on Teds-Mac-mini.local.
+Captured 2026-11-06T08:02:01.562Z, using Chrome 156.0.8078.81 on Mac mini.
 
-[Capture manifest and checks](manifest.json), 34 inspected side-by-side PNG hashes: `<local evidence folder>/parity/side-by-side-manifest.json`, [individual approval receipts](approved/approval-receipts.json), [v2 provenance](approved/v2-sources.json), [additional loading and resource states](pages/additional-states.md), [native evidence and limitations](native/README.md), [native image dimensions and hashes](native/capture-manifest.json), and [HTML comparison index](index.html).
+[Capture manifest and checks](manifest.json), 34 inspected side-by-side PNG hashes: `<local evidence folder>/parity/side-by-side-manifest.json`, [screen reference catalog](approved/approval-receipts.json), [v2 reference catalog](approved/v2-sources.json), [additional loading and resource states](pages/additional-states.md), [native evidence and limitations](native/README.md), [native image dimensions and hashes](native/capture-manifest.json), and [HTML comparison index](index.html).
 
 | Source screen | Status | Actual existing app coverage |
 | --- | --- | --- |

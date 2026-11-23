@@ -8,7 +8,7 @@ import fs from "node:fs"; import os from "node:os"; import path from "node:path"
 const PW = process.env.PLAYWRIGHT || "/tmp/wcdprobe/node_modules/playwright/index.mjs";
 const { chromium } = await import(PW);
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
-const FONTS = path.join(os.homedir(), "ted-screenshots/bookish-club/color-1014-r2/assets/fonts");
+const FONTS = process.env.BOOKISH_WORDMARK_FONTS || path.join(ROOT, ".cache", "approved-art", "color-1014-r2", "assets", "fonts");
 const OUT = path.join(ROOT, "public/img/bookish-wordmark.png");
 
 // Oxblood wm: outer = die-cut shadow, key = pink keyline, bubble = "ish" speech bubble

@@ -54,7 +54,7 @@ Working sample club data remains visibly labeled as sample data. The extension s
 
 ## November 5 blocker fixes and data adaptations
 
-Screens 39 to 43 were compared again with the approved sources. Screen 43 follows decision 175, the approved screen 20 v2 reading-together shelf. The original screen 43 competitive copy is superseded. The generated native card shows member names in their existing shared order, uses the same pink bookmark ribbons for every reader, and shows `Done` for a completed bookmark without ranking readers.
+Screens 39 to 43 were compared again with the approved sources. Screen 43 follows the approved screen 20 v2 reading-together shelf. The original screen 43 competitive copy is superseded. The generated native card shows member names in their existing shared order, uses the same pink bookmark ribbons for every reader, and shows `Done` for a completed bookmark without ranking readers.
 
 The vote editor retains the existing three sample candidates and single-choice behavior. It now groups their cover rows in one card and uses the approved square selection check. The transcript uses the same real covers, compact ribbons, and a quieter heading. Bundled covers use existing catalog cover IDs for [Pride and Prejudice](https://covers.openlibrary.org/b/id/14348537-M.jpg) and [Jane Eyre](https://covers.openlibrary.org/b/id/8235363-M.jpg), plus the [Frankenstein ISBN cover](https://covers.openlibrary.org/b/isbn/9780141439471-M.jpg). Unknown or changed candidates remain text-only, so a bundled cover can never represent a different book.
 

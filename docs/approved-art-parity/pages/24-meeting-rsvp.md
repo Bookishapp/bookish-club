@@ -2,7 +2,7 @@
 
 # 24. meeting rsvp
 
-Oct 18 batch reference; individual approval not recorded in decisions 111-143.
+Oct 18 batch reference; individual approval not recorded in the reference catalog.
 
 **Rebuilt and inspected, data adaptations documented (prior score 5/10)**
 

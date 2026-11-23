@@ -1,4 +1,4 @@
--- Read-only. Ted must run this against the target before applying the Tea migrations.
+-- Read-only. the database owner must run this against the target before applying the Tea migrations.
 -- Results are counts only. No names, bodies, addresses, or author mappings leave SQL.
 select
  (select count(*)::int from public.bookish_takes where not anonymous or signed_name is not null) signed_takes,

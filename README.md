@@ -1,4 +1,4 @@
-Visibility rollout: see [the club visibility review and deployment guide](docs/club-visibility.md). The SQL package requires Ted review and application before release.
+Visibility rollout: see [the club visibility review and deployment guide](docs/club-visibility.md). The SQL package requires database owner review and application before release.
 
 # Bookish: Book Club Night
 
@@ -146,7 +146,7 @@ Current theme (locked 2026-10-14): palette 05 **Oxblood Reading Room** on a goua
 - **Cards:** shelf paper (`--card`) with the paper grain `tx-paper-900.webp`. Verified clubs carry a brass bookmark ribbon; unclaimed clubs are a muted paper with an outline.
 - **Club story** (home, hosts, and press): paper chat examples, drawn Lunair art, shared reading check-ins, and a small finder at the bottom. No rankings or comparative progress displays.
 - **Props:** sun, daisy and two washi tapes from the r2 pass. No rainbow tape, sparkles or butterflies.
-- **Wordmark:** `scripts/wordmark.mjs` renders R2-04 with the Oxblood colours (outer `#220710`, key `#f4a6bf`, bubble `#1d5a46`) to a transparent PNG master, `public/img/bookish-wordmark.png`. `scripts/wordmark-sizes.py` trims it and writes the `wordmark-{160,320,480}.webp` sizes the site uses. It needs Playwright; point `PLAYWRIGHT` at its `index.mjs`.
+- **Wordmark:** `scripts/wordmark.mjs` renders R2-04 with the Oxblood colours (outer `#220710`, key `#f4a6bf`, bubble `#1d5a46`) to a transparent PNG master, `public/img/bookish-wordmark.png`. `scripts/wordmark-sizes.py` trims it and writes the `wordmark-{160,320,480}.webp` sizes the site uses. It needs Playwright; point `PLAYWRIGHT` at its `index.mjs`. Set `BOOKISH_WORDMARK_FONTS` to the source font directory, or use `.cache/approved-art/color-1014-r2/assets/fonts/`. For theme assets, set `BOOKISH_THEME_SOURCE` to the source asset directory, or use `.cache/approved-art/color-1014-r2/assets/`.
 
 ## Resources hub
 
@@ -163,7 +163,7 @@ Current theme (locked 2026-10-14): palette 05 **Oxblood Reading Room** on a goua
 
 ## Mascot art
 
-`public/img/lunair-*.webp` come from `scripts/stickers.py`. The script works on the existing cut-outs in `~/ted-screenshots/fictora-official/lunair-bible/`. It only scales them. It never mirrors, repaints or regenerates them. The Oxblood theme uses them without the white die-cut border, matching the locked renders; the soft shadow is added in CSS.
+`public/img/lunair-*.webp` come from `scripts/stickers.py`. Set `BOOKISH_LUNAIR_SOURCE` to the existing cut-out directory, or place the sources in `.cache/approved-art/lunair-bible/`. It only scales them. It never mirrors, repaints, or regenerates them. The Oxblood theme uses them without the white die-cut border, matching the locked renders; the soft shadow is added in CSS.
 
 - `lunair-hug`: fangirl-06, hugging a book (home hero, "Your book club, just more fun").
 - `lunair-gossip`: gossip-01, whispering (home "Start your own").

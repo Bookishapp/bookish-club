@@ -1,13 +1,15 @@
 import argparse, json, os, subprocess, sys
 from pathlib import Path
-from playwright.sync_api import sync_playwright
-parser=argparse.ArgumentParser(description='Run local regression checks in a leased Ted Google Chrome worker.')
+parser=argparse.ArgumentParser(description='Run local regression checks in a leased Google Chrome worker.')
 parser.add_argument('mode',choices=['paste','summaries'])
 parser.add_argument('evidence',type=Path)
 args=parser.parse_args()
+cli=os.environ.get('BOOKISH_CHROME_CLI')
+if not cli or not cli.strip():
+ parser.error('BOOKISH_CHROME_CLI must point to a Google Chrome lease helper.')
+from playwright.sync_api import sync_playwright
 base=args.evidence.resolve();base.mkdir(parents=True,exist_ok=True)
 test_dir=Path(__file__).resolve().parent
-cli=os.environ.get('BOOKISH_CHROME_CLI','tedchrome')
 subprocess.run(['node',str(test_dir/'browser-fix1-harness.mjs'),str(base/'browser-harness.json')],check=True)
 fixture=json.loads((base/'browser-harness.json').read_text())
 worker=subprocess.check_output([cli,'lease','--job','bookish-fix1-browser'],text=True).strip()

@@ -2,7 +2,7 @@
   "generatedAt": "2026-11-06T08:02:01.562Z",
   "browser": "156.0.8078.81",
   "channel": "chrome",
-  "host": "Teds-Mac-mini.local",
+  "host": "Mac mini",
   "viewport": {
     "width": 390,
     "height": 844
@@ -4046,11 +4046,9 @@
       "image": "approved/02.jpg",
       "override": false,
       "receipt": {
-        "decision": 111,
         "screen": "02",
         "title": "Sign in",
-        "batch": "bookish full app",
-        "mockupID": "0b7a3571-6c95-47bc-ba68-db257a5b8b0c"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Existing surface, visual review pending"
@@ -4062,11 +4060,9 @@
       "image": "approved/03.jpg",
       "override": false,
       "receipt": {
-        "decision": 112,
         "screen": "03",
         "title": "Email code",
-        "batch": "bookish full app",
-        "mockupID": "cb63696a-c589-4754-8b68-b2abafa9057d"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Existing surface, visual review pending"
@@ -4078,11 +4074,9 @@
       "image": "approved/04-v2.webp",
       "override": true,
       "receipt": {
-        "decision": 180,
         "screen": "04",
         "title": "House rules",
-        "batch": "bookish full app: house rules art v2",
-        "mockupID": "97e9e5b6-e941-423b-a33a-a20960ecbcbc"
+        "batch": "bookish full app: house rules art v2"
       },
       "superseded": false,
       "status": "Existing surface, visual review pending"
@@ -4094,11 +4088,9 @@
       "image": "approved/05.jpg",
       "override": false,
       "receipt": {
-        "decision": 113,
         "screen": "05",
         "title": "Taste picker",
-        "batch": "bookish full app",
-        "mockupID": "5e9a5f32-76b2-4171-aa38-c9e5be79ec1a"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 5/10)"
@@ -4110,11 +4102,9 @@
       "image": "approved/06.jpg",
       "override": false,
       "receipt": {
-        "decision": 114,
         "screen": "06",
         "title": "Reminders permission",
-        "batch": "bookish full app",
-        "mockupID": "410fe085-b69f-41ef-a965-bdcc8f91897c"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 3/10)"
@@ -4126,11 +4116,9 @@
       "image": "approved/07.jpg",
       "override": false,
       "receipt": {
-        "decision": 115,
         "screen": "07",
         "title": "Near me: list",
-        "batch": "bookish full app",
-        "mockupID": "85e7c809-cb7f-4be1-8f37-f278efcafd21"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 5/10)"
@@ -4142,11 +4130,9 @@
       "image": "approved/08.jpg",
       "override": false,
       "receipt": {
-        "decision": 116,
         "screen": "08",
         "title": "Near me: map",
-        "batch": "bookish full app",
-        "mockupID": "66ffda18-4abd-4f64-b35a-9d3b73671a83"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 3/10)"
@@ -4158,11 +4144,9 @@
       "image": "approved/09.jpg",
       "override": false,
       "receipt": {
-        "decision": 117,
         "screen": "09",
         "title": "Club detail",
-        "batch": "bookish full app",
-        "mockupID": "45e92202-3b17-41d9-9cc9-974711c6eb59"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 3/10)"
@@ -4174,11 +4158,9 @@
       "image": "approved/10.jpg",
       "override": false,
       "receipt": {
-        "decision": 118,
         "screen": "10",
         "title": "Join: request sheet",
-        "batch": "bookish full app",
-        "mockupID": "30987cac-ec00-4163-932d-cf042c766ba8"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 6/10)"
@@ -4190,11 +4172,9 @@
       "image": "approved/11-v2.webp",
       "override": true,
       "receipt": {
-        "decision": 181,
         "screen": "11",
         "title": "Join: request sent",
-        "batch": "bookish full app: join sent copy v2",
-        "mockupID": "4d16706c-0fb0-4d3e-81ef-fc693e24eb50"
+        "batch": "bookish full app: join sent copy v2"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 7/10)"
@@ -4206,11 +4186,9 @@
       "image": "approved/12.jpg",
       "override": false,
       "receipt": {
-        "decision": 119,
         "screen": "12",
         "title": "Join: approved",
-        "batch": "bookish full app",
-        "mockupID": "8ca5aa90-87bb-4b0f-8850-6b7d32eadea8"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 3/10)"
@@ -4222,11 +4200,9 @@
       "image": "approved/13.jpg",
       "override": false,
       "receipt": {
-        "decision": 120,
         "screen": "13",
         "title": "Unclaimed club",
-        "batch": "bookish full app",
-        "mockupID": "17555c9e-43ef-4083-82c9-37c5fa5fc201"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 4/10)"
@@ -4238,11 +4214,9 @@
       "image": "approved/14.jpg",
       "override": false,
       "receipt": {
-        "decision": 121,
         "screen": "14",
         "title": "Read next",
-        "batch": "bookish full app",
-        "mockupID": "23d6f86a-31a5-46bd-b10f-ff3b91b21d6e"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 5/10)"
@@ -4254,11 +4228,9 @@
       "image": "approved/15.jpg",
       "override": false,
       "receipt": {
-        "decision": 122,
         "screen": "15",
         "title": "Book detail",
-        "batch": "bookish full app",
-        "mockupID": "f9b839af-1eab-4814-8bf1-d1a5f26a57f0"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 3/10)"
@@ -4270,11 +4242,9 @@
       "image": "approved/16.jpg",
       "override": false,
       "receipt": {
-        "decision": 123,
         "screen": "16",
         "title": "Saved",
-        "batch": "bookish full app",
-        "mockupID": "cef9fbd7-fffd-4c2a-9efb-abcabb8b6ab8"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 5/10)"
@@ -4286,11 +4256,9 @@
       "image": "approved/17-v2.webp",
       "override": true,
       "receipt": {
-        "decision": 174,
         "screen": "17",
         "title": "The Tea: club home",
-        "batch": "bookish full app: no race v2",
-        "mockupID": "de28115a-a436-4b5b-b396-ed89ca0e3ed2"
+        "batch": "bookish full app: no race v2"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 5/10)"
@@ -4302,11 +4270,9 @@
       "image": "approved/18.jpg",
       "override": false,
       "receipt": {
-        "decision": 124,
         "screen": "18",
         "title": "Take composer",
-        "batch": "bookish full app",
-        "mockupID": "22c90058-d7af-409c-b786-7a18d1f8629c"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Absent"
@@ -4318,11 +4284,9 @@
       "image": "approved/19.jpg",
       "override": false,
       "receipt": {
-        "decision": 125,
         "screen": "19",
         "title": "Take thread, reactions, and report",
-        "batch": "bookish full app",
-        "mockupID": "f4eba529-e377-41ab-a186-a6de76d7d82c"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Absent"
@@ -4334,11 +4298,9 @@
       "image": "approved/20-v2.webp",
       "override": true,
       "receipt": {
-        "decision": 175,
         "screen": "20",
         "title": "Current book and reading together",
-        "batch": "bookish full app: no race v2",
-        "mockupID": "5349d0d2-c210-47ad-8146-f98b6a6c69b2"
+        "batch": "bookish full app: no race v2"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 4/10)"
@@ -4350,11 +4312,9 @@
       "image": "approved/21.jpg",
       "override": false,
       "receipt": {
-        "decision": 176,
         "screen": "21",
         "title": "Log my page",
-        "batch": "bookish full app: no race v2",
-        "mockupID": "e4ba9d05-d3ef-4f3d-a1a4-6635954bc1cd"
+        "batch": "bookish full app: no race v2"
       },
       "superseded": true,
       "status": "Absent"
@@ -4366,11 +4326,9 @@
       "image": "approved/22.jpg",
       "override": false,
       "receipt": {
-        "decision": 126,
         "screen": "22",
         "title": "Vote: pick the next book",
-        "batch": "bookish full app",
-        "mockupID": "8e1e922f-bf20-43ca-933c-3e964253d5c5"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 7/10)"
@@ -4382,11 +4340,9 @@
       "image": "approved/23.jpg",
       "override": false,
       "receipt": {
-        "decision": 127,
         "screen": "23",
         "title": "Vote: winner",
-        "batch": "bookish full app",
-        "mockupID": "9c06f8d9-5174-406a-b506-6cb57a74ea6c"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 4/10)"
@@ -4408,11 +4364,9 @@
       "image": "approved/25.jpg",
       "override": false,
       "receipt": {
-        "decision": 128,
         "screen": "25",
         "title": "Schedule a meeting (host)",
-        "batch": "bookish full app",
-        "mockupID": "deb643f7-8ce2-48f2-b32e-4e0764b3fe95"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 4/10)"
@@ -4424,11 +4378,9 @@
       "image": "approved/26-v2.webp",
       "override": true,
       "receipt": {
-        "decision": 177,
         "screen": "26",
         "title": "Member list",
-        "batch": "bookish full app: no race v2",
-        "mockupID": "cf742dd3-9841-4c92-9bec-0214ad0c0c5a"
+        "batch": "bookish full app: no race v2"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 7/10)"
@@ -4440,11 +4392,9 @@
       "image": "approved/27.jpg",
       "override": false,
       "receipt": {
-        "decision": 129,
         "screen": "27",
         "title": "Invite: native share sheet",
-        "batch": "bookish full app",
-        "mockupID": "adf3d035-3a33-474d-8a36-ed392ec0315d"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 5/10)"
@@ -4456,11 +4406,9 @@
       "image": "approved/28.jpg",
       "override": false,
       "receipt": {
-        "decision": 178,
         "screen": "28",
         "title": "Notifications",
-        "batch": "bookish full app: no race v2",
-        "mockupID": "1d3ed44e-11f9-4844-9af5-6e6f1f33cd34"
+        "batch": "bookish full app: no race v2"
       },
       "superseded": true,
       "status": "Absent"
@@ -4472,11 +4420,9 @@
       "image": "approved/29.jpg",
       "override": false,
       "receipt": {
-        "decision": 130,
         "screen": "29",
         "title": "Profile",
-        "batch": "bookish full app",
-        "mockupID": "f603611c-d7b8-4870-b997-bc0068c4b080"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 4/10)"
@@ -4488,11 +4434,9 @@
       "image": "approved/30-v2.webp",
       "override": true,
       "receipt": {
-        "decision": 179,
         "screen": "30",
         "title": "Settings and privacy",
-        "batch": "bookish full app: no race v2",
-        "mockupID": "f7d1ea3e-fa7b-4de5-b5ef-6bd2d7b206c5"
+        "batch": "bookish full app: no race v2"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 4/10)"
@@ -4504,11 +4448,9 @@
       "image": "approved/31.jpg",
       "override": false,
       "receipt": {
-        "decision": 131,
         "screen": "31",
         "title": "Start a club",
-        "batch": "bookish full app",
-        "mockupID": "bb06f060-9a69-45c5-a40c-19b65c4a9af9"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 5/10)"
@@ -4520,11 +4462,9 @@
       "image": "approved/32.jpg",
       "override": false,
       "receipt": {
-        "decision": 132,
         "screen": "32",
         "title": "Club started",
-        "batch": "bookish full app",
-        "mockupID": "0cc0d975-1f2e-4aa3-a9c7-07efe546e15d"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 3/10)"
@@ -4536,11 +4476,9 @@
       "image": "approved/33.jpg",
       "override": false,
       "receipt": {
-        "decision": 133,
         "screen": "33",
         "title": "Empty: The Tea",
-        "batch": "bookish full app",
-        "mockupID": "bc2b5bb8-0db6-4f5b-8dce-93f73805bddf"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 5/10)"
@@ -4552,11 +4490,9 @@
       "image": "approved/34.jpg",
       "override": false,
       "receipt": {
-        "decision": 134,
         "screen": "34",
         "title": "Empty: no clubs nearby",
-        "batch": "bookish full app",
-        "mockupID": "3be7c1d8-1f91-4fa5-a9eb-260768ba85b5"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 6/10)"
@@ -4568,11 +4504,9 @@
       "image": "approved/35.jpg",
       "override": false,
       "receipt": {
-        "decision": 135,
         "screen": "35",
         "title": "Empty: Saved",
-        "batch": "bookish full app",
-        "mockupID": "421a901c-3bfd-4207-8de4-283f6973a1c7"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 6/10)"
@@ -4584,11 +4518,9 @@
       "image": "approved/36.jpg",
       "override": false,
       "receipt": {
-        "decision": 136,
         "screen": "36",
         "title": "Empty: notifications",
-        "batch": "bookish full app",
-        "mockupID": "88a836f5-690d-4457-9958-b2904418f659"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Absent"
@@ -4600,11 +4532,9 @@
       "image": "approved/37.jpg",
       "override": false,
       "receipt": {
-        "decision": 137,
         "screen": "37",
         "title": "Empty: not in a club yet",
-        "batch": "bookish full app",
-        "mockupID": "3f78e578-04a4-4741-ae7b-b5d7ed83c174"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, data adaptations documented (prior score 4/10)"
@@ -4616,11 +4546,9 @@
       "image": "approved/38.jpg",
       "override": false,
       "receipt": {
-        "decision": 138,
         "screen": "38",
         "title": "iMessage: app drawer (+ menu)",
-        "batch": "bookish full app",
-        "mockupID": "9ae45c4c-4018-4b2f-9e6f-62d5cffe2331"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Partial: native UIKit review host"
@@ -4652,11 +4580,9 @@
       "image": "approved/41.jpg",
       "override": false,
       "receipt": {
-        "decision": 139,
         "screen": "41",
         "title": "iMessage: live vote bubble",
-        "batch": "bookish full app",
-        "mockupID": "014563f3-8f69-456f-8d7f-54d335f373fd"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, native review host (prior score 7/10)"
@@ -4668,11 +4594,9 @@
       "image": "approved/42.jpg",
       "override": false,
       "receipt": {
-        "decision": 140,
         "screen": "42",
         "title": "iMessage: meeting RSVP bubble",
-        "batch": "bookish full app",
-        "mockupID": "77457c84-a610-4823-aa6a-ed3e99f5c349"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Rebuilt and inspected, native review host (prior score 6/10)"
@@ -4694,11 +4618,9 @@
       "image": "approved/44.jpg",
       "override": false,
       "receipt": {
-        "decision": 141,
         "screen": "44",
         "title": "iMessage: take bubble with spoiler blur",
-        "batch": "bookish full app",
-        "mockupID": "ffebf221-6ed4-4251-9079-63b8d2d9d95b"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Absent native behavior"
@@ -4710,11 +4632,9 @@
       "image": "approved/45.jpg",
       "override": false,
       "receipt": {
-        "decision": 142,
         "screen": "45",
         "title": "iMessage: invite link preview",
-        "batch": "bookish full app",
-        "mockupID": "fa86a03a-e4dd-4ce5-9e2e-7c8599e43a27"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Absent native behavior"
@@ -4736,11 +4656,9 @@
       "image": "approved/47.jpg",
       "override": false,
       "receipt": {
-        "decision": 143,
         "screen": "47",
         "title": "Widgets: lock screen",
-        "batch": "bookish full app",
-        "mockupID": "6e14ea6c-7fdd-40cd-8606-6610a94175f2"
+        "batch": "bookish full app"
       },
       "superseded": false,
       "status": "Absent"

@@ -2,7 +2,7 @@
 
 # 46. widgets home screen
 
-Oct 18 batch reference; individual approval not recorded in decisions 111-143.
+Oct 18 batch reference; individual approval not recorded in the reference catalog.
 
 **Absent**
 

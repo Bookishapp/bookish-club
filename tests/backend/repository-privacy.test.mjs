@@ -23,7 +23,13 @@ test('tracked files contain no personal machine paths or account names', () => {
 });
 
 test('tracked files contain no private operations workspace references', () => {
-  const leaks = filesContaining([['ted', 'ops'].join('-'), ['ted', 'state'].join('-')]);
+  const leaks = filesContaining([
+    ['ted', 'ops'].join('-'),
+    ['ted', 'state'].join('-'),
+    ['ted', 'screenshots'].join('-'),
+    ['ted', 'chrome'].join(''),
+    ['ted', 'mockup'].join('-'),
+  ]);
   assert.deepEqual(leaks, [], 'Private workspace references must stay outside the repository.');
 });
 
