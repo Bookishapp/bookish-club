@@ -174,7 +174,7 @@ Re-run it with `python3 scripts/stickers.py`. It needs Pillow installed.
 
 ## v1.1 club backend (local, unapplied)
 
-See [RESULT.md](RESULT.md) for the upgrade order, schema, iOS API contract,
+See [backend reference](docs/backend-reference.md) for the upgrade order, schema, iOS API contract,
 auth configuration, moderation operations, verification, and release decisions.
 The SQL upgrades are `supabase/sql/005_*` through `008_*`; they extend PR #12.
 Bookish targets its dedicated project `tkrsrnlasinmlftkcufi`. Generate the complete packet with `node scripts/stage-dedicated-sql.mjs`, and apply the reviewed numbered chunks in `.cache/dedicated-sql/` to initialize that project; the historical upgrade files are not an empty-project deployment guide.

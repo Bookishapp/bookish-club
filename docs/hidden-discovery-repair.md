@@ -8,4 +8,4 @@ The repaired backend checks visibility when that field is present, preserves the
 
 This repairs source only. The existing backend and visibility production packets must not be stacked. Identity provisioning, direct member-table access versus server-mediated visibility access, seeding preconditions, old clients, static discovery, and coordinated deployment remain prerequisites for a combined rollout. The production target did not have the social routines or visibility column at the October 29 SELECT-only read-back. No applied migration was rewritten, and no database mutation was performed.
 
-The exact narrow SQL repair, SELECT-only backup capture, fail-closed operational recovery, and database-lane handoff remain local in job card-c-f94e330416. They are not a complete installation proposal, and they are not approved for application. The parent backend PR remains draft.
+Historical repair and recovery records remain outside the repository. Use the current deployment documentation to prepare a coordinated rollout.

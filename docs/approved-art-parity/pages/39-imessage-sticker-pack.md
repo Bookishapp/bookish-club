@@ -16,4 +16,4 @@ Actual native sticker browser in an isolated UIKit review host. The existing fou
 
 Additional actual native states: [stickers](../native/actual/stickers.png).
 
-Original source: `/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/39-imessage-sticker-pack.html`.
+Original source: `external/approved-art/full-app-1016/html/39-imessage-sticker-pack.html`.

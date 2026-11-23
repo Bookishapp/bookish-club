@@ -16,4 +16,4 @@ Actual production vote editor in a standalone simulator host, including error an
 
 Additional actual native states: [editor vote](../native/actual/editor-vote.png), [editor vote scrolled](../native/actual/editor-vote-scrolled.png), [editor vote error scrolled](../native/actual/editor-vote-error-scrolled.png), [editor vote large type](../native/actual/editor-vote-large-type.png), [editor vote large type scrolled](../native/actual/editor-vote-large-type-scrolled.png).
 
-Original source: `/Users/vahallo/ted-screenshots/bookish-club/full-app-1016/html/40-imessage-extension-send-vote.html`.
+Original source: `external/approved-art/full-app-1016/html/40-imessage-extension-send-vote.html`.

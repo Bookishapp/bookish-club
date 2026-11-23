@@ -2,11 +2,11 @@
 from pathlib import Path
 from collections import deque
 from PIL import Image, ImageFilter
-import json
+import json, os
 
 root = Path(__file__).resolve().parents[3]
 assets = root / 'app/ios/App/BookishMessages/Assets.xcassets'
-source = Path('/Users/vahallo/biz/bookish/design/approved-v3-1021')
+source = Path(os.environ.get('BOOKISH_V3_SOURCE',root/'.cache/approved-art/approved-v3-1021'))
 stickers = root / 'app/ios/App/BookishMessages/Stickers'
 
 def asset(name, im):

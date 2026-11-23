@@ -1,36 +1,8 @@
-# Bookish v1.1 backend
+# Bookish v1.1 backend reference
 
-Historical PR #15 review record. As of November 1, 2026, Bookish targets the dedicated project `tkrsrnlasinmlftkcufi`. The shared-project references, deployment restrictions, and verification counts below describe the earlier review state. Current setup is documented in [ops/README.md](ops/README.md). Historical internal release evidence is retained outside the repository.
+This historical backend reference describes SQL 005 through 008, the schema, the client API, and moderation operations from PR #15. Bookish now targets the dedicated project `tkrsrnlasinmlftkcufi`. Shared-project restrictions and release prerequisites below describe the earlier integration state. Use [the operations guide](../ops/README.md) for current setup, and generate the current deployment packet with `node scripts/stage-dedicated-sql.mjs`.
 
-SQL upgrade files, two edge functions, auth configuration examples, and executable tests for PR #15. Reviewed in an isolated worktree, with the earlier uncommitted Review 1 fixes preserved in their original worktree and included here. No Supabase migrations, data changes, Auth changes, function deployments, or merges were performed. `app/` was untouched.
-
-The earlier review required raw SQL to avoid changing shared migration history. Bookish now uses its dedicated project; generate the current packet with `node scripts/stage-dedicated-sql.mjs`, and follow [ops/README.md](ops/README.md).
-
-PR #12 is already merged in this checkout (`9049b5b`, feature commit `6f5887f`). It supplied the catalog, clubs/members, club books, pours, taste, suggestion events, community views, and `bookish-community`. Those are extended and reused. The existing three-club floor remains the single constant in `bookish_privacy_floor()`; no duplicate recommendation engine or community endpoint was added.
-
-## Review 1 fixes
-
-1. The deletion edge handler requires trusted `app_metadata.app = "bookish"` before any Apple or Auth deletion call. Fictora sessions return 403.
-2. Auth insert and update triggers skip unmarked users, log and swallow their own errors, and no longer backfill existing identities. The Auth delete trigger skips unmarked users. For marked Bookish accounts, cleanup failures abort deletion and preserve the identity for retry. Bookish RPC access checks the Auth marker, even if a stale profile exists.
-3. The Auth example was renamed `auth.bookish.SEPARATE-PROJECT-ONLY.example.toml`, with an explicit shared-project prohibition in its header.
-4. A block applies to one take and its replies. It cannot identify an anonymous author's other takes.
-5. Community counts require three distinct members with memberships at least 14 days old in each club. Clubs sharing any member with another eligible club do not contribute.
-6. Club Pour excludes members with `ratings_public = false`, suppresses both counts below five consented contributions, and independently requires five non-DNF ratings before returning a mean.
-7. The Tea hold filter matches the full normalized display name, requires at least three characters, and excludes common stopwords. Hyphens, apostrophes, and repeated whitespace use the same normalization as post text.
-8. Members cannot SELECT ballot rows. `bookish_vote_tally` exposes grouped counts only.
-9. SQL 005 through 008 uses conditional table, column, index, policy, trigger, and constraint creation, plus replaceable functions and views. The test suite reruns all four files against a populated local database. The preflight now flags existing reader rows for manual reconciliation, since no shared Auth identities are backfilled.
-
-A separate Bookish Supabase project is still the real fix and needs Sebastian. Until then, trusted Bookish signup must create a fresh identity with the app marker at creation; the direct Auth signup flow described before this review must not be used on the shared project.
-
-## October 23 resume
-
-Rebased onto current `main`, including the existing native finder. Its directory refresh, verified flags, and legacy join form already use the published feed and `bookish-join`. This PR does not add native account or member-club screens, or connect that UI to the v1.1 RPCs. Native account integration remains blocked by the database and trusted Auth provisioning review. No UI files changed in this PR.
-
-Fresh read-only history and catalog checks on October 23 confirm 005-008 remain unapplied: the private schema and new tables are absent, the 66 catalog books remain, the other nine existing Bookish tables have zero rows, and no Auth identity has the trusted Bookish marker. Shared Auth now has 170 identities. Review artifacts and the fresh catalog snapshot remain in the local `card-bk-backend` job directory.
-
-New public tables now receive explicit service-role CRUD immediately after creation, followed by RLS and client-role revocation. Existing reviewed member policies and narrow authenticated grants remain. Dynamic ACL and RLS loops are replaced by literal statements, and triggers use `CREATE OR REPLACE TRIGGER`. Existing applied SQL 001-004 is unchanged. A local PGlite regression disables inherited table grants before applying each new migration and checks service CRUD, anon denial, and private ballot, Tea, and reaction access.
-
-The `Backend and finder` PR check runs backend tests, edge type checks, edge lint and formatting, an offline finder build, native domain tests, and the app UI smoke test. It uses local empty aggregate and verified fixtures, needs no secrets, and performs no deployments or database operations against Supabase.
+The PR #12 foundation was merged at `9049b5b` (feature commit `6f5887f`). It supplies the catalog, clubs, members, reading records, and community endpoint extended by this backend.
 
 ## Schema diagram
 
@@ -96,7 +68,7 @@ Apply **once, in order**, on a disposable staging clone first:
 3. `supabase/sql/007_bookish_tea_moderation_deletion.sql`: private authors, takes/replies, filtering/holds, reporting/blocking, moderation and deletion triggers.
 4. `supabase/sql/008_bookish_community_privacy.sql`: hardens existing views so a rating mean independently needs three rating-contributing clubs; adds member-only Club Pour RPC.
 
-These depend on existing files 001–004. New upgrade files are transactional, rerunnable on the local PGlite fixture, and deliberately fail on inconsistent existing data. `supabase/checks/bookish-v11-preflight.sql` is a read-only audit for duplicate directory links/current reads, invalid club names, and orphan user/club IDs. Resolve audit results before applying; no automatic cleanup is included.
+These depend on existing files 001-004. New upgrade files are transactional, rerunnable on the local PGlite fixture, and deliberately fail on inconsistent existing data. `supabase/checks/bookish-v11-preflight.sql` is a read-only audit for duplicate directory links/current reads, invalid club names, and orphan user/club IDs. Resolve audit results before applying; no automatic cleanup is included.
 
 The 008 change fixes an existing edge case: three reading clubs plus one rating club previously exposed that one club's mean. The reading count can still appear; the mean is now null until three clubs contribute eligible ratings. Ratings opt-out still excludes those pours from community calculations. The public endpoint's response shape is unchanged.
 
@@ -170,7 +142,7 @@ Read `bookish_books` (catalog), `bookish_club_books` (joined club history/curren
 
 RSVP REST upsert: `{meeting_id,club_id,user_id:<self>,response:"going"|"maybe"|"next_time"}`, conflict key `meeting_id,user_id`; DELETE own RSVP to clear it. Composite foreign keys prevent substituting another club ID. A meeting's optional `stop_page` supports the meeting marker in the app.
 
-`bookish_page_log` REST reads return only your own logs. Shared progress is computed for the current reading start, so a new book starts fresh. Rank, streak, and competitive title outputs are removed; reading speed never determines response order. Pours and taste REST writes/reads are self-only. Pours accept half-glass increments, 0–5; other members receive Club Pour aggregates rather than the identities of DNF readers.
+`bookish_page_log` REST reads return only your own logs. Shared progress is computed for the current reading start, so a new book starts fresh. Rank, streak, and competitive title outputs are removed; reading speed never determines response order. Pours and taste REST writes/reads are self-only. Pours accept half-glass increments, 0-5; other members receive Club Pour aggregates rather than the identities of DNF readers.
 
 ### Next-book votes
 
@@ -178,7 +150,7 @@ Read `bookish_votes`, `bookish_vote_options`, and `bookish_nominations` through 
 
 | RPC | Result / behavior |
 | --- | --- |
-| `bookish_open_vote(p_club uuid,p_closes timestamptz,p_books text[],p_chat boolean=false)` | Host opens one vote with 2–4 distinct catalog books; returns UUID |
+| `bookish_open_vote(p_club uuid,p_closes timestamptz,p_books text[],p_chat boolean=false)` | Host opens one vote with 2-4 distinct catalog books; returns UUID |
 | `bookish_cast_ballot(p_vote uuid,p_option uuid,p_via text='app')` | One mutable ballot per member until closure/deadline; via `app`, `imessage`, or `web` |
 | `bookish_close_vote(p_vote uuid,p_winner uuid=null)` | Host closes atomically, returns winning option UUID, shelves previous current read and starts winner; host chooses among tied leaders |
 | `bookish_vote_tally(p_vote uuid)` | Member-only option IDs, book IDs, and ballot counts, with no voter identities |
@@ -195,7 +167,7 @@ Community discovery keeps using existing `GET /functions/v1/bookish-community`. 
 - `bookish_dismiss_hold(p_hold,p_actor,p_reason)`: closes a held-content review with an audit entry; the writer can submit a fresh book-focused take.
 - `bookish_escalate_author(p_take,p_actor,p_reason)`: legal/safety use only; logs access and returns the private author UUID. Direct SELECT on the mapping is revoked even from `service_role`.
 
-A host decision never closes the separate team review. Due dates and queues are implemented; staffing, a monitored contact inbox, and actual review within 24 hours are operational requirements. No scheduled routine was created. Any future scheduled monitoring must run on the Mac mini per the standing project rule.
+A host decision never closes the separate team review. Due dates and queues are implemented; staffing, a monitored contact inbox, and actual review within 24 hours are operational requirements. No scheduled routine was created. Any future scheduled monitoring must run on the Mac mini on the deployment host.
 
 ## Configuration and decisions before release
 
@@ -207,7 +179,7 @@ A host decision never closes the separate team review. Due dates and queues are 
 - Final universal-link path, native callback scheme, and invitation landing page need website/iOS coordination. The backend consumes invite codes today.
 - Cohost remains accepted for compatibility but creation/invites produce host/member roles. Decide whether to add cohost management UI. Host removal has a re-entry tombstone; reinstatement and invite-revocation UI can be added later.
 - The legacy `bookish_race` RPC name and `race_visible` preference remain internal compatibility names. The response has no rank, streak, or title, and uses stable user-ID order. This changes the return contract of an unapplied migration; verify migrations 005-008 are still unapplied before integrating this review patch. If deployed, prepare a separately reviewed forward migration instead.
-- Bring list uses one claimant per item; create multiple items for quantities. Votes accept 2–4 books; native design can restrict its builder to 3–4. Closing a vote marks the current book finished, so the native host action should make that consequence clear.
+- Bring list uses one claimant per item; create multiple items for quantities. Votes accept 2-4 books; native design can restrict its builder to 3-4. Closing a vote marks the current book finished, so the native host action should make that consequence clear.
 - The content rules are an English launch baseline, not comprehensive context recognition. Test real launch-language samples, evasion, false positives and real-person sexual references with the moderation team. Held drafts do not auto-publish. The 24-hour deadline is not an automated promise of staffed review.
 - Age is declared 18+, not externally verified. Complete the current App Store age-rating questionnaire and policy wording.
 - APNs delivery, Messages rendering/fallback pages, widgets, data export UI, and a staff moderation dashboard are outside these backend files. Polling/refetch works now; do not publish raw Tea/private tables through Realtime or cache spoiler bodies in broadcast payloads.
@@ -221,12 +193,6 @@ A host decision never closes the separate team review. Due dates and queues are 
 
 Auth configuration references: [Supabase Apple](https://supabase.com/docs/guides/auth/social-login/auth-apple), [email templates](https://supabase.com/docs/guides/auth/auth-email-templates), [config reference](https://supabase.com/docs/guides/local-development/cli/config), [user deletion](https://supabase.com/docs/guides/auth/managing-user-data).
 
-## Verification
+## Local verification
 
-- `npm test`: 41 passing tests. PGlite executes the actual SQL 001–008 with distinct Auth identities, anon/authenticated/service roles, and Supabase-style default grants. Coverage includes populated cross-club table isolation, role/terms tampering, private author denial, spoilers/replies/signed posts, filter/hold behavior, report/block/host moderation, invitations/approvals/directory matching, Race, meetings/claims/RSVPs, ballot constraints/deadlines/ties, the community floor, bans/stale tokens, and deletion/host succession. HTTP tests cover verified-session binding, Apple exchange/signing/subject/revocation and failure paths, hard-delete requests, and house-rules configuration.
-- `npm run check:edge`: both new edge entrypoints type-check with Deno; no remote packages are required by them.
-- `deno lint --no-config` on the five new TypeScript files: passed.
-- Existing static build with local empty verified/community fixtures: passed; 922 indexable pages. No production fetch was needed.
-- `git diff --check`: passed.
-
-Requires Node 24+ for the test runner's TypeScript import support. PGlite validates PostgreSQL behavior but does not replace a Supabase staging run, Auth/provider setup, concurrent production-load testing, or on-device Apple/OTP/App Review verification. No production behavior was exercised.
+Run `npm ci` and `npm test` with Node 24 or newer. Backend tests use disposable in-memory PGlite databases and do not require production credentials. Run `npm run check:edge` with Deno to check the edge entrypoints. Local tests do not replace staging, provider setup, or device verification.

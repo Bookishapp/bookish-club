@@ -1,5 +1,5 @@
 // Exercises the shipped bundle without a server or external writes. Native calls
-// require the separate iPhone checklist in RESULT.md.
+// require the separate iPhone checklist in docs/backend-reference.md.
 import fs from 'node:fs';
 import path from 'node:path';
 import assert from 'node:assert/strict';

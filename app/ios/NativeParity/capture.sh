@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 root="$(cd "$(dirname "$0")/../../.." && pwd)"
-evidence="${BOOKISH_NATIVE_EVIDENCE:-/Users/vahallo/ted-ops/oneshots/1106-bookish-v3art}"
+evidence="${BOOKISH_NATIVE_EVIDENCE:-$root/.cache/review-evidence/v3}"
 source_dir="$root/app/ios/App/BookishMessages"
 build_dir="$(mktemp -d /tmp/bookish-v3-native.XXXXXX)"
 app_dir="$build_dir/BookishV3Parity.app"

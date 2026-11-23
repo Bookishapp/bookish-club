@@ -6,7 +6,7 @@ References from the 47-screen batch and actual existing app surfaces are shown s
 
 Captured 2026-11-06T08:02:01.562Z, using Chrome 156.0.8078.81 on Teds-Mac-mini.local.
 
-[Capture manifest and checks](manifest.json), [34 inspected side-by-side PNG hashes](/Users/vahallo/ted-ops/oneshots/1105-bookish40-fix/parity/side-by-side-manifest.json), [individual approval receipts](approved/approval-receipts.json), [v2 provenance](approved/v2-sources.json), [additional loading and resource states](pages/additional-states.md), [native evidence and limitations](native/README.md), [native image dimensions and hashes](native/capture-manifest.json), and [HTML comparison index](index.html).
+[Capture manifest and checks](manifest.json), 34 inspected side-by-side PNG hashes: `<local evidence folder>/parity/side-by-side-manifest.json`, [individual approval receipts](approved/approval-receipts.json), [v2 provenance](approved/v2-sources.json), [additional loading and resource states](pages/additional-states.md), [native evidence and limitations](native/README.md), [native image dimensions and hashes](native/capture-manifest.json), and [HTML comparison index](index.html).
 
 | Source screen | Status | Actual existing app coverage |
 | --- | --- | --- |
@@ -77,4 +77,4 @@ node app/scripts/capture-parity.mjs
 
 Set `PLAYWRIGHT_MODULE` to an installed Playwright module if needed, and `BOOKISH_APPROVED_SOURCE` if the approved source directory differs. The script launches installed Google Chrome, serves the production bundle on loopback, and intercepts all external requests. No request reaches an external write service. Regenerate companion pages without recapture with `node app/scripts/capture-parity.mjs --pages-only`.
 
-Source of truth: `/Users/vahallo/biz/bookish/design/APPROVED-ART.md`. October 19 v2 images take precedence where present. Working behavior, legal text, and privacy rules take precedence over approved mock data.
+Source of truth: `external/approved-art/APPROVED-ART.md`. October 19 v2 images take precedence where present. Working behavior, legal text, and privacy rules take precedence over approved mock data.

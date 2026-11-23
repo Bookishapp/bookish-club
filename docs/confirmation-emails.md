@@ -40,7 +40,7 @@ These are Resend's default hostnames, not a substitute for the account's exact c
 
 After an approved test, Ted checks provider delivery or bounce events and the inbox, then follows the link and verifies the redirect and row status. `confirm_sent: true` alone does not meet that acceptance check. Do not enable bulk delivery or replay pending records as part of the test.
 
-See [ops/README.md](../ops/README.md) for dedicated-project initialization, and the configuration procedure above for sender secrets. Sender activation does not require rerunning `001_bookish_submissions.sql`, using `db push`, or changing unrelated migration history. If a read-only review identifies a required database change, stop and stage exact SQL, a backup, and a rollback in the job directory's `apply.sql` with `REPORT.md` marked `NEEDS TED REVIEW`.
+See [ops/README.md](../ops/README.md) for dedicated-project initialization, and the configuration procedure above for sender secrets. Sender activation does not require rerunning `001_bookish_submissions.sql`, using `db push`, or changing unrelated migration history. If a read-only review identifies a required database change, prepare the exact SQL, a backup, and a rollback outside the repository for operator review before applying any change.
 
 ## Rollback
 

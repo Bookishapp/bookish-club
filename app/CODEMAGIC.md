@@ -36,7 +36,7 @@ pre-sync `pod install` step. Keep analytics, purchases, Android configuration, b
    repository root with Pillow installed. `npm run check:release` validates all
    native icon files, dimensions, RGB opacity, and marketing artwork, as well as
    major-7 native dependencies and the lockfile. Complete the device checks in
-   `../RESULT.md`, privacy disclosures, and App Store metadata/screenshots.
+   `../docs/backend-reference.md`, privacy disclosures, and App Store metadata/screenshots.
 4. Deploy the site change that publishes `/data/clubs.json` before shipping the
    app. The workflow rebuilds the website locally solely to produce its data
    snapshot; it does not deploy the site. The public verified/community functions

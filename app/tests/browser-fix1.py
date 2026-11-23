@@ -7,7 +7,7 @@ parser.add_argument('evidence',type=Path)
 args=parser.parse_args()
 base=args.evidence.resolve();base.mkdir(parents=True,exist_ok=True)
 test_dir=Path(__file__).resolve().parent
-cli=os.environ.get('BOOKISH_CHROME_CLI',str(Path.home()/'ted-ops/tools/ted-chrome/tedchrome'))
+cli=os.environ.get('BOOKISH_CHROME_CLI','tedchrome')
 subprocess.run(['node',str(test_dir/'browser-fix1-harness.mjs'),str(base/'browser-harness.json')],check=True)
 fixture=json.loads((base/'browser-harness.json').read_text())
 worker=subprocess.check_output([cli,'lease','--job','bookish-fix1-browser'],text=True).strip()
