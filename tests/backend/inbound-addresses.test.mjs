@@ -21,7 +21,7 @@ function request() {
   });
 }
 
-function fixture(overrides = {}, forwardTo = 'hello@getkres.com') {
+function fixture(overrides = {}, forwardTo = 'forward@example.test') {
   const sent = [], completed = [], begun = [];
   const handler = inboundHandler({
     secret: async () => secret, apiKey: async () => 'fixture-api-key',
@@ -71,10 +71,10 @@ test('unparseable senders remain visible in the body without creating a Reply-To
 
 test('valid DNS labels, including punycode, remain available for Reply-To and forward targets', async () => {
   for (const [from, target, replyTo] of [
-    ['Reader <READER@EXAMPLE.XN--P1AI>', 'hello@getkres.com', 'reader@example.xn--p1ai'],
-    [`reader@${'a'.repeat(63)}.${'b'.repeat(63)}`, 'hello@getkres.com', `reader@${'a'.repeat(63)}.${'b'.repeat(63)}`],
+    ['Reader <READER@EXAMPLE.XN--P1AI>', 'forward@example.test', 'reader@example.xn--p1ai'],
+    [`reader@${'a'.repeat(63)}.${'b'.repeat(63)}`, 'forward@example.test', `reader@${'a'.repeat(63)}.${'b'.repeat(63)}`],
     ['reader@example.a1-b2', 'hello@destination.xn--p1ai', 'reader@example.a1-b2'],
-    ['reader@example.z', 'hello@getkres.com', 'reader@example.z'],
+    ['reader@example.z', 'forward@example.test', 'reader@example.z'],
   ]) {
     const { handler, sent } = fixture({ from }, target);
     assert.equal((await handler(request())).status, 200, from);
@@ -97,8 +97,8 @@ test('invalid DNS labels never reach the outbound Reply-To header', async () => 
 
 test('loop prevention still applies after invalid recipient entries are skipped', async () => {
   for (const [from, target] of [
-    ['Bookish <INBOX@MEETBOOKISH.COM>', 'hello@getkres.com'],
-    ['Reader <reader@send.meetbookish.com>', 'hello@getkres.com'],
+    ['Bookish <INBOX@MEETBOOKISH.COM>', 'forward@example.test'],
+    ['Reader <reader@send.meetbookish.com>', 'forward@example.test'],
     ['Reader <READER@EXAMPLE.XN--P1AI>', 'reader@example.xn--p1ai'],
   ]) {
     const { handler, sent, begun } = fixture({ from, to: ['undisclosed-recipients:;', 'hello@meetbookish.com'] }, target);
