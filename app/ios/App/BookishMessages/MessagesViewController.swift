@@ -109,6 +109,12 @@ final class MessagesViewController: MSMessagesAppViewController, UITextFieldDele
         choices.axis = .vertical; choices.spacing = 0; content.addArrangedSubview(choices)
         votePaper.alpha = 0.3; votePaper.contentMode = .scaleAspectFill; votePaper.clipsToBounds = true
         votePaper.isAccessibilityElement = false; votePaper.translatesAutoresizingMaskIntoConstraints = false
+        // The paper texture is decoration only. Without these, its 804 pt intrinsic height sizes the
+        // choices stack (even while hidden for RSVP), and the selected row stretches to fill it.
+        for axis in [NSLayoutConstraint.Axis.horizontal, .vertical] {
+            votePaper.setContentCompressionResistancePriority(.fittingSizeLevel, for: axis)
+            votePaper.setContentHuggingPriority(.fittingSizeLevel, for: axis)
+        }
         choices.insertSubview(votePaper, at: 0)
         NSLayoutConstraint.activate([votePaper.leadingAnchor.constraint(equalTo: choices.leadingAnchor), votePaper.trailingAnchor.constraint(equalTo: choices.trailingAnchor), votePaper.topAnchor.constraint(equalTo: choices.topAnchor), votePaper.bottomAnchor.constraint(equalTo: choices.bottomAnchor)])
         voteTape.image = UIGraphicsImageRenderer(size: CGSize(width: 68, height: 40)).image { _ in
